@@ -76,9 +76,7 @@ void Loader::unbindVao() {
 	glBindVertexArray(0);
 }
 
-/**
-	Clean up VAOs and VBOs
-*/
+/* Clean up VAOs and VBOs */
 void Loader::destroy() {
 	for (GLuint *vao : m_vaos) {
 		glDeleteVertexArrays(1, vao);

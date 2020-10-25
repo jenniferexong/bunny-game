@@ -18,8 +18,13 @@ vec2 Application::s_window_size = vec2(1280, 720);
 	Player position may be updated so need to change the view transform
 */
 void Application::render() {
+	// animate
+	m_entity.move(0.002f, 0, 0);
+	m_entity.rotate(0, 1, 0);
+
+	m_renderer.prepare();
 	m_shader.start();
-	m_scene.render(m_window, m_player);
+	m_renderer.render(m_entity, m_shader);
 	m_shader.stop();
 }
 
@@ -46,11 +51,15 @@ void Application::makeTest() {
 
 	Mesh mesh = m_loader.loadToVao(positions, texture_coords, indices);
 
+	m_shader.setUp();
 	ModelTexture texture = ModelTexture(m_loader.loadTexture("res/textures/checkerboard.png"));
-	shared_ptr<Model> textured_model = make_shared<TexturedModel>(mesh, texture);
+	shared_ptr<TexturedModel> textured_model = make_shared<TexturedModel>(mesh, texture);
 
-	shared_ptr<Entity> entity = make_shared<Entity>(textured_model);
-	m_scene.addToScene(entity);
+	m_entity = Entity(textured_model);
+	m_entity.setPosition(-1, 0, 0);
+
+	//shared_ptr<Entity> entity = make_shared<Entity>(textured_model);
+	//m_scene.addToScene(entity);
 }
 
 void Application::destroy() {

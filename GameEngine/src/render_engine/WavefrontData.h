@@ -4,6 +4,10 @@
 
 #include <vector>
 #include <string>
+#include <map>
+#include <fstream>
+//#include <sstream>
+
 
 /* Stores positions, normals, texture coordinates and indices from an obj file */
 struct WavefrontData {
@@ -14,6 +18,6 @@ struct WavefrontData {
 
 	/* Loads in vertex data from an obj file */
 	WavefrontData(const std::string& file_name) {
-
+		std::vector<int> in_pos_indices, in_norm_indices;
 	}
 };

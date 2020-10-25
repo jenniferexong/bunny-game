@@ -15,12 +15,6 @@ Texture::Texture(const std::string& file_name) : m_id(0), m_file_name(file_name)
 	stbi_set_flip_vertically_on_load(1); // IF UPSIDE DOWN TEXTURE, CHANGE THIS
 	m_local_buffer = stbi_load(file_name.c_str(), &m_width, &m_height, &m_bpp, 4);
 
-	printf("w: %d, h: %d, bpp: %d\n", m_width, m_height, m_bpp);
-
-	for (int i = 0; i < 100; i++) {
-		printf("%u\n", *(m_local_buffer + i));
-	}
-
 	glGenTextures(1, &m_id);
 	glBindTexture(GL_TEXTURE_2D, m_id);
 

@@ -1,16 +1,21 @@
 #pragma once
 
+#include <memory>
+
 #include "Mesh.h"
 #include "Texture.h"
 
+class Shader;
 
+/* Raw model, only a mesh, no texture or colour */
 class Model {
 protected:
 	Mesh m_mesh;
 
 public:
 	Model(Mesh mesh) : m_mesh(mesh) {}
-	virtual void render() const;
+	virtual void render(std::shared_ptr<Shader> shader) const;
+	inline const Mesh getMesh() const { return m_mesh; }
 };
 
 class TexturedModel : public Model {
@@ -19,9 +24,8 @@ private:
 
 public:
 	TexturedModel(Mesh mesh, ModelTexture texture) : Model(mesh), m_texture(texture) {}
-	void render() const override;
+	void render(std::shared_ptr<Shader> shader) const override;
 
-	inline Mesh getMesh() { return m_mesh; }
-	inline ModelTexture getTexture() { return m_texture; }
+	inline const ModelTexture getTexture() const { return m_texture; }
 };
 

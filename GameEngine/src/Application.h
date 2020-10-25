@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 
 #include "Entity.h"
+#include "render_engine/Renderer.h"
 #include "render_engine/Scene.h"
 #include "render_engine/Loader.h"
 #include "shaders/DefaultShader.h"
@@ -19,8 +20,11 @@ private:
 
 	GLFWwindow *m_window;
 	std::shared_ptr<Player> m_player;
-	Scene m_scene; //Have a scene
 
+	//Scene m_scene; //Have a scene
+
+	Entity m_entity;
+	Renderer m_renderer;
 	Loader m_loader = Loader();
 	DefaultShader m_shader = DefaultShader();
 

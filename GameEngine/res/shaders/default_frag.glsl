@@ -13,8 +13,7 @@ out vec4 outColor;
 
 void main() {
     // Mix the colour and the texture
-    //outColor = vec4(f_in.color, 1.0) * texture(textureSampler, f_in.textureCoords);
-    outColor = texture(textureSampler, f_in.textureCoords);
+    outColor = vec4(f_in.color, 1.0) * texture(textureSampler, f_in.textureCoords);
 
     // Phong shading
 }

@@ -4,10 +4,10 @@
 #include "Model.h"
 
 #include "../AttributeLocation.h"
+#include "../shaders/Shader.h"
 
-void Model::render() const {
+void Model::render(std::shared_ptr<Shader> shader) const {
 	// Render the mesh
-	printf("r\n");
 	glBindVertexArray(m_mesh.getId());
 	glEnableVertexAttribArray(ePosition);
 	glDrawElements(GL_TRIANGLES, m_mesh.getVertexCount(), GL_UNSIGNED_INT, 0);
@@ -15,17 +15,14 @@ void Model::render() const {
 	glBindVertexArray(0); // unbind 
 }
 
-void TexturedModel::render() const {
-	// Make the shader use the texture
-
-	printf("rendering\n");
+void TexturedModel::render(std::shared_ptr<Shader> shader) const {
 
 	// Render the mesh
 	glBindVertexArray(m_mesh.getId());
 	glEnableVertexAttribArray(ePosition);
 	glEnableVertexAttribArray(eTexture);
 	
-	// texture 
+	// Make the shader use the texture
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, m_texture.getId());
 

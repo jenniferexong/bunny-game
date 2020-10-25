@@ -23,10 +23,6 @@ void Scene::render(GLFWwindow *window, shared_ptr<Player> player) {
 	mat4 proj = perspective(1.f, (float)width / height, 0.1f, 200.f);
 	mat4 view = translate(mat4(1.f), -player->getPosition());
 	
-	// clear
-	glClearColor(0.f, 0.f, 0.f, 0.f); 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	// iterate through all the entities and render them 
 	for (shared_ptr<Entity> e : m_entities) {
 		e->render();
