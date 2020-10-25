@@ -25,5 +25,6 @@ namespace Maths {
 
 		return matrix;
 	}
+
 };
 

@@ -36,7 +36,7 @@ public:
 	//Shader(const std::string& vert_file, const std::string& frag_file); // constructor
 	Shader() : m_program_id(0), m_vert_id(0), m_frag_id(0) {}
 	virtual void setUp(const std::string& vert_file, const std::string& frag_file);
-	virtual void loadAllUniforms(const Entity& entity) const = 0;
+	virtual void loadAllUniforms(const glm::mat4 projection, const Entity& entity) const = 0;
 
 	void start();
 	void stop();

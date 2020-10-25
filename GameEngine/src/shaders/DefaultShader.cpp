@@ -19,9 +19,13 @@ void DefaultShader::bindAttributes() {
 
 void DefaultShader::getAllUniformLocations() {
 	m_locations.insert({ EUniformVariable::TransformationMatrix, getUniformLocation("uTransformationMatrix") });
+	m_locations.insert({ EUniformVariable::ProjectionMatrix, getUniformLocation("uProjectionMatrix") });
 }
 
-void DefaultShader::loadAllUniforms(const Entity& entity) const {
+void DefaultShader::loadAllUniforms(const glm::mat4 projection, const Entity& entity) const {
+	// Loading projection matrix
+	loadMatrix(m_locations.at(EUniformVariable::ProjectionMatrix), projection);
+
 	// Loading transformation matrix
 	glm::mat4 matrix = Maths::createTransformationMatrix(entity.getPosition(), 
 		entity.getRotation(), entity.getScale());

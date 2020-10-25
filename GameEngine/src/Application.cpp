@@ -19,8 +19,8 @@ vec2 Application::s_window_size = vec2(1280, 720);
 */
 void Application::render() {
 	// animate
-	m_entity.move(0.002f, 0, 0);
-	m_entity.rotate(0, 1, 0);
+	m_entity.move(0, 0, -0.1f);
+	//m_entity.rotate(0, 1, 0);
 
 	m_renderer.prepare();
 	m_shader.start();
@@ -49,6 +49,8 @@ void Application::makeTest() {
 		0, 1, 3, 3, 1, 2
 	};
 
+	m_renderer = Renderer(m_window);
+
 	Mesh mesh = m_loader.loadToVao(positions, texture_coords, indices);
 
 	m_shader.setUp();
@@ -56,7 +58,7 @@ void Application::makeTest() {
 	shared_ptr<TexturedModel> textured_model = make_shared<TexturedModel>(mesh, texture);
 
 	m_entity = Entity(textured_model);
-	m_entity.setPosition(-1, 0, 0);
+	m_entity.setPosition(0, 0, -1);
 
 	//shared_ptr<Entity> entity = make_shared<Entity>(textured_model);
 	//m_scene.addToScene(entity);
