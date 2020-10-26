@@ -8,16 +8,29 @@
 #include "../Entity.h"
 #include "../AttributeLocation.h"
 #include "../shaders/Shader.h"
+#include "../Application.h"
+#include "Camera.h"
 
 /* Setting the constants */
 const float Renderer::s_fov = 70.f;
 const float Renderer::s_near_plane = 0.1f;
 const float Renderer::s_far_plane = 1000.f;
+glm::mat4 Renderer::s_projection_matrix = glm::mat4(0);
 
 /* Clears the window */
 void Renderer::prepare() {
 	glClearColor(0.f, 0.f, 0.f, 0.f); 
+	glEnable(GL_DEPTH_TEST);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	// Set viewport to entire window 
+	int width, height;
+	glfwGetWindowSize(Application::s_window, &width, &height);
+	glViewport(0, 0, width, height);
+
+	// Setting the projection matrix
+	float aspect_ratio = (float) width / height;
+	s_projection_matrix = glm::perspective(s_fov, aspect_ratio, s_near_plane, s_far_plane);
 }
 
 void Renderer::render(const Entity& entity, const Shader& shader) {
@@ -29,8 +42,8 @@ void Renderer::render(const Entity& entity, const Shader& shader) {
 	glEnableVertexAttribArray(ePosition);
 	glEnableVertexAttribArray(eTexture);
 
-	// Loading uniform variables
-	shader.loadAllUniforms(getProjectionMatrix(), entity);
+	// Loading uniform variable
+	shader.loadAllUniforms(entity);
 	
 	// Make the shader use the texture
 	glActiveTexture(GL_TEXTURE0);
@@ -40,12 +53,4 @@ void Renderer::render(const Entity& entity, const Shader& shader) {
 	glDisableVertexAttribArray(ePosition);
 	glDisableVertexAttribArray(eTexture);
 	glBindVertexArray(0); // unbind 
-}
-
-glm::mat4 Renderer::getProjectionMatrix() {
-	int width, height;
-	glfwGetWindowSize(m_window, &width, &height);
-	float aspect_ratio = (float) width / height;
-
-	return glm::perspective(s_fov, aspect_ratio, s_near_plane, s_far_plane);
 }

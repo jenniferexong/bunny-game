@@ -6,12 +6,15 @@
 #include <iostream>
 
 #include "render_engine/Texture.h"
+#include "render_engine/Camera.h"
 
 using namespace glm;
 using namespace std;
 
-// Setting static variables
-vec2 Application::s_window_size = vec2(1280, 720);
+/* Static variables */
+GLFWwindow* Application::s_window = nullptr;
+Camera Application::s_camera = Camera();
+map<char, bool> Application::s_move_keys = {{'w', false}, {'a', false}, {'s', false}, {'d', false}};
 
 /**
 	Method to render everything in the scene.
@@ -19,13 +22,21 @@ vec2 Application::s_window_size = vec2(1280, 720);
 */
 void Application::render() {
 	// animate
-	m_entity.move(0, 0, -0.1f);
-	//m_entity.rotate(0, 1, 0);
+	//m_entity.move(0, 0, -0.1f);
+	m_entity.rotate(0, 0.1, 0.1);
 
+	s_camera.updatePosition();
 	m_renderer.prepare();
 	m_shader.start();
 	m_renderer.render(m_entity, m_shader);
 	m_shader.stop();
+}
+
+/* Initialize all the member variables properly */
+void Application::setUp() {
+	m_renderer = Renderer();
+	m_loader = Loader();
+	m_shader = DefaultShader();
 }
 
 void Application::makeTest() {
@@ -49,8 +60,6 @@ void Application::makeTest() {
 		0, 1, 3, 3, 1, 2
 	};
 
-	m_renderer = Renderer(m_window);
-
 	Mesh mesh = m_loader.loadToVao(positions, texture_coords, indices);
 
 	m_shader.setUp();
@@ -59,12 +68,60 @@ void Application::makeTest() {
 
 	m_entity = Entity(textured_model);
 	m_entity.setPosition(0, 0, -1);
+	m_entity.setScale(0.75);
 
 	//shared_ptr<Entity> entity = make_shared<Entity>(textured_model);
 	//m_scene.addToScene(entity);
+}
+
+void Application::keyCallback(int key, int scancode, int action, int mods) {
+	switch (key) {
+	case GLFW_KEY_W: 
+		if (action == GLFW_PRESS) {
+			s_move_keys['w'] = true;
+		} else if(action == GLFW_RELEASE) {
+			s_move_keys['w'] = false;
+		}
+		break;
+	case GLFW_KEY_A: 
+		if (action == GLFW_PRESS) {
+			s_move_keys['a'] = true;
+		} else if(action == GLFW_RELEASE) {
+			s_move_keys['a'] = false;
+		}
+		break;
+	case GLFW_KEY_S: 
+		if (action == GLFW_PRESS) {
+			s_move_keys['s'] = true;
+		} else if(action == GLFW_RELEASE) {
+			s_move_keys['s'] = false;
+		}
+		break;
+	case GLFW_KEY_D: 
+		if (action == GLFW_PRESS) {
+			s_move_keys['d'] = true;
+		} else if(action == GLFW_RELEASE) {
+			s_move_keys['d'] = false;
+		}
+		break;
+	}
+}
+
+void Application::cursorPosCallback(double x, double y) {
+
+}
+
+void Application::mouseButtonCallback(int button, int action, int mods) {
+
+}
+
+void Application::scrollCallBack(double x_offset, double y_offset) {
+
 }
 
 void Application::destroy() {
 	m_shader.destroy();
 	m_loader.destroy();
 }
+
+

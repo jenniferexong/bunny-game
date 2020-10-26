@@ -5,11 +5,12 @@
 #include <map>
 
 class Entity;
+class Camera;
 
 class DefaultShader : public Shader {
 private:
 	enum class EUniformVariable {
-		TransformationMatrix, ProjectionMatrix
+		TransformationMatrix, ProjectionMatrix, ViewMatrix
 	};
 
 	static const std::string s_vertex_file;
@@ -20,7 +21,7 @@ private:
 protected:
 	virtual void bindAttributes();
 	virtual void getAllUniformLocations();
-	virtual void loadAllUniforms(const glm::mat4 projection, const Entity& entity) const;
+	virtual void loadAllUniforms(const Entity& entity) const;
 
 public:
 	virtual void setUp();

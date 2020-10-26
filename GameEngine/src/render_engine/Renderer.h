@@ -5,24 +5,18 @@
 
 #include <memory>
 
-
 class Entity;
 class Shader;
+class Camera;
 
 class Renderer {
 private:
 	static const float s_fov;
 	static const float s_near_plane;
 	static const float s_far_plane;
-	GLFWwindow* m_window;
-
-	glm::mat4 getProjectionMatrix();
 
 public:
-	Renderer() : m_window(nullptr) {}
-
-	Renderer(GLFWwindow* window) : m_window(window) {}
-
+	static glm::mat4 s_projection_matrix;
 	void prepare();
 	void render(const Entity& entity, const Shader& shader);
 };

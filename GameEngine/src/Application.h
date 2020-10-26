@@ -2,8 +2,10 @@
 
 #include <GLFW/glfw3.h>
 
-#include <memory>
 #include <glm/glm.hpp>
+
+#include <map>
+#include <memory>
 
 #include "Entity.h"
 #include "render_engine/Renderer.h"
@@ -16,27 +18,31 @@ class Player;
 
 class Application {
 private:
-	static glm::vec2 s_window_size; //do I need this?
-
-	GLFWwindow *m_window;
-	std::shared_ptr<Player> m_player;
+	//std::shared_ptr<Player> m_player;
 
 	//Scene m_scene; //Have a scene
 
-	Entity m_entity;
 	Renderer m_renderer;
-	Loader m_loader = Loader();
-	DefaultShader m_shader = DefaultShader();
+	Loader m_loader;
+	DefaultShader m_shader;
+
+	Entity m_entity;
 
 public:
+	static GLFWwindow* s_window;
+	static Camera s_camera;
+	static std::map<char, bool> s_move_keys; 
 
-	// Constructor
-	Application(GLFWwindow* window, std::shared_ptr<Player> player) : m_window(window), m_player(player) {}
-
+	void setUp();
 	void makeTest();
 
 	// Rendering everything
 	void render();
 
 	void destroy();
+
+    void keyCallback(int key, int scancode, int action, int mods);
+    void mouseButtonCallback(int button, int action, int mods);
+    void cursorPosCallback(double x, double y);
+    void scrollCallBack(double x_offset, double y_offset);
 };
