@@ -23,7 +23,7 @@ map<char, bool> Application::s_move_keys = {{'w', false}, {'a', false}, {'s', fa
 void Application::render() {
 	// animate
 	//m_entity.move(0, 0, -0.1f);
-	m_entity.rotate(0, 0.1, 0.1);
+	//m_entity.rotate(0, 0.1, 0.1);
 
 	s_camera.updatePosition();
 	m_renderer.prepare();
@@ -68,8 +68,8 @@ void Application::makeTest() {
 	shared_ptr<TexturedModel> textured_model = make_shared<TexturedModel>(mesh, texture);
 
 	m_entity = Entity(textured_model);
-	m_entity.setPosition(0, 0, -1);
-	m_entity.setScale(0.75);
+	m_entity.setPosition(0, -5, -15);
+	m_entity.setScale(1);
 
 	//shared_ptr<Entity> entity = make_shared<Entity>(textured_model);
 	//m_scene.addToScene(entity);

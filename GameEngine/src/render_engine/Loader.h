@@ -11,7 +11,6 @@
 
 using std::vector;
 
-
 class Loader {
 private:
 	vector<GLuint *> m_vaos;
@@ -25,7 +24,7 @@ private:
 
 public:
 	Mesh loadToVao(const vector<float>& positions, const vector<float>& texture_coords, const vector<int>& indices);
-	Mesh loadToVao(WavefrontData& data);
+	Mesh loadToVao(const std::string& obj_file);
 	int loadTexture(const std::string& file_name);
 	void destroy();
 };

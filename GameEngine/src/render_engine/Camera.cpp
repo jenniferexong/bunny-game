@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include "../Application.h"
 
-const float Camera::s_move_offset = 0.0002f;
+const float Camera::s_move_offset = 0.01f;
 
 void Camera::updatePosition() {
 	// Moving the camera if the movements keys are currently down

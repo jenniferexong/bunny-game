@@ -96,7 +96,6 @@ namespace {
     }
 
     void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-        cout << "key" << endl;
         application_ptr->keyCallback(key, scancode, action, mods);
     }
 }

@@ -33,6 +33,7 @@ Mesh Loader::loadToVao(const string& obj_file) {
 
 	bindIbo(data.indices);
 	unbindVao(); // unbinding
+	cout << "loaded: " << data.indices.size() << endl;
 	return Mesh(vao_id, data.indices.size());
 }
 

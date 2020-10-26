@@ -15,6 +15,7 @@ void DefaultShader::setUp() {
 
 void DefaultShader::bindAttributes() {
 	bindAttribute(ePosition, "position");
+	bindAttribute(eNormal, "normal");
 	bindAttribute(eTexture, "textureCoords");
 }
 

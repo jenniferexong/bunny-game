@@ -43,10 +43,10 @@ struct WavefrontData {
 					str_stream >> v1 >> v2 >> v3;
 
 					if (type == "v") // vertex positions
-						in_positions.push_back(vec3(stoi(v1), stoi(v2), stoi(v3)));
+						in_positions.push_back(vec3(stof(v1), stof(v2), stof(v3)));
 
 					else if (type == "vn") // vertex normals
-						in_normals.push_back(vec3(stoi(v1), stoi(v2), stoi(v3)));
+						in_normals.push_back(vec3(stof(v1), stof(v2), stof(v3)));
 
 					else if (type == "f") { // faces: reading indices
 						processIndices(v1, &in_pos_indices, &in_texture_indices, &in_norm_indices);
@@ -57,7 +57,7 @@ struct WavefrontData {
 				
 				else if (type == "vt") { // reading texture data
 					str_stream >> v1 >> v2;
-					in_textures.push_back(vec2(stoi(v1), stoi(v2)));
+					in_textures.push_back(vec2(stof(v1), stof(v2)));
 				}
 			}
 			obj_file.close();
