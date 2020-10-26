@@ -24,7 +24,8 @@ Mesh Loader::loadToVao(const vector<float>& positions, const vector<float>& text
 }
 
 /* Loads data from an obj file into a VAO */
-Mesh Loader::loadToVao(WavefrontData& data) {
+Mesh Loader::loadToVao(const string& obj_file) {
+	WavefrontData data = WavefrontData(obj_file);
 	int vao_id = createVao();
 	storeInAttributeList(ePosition, 3, data.positions);
 	storeInAttributeList(eNormal, 3, data.normals);

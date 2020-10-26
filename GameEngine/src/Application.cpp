@@ -60,7 +60,8 @@ void Application::makeTest() {
 		0, 1, 3, 3, 1, 2
 	};
 
-	Mesh mesh = m_loader.loadToVao(positions, texture_coords, indices);
+	//Mesh mesh = m_loader.loadToVao(positions, texture_coords, indices);
+	Mesh mesh = m_loader.loadToVao("res/objects/teapot.obj");
 
 	m_shader.setUp();
 	ModelTexture texture = ModelTexture(m_loader.loadTexture("res/textures/checkerboard.png"));
