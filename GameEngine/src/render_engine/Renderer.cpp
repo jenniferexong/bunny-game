@@ -19,9 +19,11 @@ glm::mat4 Renderer::s_projection_matrix = glm::mat4(0);
 
 /* Clears the window */
 void Renderer::prepare() {
-	glClearColor(0.f, 0.f, 0.f, 0.f); 
-	glEnable(GL_DEPTH_TEST);
+	glClearColor(0.3f, 0.3f, 0.3f, 1.f); 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 
 	// Set viewport to entire window 
 	int width, height;
@@ -40,6 +42,7 @@ void Renderer::render(const Entity& entity, const Shader& shader) {
 	// Render the mesh
 	glBindVertexArray(mesh.getId());
 	glEnableVertexAttribArray(ePosition);
+	glEnableVertexAttribArray(eNormal);
 	glEnableVertexAttribArray(eTexture);
 
 	// Loading uniform variable
@@ -51,6 +54,7 @@ void Renderer::render(const Entity& entity, const Shader& shader) {
 
 	glDrawElements(GL_TRIANGLES, mesh.getVertexCount(), GL_UNSIGNED_INT, 0);
 	glDisableVertexAttribArray(ePosition);
+	glDisableVertexAttribArray(eNormal);
 	glDisableVertexAttribArray(eTexture);
 	glBindVertexArray(0); // unbind 
 }

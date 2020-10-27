@@ -15,6 +15,7 @@
 
 class Scene;
 class Player;
+class Light;
 
 class Application {
 private:
@@ -32,6 +33,7 @@ public:
 	static GLFWwindow* s_window;
 	static Camera s_camera;
 	static std::map<char, bool> s_move_keys; 
+	static Light s_light;
 
 	void setUp();
 	void makeTest();

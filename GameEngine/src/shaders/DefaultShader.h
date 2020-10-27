@@ -10,7 +10,7 @@ class Camera;
 class DefaultShader : public Shader {
 private:
 	enum class EUniformVariable {
-		TransformationMatrix, ProjectionMatrix, ViewMatrix
+		TransformationMatrix, ProjectionMatrix, ViewMatrix, LightPosition, LightColor
 	};
 
 	static const std::string s_vertex_file;

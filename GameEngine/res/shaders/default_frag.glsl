@@ -1,6 +1,12 @@
 #version 330 core
 
+// Uniform data
 uniform sampler2D textureSampler;
+uniform mat4 uTransformationMatrix;
+uniform mat4 uProjectionMatrix;
+uniform mat4 uViewMatrix;
+uniform vec3 uLightColor;
+uniform vec3 uLightPosition;
 
 in VertexData {
     vec3 position;
@@ -9,26 +15,19 @@ in VertexData {
     vec2 textureCoords;
 } f_in; 
 
-const vec3 lightDirection = vec3(0, -1, -1);
-const vec3 lightCol = vec3(1);
-const vec3 diffuseCol = vec3(0, 1, 1);
-const float ambience = 0.1;
-const float specularity = 0.5;
-const float shininess = 16;
-
 out vec4 outColor;
 
 void main() {
     // Phong shading
-    vec3 ambient = ambience * lightCol;
-    vec3 norm = normalize(f_in.normal);
-    vec3 lightDir = normalize(lightDirection);
-    vec3 diffuse_reflect = lightCol * max(dot(norm, -lightDir), 0.0);
+    float ambientStrength = 0.1;
+    vec3 ambient = ambientStrength * uLightColor;
 
-    vec3 reflected = reflect(lightDir, norm);
-    vec3 viewDir = normalize(-f_in.position);
+    vec3 normal = normalize(f_in.normal);
+    vec3 incidentLight = normalize(f_in.position - uLightPosition);
+    
+    float cosA = max(dot(normal, -incidentLight), 0.0);
+    vec3 diffuse = cosA * uLightColor;
 
-    vec3 specular_reflect = specularity * lightCol * pow(max(dot(viewDir, reflected), 0.0), shininess);
-    vec3 result = (ambient + diffuse_reflect + specular_reflect) * diffuseCol;
-    outColor = vec4(result, 1.0);
+    vec3 result = (ambient + diffuse) * f_in.color;
+    outColor = vec4(result, 1.0); 
 }
