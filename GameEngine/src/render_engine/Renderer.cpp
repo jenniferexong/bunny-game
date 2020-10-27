@@ -19,7 +19,7 @@ glm::mat4 Renderer::s_projection_matrix = glm::mat4(0);
 
 /* Clears the window */
 void Renderer::prepare() {
-	glClearColor(0.3f, 0.3f, 0.3f, 1.f); 
+	glClearColor(0.7f, 0.7f, 0.7f, 1.f); 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glEnable(GL_DEPTH_TEST);

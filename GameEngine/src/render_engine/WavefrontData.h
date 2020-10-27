@@ -100,9 +100,9 @@ struct WavefrontData {
 					positions.push_back(pos.z);
 					texture_coords.push_back(texture.x);
 					texture_coords.push_back(texture.y);
-					normals.push_back(pos.x);
-					normals.push_back(pos.y);
-					normals.push_back(pos.z);
+					normals.push_back(norm.x);
+					normals.push_back(norm.y);
+					normals.push_back(norm.z);
 
 					indices.push_back(current_index);
 					current_index++;

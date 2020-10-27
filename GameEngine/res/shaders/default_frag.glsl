@@ -22,12 +22,18 @@ void main() {
     float ambientStrength = 0.1;
     vec3 ambient = ambientStrength * uLightColor;
 
-    vec3 normal = normalize(f_in.normal);
+    vec3 norm = normalize(f_in.normal);
     vec3 incidentLight = normalize(f_in.position - uLightPosition);
     
-    float cosA = max(dot(normal, -incidentLight), 0.0);
-    vec3 diffuse = cosA * uLightColor;
+    float diff = max(dot(norm, -incidentLight), 0.0);
+    vec3 diffuse = diff * uLightColor;
 
-    vec3 result = (ambient + diffuse) * f_in.color;
+    float specularStrength = 0.1;
+    vec3 viewDir = normalize(-f_in.position);
+    vec3 reflectDir = reflect(incidentLight, norm);
+    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+    vec3 specular = specularStrength * spec * uLightColor;
+
+    vec3 result = (ambient + diffuse + specular) * f_in.color;
     outColor = vec4(result, 1.0); 
 }
