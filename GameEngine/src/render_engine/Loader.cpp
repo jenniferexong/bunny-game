@@ -78,8 +78,8 @@ void Loader::unbindVao() {
 	glBindVertexArray(0);
 }
 
-/* Clean up VAOs and VBOs */
-void Loader::destroy() {
+/* Clean up VAOs and VBOs and Textures */
+Loader::~Loader() {
 	for (GLuint *vao : m_vaos) {
 		glDeleteVertexArrays(1, vao);
 	}

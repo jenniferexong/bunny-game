@@ -4,13 +4,15 @@
 
 #include <map>
 
-class Entity;
-class Camera;
+#include "../Entity.h"
+#include "../Light.h"
+#include "../render_engine/Texture.h"
 
 class DefaultShader : public Shader {
 private:
 	enum class EUniformVariable {
-		TransformationMatrix, ProjectionMatrix, ViewMatrix, LightPosition, LightColor
+		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
+		LightPosition, LightColor, Reflectivity, ShineDamper
 	};
 
 	static const std::string s_vertex_file;
@@ -21,8 +23,11 @@ private:
 protected:
 	virtual void bindAttributes();
 	virtual void getAllUniformLocations();
-	virtual void loadAllUniforms(const Entity& entity) const;
 
 public:
 	virtual void setUp();
+	void loadViewProjection() const;
+	void loadModelMatrix(const Entity& entity) const;
+	void loadLight(const Light& light) const;
+	void loadMaterial(const ModelTexture& texture) const;
 };

@@ -22,10 +22,8 @@ private:
 	//std::shared_ptr<Player> m_player;
 
 	//Scene m_scene; //Have a scene
-
-	Renderer m_renderer;
 	Loader m_loader;
-	DefaultShader m_shader;
+	MasterRenderer m_renderer;
 
 	Entity m_entity;
 
@@ -40,8 +38,6 @@ public:
 
 	// Rendering everything
 	void render();
-
-	void destroy();
 
     void keyCallback(int key, int scancode, int action, int mods);
     void mouseButtonCallback(int button, int action, int mods);

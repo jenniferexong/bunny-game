@@ -77,7 +77,6 @@ int main(void) {
         glfwPollEvents();
     }
 
-    application.destroy(); // clean everything up
     glfwTerminate();
     return 0;
 }

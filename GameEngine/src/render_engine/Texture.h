@@ -24,7 +24,15 @@ public:
 class ModelTexture {
 private:
 	int m_texture_id;
+	float m_reflectivity = 0;
+	float m_shine_damper = 1;
+
 public:
 	ModelTexture(int id) : m_texture_id(id) {}
 	inline int getId() const { return m_texture_id; }
+	inline float getReflectivity() const {return m_reflectivity; }
+	inline float getShineDamper() const {return m_shine_damper; }
+
+	inline void setReflectivity(float reflectivity) { m_reflectivity = reflectivity; }
+	inline void setShineDamper(float shine_damper) { m_shine_damper = shine_damper; }
 };

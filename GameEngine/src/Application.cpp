@@ -25,48 +25,30 @@ map<char, bool> Application::s_move_keys = {{'w', false}, {'a', false}, {'s', fa
 void Application::render() {
 	// animate
 	//m_entity.move(0, 0, -0.1f);
-	//m_entity.rotate(0.1, 0, 0);
+	m_entity.rotate(0.1f, 0, 0);
 
 	s_camera.updatePosition();
-	m_renderer.prepare();
-	m_shader.start();
-	m_renderer.render(m_entity, m_shader);
-	m_shader.stop();
+
+	// Process all entities
+	m_renderer.processEntity(m_entity);
+
+	m_renderer.render(s_light);
 }
 
 /* Initialize all the member variables properly */
 void Application::setUp() {
-	m_renderer = Renderer();
 	m_loader = Loader();
-	m_shader = DefaultShader();
+	DefaultShader shader;
+	m_renderer = MasterRenderer(shader);
 }
 
 void Application::makeTest() {
-
-	// Making test position data
-	vector<float> positions = {
-		-0.5f, 0.5f, 0.f,
-		-0.5f, -0.5f, 0.f,
-		0.5f, -0.5f, 0.f,
-		0.5f, 0.5f, 0.f
-	};
-
-	vector<float> texture_coords = {
-		0.f, 0.f,
-		0.f, 1.f,
-		1.f, 1.f,
-		1.f, 0.f
-	};
-
-	vector<int> indices = {
-		0, 1, 3, 3, 1, 2
-	};
-
 	//Mesh mesh = m_loader.loadToVao(positions, texture_coords, indices);
 	Mesh mesh = m_loader.loadToVao("res/objects/teapot.obj");
 
-	m_shader.setUp();
 	ModelTexture texture = ModelTexture(m_loader.loadTexture("res/textures/checkerboard.png"));
+	texture.setShineDamper(10.f);
+	texture.setReflectivity(1.f);
 	shared_ptr<TexturedModel> textured_model = make_shared<TexturedModel>(mesh, texture);
 
 	m_entity = Entity(textured_model);
@@ -120,11 +102,6 @@ void Application::mouseButtonCallback(int button, int action, int mods) {
 
 void Application::scrollCallBack(double x_offset, double y_offset) {
 
-}
-
-void Application::destroy() {
-	m_shader.destroy();
-	m_loader.destroy();
 }
 
 

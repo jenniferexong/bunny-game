@@ -106,16 +106,13 @@ void Shader::loadMatrices(int location, std::vector<glm::mat4>& matrices) const 
 
 void Shader::start() {
 	glUseProgram(m_program_id);
-
-	// Upload uniform variables
-	glUniform1i(glGetUniformLocation(m_program_id, "textureSampler"), 0);
 }
 
 void Shader::stop() {
 	glUseProgram(0);
 }
 
-void Shader::destroy() {
+Shader::~Shader() {
 	stop();
 	glDetachShader(m_program_id, m_vert_id);
 	glDetachShader(m_program_id, m_frag_id);
