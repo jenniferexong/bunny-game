@@ -8,8 +8,8 @@
 #include <vector>
 
 #include "../shaders/DefaultShader.h"
-#include "../Entity.h"
-#include "../Light.h"
+#include "../object/Entity.h"
+#include "../object/Light.h"
 #include "Model.h"
 
 struct CompareTexturedModel {

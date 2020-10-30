@@ -3,10 +3,7 @@
 
 #include "../AttributeLocation.h"
 #include "../Maths.h"
-#include "../Entity.h"
 #include "../Application.h"
-#include "../Light.h"
-#include "../render_engine/Texture.h"
 
 const std::string DefaultShader::s_vertex_file = "res/shaders/default_vert.glsl";
 const std::string DefaultShader::s_fragment_file = "res/shaders/default_frag.glsl";

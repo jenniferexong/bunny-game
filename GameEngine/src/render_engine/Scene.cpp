@@ -3,8 +3,8 @@
 
 #include "Scene.h"
 
-#include "../Player.h"
-#include "../Entity.h"
+#include "../object/Player.h"
+#include "../object/Entity.h"
 
 using namespace glm;
 using namespace std;

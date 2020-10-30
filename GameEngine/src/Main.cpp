@@ -9,7 +9,7 @@
 #include <iostream>
 #include <memory>
 
-#include "Player.h"
+#include "object/Player.h"
 #include "Application.h"
 
 using namespace std;

@@ -5,10 +5,6 @@
 #include <string>
 #include <vector>
 
-class Entity;
-class Camera;
-class ModelTexture;
-
 // Abstract class for generic shaders
 class Shader {
 

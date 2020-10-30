@@ -6,8 +6,6 @@
 #include <iostream>
 
 #include "render_engine/Texture.h"
-#include "render_engine/Camera.h"
-#include "Light.h"
 
 using namespace glm;
 using namespace std;
@@ -15,7 +13,7 @@ using namespace std;
 /* Static variables */
 GLFWwindow* Application::s_window = nullptr;
 Camera Application::s_camera = Camera();
-Light Application::s_light = Light(glm::vec3(0.f, 100.f, 1000.f), glm::vec3(1.f));
+Light Application::s_sun = Light(glm::vec3(0.f, 100.f, 1000.f), glm::vec3(1.f));
 map<char, bool> Application::s_move_keys = {{'w', false}, {'a', false}, {'s', false}, {'d', false}};
 
 /**
@@ -32,7 +30,7 @@ void Application::render() {
 	// Process all entities
 	m_renderer.processEntity(m_entity);
 
-	m_renderer.render(s_light);
+	m_renderer.render(s_sun);
 }
 
 /* Initialize all the member variables properly */

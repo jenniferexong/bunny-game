@@ -7,7 +7,9 @@
 #include <map>
 #include <memory>
 
-#include "Entity.h"
+#include "object/Entity.h"
+#include "object/Camera.h"
+#include "object/Light.h"
 #include "render_engine/Renderer.h"
 #include "render_engine/Scene.h"
 #include "render_engine/Loader.h"
@@ -31,7 +33,7 @@ public:
 	static GLFWwindow* s_window;
 	static Camera s_camera;
 	static std::map<char, bool> s_move_keys; 
-	static Light s_light;
+	static Light s_sun;
 
 	void setUp();
 	void makeTest();

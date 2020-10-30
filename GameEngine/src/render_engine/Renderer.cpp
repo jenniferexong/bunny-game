@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include "../AttributeLocation.h"
-#include "Camera.h"
+#include "../object/Camera.h"
 #include "../Application.h"
 
 using std::cout;
