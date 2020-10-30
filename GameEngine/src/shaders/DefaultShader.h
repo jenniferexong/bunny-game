@@ -4,8 +4,8 @@
 
 #include <map>
 
-#include "../object/Entity.h"
-#include "../object/Light.h"
+#include "../objects/Entity.h"
+#include "../objects/Light.h"
 #include "../models/Texture.h"
 
 class DefaultShader : public Shader {

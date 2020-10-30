@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "object/Camera.h"
+#include "objects/Camera.h"
 
 namespace Maths {
 	using namespace glm;
