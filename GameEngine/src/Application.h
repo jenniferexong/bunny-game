@@ -15,16 +15,11 @@
 #include "render_engine/Loader.h"
 #include "shaders/DefaultShader.h"
 
-class Scene;
-class Player;
-class Light;
-
 class Application {
 private:
 	//std::shared_ptr<Player> m_player;
 
 	//Scene m_scene; //Have a scene
-	Loader m_loader;
 	MasterRenderer m_renderer;
 
 	Entity m_entity;
@@ -34,6 +29,7 @@ public:
 	static Camera s_camera;
 	static std::map<char, bool> s_move_keys; 
 	static Light s_sun;
+	static Loader s_loader;
 
 	void setUp();
 	void makeTest();

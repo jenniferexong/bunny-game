@@ -14,6 +14,7 @@ using namespace std;
 GLFWwindow* Application::s_window = nullptr;
 Camera Application::s_camera = Camera();
 Light Application::s_sun = Light(glm::vec3(0.f, 100.f, 1000.f), glm::vec3(1.f));
+Loader Application::s_loader = Loader();
 map<char, bool> Application::s_move_keys = {{'w', false}, {'a', false}, {'s', false}, {'d', false}};
 
 /**
@@ -35,7 +36,6 @@ void Application::render() {
 
 /* Initialize all the member variables properly */
 void Application::setUp() {
-	m_loader = Loader();
 	DefaultShader shader;
 	m_renderer = MasterRenderer(shader);
 }

@@ -24,7 +24,9 @@ private:
 
 public:
 	~Loader();
-	Mesh loadToVao(const vector<float>& positions, const vector<float>& texture_coords, const vector<int>& indices);
+	Mesh loadToVao(const vector<float>& positions, const vector<float>& normals, 
+		const vector<float>& texture_coords, const vector<int>& indices);
+
 	Mesh loadToVao(const std::string& obj_file);
 	int loadTexture(const std::string& file_name);
 };
