@@ -6,7 +6,7 @@
 #include <vector>
 #include <string>
 
-#include "Mesh.h"
+#include "../models/Mesh.h"
 #include "WavefrontData.h"
 
 using std::vector;

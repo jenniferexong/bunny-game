@@ -17,6 +17,7 @@ public:
 
 	MasterRenderer() : m_shader(nullptr) {}
 	MasterRenderer(const DefaultShader& shader);
+	void prepare();
 	void render(const Light& sun);
 	void processEntity(const Entity& entity);
 };

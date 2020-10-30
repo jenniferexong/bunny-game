@@ -7,7 +7,7 @@
 
 #include <iostream>
 
-#include "Texture.h"
+#include "../models/Texture.h"
 #include "../AttributeLocation.h"
 
 using namespace std;

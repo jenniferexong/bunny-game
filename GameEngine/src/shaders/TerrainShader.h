@@ -1,14 +1,10 @@
 #pragma once
 
-#include "Shader.h"
-
 #include <map>
 
-#include "../object/Entity.h"
-#include "../object/Light.h"
-#include "../models/Texture.h"
+#include "Shader.h"
 
-class DefaultShader : public Shader {
+class TerrainShader : public Shader {
 private:
 	enum class EUniformVariable {
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
@@ -26,8 +22,4 @@ protected:
 
 public:
 	virtual void setUp();
-	void loadViewProjection() const;
-	void loadModelMatrix(const Entity& entity) const;
-	void loadLight(const Light& light) const;
-	void loadMaterial(const ModelTexture& texture) const;
 };

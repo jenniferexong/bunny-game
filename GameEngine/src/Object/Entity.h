@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#include "../render_engine/Model.h"
+#include "../models/Model.h"
 
 class Shader;
 

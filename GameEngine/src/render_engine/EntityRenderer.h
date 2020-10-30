@@ -10,7 +10,7 @@
 #include "../shaders/DefaultShader.h"
 #include "../object/Entity.h"
 #include "../object/Light.h"
-#include "Model.h"
+#include "../models/Model.h"
 
 struct CompareTexturedModel {
 	bool operator()(const TexturedModel& a, const TexturedModel& b) const {
@@ -33,7 +33,6 @@ private:
 public:
 	EntityRenderer(): m_shader(nullptr) {}
 	EntityRenderer(std::shared_ptr<DefaultShader> shader) : m_shader(shader) {}
-	void prepare();
 	void render(std::map<TexturedModel, std::vector<Entity>, CompareTexturedModel>& entities);
 };
 

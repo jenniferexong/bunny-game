@@ -1,7 +1,7 @@
 #pragma once
 
-#include "../render_engine/Mesh.h"
-#include "../render_engine/texture.h"
+#include "../models/Mesh.h"
+#include "../models/texture.h"
 
 class Terrain {
 private:

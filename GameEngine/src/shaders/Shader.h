@@ -5,6 +5,8 @@
 #include <string>
 #include <vector>
 
+#include "../AttributeLocation.h"
+
 // Abstract class for generic shaders
 class Shader {
 
@@ -35,7 +37,8 @@ public:
 	Shader() : m_program_id(0), m_vert_id(0), m_frag_id(0) {}
 	~Shader();
 
-	virtual void setUp(const std::string& vert_file, const std::string& frag_file);
+	void setUp(const std::string& vert_file, const std::string& frag_file);
+	virtual void setUp() = 0;
 
 	void start();
 	void stop();

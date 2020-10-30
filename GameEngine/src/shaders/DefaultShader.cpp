@@ -2,7 +2,6 @@
 #include "DefaultShader.h"
 
 #include "../render_engine/MasterRenderer.h"
-#include "../AttributeLocation.h"
 #include "../Maths.h"
 #include "../Application.h"
 

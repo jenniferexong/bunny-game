@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-#include "render_engine/Texture.h"
+#include "models/Texture.h"
 
 using namespace glm;
 using namespace std;

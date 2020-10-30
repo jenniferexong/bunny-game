@@ -12,6 +12,11 @@ glm::mat4 MasterRenderer::s_projection_matrix = glm::mat4(0);
 
 MasterRenderer::MasterRenderer(const DefaultShader& shader)
 {
+	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+	glDepthFunc(GL_LESS);
+
 	m_shader = std::make_shared<DefaultShader>(shader);
 	m_renderer = EntityRenderer(m_shader);
 
@@ -20,11 +25,24 @@ MasterRenderer::MasterRenderer(const DefaultShader& shader)
 
 void MasterRenderer::render(const Light& sun)
 {
-	m_renderer.prepare();
+	prepare();
 	m_shader->start();
 
 	// Loading some uniforms
 	m_shader->loadLight(sun);
+	m_shader->loadViewProjection();
+
+	m_renderer.render(m_entities);
+
+	m_shader->stop();
+	m_entities.clear();
+}
+
+/* Clears the window */
+void MasterRenderer::prepare()
+{
+	glClearColor(0.7f, 0.7f, 0.7f, 1.f); 
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Set viewport to entire window 
 	int width, height;
@@ -34,13 +52,6 @@ void MasterRenderer::render(const Light& sun)
 	// Setting the projection matrix
 	float aspect_ratio = (float) width / height;
 	s_projection_matrix = glm::perspective(s_fov, aspect_ratio, s_near_plane, s_far_plane);
-
-	m_shader->loadViewProjection();
-
-	m_renderer.render(m_entities);
-
-	m_shader->stop();
-	m_entities.clear();
 }
 
 void MasterRenderer::processEntity(const Entity& entity)
