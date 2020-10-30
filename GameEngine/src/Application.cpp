@@ -42,9 +42,9 @@ void Application::setUp() {
 
 void Application::makeTest() {
 	//Mesh mesh = m_loader.loadToVao(positions, texture_coords, indices);
-	Mesh mesh = m_loader.loadToVao("res/objects/teapot.obj");
+	Mesh mesh = s_loader.loadToVao("res/objects/teapot.obj");
 
-	ModelTexture texture = ModelTexture(m_loader.loadTexture("res/textures/checkerboard.png"));
+	ModelTexture texture = ModelTexture(s_loader.loadTexture("res/textures/checkerboard.png"));
 	texture.setShineDamper(10.f);
 	texture.setReflectivity(1.f);
 	shared_ptr<TexturedModel> textured_model = make_shared<TexturedModel>(mesh, texture);

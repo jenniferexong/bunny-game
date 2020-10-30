@@ -25,8 +25,8 @@ namespace {
     Application* application_ptr = nullptr;
 }
 
-int main(void) {
-
+int main(void)
+{
     /* Initialize the library */
     if (!glfwInit())
         return -1;
@@ -82,19 +82,23 @@ int main(void) {
 }
 
 namespace {
-    void cursorPosCallback(GLFWwindow* window, double x, double y) {
+    void cursorPosCallback(GLFWwindow* window, double x, double y)
+    {
         application_ptr->cursorPosCallback(x, y);
     }
 
-    void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+    void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
+    {
         application_ptr->mouseButtonCallback(button, action, mods);
     }
 
-    void scrollCallBack(GLFWwindow* window, double x_offset, double y_offset) {
+    void scrollCallBack(GLFWwindow* window, double x_offset, double y_offset)
+    {
         application_ptr->scrollCallBack(x_offset, y_offset);
     }
 
-    void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+    {
         application_ptr->keyCallback(key, scancode, action, mods);
     }
 }

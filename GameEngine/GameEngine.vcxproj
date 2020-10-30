@@ -20,13 +20,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Object\Camera.cpp" />
-    <ClCompile Include="src\render_engine\Renderer.cpp" />
+    <ClCompile Include="src\render_engine\EntityRenderer.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\Object\Entity.cpp" />
     <ClCompile Include="src\Object\Light.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Object\Player.cpp" />
+    <ClCompile Include="src\Object\Terrain.cpp" />
     <ClCompile Include="src\render_engine\Loader.cpp" />
+    <ClCompile Include="src\render_engine\MasterRenderer.cpp" />
     <ClCompile Include="src\render_engine\Model.cpp" />
     <ClCompile Include="src\render_engine\Scene.cpp" />
     <ClCompile Include="src\render_engine\Texture.cpp" />
@@ -36,13 +38,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Object\Camera.h" />
-    <ClInclude Include="src\render_engine\Renderer.h" />
+    <ClInclude Include="src\render_engine\EntityRenderer.h" />
     <ClInclude Include="src\Application.h" />
     <ClInclude Include="src\AttributeLocation.h" />
     <ClInclude Include="src\Object\Entity.h" />
     <ClInclude Include="src\Object\Light.h" />
+    <ClInclude Include="src\Object\Terrain.h" />
     <ClInclude Include="src\render_engine\Loader.h" />
     <ClInclude Include="src\Maths.h" />
+    <ClInclude Include="src\render_engine\MasterRenderer.h" />
     <ClInclude Include="src\render_engine\Mesh.h" />
     <ClInclude Include="src\render_engine\Model.h" />
     <ClInclude Include="src\render_engine\WavefrontData.h" />

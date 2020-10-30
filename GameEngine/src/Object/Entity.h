@@ -37,5 +37,4 @@ public:
 	inline const vec3 getPosition() const { return m_position; }
 	inline const vec3 getRotation() const { return m_rotation; }
 	inline const float getScale() const { return m_scale; }
-	void render();
 };

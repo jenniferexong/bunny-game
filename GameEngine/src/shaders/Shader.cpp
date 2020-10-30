@@ -13,7 +13,8 @@
 using std::string;
 
 /* Must call this after constructing the shader */
-void Shader::setUp(const string& vert_file, const std::string& frag_file) {
+void Shader::setUp(const string& vert_file, const std::string& frag_file)
+{
 	m_vert_id = loadShader(vert_file, GL_VERTEX_SHADER);
 	m_frag_id = loadShader(frag_file, GL_FRAGMENT_SHADER);
 	m_program_id = glCreateProgram();
@@ -25,7 +26,8 @@ void Shader::setUp(const string& vert_file, const std::string& frag_file) {
 	getAllUniformLocations();
 }
 
-int Shader::loadShader(const string& file_name, int type) {
+int Shader::loadShader(const string& file_name, int type)
+{
 	using namespace std;
 	ifstream shader_file(file_name);
 
@@ -69,50 +71,61 @@ int Shader::loadShader(const string& file_name, int type) {
 	return shader_id;
 }
 
-void Shader::bindAttribute(int attribute, const string& variable) {
+void Shader::bindAttribute(int attribute, const string& variable)
+{
 	glBindAttribLocation(m_program_id, attribute, variable.c_str());
 }
 
-int Shader::getUniformLocation(const string& uniform_name) {
+int Shader::getUniformLocation(const string& uniform_name)
+{
 	return glGetUniformLocation(m_program_id, uniform_name.c_str());
 }
 
-void Shader::loadFloat(int location, float value) const {
+void Shader::loadFloat(int location, float value) const
+{
 	glUniform1f(location, value);
 }
 
-void Shader::loadBoolean(int location, bool value) const {
+void Shader::loadBoolean(int location, bool value) const
+{
 	// No booleans in glsl, so represent with int of 1 or 0
 	int b = value ? 1 : 0;
 	glUniform1i(location, b);
 }
 
-void Shader::loadVector(int location, glm::vec3 vector) const {
+void Shader::loadVector(int location, glm::vec3 vector) const
+{
 	glUniform3f(location, vector.x, vector.y, vector.z);
 }
 
-void Shader::loadMatrix(int location, glm::mat4 matrix) const {
+void Shader::loadMatrix(int location, glm::mat4 matrix) const
+{
 	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
-void Shader::loadVectors(int location, std::vector<glm::vec3>& vectors) const {
+void Shader::loadVectors(int location, std::vector<glm::vec3>& vectors) const
+{
 	glUniform3fv(location, vectors.size(), glm::value_ptr(vectors[0]));
 }
 
-void Shader::loadMatrices(int location, std::vector<glm::mat4>& matrices) const {
+void Shader::loadMatrices(int location, std::vector<glm::mat4>& matrices) const
+{
 	glUniformMatrix4fv(location, matrices.size(), GL_FALSE, glm::value_ptr(matrices[0]));
 }
 
 
-void Shader::start() {
+void Shader::start()
+{
 	glUseProgram(m_program_id);
 }
 
-void Shader::stop() {
+void Shader::stop()
+{
 	glUseProgram(0);
 }
 
-Shader::~Shader() {
+Shader::~Shader()
+{
 	stop();
 	glDetachShader(m_program_id, m_vert_id);
 	glDetachShader(m_program_id, m_frag_id);

@@ -18,7 +18,7 @@ struct CompareTexturedModel {
 	}
 };
 
-class Renderer {
+class EntityRenderer {
 private:
 	static const float s_fov;
 	static const float s_near_plane;
@@ -31,25 +31,10 @@ private:
 	void prepareInstance(const Entity& entity);
 
 public:
-	Renderer(): m_shader(nullptr) {}
-	Renderer(std::shared_ptr<DefaultShader> shader) : m_shader(shader) {}
-	static glm::mat4 s_projection_matrix;
+	EntityRenderer(): m_shader(nullptr) {}
+	EntityRenderer(std::shared_ptr<DefaultShader> shader) : m_shader(shader) {}
 	void prepare();
 	void render(std::map<TexturedModel, std::vector<Entity>, CompareTexturedModel>& entities);
-	//void render(const Entity& entity, const Shader& shader);
 };
 
-class MasterRenderer {
-private:
-	std::shared_ptr<DefaultShader> m_shader;
-	Renderer m_renderer;
-
-	std::map<TexturedModel, std::vector<Entity>, CompareTexturedModel> m_entities;
-
-public:
-	MasterRenderer() : m_shader(nullptr) {}
-	MasterRenderer(const DefaultShader& shader);
-	void render(const Light& sun);
-	void processEntity(const Entity& entity);
-};
 

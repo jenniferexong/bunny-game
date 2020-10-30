@@ -12,9 +12,6 @@ private:
 public:
 	Texture(const std::string& file_name);
 
-	void bind(int slot = 0); // optional parameter
-	void unbind();
-
 	inline int getId() const { return m_id; }
 	inline int getWidth() const { return m_width; }
 	inline int getHeight() const { return m_height; }

@@ -10,7 +10,7 @@
 #include "object/Entity.h"
 #include "object/Camera.h"
 #include "object/Light.h"
-#include "render_engine/Renderer.h"
+#include "render_engine/MasterRenderer.h"
 #include "render_engine/Scene.h"
 #include "render_engine/Loader.h"
 #include "shaders/DefaultShader.h"
