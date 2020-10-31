@@ -32,15 +32,13 @@ void MasterRenderer::render(const Light& sun)
 	// entity shader
 	m_entity_shader->start();
 	// Loading some uniforms
-	m_entity_shader->loadLight(sun);
-	m_entity_shader->loadViewProjection();
+	m_entity_shader->loadUniformPerFrame(sun);
 	m_entity_renderer.render(m_entities);
 	m_entity_shader->stop();
 
 	// terrain shader
 	m_terrain_shader->start();
-	m_terrain_shader->loadLight(sun);
-	m_terrain_shader->loadViewProjection();
+	m_terrain_shader->loadUniformPerFrame(sun);
 	m_terrain_renderer.render(m_terrains);
 	m_terrain_shader->stop();
 
@@ -62,7 +60,8 @@ void MasterRenderer::disableCulling()
 /* Clears the window */
 void MasterRenderer::prepare()
 {
-	glClearColor(0.352, 0.686, 0.807, 1.f);
+	glm::vec3 sky = Application::s_sky_color;
+	glClearColor(sky.x, sky.y, sky.z, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Set viewport to entire window 

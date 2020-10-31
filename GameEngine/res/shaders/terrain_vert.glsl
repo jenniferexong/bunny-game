@@ -18,13 +18,19 @@ out VertexData {
     vec3 color;
     vec2 textureCoords;
     vec3 cameraPosition;
+    float visibility;
 } v_out; 
 
+const float density = 0.007;
+const float fogGradient = 1.5;
+
 void main() {
-    gl_Position = uProjectionMatrix * uViewMatrix * uTransformationMatrix * vec4(aPosition, 1);
+    vec4 worldPosition = uTransformationMatrix * vec4(aPosition, 1); 
+    vec4 positionRelativeToCamera = uViewMatrix * worldPosition;
 
     // vertex position in world coordinates (only multiplied by model transformation)
-    v_out.position = vec3(uTransformationMatrix * vec4(aPosition,1));
+    v_out.position = vec3(worldPosition);
+    gl_Position = uProjectionMatrix * positionRelativeToCamera;
 
     //v_out.normal = mat3(transpose(inverse(uTransformationMatrix))) * aNormal;
     v_out.normal = vec3(uTransformationMatrix * vec4(aNormal, 0));
@@ -32,4 +38,8 @@ void main() {
     v_out.cameraPosition = vec3(uInverseViewMatrix * vec4(0, 0, 0, 1));
 
     v_out.textureCoords = aTextureCoords * 40.0;
+
+    // fog calculations
+    float distance = length(positionRelativeToCamera.xyz);
+    v_out.visibility = clamp(exp(-pow(distance * density, fogGradient)), 0.0, 1.0);
 }

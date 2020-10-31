@@ -33,6 +33,7 @@ public:
 	static std::map<char, bool> s_move_keys; 
 	static Light s_sun;
 	static Loader s_loader;
+	static glm::vec3 s_sky_color;
 
 	// Rendering everything
 	void render();

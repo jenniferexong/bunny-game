@@ -29,8 +29,44 @@ void TerrainShader::getAllUniformLocations()
 	m_locations.insert({ EUniformVariable::LightPosition, getUniformLocation("uLightPosition") });
 	m_locations.insert({ EUniformVariable::Reflectivity, getUniformLocation("uReflectivity") });
 	m_locations.insert({ EUniformVariable::ShineDamper, getUniformLocation("uShineDamper") });
+	m_locations.insert({ EUniformVariable::SkyColor, getUniformLocation("uSkyColor") });
 }
 
+void TerrainShader::loadUniformPerFrame(const Light& light) const
+{
+	// Loading light variables
+	loadVector(m_locations.at(EUniformVariable::LightPosition), light.getPosition());
+	loadVector(m_locations.at(EUniformVariable::LightColor), light.getColor());
+
+	// Loading projection matrix
+	loadMatrix(m_locations.at(EUniformVariable::ProjectionMatrix), MasterRenderer::s_projection_matrix);
+
+	// View matrix
+	glm::mat4 v_matrix = Maths::createViewMatrix(Application::s_camera);
+	loadMatrix(m_locations.at(EUniformVariable::ViewMatrix), v_matrix);
+	loadMatrix(m_locations.at(EUniformVariable::InverseViewMatrix), inverse(v_matrix));
+
+	// sky colour
+	loadVector(m_locations.at(EUniformVariable::SkyColor), Application::s_sky_color);
+}
+
+void TerrainShader::loadModelMatrix(const Terrain& terrain) const
+{
+	// Loading transformation matrix
+	glm::vec3 position(terrain.getX(), 0, terrain.getZ());
+	glm::mat4 t_matrix = Maths::createTransformationMatrix(position, glm::vec3(0), 1);
+
+	loadMatrix(m_locations.at(EUniformVariable::TransformationMatrix), t_matrix);
+}
+
+void TerrainShader::loadMaterial(const ModelTexture& texture) const
+{
+	// Loading shine values
+	loadFloat(m_locations.at(EUniformVariable::Reflectivity), texture.getReflectivity());
+	loadFloat(m_locations.at(EUniformVariable::ShineDamper), texture.getShineDamper());
+}
+
+/*
 void TerrainShader::loadLight(const Light& light) const
 {
 	// Loading light variables
@@ -48,19 +84,5 @@ void TerrainShader::loadViewProjection() const
 	loadMatrix(m_locations.at(EUniformVariable::ViewMatrix), v_matrix);
 	loadMatrix(m_locations.at(EUniformVariable::InverseViewMatrix), inverse(v_matrix));
 }
+*/
 
-void TerrainShader::loadModelMatrix(const Terrain& terrain)
-{
-	// Loading transformation matrix
-	glm::vec3 position(terrain.getX(), 0, terrain.getZ());
-	glm::mat4 t_matrix = Maths::createTransformationMatrix(position, glm::vec3(0), 1);
-
-	loadMatrix(m_locations.at(EUniformVariable::TransformationMatrix), t_matrix);
-}
-
-void TerrainShader::loadMaterial(const ModelTexture& texture) const
-{
-	// Loading shine values
-	loadFloat(m_locations.at(EUniformVariable::Reflectivity), texture.getReflectivity());
-	loadFloat(m_locations.at(EUniformVariable::ShineDamper), texture.getShineDamper());
-}

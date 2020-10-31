@@ -7,6 +7,7 @@ uniform vec3 uLightColor;
 uniform vec3 uLightPosition;
 uniform float uReflectivity;
 uniform float uShineDamper;
+uniform vec3 uSkyColor;
 
 in VertexData {
     vec3 position;
@@ -14,6 +15,7 @@ in VertexData {
     vec3 color;
     vec2 textureCoords;
     vec3 cameraPosition;
+    float visibility;
 } f_in; 
 
 out vec4 outColor;
@@ -36,5 +38,5 @@ void main() {
 
     vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * texture(textureSampler, f_in.textureCoords));
     //vec3 result = (ambient + diffuse + specular) * f_in.color;
-    outColor = vec4(result, 1.0); 
+    outColor = mix(vec4(uSkyColor, 1.0), vec4(result, 1.0), f_in.visibility);  // mix with sky colour depending on visibility
 }

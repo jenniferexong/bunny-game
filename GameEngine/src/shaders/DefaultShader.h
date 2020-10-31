@@ -12,7 +12,7 @@ class DefaultShader : public Shader {
 private:
 	enum class EUniformVariable {
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
-		LightPosition, LightColor, Reflectivity, ShineDamper, FakeLighting
+		LightPosition, LightColor, Reflectivity, ShineDamper, FakeLighting, SkyColor
 	};
 
 	static const std::string s_vertex_file;
@@ -26,8 +26,12 @@ protected:
 
 public:
 	virtual void setUp();
-	void loadViewProjection() const;
+	void loadUniformPerFrame(const Light& light) const;
 	void loadModelMatrix(const Entity& entity) const;
-	void loadLight(const Light& light) const;
 	void loadMaterial(const ModelTexture& texture) const;
+
+	/*
+	void loadViewProjection() const;
+	void loadLight(const Light& light) const;
+	*/
 };

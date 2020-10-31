@@ -30,17 +30,15 @@ void DefaultShader::getAllUniformLocations()
 	m_locations.insert({ EUniformVariable::Reflectivity, getUniformLocation("uReflectivity") });
 	m_locations.insert({ EUniformVariable::ShineDamper, getUniformLocation("uShineDamper") });
 	m_locations.insert({ EUniformVariable::FakeLighting, getUniformLocation("uFakeLighting") });
+	m_locations.insert({ EUniformVariable::SkyColor, getUniformLocation("uSkyColor") });
 }
 
-void DefaultShader::loadLight(const Light& light) const
+void DefaultShader::loadUniformPerFrame(const Light& light) const
 {
 	// Loading light variables
 	loadVector(m_locations.at(EUniformVariable::LightPosition), light.getPosition());
 	loadVector(m_locations.at(EUniformVariable::LightColor), light.getColor());
-}
 
-void DefaultShader::loadViewProjection() const
-{
 	// Loading projection matrix
 	loadMatrix(m_locations.at(EUniformVariable::ProjectionMatrix), MasterRenderer::s_projection_matrix);
 
@@ -48,6 +46,9 @@ void DefaultShader::loadViewProjection() const
 	glm::mat4 v_matrix = Maths::createViewMatrix(Application::s_camera);
 	loadMatrix(m_locations.at(EUniformVariable::ViewMatrix), v_matrix);
 	loadMatrix(m_locations.at(EUniformVariable::InverseViewMatrix), inverse(v_matrix));
+	 
+	// Sky colour
+	loadVector(m_locations.at(EUniformVariable::SkyColor), Application::s_sky_color);
 }
 
 void DefaultShader::loadModelMatrix(const Entity& entity) const
@@ -65,4 +66,25 @@ void DefaultShader::loadMaterial(const ModelTexture& texture) const
 	loadFloat(m_locations.at(EUniformVariable::ShineDamper), texture.getShineDamper());
 	loadBoolean(m_locations.at(EUniformVariable::FakeLighting), texture.usesFakeLighting());
 }
+
+/*
+void DefaultShader::loadLight(const Light& light) const
+{
+	// Loading light variables
+	loadVector(m_locations.at(EUniformVariable::LightPosition), light.getPosition());
+	loadVector(m_locations.at(EUniformVariable::LightColor), light.getColor());
+}
+
+void DefaultShader::loadViewProjection() const
+{
+	// Loading projection matrix
+	loadMatrix(m_locations.at(EUniformVariable::ProjectionMatrix), MasterRenderer::s_projection_matrix);
+
+	// View matrix
+	glm::mat4 v_matrix = Maths::createViewMatrix(Application::s_camera);
+	loadMatrix(m_locations.at(EUniformVariable::ViewMatrix), v_matrix);
+	loadMatrix(m_locations.at(EUniformVariable::InverseViewMatrix), inverse(v_matrix));
+}
+*/
+
 

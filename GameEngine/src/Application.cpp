@@ -16,6 +16,8 @@ GLFWwindow* Application::s_window = nullptr;
 Camera Application::s_camera = Camera();
 Light Application::s_sun = Light(glm::vec3(0.f, 100.f, 1000.f), glm::vec3(1.f));
 Loader Application::s_loader = Loader();
+vec3 Application::s_sky_color = vec3(0.352f, 0.686f, 0.807f);
+
 map<char, bool> Application::s_move_keys = {
 	{'w', false}, {'a', false}, {'s', false}, {'d', false}, {'q', false}, {'e', false}
 };
@@ -129,15 +131,18 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 	}
 }
 
-void Application::cursorPosCallback(double x, double y) {
+void Application::cursorPosCallback(double x, double y)
+{
 
 }
 
-void Application::mouseButtonCallback(int button, int action, int mods) {
+void Application::mouseButtonCallback(int button, int action, int mods)
+{
 
 }
 
-void Application::scrollCallBack(double x_offset, double y_offset) {
+void Application::scrollCallBack(double x_offset, double y_offset)
+{
 
 }
 
