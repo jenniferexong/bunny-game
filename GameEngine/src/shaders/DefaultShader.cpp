@@ -2,7 +2,6 @@
 #include "DefaultShader.h"
 
 #include "../render_engine/MasterRenderer.h"
-#include "../Maths.h"
 #include "../Application.h"
 
 const std::string DefaultShader::s_vertex_file = "res/shaders/default_vert.glsl";
@@ -30,6 +29,7 @@ void DefaultShader::getAllUniformLocations()
 	m_locations.insert({ EUniformVariable::LightPosition, getUniformLocation("uLightPosition") });
 	m_locations.insert({ EUniformVariable::Reflectivity, getUniformLocation("uReflectivity") });
 	m_locations.insert({ EUniformVariable::ShineDamper, getUniformLocation("uShineDamper") });
+	m_locations.insert({ EUniformVariable::FakeLighting, getUniformLocation("uFakeLighting") });
 }
 
 void DefaultShader::loadLight(const Light& light) const
@@ -63,5 +63,6 @@ void DefaultShader::loadMaterial(const ModelTexture& texture) const
 	// Loading shine values
 	loadFloat(m_locations.at(EUniformVariable::Reflectivity), texture.getReflectivity());
 	loadFloat(m_locations.at(EUniformVariable::ShineDamper), texture.getShineDamper());
+	loadBoolean(m_locations.at(EUniformVariable::FakeLighting), texture.usesFakeLighting());
 }
 

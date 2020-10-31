@@ -31,3 +31,8 @@ void TexturedModel::render(std::shared_ptr<Shader> shader) const {
 	glDisableVertexAttribArray(eTexture);
 	glBindVertexArray(0); // unbind 
 }
+
+void TexturedModel::setShineValues(float reflectivity, float damper) {
+	m_texture.setReflectivity(reflectivity);
+	m_texture.setShineDamper(damper);
+}

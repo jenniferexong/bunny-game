@@ -20,7 +20,12 @@ out vec4 outColor;
 
 void main() {
     // Phong shading
-    float ambientStrength = 0.1;
+    vec4 textureCol = texture(textureSampler, f_in.textureCoords);
+    if (textureCol.a < 0.5) {
+        discard;
+    }
+
+    float ambientStrength = 0.5;
     vec3 ambient = ambientStrength * uLightColor;
 
     vec3 norm = normalize(f_in.normal);
@@ -34,6 +39,7 @@ void main() {
     float spec = pow(max(dot(toCamera, reflectDir), 0.0), uShineDamper);
     vec3 specular = uReflectivity * spec * uLightColor;
 
-    vec3 result = (ambient + diffuse + specular) * f_in.color;
+    vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * texture(textureSampler, f_in.textureCoords));
+    //vec3 result = (ambient + diffuse + specular) * f_in.color;
     outColor = vec4(result, 1.0); 
 }

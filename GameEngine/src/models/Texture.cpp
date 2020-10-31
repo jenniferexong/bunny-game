@@ -3,6 +3,8 @@
 
 #include "Texture.h"
 
+#include <iostream>
+
 #include <stb_image/stb_image.h>
 
 /**
@@ -20,8 +22,8 @@ Texture::Texture(const std::string& file_name) : m_id(0), m_file_name(file_name)
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_local_buffer);
 	glGenerateMipmap(GL_TEXTURE_2D);
@@ -31,5 +33,5 @@ Texture::Texture(const std::string& file_name) : m_id(0), m_file_name(file_name)
 		stbi_image_free(m_local_buffer);	
 	}
 
-	printf("Loaded texture\n");
+	printf("Loaded texture: %s, %d\n", file_name.c_str(), m_id);
 }

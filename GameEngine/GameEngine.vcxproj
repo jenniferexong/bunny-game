@@ -19,7 +19,8 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="src\Object\Camera.cpp" />
+    <ClCompile Include="src\Maths.cpp" />
+    <ClCompile Include="src\objects\Camera.cpp" />
     <ClCompile Include="src\render_engine\EntityRenderer.cpp" />
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\objects\Entity.cpp" />
@@ -29,6 +30,7 @@
     <ClCompile Include="src\objects\Terrain.cpp" />
     <ClCompile Include="src\render_engine\Loader.cpp" />
     <ClCompile Include="src\render_engine\MasterRenderer.cpp" />
+    <ClCompile Include="src\render_engine\TerrainRenderer.cpp" />
     <ClCompile Include="src\models\Model.cpp" />
     <ClCompile Include="src\render_engine\Scene.cpp" />
     <ClCompile Include="src\models\Texture.cpp" />
@@ -48,6 +50,7 @@
     <ClInclude Include="src\render_engine\Loader.h" />
     <ClInclude Include="src\Maths.h" />
     <ClInclude Include="src\render_engine\MasterRenderer.h" />
+    <ClInclude Include="src\render_engine\TerrainRenderer.h" />
     <ClInclude Include="src\models\Mesh.h" />
     <ClInclude Include="src\models\Model.h" />
     <ClInclude Include="src\render_engine\WavefrontData.h" />

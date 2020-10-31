@@ -15,6 +15,7 @@ private:
 	Mesh generate();
 
 public:
+	Terrain() {}
 	Terrain(int grid_x, int grid_z, ModelTexture texture);
 
 	inline float getX() const { return m_x; }

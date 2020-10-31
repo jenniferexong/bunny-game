@@ -23,6 +23,7 @@ Mesh Loader::loadToVao(const vector<float>& positions, const vector<float> & nor
 
 	bindIbo(indices);
 	unbindVao(); // unbinding
+	cout << "Loaded: " << indices.size() << ", id: " << vao_id << endl;
 	return Mesh(vao_id, indices.size());
 }
 

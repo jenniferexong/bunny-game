@@ -3,6 +3,8 @@
 #include <map>
 
 #include "Shader.h"
+#include "../objects/Terrain.h"
+#include "../objects/Light.h"
 
 class TerrainShader : public Shader {
 private:
@@ -22,4 +24,8 @@ protected:
 
 public:
 	virtual void setUp();
+	void loadViewProjection() const;
+	void loadModelMatrix(const Terrain& terrain);
+	void loadLight(const Light& light) const;
+	void loadMaterial(const ModelTexture& texture) const;
 };

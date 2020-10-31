@@ -28,8 +28,8 @@ void main() {
 
     //v_out.normal = mat3(transpose(inverse(uTransformationMatrix))) * aNormal;
     v_out.normal = vec3(uTransformationMatrix * vec4(aNormal, 0));
-    v_out.color = vec3(0, 0.7, 0.7);
+    v_out.color = vec3(0, 1, 0);
     v_out.cameraPosition = vec3(uInverseViewMatrix * vec4(0, 0, 0, 1));
 
-    v_out.textureCoords = aTextureCoords;
+    v_out.textureCoords = aTextureCoords * 40.0;
 }

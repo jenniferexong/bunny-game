@@ -8,8 +8,8 @@
 #include <vector>
 
 #include "../shaders/DefaultShader.h"
-#include "../object/Entity.h"
-#include "../object/Light.h"
+#include "../objects/Entity.h"
+#include "../objects/Light.h"
 #include "../models/Model.h"
 
 struct CompareTexturedModel {
@@ -28,7 +28,7 @@ private:
 
 	void prepareTexturedModel(const TexturedModel& model);
 	void unbindTexturedModel();
-	void prepareInstance(const Entity& entity);
+	void loadTransformation(const Entity& entity);
 
 public:
 	EntityRenderer(): m_shader(nullptr) {}

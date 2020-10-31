@@ -9,7 +9,7 @@
 #include <iostream>
 #include <memory>
 
-#include "object/Player.h"
+#include "objects/Player.h"
 #include "Application.h"
 
 using namespace std;
@@ -51,7 +51,6 @@ int main(void)
 
     // Make the application
     Application application;
-    application.setUp();
     application.makeTest();
 
     application_ptr = &application;

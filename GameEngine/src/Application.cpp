@@ -2,6 +2,7 @@
 #include "Application.h"
 
 #include <glm/glm.hpp>
+#include <glm/gtc/random.hpp>
 
 #include <iostream>
 
@@ -15,7 +16,9 @@ GLFWwindow* Application::s_window = nullptr;
 Camera Application::s_camera = Camera();
 Light Application::s_sun = Light(glm::vec3(0.f, 100.f, 1000.f), glm::vec3(1.f));
 Loader Application::s_loader = Loader();
-map<char, bool> Application::s_move_keys = {{'w', false}, {'a', false}, {'s', false}, {'d', false}};
+map<char, bool> Application::s_move_keys = {
+	{'w', false}, {'a', false}, {'s', false}, {'d', false}, {'q', false}, {'e', false}
+};
 
 /**
 	Method to render everything in the scene.
@@ -24,40 +27,62 @@ map<char, bool> Application::s_move_keys = {{'w', false}, {'a', false}, {'s', fa
 void Application::render() {
 	// animate
 	//m_entity.move(0, 0, -0.1f);
-	m_entity.rotate(0.1f, 0, 0);
+
+	//e.rotate(0.1f, 0, 0);
 
 	s_camera.updatePosition();
 
 	// Process all entities
-	m_renderer.processEntity(m_entity);
+	for (Entity e : scene) {
+		m_renderer.processEntity(e);
+	}
+
+	m_renderer.processTerrain(m_terrain_1);
+	m_renderer.processTerrain(m_terrain_2);
 
 	m_renderer.render(s_sun);
 }
 
-/* Initialize all the member variables properly */
-void Application::setUp() {
-	DefaultShader shader;
-	m_renderer = MasterRenderer(shader);
+void Application::makeTest()
+{
+	//TODO: Make files that you can read material properties from, and position, scale, rotation...
+
+	ModelTexture ground = ModelTexture(s_loader.loadTexture("res/textures/ground.png"));
+	m_terrain_1 = Terrain(0, -1, ground);
+	m_terrain_2 = Terrain(-1, -1, ground);
+
+	shared_ptr<TexturedModel> teapot_model = makeModel("teapot", "test", false, false);
+	teapot_model->setShineValues(1.f, 10.f);
+
+	Entity teapot = Entity(teapot_model);
+	teapot.setPosition(0, 0, -20);
+	teapot.setScale(1);
+	scene.push_back(teapot);
+
+	shared_ptr<TexturedModel> grass_model = makeModel("grass-model", "grass-texture", true, true);
+
+	// Making grass
+	for (int i = 0; i < 50; i++) {
+		Entity grass = Entity(grass_model);
+		grass.setPosition(glm::linearRand(-30.f, 30.f), 0, glm::linearRand(-50.f, 0.f));
+		scene.push_back(grass);
+	}
 }
 
-void Application::makeTest() {
-	//Mesh mesh = m_loader.loadToVao(positions, texture_coords, indices);
-	Mesh mesh = s_loader.loadToVao("res/objects/teapot.obj");
-
-	ModelTexture texture = ModelTexture(s_loader.loadTexture("res/textures/checkerboard.png"));
-	texture.setShineDamper(10.f);
-	texture.setReflectivity(1.f);
-	shared_ptr<TexturedModel> textured_model = make_shared<TexturedModel>(mesh, texture);
-
-	m_entity = Entity(textured_model);
-	m_entity.setPosition(0, -5, -20);
-	m_entity.setScale(1);
-
-	//shared_ptr<Entity> entity = make_shared<Entity>(textured_model);
-	//m_scene.addToScene(entity);
+shared_ptr<TexturedModel> Application::makeModel(const std::string& obj_name,
+	const std::string& texture_name, bool transparency, bool fake_lighting)
+{
+	string obj_prefix("res/objects/");
+	string texture_prefix("res/textures/");
+	Mesh mesh = s_loader.loadToVao(obj_prefix + obj_name + ".obj");
+	ModelTexture texture(s_loader.loadTexture(texture_prefix + texture_name + ".png"));
+	texture.setTransparent(transparency);
+	texture.setFakeLighting(fake_lighting);
+	return make_shared<TexturedModel>(mesh, texture);
 }
 
-void Application::keyCallback(int key, int scancode, int action, int mods) {
+void Application::keyCallback(int key, int scancode, int action, int mods)
+{
 	switch (key) {
 	case GLFW_KEY_W: 
 		if (action == GLFW_PRESS) {
@@ -85,6 +110,20 @@ void Application::keyCallback(int key, int scancode, int action, int mods) {
 			s_move_keys['d'] = true;
 		} else if(action == GLFW_RELEASE) {
 			s_move_keys['d'] = false;
+		}
+		break;
+	case GLFW_KEY_Q: 
+		if (action == GLFW_PRESS) {
+			s_move_keys['q'] = true;
+		} else if(action == GLFW_RELEASE) {
+			s_move_keys['q'] = false;
+		}
+		break;
+	case GLFW_KEY_E: 
+		if (action == GLFW_PRESS) {
+			s_move_keys['e'] = true;
+		} else if(action == GLFW_RELEASE) {
+			s_move_keys['e'] = false;
 		}
 		break;
 	}

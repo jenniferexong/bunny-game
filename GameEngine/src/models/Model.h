@@ -27,5 +27,6 @@ public:
 	void render(std::shared_ptr<Shader> shader) const override;
 
 	inline const ModelTexture getTexture() const { return m_texture; }
+	void setShineValues(float reflectivity, float damper);
 };
 

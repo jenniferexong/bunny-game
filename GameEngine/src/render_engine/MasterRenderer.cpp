@@ -10,38 +10,59 @@ const float MasterRenderer::s_near_plane = 0.1f;
 const float MasterRenderer::s_far_plane = 1000.f;
 glm::mat4 MasterRenderer::s_projection_matrix = glm::mat4(0);
 
-MasterRenderer::MasterRenderer(const DefaultShader& shader)
+MasterRenderer::MasterRenderer()
 {
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
-	glCullFace(GL_BACK);
 	glDepthFunc(GL_LESS);
+	enableCulling();
 
-	m_shader = std::make_shared<DefaultShader>(shader);
-	m_renderer = EntityRenderer(m_shader);
+	m_entity_shader = std::make_shared<DefaultShader>();
+	m_terrain_shader = std::make_shared<TerrainShader>();
+	m_entity_renderer = EntityRenderer(m_entity_shader);
+	m_terrain_renderer = TerrainRenderer(m_terrain_shader);
 
-	m_shader->setUp();
+	m_entity_shader->setUp();
+	m_terrain_shader->setUp();
 }
 
 void MasterRenderer::render(const Light& sun)
 {
 	prepare();
-	m_shader->start();
 
+	// entity shader
+	m_entity_shader->start();
 	// Loading some uniforms
-	m_shader->loadLight(sun);
-	m_shader->loadViewProjection();
+	m_entity_shader->loadLight(sun);
+	m_entity_shader->loadViewProjection();
+	m_entity_renderer.render(m_entities);
+	m_entity_shader->stop();
 
-	m_renderer.render(m_entities);
+	// terrain shader
+	m_terrain_shader->start();
+	m_terrain_shader->loadLight(sun);
+	m_terrain_shader->loadViewProjection();
+	m_terrain_renderer.render(m_terrains);
+	m_terrain_shader->stop();
 
-	m_shader->stop();
+	m_terrains.clear();
 	m_entities.clear();
+}
+
+void MasterRenderer::enableCulling()
+{
+	glEnable(GL_CULL_FACE);
+	glCullFace(GL_BACK);
+}
+
+void MasterRenderer::disableCulling()
+{
+	glDisable(GL_CULL_FACE);
 }
 
 /* Clears the window */
 void MasterRenderer::prepare()
 {
-	glClearColor(0.7f, 0.7f, 0.7f, 1.f); 
+	glClearColor(0.0f, 0.0f, 0.0f, 1.f); 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Set viewport to entire window 
@@ -62,4 +83,9 @@ void MasterRenderer::processEntity(const Entity& entity)
 		m_entities.insert({ model, list });
 	}
 	m_entities.at(model).push_back(entity);
+}
+
+void MasterRenderer::processTerrain(const Terrain& terrain)
+{
+	m_terrains.push_back(terrain);
 }

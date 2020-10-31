@@ -1,10 +1,9 @@
 #pragma once
 
-#include <glm/glm.hpp>
-
 #include <string>
 #include <vector>
 
+#include "../Maths.h"
 #include "../AttributeLocation.h"
 
 // Abstract class for generic shaders

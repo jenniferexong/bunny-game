@@ -14,7 +14,7 @@ private:
 
 public:
 
-	Camera() : m_position(vec3(0)), m_rotation(vec3(0)) {}
+	Camera() : m_position(vec3(0, 5, 0)), m_rotation(vec3(0)) {}
 
 	void updatePosition();
 

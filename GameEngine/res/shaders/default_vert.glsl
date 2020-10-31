@@ -7,6 +7,7 @@ uniform mat4 uViewMatrix;
 uniform mat4 uInverseViewMatrix;
 uniform vec3 uLightColor;
 uniform vec3 uLightPosition;
+uniform int uFakeLighting;
 
 layout(location = 0) in vec3 aPosition;
 layout(location = 1) in vec3 aNormal;
@@ -27,7 +28,9 @@ void main() {
     v_out.position = vec3(uTransformationMatrix * vec4(aPosition,1));
 
     //v_out.normal = mat3(transpose(inverse(uTransformationMatrix))) * aNormal;
-    v_out.normal = vec3(uTransformationMatrix * vec4(aNormal, 0));
+    
+    vec3 actualNormal = uFakeLighting == 1 ? vec3(0.0, 1.0, 0.0) : aNormal;
+    v_out.normal = vec3(uTransformationMatrix * vec4(actualNormal, 0));
     v_out.color = vec3(0, 0.7, 0.7);
     v_out.cameraPosition = vec3(uInverseViewMatrix * vec4(0, 0, 0, 1));
 

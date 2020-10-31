@@ -1,6 +1,9 @@
 
 #include "TerrainShader.h"
 
+#include "../Maths.h"
+#include "../Application.h"
+
 const std::string TerrainShader::s_vertex_file = "res/shaders/terrain_vert.glsl";
 const std::string TerrainShader::s_fragment_file = "res/shaders/terrain_frag.glsl";
 
@@ -18,5 +21,46 @@ void TerrainShader::bindAttributes()
 
 void TerrainShader::getAllUniformLocations()
 {
+	m_locations.insert({ EUniformVariable::TransformationMatrix, getUniformLocation("uTransformationMatrix") });
+	m_locations.insert({ EUniformVariable::ProjectionMatrix, getUniformLocation("uProjectionMatrix") });
+	m_locations.insert({ EUniformVariable::ViewMatrix, getUniformLocation("uViewMatrix") });
+	m_locations.insert({ EUniformVariable::InverseViewMatrix, getUniformLocation("uInverseViewMatrix") });
+	m_locations.insert({ EUniformVariable::LightColor, getUniformLocation("uLightColor") });
+	m_locations.insert({ EUniformVariable::LightPosition, getUniformLocation("uLightPosition") });
+	m_locations.insert({ EUniformVariable::Reflectivity, getUniformLocation("uReflectivity") });
+	m_locations.insert({ EUniformVariable::ShineDamper, getUniformLocation("uShineDamper") });
+}
 
+void TerrainShader::loadLight(const Light& light) const
+{
+	// Loading light variables
+	loadVector(m_locations.at(EUniformVariable::LightPosition), light.getPosition());
+	loadVector(m_locations.at(EUniformVariable::LightColor), light.getColor());
+}
+
+void TerrainShader::loadViewProjection() const
+{
+	// Loading projection matrix
+	loadMatrix(m_locations.at(EUniformVariable::ProjectionMatrix), MasterRenderer::s_projection_matrix);
+
+	// View matrix
+	glm::mat4 v_matrix = Maths::createViewMatrix(Application::s_camera);
+	loadMatrix(m_locations.at(EUniformVariable::ViewMatrix), v_matrix);
+	loadMatrix(m_locations.at(EUniformVariable::InverseViewMatrix), inverse(v_matrix));
+}
+
+void TerrainShader::loadModelMatrix(const Terrain& terrain)
+{
+	// Loading transformation matrix
+	glm::vec3 position(terrain.getX(), 0, terrain.getZ());
+	glm::mat4 t_matrix = Maths::createTransformationMatrix(position, glm::vec3(0), 1);
+
+	loadMatrix(m_locations.at(EUniformVariable::TransformationMatrix), t_matrix);
+}
+
+void TerrainShader::loadMaterial(const ModelTexture& texture) const
+{
+	// Loading shine values
+	loadFloat(m_locations.at(EUniformVariable::Reflectivity), texture.getReflectivity());
+	loadFloat(m_locations.at(EUniformVariable::ShineDamper), texture.getShineDamper());
 }
