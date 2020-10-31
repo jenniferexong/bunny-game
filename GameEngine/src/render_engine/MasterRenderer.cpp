@@ -62,7 +62,7 @@ void MasterRenderer::disableCulling()
 /* Clears the window */
 void MasterRenderer::prepare()
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.f); 
+	glClearColor(0.352, 0.686, 0.807, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Set viewport to entire window 

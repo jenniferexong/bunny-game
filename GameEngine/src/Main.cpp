@@ -46,7 +46,8 @@ int main(void)
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 	if (GLEW_OK != err) {
-        abort();
+        cout << "!1" << endl;
+        //abort();
 	}
 
     // Make the application
