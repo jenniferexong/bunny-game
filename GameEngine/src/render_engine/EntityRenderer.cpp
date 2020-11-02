@@ -34,7 +34,7 @@ void EntityRenderer::prepareTexturedModel(const TexturedModel& model)
 	const Mesh mesh = model.getMesh();
 	const ModelTexture texture = model.getTexture();
 
-	if (texture.hasTransparency()) {
+	if (texture.getMaterial().has_transparency) {
 		MasterRenderer::disableCulling();
 	}
 
@@ -44,15 +44,15 @@ void EntityRenderer::prepareTexturedModel(const TexturedModel& model)
 	glEnableVertexAttribArray(eNormal);
 	glEnableVertexAttribArray(eTexture);
 	
-	m_shader->loadMaterial(texture);
+	m_shader->loadMaterial(texture.getMaterial());
 
 	// Make the shader use the texture
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture.getId());
+	glBindTexture(GL_TEXTURE_2D, texture.getTextureId());
 
 	// Make the shader use the texture
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture.getId());
+	glBindTexture(GL_TEXTURE_2D, texture.getTextureId());
 }
 
 void EntityRenderer::unbindTexturedModel()

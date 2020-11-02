@@ -4,6 +4,7 @@
 #include "Loader.h"
 
 #include <GLFW/glfw3.h>
+#include <stb_image/stb_image.h>
 
 #include <iostream>
 
@@ -43,10 +44,30 @@ Mesh Loader::loadToVao(const string& obj_file)
 
 int Loader::loadTexture(const string& file_name)
 {
-	Texture texture = Texture(file_name);
-	GLuint texture_id = texture.getId();
+	// Loading the image
+	stbi_set_flip_vertically_on_load(1); // IF UPSIDE DOWN TEXTURE, CHANGE THIS
+	int width, height, bpp; // bits per pixel
+	unsigned char* buffer = stbi_load(file_name.c_str(), &width, &height, &bpp, 4);
+
+	GLuint texture_id;
+	glGenTextures(1, &texture_id);
+	glBindTexture(GL_TEXTURE_2D, texture_id);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	if (buffer) { // if buffer contains data 
+		stbi_image_free(buffer);
+	}
+
+	printf("Loaded texture: %s, %d\n", file_name.c_str(), texture_id);
 	m_textures.push_back(&texture_id);
-	printf("t id: %d\n", texture_id);
 	return texture_id;
 }
 

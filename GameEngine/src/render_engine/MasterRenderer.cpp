@@ -18,11 +18,11 @@ MasterRenderer::MasterRenderer()
 
 	m_entity_shader = std::make_shared<DefaultShader>();
 	m_terrain_shader = std::make_shared<TerrainShader>();
-	m_entity_renderer = EntityRenderer(m_entity_shader);
-	m_terrain_renderer = TerrainRenderer(m_terrain_shader);
-
 	m_entity_shader->setUp();
 	m_terrain_shader->setUp();
+
+	m_entity_renderer = EntityRenderer(m_entity_shader);
+	m_terrain_renderer = TerrainRenderer(m_terrain_shader);
 }
 
 void MasterRenderer::render(const Light& sun)

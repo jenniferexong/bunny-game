@@ -5,11 +5,12 @@
 
 #include <iostream>
 
-#include <stb_image/stb_image.h>
+//#include <stb_image/stb_image.h>
 
 /**
 	Constructor
 */
+/*
 Texture::Texture(const std::string& file_name) : m_id(0), m_file_name(file_name), 
 	m_local_buffer(nullptr), m_width(0), m_height(0), m_bpp(0)
 {
@@ -35,3 +36,4 @@ Texture::Texture(const std::string& file_name) : m_id(0), m_file_name(file_name)
 
 	printf("Loaded texture: %s, %d\n", file_name.c_str(), m_id);
 }
+*/

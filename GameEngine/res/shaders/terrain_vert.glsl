@@ -37,7 +37,7 @@ void main() {
     v_out.color = vec3(0, 1, 0);
     v_out.cameraPosition = vec3(uInverseViewMatrix * vec4(0, 0, 0, 1));
 
-    v_out.textureCoords = aTextureCoords * 40.0;
+    v_out.textureCoords = aTextureCoords;
 
     // fog calculations
     float distance = length(positionRelativeToCamera.xyz);

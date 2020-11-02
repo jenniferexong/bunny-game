@@ -14,7 +14,7 @@
 
 struct CompareTexturedModel {
 	bool operator()(const TexturedModel& a, const TexturedModel& b) const {
-		return a.getTexture().getId() < b.getTexture().getId();
+		return a.getTexture().getTextureId() < b.getTexture().getTextureId();
 	}
 };
 

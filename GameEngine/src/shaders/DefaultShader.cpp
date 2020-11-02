@@ -59,12 +59,12 @@ void DefaultShader::loadModelMatrix(const Entity& entity) const
 	loadMatrix(m_locations.at(EUniformVariable::TransformationMatrix), t_matrix);
 }
 
-void DefaultShader::loadMaterial(const ModelTexture& texture) const
+void DefaultShader::loadMaterial(const Material& material) const
 {
 	// Loading shine values
-	loadFloat(m_locations.at(EUniformVariable::Reflectivity), texture.getReflectivity());
-	loadFloat(m_locations.at(EUniformVariable::ShineDamper), texture.getShineDamper());
-	loadBoolean(m_locations.at(EUniformVariable::FakeLighting), texture.usesFakeLighting());
+	loadFloat(m_locations.at(EUniformVariable::Reflectivity), material.reflectivity);
+	loadFloat(m_locations.at(EUniformVariable::ShineDamper), material.shine_damper);
+	loadBoolean(m_locations.at(EUniformVariable::FakeLighting), material.uses_fake_lighting);
 }
 
 /*

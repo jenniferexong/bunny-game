@@ -26,6 +26,7 @@ protected:
 	// Loading uniform variables
 	void loadFloat(int location, float value) const;
 	void loadBoolean(int location, bool value) const;
+	void loadInt(int location, int value) const;
 	void loadVector(int location, glm::vec3 value) const;
 	void loadMatrix(int location, glm::mat4 matrix) const;
 	void loadVectors(int location, std::vector<glm::vec3>& vectors) const;

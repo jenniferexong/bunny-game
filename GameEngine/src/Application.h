@@ -14,6 +14,9 @@
 #include "render_engine/Scene.h"
 #include "render_engine/Loader.h"
 #include "shaders/DefaultShader.h"
+#include "models/Texture.h"
+
+using std::string;
 
 class Application {
 private:
@@ -39,8 +42,8 @@ public:
 	void render();
 
 	void makeTest();
-	std::shared_ptr<TexturedModel> makeModel(const std::string& obj_file,
-		const std::string& texture_file, bool transparency, bool fake_lighting);
+	std::shared_ptr<TexturedModel> makeModel(const string& obj_file, const string& texture_file, const Material& material);
+	std::shared_ptr<TerrainTexturePack> makeTexturePack(const string& base, const string& red, const string& green, const string& blue);
 
     void keyCallback(int key, int scancode, int action, int mods);
     void mouseButtonCallback(int button, int action, int mods);

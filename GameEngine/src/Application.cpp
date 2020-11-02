@@ -49,37 +49,50 @@ void Application::makeTest()
 {
 	//TODO: Make files that you can read material properties from, and position, scale, rotation...
 
-	ModelTexture ground = ModelTexture(s_loader.loadTexture("res/textures/ground.png"));
-	m_terrain_1 = Terrain(0, -1, ground);
-	m_terrain_2 = Terrain(-1, -1, ground);
+	std::shared_ptr<TerrainTexturePack> texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
+	Texture blend_map = Texture(s_loader.loadTexture("res/textures/blend-map1"));
+	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
+	m_terrain_1 = Terrain(0, -1, ground_texture);
+	m_terrain_2 = Terrain(-1, -1, ground_texture);
 
-	shared_ptr<TexturedModel> teapot_model = makeModel("teapot", "test", false, false);
-	teapot_model->setShineValues(1.f, 10.f);
+	Material teapot_material = Material(1.f, 10.f);
+	shared_ptr<TexturedModel> teapot_model = makeModel("teapot", "test", teapot_material);
 
 	Entity teapot = Entity(teapot_model);
 	teapot.setPosition(0, 0, -20);
 	teapot.setScale(1);
-	scene.push_back(teapot);
+	//scene.push_back(teapot);
 
-	shared_ptr<TexturedModel> grass_model = makeModel("grass-model", "grass-texture", true, true);
+	Material grass_material = Material(true, true);
+	shared_ptr<TexturedModel> grass_model = makeModel("grass-model", "grass-texture", grass_material);
 
 	// Making grass
-	for (int i = 0; i < 50; i++) {
+	for (int i = 0; i < 100; i++) {
 		Entity grass = Entity(grass_model);
-		grass.setPosition(glm::linearRand(-30.f, 30.f), 0, glm::linearRand(-50.f, 0.f));
+		grass.setPosition(glm::linearRand(-80.f, 80.f), 0, glm::linearRand(-80.f, 80.f));
 		scene.push_back(grass);
 	}
 }
 
-shared_ptr<TexturedModel> Application::makeModel(const std::string& obj_name,
-	const std::string& texture_name, bool transparency, bool fake_lighting)
+shared_ptr<TerrainTexturePack> Application::makeTexturePack(const string& base, const string& red,
+	const string &green, const string& blue)
+{
+	string prefix("res/textures/");
+	Texture base_texture = Texture(s_loader.loadTexture(prefix + base + ".png"));
+	Texture red_texture = Texture(s_loader.loadTexture(prefix + red + ".png"));
+	Texture green_texture = Texture(s_loader.loadTexture(prefix + green + ".png"));
+	Texture blue_texture = Texture(s_loader.loadTexture(prefix + blue + ".png"));
+
+	return make_shared<TerrainTexturePack>(base_texture, red_texture, green_texture, blue_texture);
+}
+
+shared_ptr<TexturedModel> Application::makeModel(const string& obj_name,
+	const string& texture_name, const Material& material)
 {
 	string obj_prefix("res/objects/");
 	string texture_prefix("res/textures/");
 	Mesh mesh = s_loader.loadToVao(obj_prefix + obj_name + ".obj");
-	ModelTexture texture(s_loader.loadTexture(texture_prefix + texture_name + ".png"));
-	texture.setTransparent(transparency);
-	texture.setFakeLighting(fake_lighting);
+	ModelTexture texture(s_loader.loadTexture(texture_prefix + texture_name + ".png"), material);
 	return make_shared<TexturedModel>(mesh, texture);
 }
 

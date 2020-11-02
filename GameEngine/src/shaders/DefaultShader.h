@@ -7,6 +7,7 @@
 #include "../objects/Entity.h"
 #include "../objects/Light.h"
 #include "../models/Texture.h"
+#include "../models/Material.h"
 
 class DefaultShader : public Shader {
 private:
@@ -28,7 +29,7 @@ public:
 	virtual void setUp();
 	void loadUniformPerFrame(const Light& light) const;
 	void loadModelMatrix(const Entity& entity) const;
-	void loadMaterial(const ModelTexture& texture) const;
+	void loadMaterial(const Material& material) const;
 
 	/*
 	void loadViewProjection() const;

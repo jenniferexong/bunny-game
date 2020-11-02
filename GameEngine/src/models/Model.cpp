@@ -24,7 +24,7 @@ void TexturedModel::render(std::shared_ptr<Shader> shader) const {
 	
 	// Make the shader use the texture
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_texture.getId());
+	glBindTexture(GL_TEXTURE_2D, m_texture.getTextureId());
 
 	glDrawElements(GL_TRIANGLES, m_mesh.getVertexCount(), GL_UNSIGNED_INT, 0);
 	glDisableVertexAttribArray(ePosition);
@@ -32,7 +32,3 @@ void TexturedModel::render(std::shared_ptr<Shader> shader) const {
 	glBindVertexArray(0); // unbind 
 }
 
-void TexturedModel::setShineValues(float reflectivity, float damper) {
-	m_texture.setReflectivity(reflectivity);
-	m_texture.setShineDamper(damper);
-}

@@ -10,7 +10,7 @@ using std::vector;
 const float Terrain::s_size = 800.f;
 const int Terrain::s_vertex_count = 128;
 
-Terrain::Terrain(int grid_x, int grid_z, ModelTexture texture)
+Terrain::Terrain(int grid_x, int grid_z, TerrainTexture texture)
 	: m_x(grid_x* s_size), m_z(grid_z* s_size), m_texture(texture)
 {
 	m_mesh = generate();

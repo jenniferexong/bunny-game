@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../models/Mesh.h"
-#include "../models/texture.h"
+#include "../models/Texture.h"
 
 class Terrain {
 private:
@@ -10,16 +10,16 @@ private:
 	
 	float m_x, m_z;
 	Mesh m_mesh;
-	ModelTexture m_texture;
+	TerrainTexture m_texture;
 
 	Mesh generate();
 
 public:
 	Terrain() {}
-	Terrain(int grid_x, int grid_z, ModelTexture texture);
+	Terrain(int grid_x, int grid_z, TerrainTexture texture);
 
 	inline float getX() const { return m_x; }
 	inline float getZ() const { return m_z; }
 	inline Mesh getMesh() const { return m_mesh; }
-	inline ModelTexture getTexture() const { return m_texture; }
+	inline TerrainTexture getTexture() const { return m_texture; }
 };

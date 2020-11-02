@@ -86,6 +86,11 @@ void Shader::loadFloat(int location, float value) const
 	glUniform1f(location, value);
 }
 
+void Shader::loadInt(int location, int value) const
+{
+	glUniform1i(location, value);
+}
+
 void Shader::loadBoolean(int location, bool value) const
 {
 	// No booleans in glsl, so represent with int of 1 or 0

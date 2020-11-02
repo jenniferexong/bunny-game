@@ -5,12 +5,14 @@
 #include "Shader.h"
 #include "../objects/Terrain.h"
 #include "../objects/Light.h"
+#include "../models/Material.h"
 
 class TerrainShader : public Shader {
 private:
 	enum class EUniformVariable {
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
-		LightPosition, LightColor, Reflectivity, ShineDamper, SkyColor
+		LightPosition, LightColor, Reflectivity, ShineDamper, SkyColor,
+		BaseTexture, RedTexture, GreenTexture, BlueTexture, BlendMap
 	};
 
 	static const std::string s_vertex_file;
@@ -25,11 +27,7 @@ protected:
 public:
 	virtual void setUp();
 	void loadUniformPerFrame(const Light& light) const;
-	void loadMaterial(const ModelTexture& texture) const;
+	void loadMaterial(const Material& material) const;
 	void loadModelMatrix(const Terrain& terrain) const;
-
-	/*
-	void loadViewProjection() const;
-	void loadLight(const Light& light) const;
-	*/
+	void connectTextureUnits() const;
 };

@@ -1,7 +1,11 @@
 #version 330 core
 
-// Uniform data
-uniform sampler2D textureSampler;
+// Textures
+uniform sampler2D uBaseTexture;
+uniform sampler2D uRedTexture;
+uniform sampler2D uBlueTexture;
+uniform sampler2D uGreenTexture;
+uniform sampler2D uBlendMap;
 
 uniform vec3 uLightColor;
 uniform vec3 uLightPosition;
@@ -21,6 +25,16 @@ in VertexData {
 out vec4 outColor;
 
 void main() {
+    // Get the blend map colour
+    vec4 blendMapValue = texture(uBlendMap, f_in.textureCoords);
+    float blackAmount = 1 - (blendMapValue.r + blendMapValue.g + blendMapValue.b);
+    vec2 tiledCoords = f_in.textureCoords * 40.0;
+    vec4 blackTexture = texture(uBaseTexture, tiledCoords) * blackAmount;
+    vec4 redTexture = texture(uRedTexture, tiledCoords) * blendMapValue.r;
+    vec4 greenTexture = texture(uGreenTexture, tiledCoords) * blendMapValue.g;
+    vec4 blueTexture = texture(uBaseTexture, tiledCoords) * blendMapValue.b;
+    vec4 totalColor = blackTexture + redTexture + greenTexture + blueTexture;
+
     // Phong shading
     float ambientStrength = 0.5;
     vec3 ambient = ambientStrength * uLightColor;
@@ -36,7 +50,7 @@ void main() {
     float spec = pow(max(dot(toCamera, reflectDir), 0.0), uShineDamper);
     vec3 specular = uReflectivity * spec * uLightColor;
 
-    vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * texture(textureSampler, f_in.textureCoords));
+    vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * totalColor);
     //vec3 result = (ambient + diffuse + specular) * f_in.color;
     outColor = mix(vec4(uSkyColor, 1.0), vec4(result, 1.0), f_in.visibility);  // mix with sky colour depending on visibility
 }

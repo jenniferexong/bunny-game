@@ -3,6 +3,7 @@
 
 #include "../Maths.h"
 #include "../Application.h"
+#include "../AttributeLocation.h"
 
 const std::string TerrainShader::s_vertex_file = "res/shaders/terrain_vert.glsl";
 const std::string TerrainShader::s_fragment_file = "res/shaders/terrain_frag.glsl";
@@ -21,6 +22,7 @@ void TerrainShader::bindAttributes()
 
 void TerrainShader::getAllUniformLocations()
 {
+	printf("loading locations into map\n");
 	m_locations.insert({ EUniformVariable::TransformationMatrix, getUniformLocation("uTransformationMatrix") });
 	m_locations.insert({ EUniformVariable::ProjectionMatrix, getUniformLocation("uProjectionMatrix") });
 	m_locations.insert({ EUniformVariable::ViewMatrix, getUniformLocation("uViewMatrix") });
@@ -30,6 +32,12 @@ void TerrainShader::getAllUniformLocations()
 	m_locations.insert({ EUniformVariable::Reflectivity, getUniformLocation("uReflectivity") });
 	m_locations.insert({ EUniformVariable::ShineDamper, getUniformLocation("uShineDamper") });
 	m_locations.insert({ EUniformVariable::SkyColor, getUniformLocation("uSkyColor") });
+	m_locations.insert({ EUniformVariable::BaseTexture, getUniformLocation("uBaseTexture") });
+	m_locations.insert({ EUniformVariable::RedTexture, getUniformLocation("uRedTexture") });
+	m_locations.insert({ EUniformVariable::GreenTexture, getUniformLocation("uGreenTexture") });
+	m_locations.insert({ EUniformVariable::BlueTexture, getUniformLocation("uBlueTexture") });
+	m_locations.insert({ EUniformVariable::BlendMap, getUniformLocation("uBlendMap") });
+	printf("size: %d\n", m_locations.size());
 }
 
 void TerrainShader::loadUniformPerFrame(const Light& light) const
@@ -59,11 +67,20 @@ void TerrainShader::loadModelMatrix(const Terrain& terrain) const
 	loadMatrix(m_locations.at(EUniformVariable::TransformationMatrix), t_matrix);
 }
 
-void TerrainShader::loadMaterial(const ModelTexture& texture) const
+void TerrainShader::loadMaterial(const Material& material) const
 {
 	// Loading shine values
-	loadFloat(m_locations.at(EUniformVariable::Reflectivity), texture.getReflectivity());
-	loadFloat(m_locations.at(EUniformVariable::ShineDamper), texture.getShineDamper());
+	loadFloat(m_locations.at(EUniformVariable::Reflectivity), material.reflectivity);
+	loadFloat(m_locations.at(EUniformVariable::ShineDamper), material.shine_damper);
+}
+
+void TerrainShader::connectTextureUnits() const
+{
+	loadInt(m_locations.at(EUniformVariable::BaseTexture), eBase);
+	loadInt(m_locations.at(EUniformVariable::RedTexture), eRed);
+	loadInt(m_locations.at(EUniformVariable::GreenTexture), eGreen);
+	loadInt(m_locations.at(EUniformVariable::BlueTexture), eBlue);
+	loadInt(m_locations.at(EUniformVariable::BlendMap), eBlendMap);
 }
 
 /*
