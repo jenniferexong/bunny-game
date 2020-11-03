@@ -31,7 +31,7 @@ private:
 	Terrain _terrain_2;
 
 public:
-	enum class Key { W, A, S, D, Q, E };
+	enum class Key { W, A, S, D, Q, E, Space };
 
 	static GLFWwindow* window;
 	static Camera camera;

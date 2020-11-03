@@ -10,9 +10,16 @@ class Player final: public Entity {
 private:
 	static const float run_speed;
 	static const float turn_speed;
+	static const float gravity;
+	static const float jump_power;
+	static const float terrain_height;
 
 	float _current_speed = 0;
 	float _current_turn_speed = 0;
+	float _up_velocity = 0;
+
+	void jump();
+	void fall();
 
 public:
 	Player() = default;

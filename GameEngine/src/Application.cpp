@@ -20,7 +20,6 @@ Loader Application::loader = Loader();
 vec3 Application::sky_color = vec3(0.039, 0.184, 0.243);
 
 // Time keeping
-int Application::fps_cap = 120;
 long long Application::previous_frame_time = Application::getCurrentTime();
 float Application::frame_delta = 0;
 
@@ -62,9 +61,10 @@ void Application::render() {
 void Application::makeTest()
 {
 	//TODO: Make files that you can read material properties from, and position, scale, rotation...
-	Material white = Material();
+
+	Material white = Material(1.f, 10.f);
 	auto player_model = makeModel("bunny", "white", white);
-	_player = Player(player_model, vec3(150.f, 0, -20), vec3(0), 1);
+	_player = Player(player_model, vec3(150.f, 0, -20), vec3(-90, 0, 0), 1);
 
 	auto texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
 	Texture blend_map = Texture(loader.loadTexture("res/textures/terrain1.png"));
@@ -163,6 +163,13 @@ void Application::keyCallback(int key, int scan_code, int action, int mods)
 			move_keys[Key::E] = true;
 		} else if(action == GLFW_RELEASE) {
 			move_keys[Key::E] = false;
+		}
+		break;
+	case GLFW_KEY_SPACE: 
+		if (action == GLFW_PRESS) {
+			move_keys[Key::Space] = true;
+		} else if(action == GLFW_RELEASE) {
+			move_keys[Key::Space] = false;
 		}
 		break;
 	default:
