@@ -5,21 +5,21 @@
 
 class Terrain {
 private:
-	static const float s_size;
-	static const int s_vertex_count;
+	static const float size;
+	static const int vertex_count;
 	
-	float m_x, m_z;
-	Mesh m_mesh;
-	TerrainTexture m_texture;
+	float _x, _z;
+	Mesh _mesh;
+	TerrainTexture _texture;
 
 	Mesh generate();
 
 public:
-	Terrain() : m_x(0), m_z(0) {}
+	Terrain() : _x(0), _z(0) {}
 	Terrain(int grid_x, int grid_z, TerrainTexture texture);
 
-	float getX() const { return m_x; }
-	float getZ() const { return m_z; }
-	Mesh getMesh() const { return m_mesh; }
-	TerrainTexture getTexture() const { return m_texture; }
+	float getX() const { return _x; }
+	float getZ() const { return _z; }
+	Mesh getMesh() const { return _mesh; }
+	TerrainTexture getTexture() const { return _texture; }
 };

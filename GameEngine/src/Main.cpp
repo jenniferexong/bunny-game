@@ -29,8 +29,8 @@ int main(void)
     if (!glfwInit())
         return -1;
 
-    Application::s_window = glfwCreateWindow(1280, 720, "", NULL, NULL);
-    GLFWwindow* window = Application::s_window;
+    Application::window = glfwCreateWindow(1280, 720, "", NULL, NULL);
+    GLFWwindow* window = Application::window;
 
     if (!window) {
         glfwTerminate();

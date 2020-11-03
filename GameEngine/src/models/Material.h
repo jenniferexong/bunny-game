@@ -7,7 +7,7 @@ struct Material {
 	bool uses_fake_lighting = false;
 
 	// Default
-	Material() {}
+	Material() = default; 
 
 	Material(float r, float s, bool transparency, bool fake_lighting) 
 		: reflectivity(r), shine_damper(s), has_transparency(transparency), uses_fake_lighting(fake_lighting) {}

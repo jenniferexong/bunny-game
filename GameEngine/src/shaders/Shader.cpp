@@ -15,14 +15,14 @@ using std::string;
 /* Must call this after constructing the shader */
 void Shader::setUp(const string& vert_file, const std::string& frag_file)
 {
-	m_vert_id = loadShader(vert_file, GL_VERTEX_SHADER);
-	m_frag_id = loadShader(frag_file, GL_FRAGMENT_SHADER);
-	m_program_id = glCreateProgram();
-	glAttachShader(m_program_id, m_vert_id);
-	glAttachShader(m_program_id, m_frag_id);
+	_vert_id = loadShader(vert_file, GL_VERTEX_SHADER);
+	_frag_id = loadShader(frag_file, GL_FRAGMENT_SHADER);
+	_program_id = glCreateProgram();
+	glAttachShader(_program_id, _vert_id);
+	glAttachShader(_program_id, _frag_id);
 	bindAttributes();
-	glLinkProgram(m_program_id);
-	glValidateProgram(m_program_id);
+	glLinkProgram(_program_id);
+	glValidateProgram(_program_id);
 	getAllUniformLocations();
 }
 
@@ -73,12 +73,12 @@ int Shader::loadShader(const string& file_name, int type)
 
 void Shader::bindAttribute(int attribute, const string& variable)
 {
-	glBindAttribLocation(m_program_id, attribute, variable.c_str());
+	glBindAttribLocation(_program_id, attribute, variable.c_str());
 }
 
 int Shader::getUniformLocation(const string& uniform_name)
 {
-	return glGetUniformLocation(m_program_id, uniform_name.c_str());
+	return glGetUniformLocation(_program_id, uniform_name.c_str());
 }
 
 void Shader::loadFloat(int location, float value) const
@@ -121,7 +121,7 @@ void Shader::loadMatrices(int location, std::vector<glm::mat4>& matrices) const
 
 void Shader::start() const
 {
-	glUseProgram(m_program_id);
+	glUseProgram(_program_id);
 }
 
 void Shader::stop() const
@@ -132,9 +132,9 @@ void Shader::stop() const
 Shader::~Shader()
 {
 	stop();
-	glDetachShader(m_program_id, m_vert_id);
-	glDetachShader(m_program_id, m_frag_id);
-	glDeleteShader(m_vert_id);
-	glDeleteShader(m_frag_id);
-	glDeleteProgram(m_program_id);
+	glDetachShader(_program_id, _vert_id);
+	glDetachShader(_program_id, _frag_id);
+	glDeleteShader(_vert_id);
+	glDeleteShader(_frag_id);
+	glDeleteProgram(_program_id);
 }

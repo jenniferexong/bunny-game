@@ -5,19 +5,19 @@
 
 class MasterRenderer {
 private:
-	std::shared_ptr<DefaultShader> m_entity_shader;
-	std::shared_ptr<TerrainShader> m_terrain_shader;
-	EntityRenderer m_entity_renderer;
-	TerrainRenderer m_terrain_renderer;
+	std::shared_ptr<DefaultShader> _entity_shader;
+	std::shared_ptr<TerrainShader> _terrain_shader;
+	EntityRenderer _entity_renderer;
+	TerrainRenderer _terrain_renderer;
 
-	std::map<TexturedModel, std::vector<Entity>, CompareTexturedModel> m_entities;
-	std::vector<Terrain> m_terrains;
+	std::map<TexturedModel, std::vector<Entity>, CompareTexturedModel> _entities;
+	std::vector<Terrain> _terrains;
 
 public:
-	static glm::mat4 s_projection_matrix;
-	static const float s_fov;
-	static const float s_near_plane;
-	static const float s_far_plane;
+	static glm::mat4 projection_matrix;
+	static const float fov;
+	static const float near_plane;
+	static const float far_plane;
 
 	MasterRenderer();
 	void prepare();

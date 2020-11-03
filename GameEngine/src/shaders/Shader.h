@@ -9,9 +9,9 @@
 class Shader {
 
 private:
-	int m_program_id;
-	int m_vert_id;
-	int m_frag_id;
+	int _program_id;
+	int _vert_id;
+	int _frag_id;
 
 	static int loadShader(const std::string& file_name, int type);
 
@@ -33,7 +33,7 @@ protected:
 
 public:
 	//Shader(const std::string& vert_file, const std::string& frag_file); // constructor
-	Shader() : m_program_id(0), m_vert_id(0), m_frag_id(0) {}
+	Shader() : _program_id(0), _vert_id(0), _frag_id(0) {}
 	virtual ~Shader();
 
 	void setUp(const std::string& vert_file, const std::string& frag_file);

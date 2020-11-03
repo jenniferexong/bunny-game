@@ -15,10 +15,10 @@ private:
 		LightPosition, LightColor, Reflectivity, ShineDamper, FakeLighting, SkyColor
 	};
 
-	static const std::string s_vertex_file;
-	static const std::string s_fragment_file;
+	static const std::string vertex_file;
+	static const std::string fragment_file;
 
-	std::map<UniformVariable, int> m_locations;
+	std::map<UniformVariable, int> _locations;
 
 protected:
 	void bindAttributes() override;
@@ -29,9 +29,4 @@ public:
 	void loadUniformPerFrame(const Light& light) const;
 	void loadModelMatrix(const Entity& entity) const;
 	void loadMaterial(const Material& material) const;
-
-	/*
-	void loadViewProjection() const;
-	void loadLight(const Light& light) const;
-	*/
 };

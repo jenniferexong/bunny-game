@@ -7,7 +7,7 @@
 #include "../objects/Light.h"
 #include "../models/Material.h"
 
-class TerrainShader : public Shader {
+class TerrainShader final : public Shader {
 private:
 	enum class UniformVariable {
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
@@ -15,10 +15,10 @@ private:
 		BaseTexture, RedTexture, GreenTexture, BlueTexture, BlendMap
 	};
 
-	static const std::string s_vertex_file;
-	static const std::string s_fragment_file;
+	static const std::string vertex_file;
+	static const std::string fragment_file;
 
-	std::map<UniformVariable, int> m_locations;
+	std::map<UniformVariable, int> _locations;
 
 protected:
 	void bindAttributes() override;

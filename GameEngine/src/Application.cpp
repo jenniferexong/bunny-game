@@ -12,37 +12,37 @@ using namespace glm;
 using namespace std;
 
 /* Static variables */
-GLFWwindow* Application::s_window = nullptr;
-Camera Application::s_camera = Camera();
-Light Application::s_sun = Light(glm::vec3(0.f, 100.f, 1000.f), glm::vec3(1.f));
-Loader Application::s_loader = Loader();
-vec3 Application::s_sky_color = vec3(0.352f, 0.686f, 0.807f);
+GLFWwindow* Application::window = nullptr;
+Camera Application::camera = Camera();
+Light Application::sun = Light(glm::vec3(0.f, 100.f, 1000.f), glm::vec3(1.f));
+Loader Application::loader = Loader();
+vec3 Application::sky_color = vec3(0.352f, 0.686f, 0.807f);
 
-map<char, bool> Application::s_move_keys = {
-	{'w', false}, {'a', false}, {'s', false}, {'d', false}, {'q', false}, {'e', false}
+map<Application::Key, bool> Application::move_keys = {
+	{Key::W, false}, {Key::A, false}, {Key::S, false}, {Key::D, false}, {Key::Q, false}, {Key::E, false}
 };
 
 /**
-	Method to render everything in the scene.
+	Method to render everything in the _scene.
 	Player position may be updated so need to change the view transform
 */
 void Application::render() {
 	// animate
-	//m_entity.move(0, 0, -0.1f);
+	//_entity.move(0, 0, -0.1f);
 
 	//e.rotate(0.1f, 0, 0);
 
-	s_camera.updatePosition();
+	camera.updatePosition();
 
 	// Process all entities
-	for (Entity e: scene) {
-		m_renderer.processEntity(e);
+	for (Entity e: _scene) {
+		_renderer.processEntity(e);
 	}
 
-	m_renderer.processTerrain(m_terrain_1);
-	m_renderer.processTerrain(m_terrain_2);
+	_renderer.processTerrain(_terrain_1);
+	_renderer.processTerrain(_terrain_2);
 
-	m_renderer.render(s_sun);
+	_renderer.render(sun);
 }
 
 void Application::makeTest()
@@ -50,10 +50,10 @@ void Application::makeTest()
 	//TODO: Make files that you can read material properties from, and position, scale, rotation...
 
 	auto texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
-	Texture blend_map = Texture(s_loader.loadTexture("res/textures/blend-map1"));
+	Texture blend_map = Texture(loader.loadTexture("res/textures/blend-map1"));
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
-	m_terrain_1 = Terrain(0, -1, ground_texture);
-	m_terrain_2 = Terrain(-1, -1, ground_texture);
+	_terrain_1 = Terrain(0, -1, ground_texture);
+	_terrain_2 = Terrain(-1, -1, ground_texture);
 
 	Material teapot_material = Material(1.f, 10.f);
 	shared_ptr<TexturedModel> teapot_model = makeModel("teapot", "test", teapot_material);
@@ -61,7 +61,7 @@ void Application::makeTest()
 	Entity teapot = Entity(teapot_model);
 	teapot.setPosition(0, 0, -20);
 	teapot.setScale(1);
-	//scene.push_back(teapot);
+	//_scene.push_back(teapot);
 
 	Material grass_material = Material(true, true);
 	shared_ptr<TexturedModel> grass_model = makeModel("grass-model", "grass-texture", grass_material);
@@ -70,7 +70,7 @@ void Application::makeTest()
 	for (int i = 0; i < 100; i++) {
 		Entity grass = Entity(grass_model);
 		grass.setPosition(linearRand(-80.f, 80.f), 0, linearRand(-80.f, 80.f));
-		//scene.push_back(grass);
+		//_scene.push_back(grass);
 	}
 }
 
@@ -78,10 +78,10 @@ shared_ptr<TerrainTexturePack> Application::makeTexturePack(const string& base, 
 	const string &green, const string& blue) const
 {
 	const string prefix("res/textures/");
-	Texture base_texture = Texture(s_loader.loadTexture(prefix + base + ".png"));
-	Texture red_texture = Texture(s_loader.loadTexture(prefix + red + ".png"));
-	Texture green_texture = Texture(s_loader.loadTexture(prefix + green + ".png"));
-	Texture blue_texture = Texture(s_loader.loadTexture(prefix + blue + ".png"));
+	Texture base_texture = Texture(loader.loadTexture(prefix + base + ".png"));
+	Texture red_texture = Texture(loader.loadTexture(prefix + red + ".png"));
+	Texture green_texture = Texture(loader.loadTexture(prefix + green + ".png"));
+	Texture blue_texture = Texture(loader.loadTexture(prefix + blue + ".png"));
 
 	return make_shared<TerrainTexturePack>(base_texture, red_texture, green_texture, blue_texture);
 }
@@ -91,8 +91,8 @@ shared_ptr<TexturedModel> Application::makeModel(const string& obj_name,
 {
 	const string obj_prefix("res/objects/");
 	const string texture_prefix("res/textures/");
-	Mesh mesh = s_loader.loadToVao(obj_prefix + obj_name + ".obj");
-	ModelTexture texture(s_loader.loadTexture(texture_prefix + texture_name + ".png"), material);
+	Mesh mesh = loader.loadToVao(obj_prefix + obj_name + ".obj");
+	ModelTexture texture(loader.loadTexture(texture_prefix + texture_name + ".png"), material);
 	return make_shared<TexturedModel>(mesh, texture);
 }
 
@@ -101,44 +101,44 @@ void Application::keyCallback(int key, int scan_code, int action, int mods)
 	switch (key) {
 	case GLFW_KEY_W: 
 		if (action == GLFW_PRESS) {
-			s_move_keys['w'] = true;
+			move_keys[Key::W] = true;
 		} else if(action == GLFW_RELEASE) {
-			s_move_keys['w'] = false;
+			move_keys[Key::W] = false;
 		}
 		break;
 	case GLFW_KEY_A: 
 		if (action == GLFW_PRESS) {
-			s_move_keys['a'] = true;
+			move_keys[Key::A] = true;
 		} else if(action == GLFW_RELEASE) {
-			s_move_keys['a'] = false;
+			move_keys[Key::A] = false;
 		}
 		break;
 	case GLFW_KEY_S: 
 		if (action == GLFW_PRESS) {
-			s_move_keys['s'] = true;
+			move_keys[Key::S] = true;
 		} else if(action == GLFW_RELEASE) {
-			s_move_keys['s'] = false;
+			move_keys[Key::S] = false;
 		}
 		break;
 	case GLFW_KEY_D: 
 		if (action == GLFW_PRESS) {
-			s_move_keys['d'] = true;
+			move_keys[Key::D] = true;
 		} else if(action == GLFW_RELEASE) {
-			s_move_keys['d'] = false;
+			move_keys[Key::D] = false;
 		}
 		break;
 	case GLFW_KEY_Q: 
 		if (action == GLFW_PRESS) {
-			s_move_keys['q'] = true;
+			move_keys[Key::Q] = true;
 		} else if(action == GLFW_RELEASE) {
-			s_move_keys['q'] = false;
+			move_keys[Key::Q] = false;
 		}
 		break;
 	case GLFW_KEY_E: 
 		if (action == GLFW_PRESS) {
-			s_move_keys['e'] = true;
+			move_keys[Key::E] = true;
 		} else if(action == GLFW_RELEASE) {
-			s_move_keys['e'] = false;
+			move_keys[Key::E] = false;
 		}
 		break;
 	default:

@@ -21,21 +21,23 @@ class Application {
 private:
 	//std::shared_ptr<Player> m_player;
 
-	//Scene m_scene; //Have a scene
-	MasterRenderer m_renderer;
+	//Scene m_scene; //Have a _scene
+	MasterRenderer _renderer;
 
-	std::vector<Entity> scene;
-	Entity m_entity;
-	Terrain m_terrain_1;
-	Terrain m_terrain_2;
+	std::vector<Entity> _scene;
+	Entity _entity;
+	Terrain _terrain_1;
+	Terrain _terrain_2;
 
 public:
-	static GLFWwindow* s_window;
-	static Camera s_camera;
-	static std::map<char, bool> s_move_keys; 
-	static Light s_sun;
-	static Loader s_loader;
-	static vec3 s_sky_color;
+	enum class Key { W, A, S, D, Q, E };
+
+	static GLFWwindow* window;
+	static Camera camera;
+	static std::map<Key, bool> move_keys; 
+	static Light sun;
+	static Loader loader;
+	static vec3 sky_color;
 
 	// Rendering everything
 	void render();
