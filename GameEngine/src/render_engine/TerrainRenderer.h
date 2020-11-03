@@ -5,8 +5,6 @@
 
 #include "../shaders/TerrainShader.h"
 #include "../objects/Terrain.h"
-#include "../objects/Entity.h"
-#include "../models/Model.h"
 
 class TerrainRenderer {
 private:

@@ -2,14 +2,12 @@
 // External Libraries
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
 #include <imgui/imgui.h>
 
 // std
 #include <iostream>
 #include <memory>
 
-#include "objects/Player.h"
 #include "Application.h"
 
 using namespace std;
@@ -20,7 +18,7 @@ namespace {
     void cursorPosCallback(GLFWwindow* window, double x, double y);
     void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
     void scrollCallBack(GLFWwindow* window, double x_offset, double y_offset);
-    void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+    void keyCallback(GLFWwindow* window, int key, int scan_code, int action, int mods);
 
     Application* application_ptr = nullptr;
 }
@@ -97,9 +95,9 @@ namespace {
         application_ptr->scrollCallBack(x_offset, y_offset);
     }
 
-    void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+    void keyCallback(GLFWwindow* window, int key, int scan_code, int action, int mods)
     {
-        application_ptr->keyCallback(key, scancode, action, mods);
+        application_ptr->keyCallback(key, scan_code, action, mods);
     }
 }
 

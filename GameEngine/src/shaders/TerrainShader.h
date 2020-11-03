@@ -9,7 +9,7 @@
 
 class TerrainShader : public Shader {
 private:
-	enum class EUniformVariable {
+	enum class UniformVariable {
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
 		LightPosition, LightColor, Reflectivity, ShineDamper, SkyColor,
 		BaseTexture, RedTexture, GreenTexture, BlueTexture, BlendMap
@@ -18,14 +18,14 @@ private:
 	static const std::string s_vertex_file;
 	static const std::string s_fragment_file;
 
-	std::map<EUniformVariable, int> m_locations;
+	std::map<UniformVariable, int> m_locations;
 
 protected:
-	virtual void bindAttributes();
-	virtual void getAllUniformLocations();
+	void bindAttributes() override;
+	void getAllUniformLocations() override;
 
 public:
-	virtual void setUp();
+	void setUp() override;
 	void loadUniformPerFrame(const Light& light) const;
 	void loadMaterial(const Material& material) const;
 	void loadModelMatrix(const Terrain& terrain) const;

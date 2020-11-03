@@ -4,7 +4,6 @@
 #include <vector>
 
 #include "../Maths.h"
-#include "../AttributeLocation.h"
 
 // Abstract class for generic shaders
 class Shader {
@@ -27,19 +26,19 @@ protected:
 	void loadFloat(int location, float value) const;
 	void loadBoolean(int location, bool value) const;
 	void loadInt(int location, int value) const;
-	void loadVector(int location, glm::vec3 value) const;
+	void loadVector(int location, vec3 vector) const;
 	void loadMatrix(int location, glm::mat4 matrix) const;
-	void loadVectors(int location, std::vector<glm::vec3>& vectors) const;
+	void loadVectors(int location, std::vector<vec3>& vectors) const;
 	void loadMatrices(int location, std::vector<glm::mat4>& matrices) const;
 
 public:
 	//Shader(const std::string& vert_file, const std::string& frag_file); // constructor
 	Shader() : m_program_id(0), m_vert_id(0), m_frag_id(0) {}
-	~Shader();
+	virtual ~Shader();
 
 	void setUp(const std::string& vert_file, const std::string& frag_file);
 	virtual void setUp() = 0;
 
-	void start();
-	void stop();
+	void start() const;
+	void stop() const;
 };

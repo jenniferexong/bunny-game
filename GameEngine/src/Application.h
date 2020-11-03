@@ -11,7 +11,6 @@
 #include "objects/Camera.h"
 #include "objects/Light.h"
 #include "render_engine/MasterRenderer.h"
-#include "render_engine/Scene.h"
 #include "render_engine/Loader.h"
 #include "shaders/DefaultShader.h"
 #include "models/Texture.h"
@@ -36,17 +35,17 @@ public:
 	static std::map<char, bool> s_move_keys; 
 	static Light s_sun;
 	static Loader s_loader;
-	static glm::vec3 s_sky_color;
+	static vec3 s_sky_color;
 
 	// Rendering everything
 	void render();
 
 	void makeTest();
-	std::shared_ptr<TexturedModel> makeModel(const string& obj_file, const string& texture_file, const Material& material);
-	std::shared_ptr<TerrainTexturePack> makeTexturePack(const string& base, const string& red, const string& green, const string& blue);
+	std::shared_ptr<TexturedModel> makeModel(const string& obj_name, const string& texture_name, const Material& material) const;
+	std::shared_ptr<TerrainTexturePack> makeTexturePack(const string& base, const string& red, const string& green, const string& blue) const;
 
-    void keyCallback(int key, int scancode, int action, int mods);
-    void mouseButtonCallback(int button, int action, int mods);
-    void cursorPosCallback(double x, double y);
-    void scrollCallBack(double x_offset, double y_offset);
+    static void keyCallback(int key, int scan_code, int action, int mods);
+    static void mouseButtonCallback(int button, int action, int mods);
+    static void cursorPosCallback(double x, double y);
+    static void scrollCallBack(double x_offset, double y_offset);
 };

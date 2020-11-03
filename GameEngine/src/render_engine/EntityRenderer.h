@@ -1,15 +1,11 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-#include <glm/glm.hpp>
-
 #include <memory>
 #include <map>
 #include <vector>
 
 #include "../shaders/DefaultShader.h"
 #include "../objects/Entity.h"
-#include "../objects/Light.h"
 #include "../models/Model.h"
 
 struct CompareTexturedModel {

@@ -3,12 +3,9 @@
 
 #include "EntityRenderer.h"
 
-#include <glm/gtc/matrix_transform.hpp>
-
 #include <iostream>
 
-#include "../AttributeLocation.h"
-#include "../objects/Camera.h"
+#include "../Location.h"
 #include "../Application.h"
 
 using std::cout;
@@ -40,9 +37,9 @@ void EntityRenderer::prepareTexturedModel(const TexturedModel& model)
 
 	// Render the mesh
 	glBindVertexArray(mesh.getId());
-	glEnableVertexAttribArray(ePosition);
-	glEnableVertexAttribArray(eNormal);
-	glEnableVertexAttribArray(eTexture);
+	glEnableVertexAttribArray(AttributeLocation::Position);
+	glEnableVertexAttribArray(AttributeLocation::Normal);
+	glEnableVertexAttribArray(AttributeLocation::Texture);
 	
 	m_shader->loadMaterial(texture.getMaterial());
 
@@ -50,17 +47,14 @@ void EntityRenderer::prepareTexturedModel(const TexturedModel& model)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, texture.getTextureId());
 
-	// Make the shader use the texture
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, texture.getTextureId());
 }
 
 void EntityRenderer::unbindTexturedModel()
 {
 	MasterRenderer::enableCulling();
-	glDisableVertexAttribArray(ePosition);
-	glDisableVertexAttribArray(eNormal);
-	glDisableVertexAttribArray(eTexture);
+	glDisableVertexAttribArray(AttributeLocation::Position);
+	glDisableVertexAttribArray(AttributeLocation::Normal);
+	glDisableVertexAttribArray(AttributeLocation::Texture);
 	glBindVertexArray(0); // unbind 
 }
 

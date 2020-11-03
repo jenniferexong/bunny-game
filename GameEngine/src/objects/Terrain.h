@@ -15,11 +15,11 @@ private:
 	Mesh generate();
 
 public:
-	Terrain() {}
+	Terrain() : m_x(0), m_z(0) {}
 	Terrain(int grid_x, int grid_z, TerrainTexture texture);
 
-	inline float getX() const { return m_x; }
-	inline float getZ() const { return m_z; }
-	inline Mesh getMesh() const { return m_mesh; }
-	inline TerrainTexture getTexture() const { return m_texture; }
+	float getX() const { return m_x; }
+	float getZ() const { return m_z; }
+	Mesh getMesh() const { return m_mesh; }
+	TerrainTexture getTexture() const { return m_texture; }
 };

@@ -31,9 +31,6 @@
     <ClCompile Include="src\render_engine\Loader.cpp" />
     <ClCompile Include="src\render_engine\MasterRenderer.cpp" />
     <ClCompile Include="src\render_engine\TerrainRenderer.cpp" />
-    <ClCompile Include="src\models\Model.cpp" />
-    <ClCompile Include="src\render_engine\Scene.cpp" />
-    <ClCompile Include="src\models\Texture.cpp" />
     <ClCompile Include="src\shaders\DefaultShader.cpp" />
     <ClCompile Include="src\shaders\Shader.cpp" />
     <ClCompile Include="src\shaders\TerrainShader.cpp" />
@@ -44,7 +41,7 @@
     <ClInclude Include="src\objects\Camera.h" />
     <ClInclude Include="src\render_engine\EntityRenderer.h" />
     <ClInclude Include="src\Application.h" />
-    <ClInclude Include="src\AttributeLocation.h" />
+    <ClInclude Include="src\Location.h" />
     <ClInclude Include="src\objects\Entity.h" />
     <ClInclude Include="src\objects\Light.h" />
     <ClInclude Include="src\objects\Terrain.h" />
@@ -55,7 +52,6 @@
     <ClInclude Include="src\models\Mesh.h" />
     <ClInclude Include="src\models\Model.h" />
     <ClInclude Include="src\render_engine\WavefrontData.h" />
-    <ClInclude Include="src\render_engine\Scene.h" />
     <ClInclude Include="src\models\Texture.h" />
     <ClInclude Include="src\shaders\Shader.h" />
     <ClInclude Include="src\shaders\DefaultShader.h" />

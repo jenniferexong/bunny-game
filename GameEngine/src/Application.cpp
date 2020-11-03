@@ -35,7 +35,7 @@ void Application::render() {
 	s_camera.updatePosition();
 
 	// Process all entities
-	for (Entity e : scene) {
+	for (Entity e: scene) {
 		m_renderer.processEntity(e);
 	}
 
@@ -49,7 +49,7 @@ void Application::makeTest()
 {
 	//TODO: Make files that you can read material properties from, and position, scale, rotation...
 
-	std::shared_ptr<TerrainTexturePack> texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
+	auto texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
 	Texture blend_map = Texture(s_loader.loadTexture("res/textures/blend-map1"));
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
 	m_terrain_1 = Terrain(0, -1, ground_texture);
@@ -69,15 +69,15 @@ void Application::makeTest()
 	// Making grass
 	for (int i = 0; i < 100; i++) {
 		Entity grass = Entity(grass_model);
-		grass.setPosition(glm::linearRand(-80.f, 80.f), 0, glm::linearRand(-80.f, 80.f));
-		scene.push_back(grass);
+		grass.setPosition(linearRand(-80.f, 80.f), 0, linearRand(-80.f, 80.f));
+		//scene.push_back(grass);
 	}
 }
 
 shared_ptr<TerrainTexturePack> Application::makeTexturePack(const string& base, const string& red,
-	const string &green, const string& blue)
+	const string &green, const string& blue) const
 {
-	string prefix("res/textures/");
+	const string prefix("res/textures/");
 	Texture base_texture = Texture(s_loader.loadTexture(prefix + base + ".png"));
 	Texture red_texture = Texture(s_loader.loadTexture(prefix + red + ".png"));
 	Texture green_texture = Texture(s_loader.loadTexture(prefix + green + ".png"));
@@ -87,16 +87,16 @@ shared_ptr<TerrainTexturePack> Application::makeTexturePack(const string& base, 
 }
 
 shared_ptr<TexturedModel> Application::makeModel(const string& obj_name,
-	const string& texture_name, const Material& material)
+	const string& texture_name, const Material& material) const
 {
-	string obj_prefix("res/objects/");
-	string texture_prefix("res/textures/");
+	const string obj_prefix("res/objects/");
+	const string texture_prefix("res/textures/");
 	Mesh mesh = s_loader.loadToVao(obj_prefix + obj_name + ".obj");
 	ModelTexture texture(s_loader.loadTexture(texture_prefix + texture_name + ".png"), material);
 	return make_shared<TexturedModel>(mesh, texture);
 }
 
-void Application::keyCallback(int key, int scancode, int action, int mods)
+void Application::keyCallback(int key, int scan_code, int action, int mods)
 {
 	switch (key) {
 	case GLFW_KEY_W: 
@@ -140,6 +140,8 @@ void Application::keyCallback(int key, int scancode, int action, int mods)
 		} else if(action == GLFW_RELEASE) {
 			s_move_keys['e'] = false;
 		}
+		break;
+	default:
 		break;
 	}
 }

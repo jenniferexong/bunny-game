@@ -6,7 +6,7 @@
 #include "objects/Camera.h"
 
 namespace Maths {
-	glm::mat4 createTransformationMatrix(const glm::vec3 t, const glm::vec3 r, const float s);
+	glm::mat4 createTransformationMatrix(glm::vec3 t, glm::vec3 r, float s);
 	glm::mat4 createViewMatrix(const Camera& camera);
 };
 

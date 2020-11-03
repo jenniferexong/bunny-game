@@ -3,13 +3,11 @@
 
 #include "Loader.h"
 
-#include <GLFW/glfw3.h>
 #include <stb_image/stb_image.h>
 
 #include <iostream>
 
-#include "../models/Texture.h"
-#include "../AttributeLocation.h"
+#include "../Location.h"
 
 using namespace std;
 using namespace glm;
@@ -18,14 +16,14 @@ Mesh Loader::loadToVao(const vector<float>& positions, const vector<float> & nor
 	const vector<float>& texture_coords, const vector<int>& indices)
 {
 	int vao_id = createVao();
-	storeInAttributeList(ePosition, 3, positions);
-	storeInAttributeList(eNormal, 3, normals);
-	storeInAttributeList(eTexture, 2, texture_coords);
+	storeInAttributeList(AttributeLocation::Position, 3, positions);
+	storeInAttributeList(AttributeLocation::Normal, 3, normals);
+	storeInAttributeList(AttributeLocation::Texture, 2, texture_coords);
 
 	bindIbo(indices);
 	unbindVao(); // unbinding
 	cout << "Loaded: " << indices.size() << ", id: " << vao_id << endl;
-	return Mesh(vao_id, indices.size());
+	return { vao_id, (int) indices.size() };
 }
 
 /* Loads data from an obj file into a VAO */
@@ -33,13 +31,13 @@ Mesh Loader::loadToVao(const string& obj_file)
 {
 	WavefrontData data = WavefrontData(obj_file);
 	int vao_id = createVao();
-	storeInAttributeList(ePosition, 3, data.positions);
-	storeInAttributeList(eNormal, 3, data.normals);
-	storeInAttributeList(eTexture, 2, data.texture_coords);
+	storeInAttributeList(AttributeLocation::Position, 3, data.positions);
+	storeInAttributeList(AttributeLocation::Normal, 3, data.normals);
+	storeInAttributeList(AttributeLocation::Texture, 2, data.texture_coords);
 
 	bindIbo(data.indices);
 	unbindVao(); // unbinding
-	return Mesh(vao_id, data.indices.size());
+	return { vao_id, (int) data.indices.size() };
 }
 
 int Loader::loadTexture(const string& file_name)

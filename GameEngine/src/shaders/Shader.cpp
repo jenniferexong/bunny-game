@@ -98,33 +98,33 @@ void Shader::loadBoolean(int location, bool value) const
 	glUniform1i(location, b);
 }
 
-void Shader::loadVector(int location, glm::vec3 vector) const
+void Shader::loadVector(int location, vec3 vector) const
 {
 	glUniform3f(location, vector.x, vector.y, vector.z);
 }
 
 void Shader::loadMatrix(int location, glm::mat4 matrix) const
 {
-	glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(matrix));
+	glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(matrix));
 }
 
-void Shader::loadVectors(int location, std::vector<glm::vec3>& vectors) const
+void Shader::loadVectors(int location, std::vector<vec3>& vectors) const
 {
-	glUniform3fv(location, vectors.size(), glm::value_ptr(vectors[0]));
+	glUniform3fv(location, vectors.size(), value_ptr(vectors[0]));
 }
 
 void Shader::loadMatrices(int location, std::vector<glm::mat4>& matrices) const
 {
-	glUniformMatrix4fv(location, matrices.size(), GL_FALSE, glm::value_ptr(matrices[0]));
+	glUniformMatrix4fv(location, matrices.size(), GL_FALSE, value_ptr(matrices[0]));
 }
 
 
-void Shader::start()
+void Shader::start() const
 {
 	glUseProgram(m_program_id);
 }
 
-void Shader::stop()
+void Shader::stop() const
 {
 	glUseProgram(0);
 }

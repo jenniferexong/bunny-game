@@ -3,8 +3,8 @@
 // Textures
 uniform sampler2D uBaseTexture;
 uniform sampler2D uRedTexture;
-uniform sampler2D uBlueTexture;
 uniform sampler2D uGreenTexture;
+uniform sampler2D uBlueTexture;
 uniform sampler2D uBlendMap;
 
 uniform vec3 uLightColor;
@@ -26,17 +26,24 @@ out vec4 outColor;
 
 void main() {
     // Get the blend map colour
+    vec4 blackTexture = vec4(0);
+    vec4 redTexture = vec4(0);
+    vec4 greenTexture = vec4(0);
+    vec4 blueTexture = vec4(0);
+    
     vec4 blendMapValue = texture(uBlendMap, f_in.textureCoords);
     float blackAmount = 1 - (blendMapValue.r + blendMapValue.g + blendMapValue.b);
     vec2 tiledCoords = f_in.textureCoords * 40.0;
-    vec4 blackTexture = texture(uBaseTexture, tiledCoords) * blackAmount;
-    vec4 redTexture = texture(uRedTexture, tiledCoords) * blendMapValue.r;
-    vec4 greenTexture = texture(uGreenTexture, tiledCoords) * blendMapValue.g;
-    vec4 blueTexture = texture(uBaseTexture, tiledCoords) * blendMapValue.b;
-    vec4 totalColor = blackTexture + redTexture + greenTexture + blueTexture;
+    //blackTexture = texture(uBaseTexture, tiledCoords) * blackAmount;
+    //redTexture = texture(uRedTexture, tiledCoords) * blendMapValue.r;
+    //greenTexture = texture(uGreenTexture, tiledCoords) * blendMapValue.g;
+    //blueTexture = texture(uBlueTexture, tiledCoords) * blendMapValue.b;
+
+    //vec4 totalColor = blackTexture + redTexture + greenTexture + blueTexture;
+    vec4 totalColor = texture(uBlendMap, tiledCoords);
 
     // Phong shading
-    float ambientStrength = 0.5;
+    float ambientStrength = 1;
     vec3 ambient = ambientStrength * uLightColor;
 
     vec3 norm = normalize(f_in.normal);

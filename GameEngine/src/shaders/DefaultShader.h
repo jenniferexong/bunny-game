@@ -6,12 +6,11 @@
 
 #include "../objects/Entity.h"
 #include "../objects/Light.h"
-#include "../models/Texture.h"
 #include "../models/Material.h"
 
-class DefaultShader : public Shader {
+class DefaultShader final : public Shader {
 private:
-	enum class EUniformVariable {
+	enum class UniformVariable {
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
 		LightPosition, LightColor, Reflectivity, ShineDamper, FakeLighting, SkyColor
 	};
@@ -19,14 +18,14 @@ private:
 	static const std::string s_vertex_file;
 	static const std::string s_fragment_file;
 
-	std::map<EUniformVariable, int> m_locations;
+	std::map<UniformVariable, int> m_locations;
 
 protected:
-	virtual void bindAttributes();
-	virtual void getAllUniformLocations();
+	void bindAttributes() override;
+	void getAllUniformLocations() override;
 
 public:
-	virtual void setUp();
+	void setUp() override;
 	void loadUniformPerFrame(const Light& light) const;
 	void loadModelMatrix(const Entity& entity) const;
 	void loadMaterial(const Material& material) const;
