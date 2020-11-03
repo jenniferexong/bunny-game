@@ -14,6 +14,7 @@
 #include "render_engine/Loader.h"
 #include "shaders/DefaultShader.h"
 #include "models/Texture.h"
+#include "objects/Player.h"
 
 using std::string;
 
@@ -21,9 +22,9 @@ class Application {
 private:
 	//std::shared_ptr<Player> m_player;
 
-	//Scene m_scene; //Have a _scene
 	MasterRenderer _renderer;
 
+	Player _player;
 	std::vector<Entity> _scene;
 	Entity _entity;
 	Terrain _terrain_1;
@@ -39,12 +40,19 @@ public:
 	static Loader loader;
 	static vec3 sky_color;
 
+	// Time keeping for frames
+	static int fps_cap;
+	static long long previous_frame_time;
+	static float frame_delta;
+
 	// Rendering everything
 	void render();
 
 	void makeTest();
 	std::shared_ptr<TexturedModel> makeModel(const string& obj_name, const string& texture_name, const Material& material) const;
 	std::shared_ptr<TerrainTexturePack> makeTexturePack(const string& base, const string& red, const string& green, const string& blue) const;
+
+	static long long getCurrentTime();
 
     static void keyCallback(int key, int scan_code, int action, int mods);
     static void mouseButtonCallback(int button, int action, int mods);

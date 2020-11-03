@@ -11,7 +11,7 @@ class Shader;
 using glm::vec3;
 
 class Entity {
-private:
+protected:
 	std::shared_ptr<TexturedModel> _model; // pointer for run time polymorphism
 	vec3 _position, _rotation; // yaw, pitch, roll
 	float _scale;

@@ -2,22 +2,23 @@
 
 #include <glm/glm.hpp>
 
-using namespace glm;
+#include "Entity.h"
 
-/* Player (first person view) */
-class Player {
+using glm::vec3;
+
+class Player final: public Entity {
 private:
-	static const vec3 s_size; // width, height, depth
+	static const float run_speed;
+	static const float turn_speed;
 
-	vec3 m_position; // position of the middle of the feet
-	float m_velocity = 1.f;
-	vec3 m_direction{ 0.f, 0.f, -1.f }; // direction the player is looking
+	float _current_speed = 0;
+	float _current_turn_speed = 0;
 
 public:
-	Player(vec3 pos) : m_position(pos) {}
+	Player() = default;
+	Player(std::shared_ptr<TexturedModel> model, vec3 position, vec3 rotation, float scale)
+		: Entity(std::move(model), position, rotation, scale) {}
 
-	void move(float offset);
-	inline vec3 getPosition() { return m_position; }
-
-	vec3 getEyePosition(); // returns the position of the player's eye (this will be the camera)
+	void updatePosition();
+	void updateSpeed();
 };

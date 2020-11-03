@@ -14,6 +14,16 @@ using glm::vec3;
 using glm::vec2;
 using std::vector;
 
+using std::hash;
+using std::get;
+
+struct HashTuple {
+	size_t operator()(const std::tuple<int, int, int>& tuple) const {
+		hash<int> hash1, hash2, hash3;
+		return hash1(get<0>(tuple)) ^ hash2(get<1>(tuple)) ^ hash3(get<2>(tuple));
+	}
+};
+
 /* Stores positions, normals, texture coordinates and indices from an obj file */
 struct WavefrontData {
 	vector<float> positions;

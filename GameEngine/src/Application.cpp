@@ -5,6 +5,7 @@
 #include <glm/gtc/random.hpp>
 
 #include <iostream>
+#include <chrono>
 
 #include "models/Texture.h"
 
@@ -18,6 +19,11 @@ Light Application::sun = Light(glm::vec3(0.f, 100.f, 1000.f), glm::vec3(1.f));
 Loader Application::loader = Loader();
 vec3 Application::sky_color = vec3(0.039, 0.184, 0.243);
 
+// Time keeping
+int Application::fps_cap = 120;
+long long Application::previous_frame_time = Application::getCurrentTime();
+float Application::frame_delta = 0;
+
 map<Application::Key, bool> Application::move_keys = {
 	{Key::W, false}, {Key::A, false}, {Key::S, false}, {Key::D, false}, {Key::Q, false}, {Key::E, false}
 };
@@ -27,12 +33,18 @@ map<Application::Key, bool> Application::move_keys = {
 	Player position may be updated so need to change the view transform
 */
 void Application::render() {
+	long long current_frame_time = getCurrentTime();
+	frame_delta = float(current_frame_time - previous_frame_time) / 1000.f; // in seconds
+	
 	// animate
 	//_entity.move(0, 0, -0.1f);
 
 	//e.rotate(0.1f, 0, 0);
 
-	camera.updatePosition();
+	_player.updatePosition();
+	cout << "posx: " << _player.getPosition().x << ", posz: " << _player.getPosition().z << endl;
+	//camera.updatePosition();
+	_renderer.processEntity(_player);
 
 	// Process all entities
 	for (Entity e: _scene) {
@@ -43,11 +55,16 @@ void Application::render() {
 	//_renderer.processTerrain(_terrain_2);
 
 	_renderer.render(sun);
+
+	previous_frame_time = current_frame_time;
 }
 
 void Application::makeTest()
 {
 	//TODO: Make files that you can read material properties from, and position, scale, rotation...
+	Material white = Material();
+	auto player_model = makeModel("bunny", "white", white);
+	_player = Player(player_model, vec3(150.f, 0, -20), vec3(0), 1);
 
 	auto texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
 	Texture blend_map = Texture(loader.loadTexture("res/textures/terrain1.png"));
@@ -94,6 +111,13 @@ shared_ptr<TexturedModel> Application::makeModel(const string& obj_name,
 	Mesh mesh = loader.loadToVao(obj_prefix + obj_name + ".obj");
 	ModelTexture texture(loader.loadTexture(texture_prefix + texture_name + ".png"), material);
 	return make_shared<TexturedModel>(mesh, texture);
+}
+
+using namespace std::chrono;
+long long Application::getCurrentTime()
+{
+	milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	return ms.count();
 }
 
 void Application::keyCallback(int key, int scan_code, int action, int mods)
