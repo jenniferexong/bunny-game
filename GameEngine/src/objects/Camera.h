@@ -11,7 +11,7 @@ private:
 	vec3 _rotation; // yaw, pitch, roll
 
 public:
-	Camera() : _position(vec3(0, 5, 0)), _rotation(vec3(0)) {}
+	Camera() : _position(vec3(150.f, 5, 0)), _rotation(vec3(0)) {}
 
 	void updatePosition();
 

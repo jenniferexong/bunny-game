@@ -33,7 +33,7 @@ void main() {
     
     vec4 blendMapValue = texture(uBlendMap, f_in.textureCoords);
     float blackAmount = 1 - (blendMapValue.r + blendMapValue.g + blendMapValue.b);
-    vec2 tiledCoords = f_in.textureCoords * 40.0;
+    vec2 tiledCoords = f_in.textureCoords * 20.0;
     blackTexture = texture(uBaseTexture, tiledCoords) * blackAmount;
     redTexture = texture(uRedTexture, tiledCoords) * blendMapValue.r;
     greenTexture = texture(uGreenTexture, tiledCoords) * blendMapValue.g;
@@ -44,7 +44,7 @@ void main() {
     //vec4 totalColor = texture(u, tiledCoords);
 
     // Phong shading
-    float ambientStrength = 1;
+    float ambientStrength = 0.5;
     vec3 ambient = ambientStrength * uLightColor;
 
     vec3 norm = normalize(f_in.normal);

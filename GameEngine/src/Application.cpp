@@ -50,7 +50,7 @@ void Application::makeTest()
 	//TODO: Make files that you can read material properties from, and position, scale, rotation...
 
 	auto texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
-	Texture blend_map = Texture(loader.loadTexture("res/textures/blend-map1.png"));
+	Texture blend_map = Texture(loader.loadTexture("res/textures/terrain1.png"));
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
 	_terrain_1 = Terrain(0, -1, ground_texture);
 	_terrain_2 = Terrain(-1, -1, ground_texture);

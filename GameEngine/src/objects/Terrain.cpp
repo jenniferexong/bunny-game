@@ -7,7 +7,7 @@
 
 using std::vector;
 
-const float Terrain::size = 800.f;
+const float Terrain::size = 300.f;
 const int Terrain::vertex_count = 128;
 
 Terrain::Terrain(int grid_x, int grid_z, TerrainTexture texture)
