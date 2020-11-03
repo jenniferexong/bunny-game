@@ -12,7 +12,7 @@ private:
 	enum class UniformVariable {
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
 		LightPosition, LightColor, Reflectivity, ShineDamper, SkyColor,
-		BaseTexture, RedTexture, GreenTexture, BlueTexture, BlendMap
+		BaseTexture, RedTexture, GreenTexture, BlueTexture, BlendMap 
 	};
 
 	static const std::string vertex_file;

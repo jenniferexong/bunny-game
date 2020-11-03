@@ -40,7 +40,8 @@ void main() {
     blueTexture = texture(uBlueTexture, tiledCoords) * blendMapValue.b;
 
     vec4 totalColor = blackTexture + redTexture + greenTexture + blueTexture;
-    //vec4 totalColor = texture(uBlendMap, tiledCoords);
+    //vec4 totalColor = texture(uBlueTexture, tiledCoords) * texture(uBaseTexture, tiledCoords);
+    //vec4 totalColor = texture(u, tiledCoords);
 
     // Phong shading
     float ambientStrength = 1;

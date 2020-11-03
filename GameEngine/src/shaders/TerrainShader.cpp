@@ -76,9 +76,9 @@ void TerrainShader::loadMaterial(const Material& material) const
 
 void TerrainShader::connectTextureUnits() const
 {
-	loadInt(_locations.at(UniformVariable::BaseTexture), 0);
-	loadInt(_locations.at(UniformVariable::RedTexture), 1);
-	loadInt(_locations.at(UniformVariable::GreenTexture), 2);
-	loadInt(_locations.at(UniformVariable::BlueTexture), 3);
-	loadInt(_locations.at(UniformVariable::BlendMap), 4);
+	loadInt(_locations.at(UniformVariable::BaseTexture), TextureLocation::Base);
+	loadInt(_locations.at(UniformVariable::RedTexture), TextureLocation::Red);
+	loadInt(_locations.at(UniformVariable::GreenTexture), TextureLocation::Green);
+	loadInt(_locations.at(UniformVariable::BlueTexture), TextureLocation::Blue);
+	loadInt(_locations.at(UniformVariable::BlendMap), TextureLocation::BlendMap);
 }

@@ -7,7 +7,9 @@
 
 TerrainRenderer::TerrainRenderer(std::shared_ptr<TerrainShader> shader) : _shader(std::move(shader))
 {
+	_shader->start();
 	_shader->connectTextureUnits();
+	_shader->stop();
 }
 
 void TerrainRenderer::render(const std::vector<Terrain>& terrains)
@@ -38,19 +40,8 @@ void TerrainRenderer::prepareTerrain(const Terrain& terrain)
 
 void TerrainRenderer::bindTextures(const Terrain& terrain) {
 	std::shared_ptr<TerrainTexturePack> texture_pack = terrain.getTexture().getTexturePack();
-	// base
-	int base = texture_pack->getBase().getId();
-	int red = texture_pack->getRed().getId();
-	int green = texture_pack->getGreen().getId();
-	int blue = texture_pack->getBlue().getId();
-	int blend = terrain.getTexture().getBlendMap().getId();
-	std::cout << "base: " << base << std::endl;
-	std::cout << "red: " << red << std::endl;
-	std::cout << "green: " << green << std::endl;
-	std::cout << "blue: " << blue << std::endl;
-	std::cout << "blend: " << blend << std::endl;
 
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE0 + TextureLocation::Base);
 	glBindTexture(GL_TEXTURE_2D, texture_pack->getBase().getId());
 	// red
 	glActiveTexture(GL_TEXTURE0 + TextureLocation::Red);

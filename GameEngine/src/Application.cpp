@@ -16,7 +16,7 @@ GLFWwindow* Application::window = nullptr;
 Camera Application::camera = Camera();
 Light Application::sun = Light(glm::vec3(0.f, 100.f, 1000.f), glm::vec3(1.f));
 Loader Application::loader = Loader();
-vec3 Application::sky_color = vec3(0.352f, 0.686f, 0.807f);
+vec3 Application::sky_color = vec3(0.039, 0.184, 0.243);
 
 map<Application::Key, bool> Application::move_keys = {
 	{Key::W, false}, {Key::A, false}, {Key::S, false}, {Key::D, false}, {Key::Q, false}, {Key::E, false}
@@ -40,7 +40,7 @@ void Application::render() {
 	}
 
 	_renderer.processTerrain(_terrain_1);
-	_renderer.processTerrain(_terrain_2);
+	//_renderer.processTerrain(_terrain_2);
 
 	_renderer.render(sun);
 }
@@ -50,7 +50,7 @@ void Application::makeTest()
 	//TODO: Make files that you can read material properties from, and position, scale, rotation...
 
 	auto texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
-	Texture blend_map = Texture(loader.loadTexture("res/textures/blend-map1"));
+	Texture blend_map = Texture(loader.loadTexture("res/textures/blend-map1.png"));
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
 	_terrain_1 = Terrain(0, -1, ground_texture);
 	_terrain_2 = Terrain(-1, -1, ground_texture);

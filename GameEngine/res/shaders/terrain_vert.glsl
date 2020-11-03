@@ -21,7 +21,7 @@ out VertexData {
     float visibility;
 } v_out; 
 
-const float density = 0.007;
+const float density = 0.001;
 const float fogGradient = 1.5;
 
 void main() {
