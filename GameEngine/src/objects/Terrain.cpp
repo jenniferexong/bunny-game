@@ -11,9 +11,9 @@ const float Terrain::size = 300.f;
 const int Terrain::vertex_count = 128;
 
 Terrain::Terrain(int grid_x, int grid_z, TerrainTexture texture)
-	: _x(float(grid_x) * size), _z(float(grid_z) * size), _texture(std::move(texture))
+	: x_(float(grid_x) * size), z_(float(grid_z) * size), texture_(std::move(texture))
 {
-	_mesh = generate();
+	mesh_ = generate();
 }
 
 /* Generates a mesh for the terrain */

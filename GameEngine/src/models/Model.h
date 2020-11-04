@@ -8,20 +8,20 @@ class Shader;
 /* Raw model, only a mesh, no texture or colour */
 class Model {
 protected:
-	Mesh _mesh;
+	Mesh mesh_;
 
 public:
-	Model(Mesh mesh) : _mesh(mesh) {}
-	Mesh getMesh() const { return _mesh; }
+	Model(Mesh mesh) : mesh_(mesh) {}
+	Mesh getMesh() const { return mesh_; }
 };
 
 class TexturedModel : public Model {
 private:
-	ModelTexture _texture;
+	ModelTexture texture_;
 
 public:
-	TexturedModel(Mesh mesh, ModelTexture texture) : Model(mesh), _texture(texture) {}
+	TexturedModel(Mesh mesh, ModelTexture texture) : Model(mesh), texture_(texture) {}
 
-	ModelTexture getTexture() const { return _texture; }
+	ModelTexture getTexture() const { return texture_; }
 };
 

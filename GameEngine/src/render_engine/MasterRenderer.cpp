@@ -16,13 +16,13 @@ MasterRenderer::MasterRenderer()
 	glDepthFunc(GL_LESS);
 	enableCulling();
 
-	_entity_shader = std::make_shared<DefaultShader>();
-	_terrain_shader = std::make_shared<TerrainShader>();
-	_entity_shader->setUp();
-	_terrain_shader->setUp();
+	entity_shader_ = std::make_shared<DefaultShader>();
+	terrain_shader_ = std::make_shared<TerrainShader>();
+	entity_shader_->setUp();
+	terrain_shader_->setUp();
 
-	_entity_renderer = EntityRenderer(_entity_shader);
-	_terrain_renderer = TerrainRenderer(_terrain_shader);
+	entity_renderer_ = EntityRenderer(entity_shader_);
+	terrain_renderer_ = TerrainRenderer(terrain_shader_);
 }
 
 void MasterRenderer::render(const Light& sun)
@@ -30,20 +30,20 @@ void MasterRenderer::render(const Light& sun)
 	prepare();
 
 	// entity shader
-	_entity_shader->start();
+	entity_shader_->start();
 	// Loading some uniforms
-	_entity_shader->loadUniformPerFrame(sun);
-	_entity_renderer.render(_entities);
-	_entity_shader->stop();
+	entity_shader_->loadUniformPerFrame(sun);
+	entity_renderer_.render(entities_);
+	entity_shader_->stop();
 
 	// terrain shader
-	_terrain_shader->start();
-	_terrain_shader->loadUniformPerFrame(sun);
-	_terrain_renderer.render(_terrains);
-	_terrain_shader->stop();
+	terrain_shader_->start();
+	terrain_shader_->loadUniformPerFrame(sun);
+	terrain_renderer_.render(terrains_);
+	terrain_shader_->stop();
 
-	_terrains.clear();
-	_entities.clear();
+	terrains_.clear();
+	entities_.clear();
 }
 
 void MasterRenderer::enableCulling()
@@ -77,14 +77,14 @@ void MasterRenderer::prepare()
 void MasterRenderer::processEntity(const Entity& entity)
 {
 	const TexturedModel& model = entity.getModel();
-	if (_entities.find(model) == _entities.end()) {
+	if (entities_.find(model) == entities_.end()) {
 		std::vector<Entity> list;
-		_entities.insert({ model, list });
+		entities_.insert({ model, list });
 	}
-	_entities.at(model).push_back(entity);
+	entities_.at(model).push_back(entity);
 }
 
 void MasterRenderer::processTerrain(const Terrain& terrain)
 {
-	_terrains.push_back(terrain);
+	terrains_.push_back(terrain);
 }

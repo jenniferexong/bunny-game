@@ -5,15 +5,15 @@
 
 class Light {
 private:
-	vec3 _position;
-	vec3 _color;
+	vec3 position_;
+	vec3 color_;
 
 public:
-	Light(vec3 position, vec3 color) : _position(position), _color(color) {}
+	Light(vec3 position, vec3 color) : position_(position), color_(color) {}
 
-	void setPosition(vec3 position) { _position = position; }
-	void setColor(vec3 color) { _color = color; }
+	void setPosition(vec3 position) { position_ = position; }
+	void setColor(vec3 color) { color_ = color; }
 
-	vec3 getPosition() const { return _position; }
-	vec3 getColor() const { return _color; }
+	vec3 getPosition() const { return position_; }
+	vec3 getColor() const { return color_; }
 };

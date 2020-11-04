@@ -65,7 +65,7 @@ int Loader::loadTexture(const string& file_name)
 	}
 
 	printf("Loaded texture: %s, %d\n", file_name.c_str(), texture_id);
-	_textures.push_back(&texture_id);
+	textures_.push_back(&texture_id);
 	return texture_id;
 }
 
@@ -74,7 +74,7 @@ int Loader::createVao()
 {
 	GLuint vao_id;
 	glGenVertexArrays(1, &vao_id);
-	_vaos.push_back(&vao_id); // add to vector of vaos
+	vaos_.push_back(&vao_id); // add to vector of vaos
 
 	glBindVertexArray(vao_id);
 	return vao_id;
@@ -84,7 +84,7 @@ void Loader::storeInAttributeList(int attrib_num, int coord_size, const vector<f
 {
 	GLuint vbo_id;
 	glGenBuffers(1, &vbo_id);
-	_vbos.push_back(&vbo_id); // add to vector of vaos
+	vbos_.push_back(&vbo_id); // add to vector of vaos
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.size(), data.data(), GL_STATIC_DRAW);
@@ -96,7 +96,7 @@ void Loader::bindIbo(const vector<int>& indices)
 {
 	GLuint ibo_id;
 	glGenBuffers(1, &ibo_id);
-	_vbos.push_back(&ibo_id); // add to vector of vaos
+	vbos_.push_back(&ibo_id); // add to vector of vaos
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * indices.size(), indices.data(), GL_STATIC_DRAW);
 }
@@ -109,13 +109,13 @@ void Loader::unbindVao()
 /* Clean up VAOs and VBOs and Textures */
 Loader::~Loader()
 {
-	for (GLuint *vao : _vaos) {
+	for (GLuint *vao : vaos_) {
 		glDeleteVertexArrays(1, vao);
 	}
-	for (GLuint *vbo : _vbos) {
+	for (GLuint *vbo : vbos_) {
 		glDeleteBuffers(1, vbo);
 	}
-	for (GLuint* texture : _textures) {
+	for (GLuint* texture : textures_) {
 		glDeleteTextures(1, texture);
 	}
 }

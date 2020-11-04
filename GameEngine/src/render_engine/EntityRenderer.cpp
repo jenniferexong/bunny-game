@@ -41,7 +41,7 @@ void EntityRenderer::prepareTexturedModel(const TexturedModel& model)
 	glEnableVertexAttribArray(AttributeLocation::Normal);
 	glEnableVertexAttribArray(AttributeLocation::Texture);
 	
-	_shader->loadMaterial(texture.getMaterial());
+	shader_->loadMaterial(texture.getMaterial());
 
 	// Make the shader use the texture
 	glActiveTexture(GL_TEXTURE0);
@@ -60,7 +60,7 @@ void EntityRenderer::unbindTexturedModel()
 
 void EntityRenderer::loadTransformation(const Entity& entity)
 {
-	_shader->loadModelMatrix(entity);
+	shader_->loadModelMatrix(entity);
 }
 
 

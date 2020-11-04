@@ -22,34 +22,34 @@ void DefaultShader::bindAttributes()
 
 void DefaultShader::getAllUniformLocations()
 {
-	_locations.insert({ UniformVariable::TransformationMatrix, getUniformLocation("uTransformationMatrix") });
-	_locations.insert({ UniformVariable::ProjectionMatrix, getUniformLocation("uProjectionMatrix") });
-	_locations.insert({ UniformVariable::ViewMatrix, getUniformLocation("uViewMatrix") });
-	_locations.insert({ UniformVariable::InverseViewMatrix, getUniformLocation("uInverseViewMatrix") });
-	_locations.insert({ UniformVariable::LightColor, getUniformLocation("uLightColor") });
-	_locations.insert({ UniformVariable::LightPosition, getUniformLocation("uLightPosition") });
-	_locations.insert({ UniformVariable::Reflectivity, getUniformLocation("uReflectivity") });
-	_locations.insert({ UniformVariable::ShineDamper, getUniformLocation("uShineDamper") });
-	_locations.insert({ UniformVariable::FakeLighting, getUniformLocation("uFakeLighting") });
-	_locations.insert({ UniformVariable::SkyColor, getUniformLocation("uSkyColor") });
+	locations_.insert({ UniformVariable::TransformationMatrix, getUniformLocation("uTransformationMatrix") });
+	locations_.insert({ UniformVariable::ProjectionMatrix, getUniformLocation("uProjectionMatrix") });
+	locations_.insert({ UniformVariable::ViewMatrix, getUniformLocation("uViewMatrix") });
+	locations_.insert({ UniformVariable::InverseViewMatrix, getUniformLocation("uInverseViewMatrix") });
+	locations_.insert({ UniformVariable::LightColor, getUniformLocation("uLightColor") });
+	locations_.insert({ UniformVariable::LightPosition, getUniformLocation("uLightPosition") });
+	locations_.insert({ UniformVariable::Reflectivity, getUniformLocation("uReflectivity") });
+	locations_.insert({ UniformVariable::ShineDamper, getUniformLocation("uShineDamper") });
+	locations_.insert({ UniformVariable::FakeLighting, getUniformLocation("uFakeLighting") });
+	locations_.insert({ UniformVariable::SkyColor, getUniformLocation("uSkyColor") });
 }
 
 void DefaultShader::loadUniformPerFrame(const Light& light) const
 {
 	// Loading light variables
-	loadVector(_locations.at(UniformVariable::LightPosition), light.getPosition());
-	loadVector(_locations.at(UniformVariable::LightColor), light.getColor());
+	loadVector(locations_.at(UniformVariable::LightPosition), light.getPosition());
+	loadVector(locations_.at(UniformVariable::LightColor), light.getColor());
 
 	// Loading projection matrix
-	loadMatrix(_locations.at(UniformVariable::ProjectionMatrix), MasterRenderer::projection_matrix);
+	loadMatrix(locations_.at(UniformVariable::ProjectionMatrix), MasterRenderer::projection_matrix);
 
 	// View matrix
 	glm::mat4 v_matrix = Maths::createViewMatrix(Application::camera);
-	loadMatrix(_locations.at(UniformVariable::ViewMatrix), v_matrix);
-	loadMatrix(_locations.at(UniformVariable::InverseViewMatrix), inverse(v_matrix));
+	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
+	loadMatrix(locations_.at(UniformVariable::InverseViewMatrix), inverse(v_matrix));
 	 
 	// Sky colour
-	loadVector(_locations.at(UniformVariable::SkyColor), Application::sky_color);
+	loadVector(locations_.at(UniformVariable::SkyColor), Application::sky_color);
 }
 
 void DefaultShader::loadModelMatrix(const Entity& entity) const
@@ -57,14 +57,14 @@ void DefaultShader::loadModelMatrix(const Entity& entity) const
 	// Loading transformation matrix
 	glm::mat4 t_matrix = Maths::createTransformationMatrix(entity.getPosition(), 
 		entity.getRotation(), entity.getScale());
-	loadMatrix(_locations.at(UniformVariable::TransformationMatrix), t_matrix);
+	loadMatrix(locations_.at(UniformVariable::TransformationMatrix), t_matrix);
 }
 
 void DefaultShader::loadMaterial(const Material& material) const
 {
 	// Loading shine values
-	loadFloat(_locations.at(UniformVariable::Reflectivity), material.reflectivity);
-	loadFloat(_locations.at(UniformVariable::ShineDamper), material.shine_damper);
-	loadBoolean(_locations.at(UniformVariable::FakeLighting), material.uses_fake_lighting);
+	loadFloat(locations_.at(UniformVariable::Reflectivity), material.reflectivity);
+	loadFloat(locations_.at(UniformVariable::ShineDamper), material.shine_damper);
+	loadBoolean(locations_.at(UniformVariable::FakeLighting), material.uses_fake_lighting);
 }
 

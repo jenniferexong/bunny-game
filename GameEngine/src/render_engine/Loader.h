@@ -10,9 +10,9 @@ using std::vector;
 
 class Loader {
 private:
-	vector<GLuint *> _vaos;
-	vector<GLuint *> _vbos;
-	vector<GLuint *> _textures;
+	vector<GLuint *> vaos_;
+	vector<GLuint *> vbos_;
+	vector<GLuint *> textures_;
 
 	int createVao(); // returns an id
 	void storeInAttributeList(int attrib_num, int coord_size, const vector<float>& data);

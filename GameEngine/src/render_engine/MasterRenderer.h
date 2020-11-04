@@ -5,13 +5,13 @@
 
 class MasterRenderer {
 private:
-	std::shared_ptr<DefaultShader> _entity_shader;
-	std::shared_ptr<TerrainShader> _terrain_shader;
-	EntityRenderer _entity_renderer;
-	TerrainRenderer _terrain_renderer;
+	std::shared_ptr<DefaultShader> entity_shader_;
+	std::shared_ptr<TerrainShader> terrain_shader_;
+	EntityRenderer entity_renderer_;
+	TerrainRenderer terrain_renderer_;
 
-	std::map<TexturedModel, std::vector<Entity>, CompareTexturedModel> _entities;
-	std::vector<Terrain> _terrains;
+	std::map<TexturedModel, std::vector<Entity>, CompareTexturedModel> entities_;
+	std::vector<Terrain> terrains_;
 
 public:
 	static glm::mat4 projection_matrix;

@@ -22,13 +22,13 @@ class Application {
 private:
 	//std::shared_ptr<Player> m_player;
 
-	MasterRenderer _renderer;
+	MasterRenderer renderer_;
 
-	Player _player;
-	std::vector<Entity> _scene;
-	Entity _entity;
-	Terrain _terrain_1;
-	Terrain _terrain_2;
+	Player player_;
+	std::vector<Entity> scene_;
+	Entity entity_;
+	Terrain terrain_1_;
+	Terrain terrain_2_;
 
 public:
 	enum class Key { W, A, S, D, Q, E, Space };

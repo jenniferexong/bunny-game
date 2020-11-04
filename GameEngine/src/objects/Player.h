@@ -14,9 +14,9 @@ private:
 	static const float jump_power;
 	static const float terrain_height;
 
-	float _current_speed = 0;
-	float _current_turn_speed = 0;
-	float _up_velocity = 0;
+	float current_speed_ = 0;
+	float current_turn_speed_ = 0;
+	float up_velocity_ = 0;
 
 	void jump();
 	void fall();

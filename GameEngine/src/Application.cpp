@@ -40,20 +40,20 @@ void Application::render() {
 
 	//e.rotate(0.1f, 0, 0);
 
-	_player.updatePosition();
-	cout << "posx: " << _player.getPosition().x << ", posz: " << _player.getPosition().z << endl;
+	player_.updatePosition();
+	cout << "posx: " << player_.getPosition().x << ", posz: " << player_.getPosition().z << endl;
 	//camera.updatePosition();
-	_renderer.processEntity(_player);
+	renderer_.processEntity(player_);
 
 	// Process all entities
-	for (Entity e: _scene) {
-		_renderer.processEntity(e);
+	for (Entity e: scene_) {
+		renderer_.processEntity(e);
 	}
 
-	_renderer.processTerrain(_terrain_1);
+	renderer_.processTerrain(terrain_1_);
 	//_renderer.processTerrain(_terrain_2);
 
-	_renderer.render(sun);
+	renderer_.render(sun);
 
 	previous_frame_time = current_frame_time;
 }
@@ -64,13 +64,13 @@ void Application::makeTest()
 
 	Material white = Material(1.f, 10.f);
 	auto player_model = makeModel("bunny", "white", white);
-	_player = Player(player_model, vec3(150.f, 0, -20), vec3(-90, 0, 0), 1);
+	player_ = Player(player_model, vec3(150.f, 0, -20), vec3(-90, 0, 0), 1);
 
 	auto texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
 	Texture blend_map = Texture(loader.loadTexture("res/textures/terrain1.png"));
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
-	_terrain_1 = Terrain(0, -1, ground_texture);
-	_terrain_2 = Terrain(-1, -1, ground_texture);
+	terrain_1_ = Terrain(0, -1, ground_texture);
+	terrain_2_ = Terrain(-1, -1, ground_texture);
 
 	Material teapot_material = Material(1.f, 10.f);
 	shared_ptr<TexturedModel> teapot_model = makeModel("teapot", "test", teapot_material);

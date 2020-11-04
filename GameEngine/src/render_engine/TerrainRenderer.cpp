@@ -5,11 +5,11 @@
 #include "TerrainRenderer.h"
 #include "../Location.h"
 
-TerrainRenderer::TerrainRenderer(std::shared_ptr<TerrainShader> shader) : _shader(std::move(shader))
+TerrainRenderer::TerrainRenderer(std::shared_ptr<TerrainShader> shader) : shader_(std::move(shader))
 {
-	_shader->start();
-	_shader->connectTextureUnits();
-	_shader->stop();
+	shader_->start();
+	shader_->connectTextureUnits();
+	shader_->stop();
 }
 
 void TerrainRenderer::render(const std::vector<Terrain>& terrains)
@@ -34,7 +34,7 @@ void TerrainRenderer::prepareTerrain(const Terrain& terrain)
 	glEnableVertexAttribArray(AttributeLocation::Texture);
 
 	// Binding textures
-	_shader->loadMaterial(texture.getMaterial());
+	shader_->loadMaterial(texture.getMaterial());
 	bindTextures(terrain);
 }
 
@@ -67,5 +67,5 @@ void TerrainRenderer::unbindTerrain()
 
 void TerrainRenderer::loadTransformation(const Terrain& terrain)
 {
-	_shader->loadModelMatrix(terrain);
+	shader_->loadModelMatrix(terrain);
 }

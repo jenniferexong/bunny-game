@@ -18,7 +18,7 @@ private:
 	static const std::string vertex_file;
 	static const std::string fragment_file;
 
-	std::map<UniformVariable, int> _locations;
+	std::map<UniformVariable, int> locations_;
 
 protected:
 	void bindAttributes() override;

@@ -8,7 +8,7 @@
 
 class TerrainRenderer {
 private:
-	std::shared_ptr<TerrainShader> _shader;
+	std::shared_ptr<TerrainShader> shader_;
 
 	void prepareTerrain(const Terrain& terrain);
 	void unbindTerrain();
@@ -16,7 +16,7 @@ private:
 	void loadTransformation(const Terrain& terrain);
 
 public:
-	TerrainRenderer(): _shader(nullptr) {}
+	TerrainRenderer(): shader_(nullptr) {}
 	TerrainRenderer(std::shared_ptr<TerrainShader> shader);
 
 	void render(const std::vector<Terrain>& terrains);

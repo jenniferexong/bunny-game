@@ -12,29 +12,29 @@ using glm::vec3;
 
 class Entity {
 protected:
-	std::shared_ptr<TexturedModel> _model; // pointer for run time polymorphism
-	vec3 _position, _rotation; // yaw, pitch, roll
-	float _scale;
+	std::shared_ptr<TexturedModel> model_; // pointer for run time polymorphism
+	vec3 position_, rotation_; // yaw, pitch, roll
+	float scale_;
 
 public:
-	Entity() : _model(nullptr), _position(vec3(0)), _rotation(vec3(0)), _scale(1) {}
+	Entity() : model_(nullptr), position_(vec3(0)), rotation_(vec3(0)), scale_(1) {}
 
-	Entity(std::shared_ptr<TexturedModel> model) : _model(std::move(model)), _position(vec3(0)), _rotation(vec3(0)), _scale(1) {}
+	Entity(std::shared_ptr<TexturedModel> model) : model_(std::move(model)), position_(vec3(0)), rotation_(vec3(0)), scale_(1) {}
 
 	Entity(std::shared_ptr<TexturedModel> model, vec3 position, vec3 rotation, float scale) 
-		: _model(std::move(model)), _position(position), _rotation(rotation), _scale(scale) {}
+		: model_(std::move(model)), position_(position), rotation_(rotation), scale_(scale) {}
 
 	void move(float dx, float dy, float dz);
 	void rotate(float yaw, float pitch, float roll);
 
 	// Setters
-	void setPosition(float x, float y, float z) { _position = vec3(x, y, z); }
-	void setRotation(float yaw, float pitch, float roll) { _rotation = vec3(yaw, pitch, roll); }
-	void setScale(float scale) { _scale = scale; }
+	void setPosition(float x, float y, float z) { position_ = vec3(x, y, z); }
+	void setRotation(float yaw, float pitch, float roll) { rotation_ = vec3(yaw, pitch, roll); }
+	void setScale(float scale) { scale_ = scale; }
 
 	// Getters
-	TexturedModel getModel() const { return *_model; }
-	vec3 getPosition() const { return _position; }
-	vec3 getRotation() const { return _rotation; }
-	float getScale() const { return _scale; }
+	TexturedModel getModel() const { return *model_; }
+	vec3 getPosition() const { return position_; }
+	vec3 getRotation() const { return rotation_; }
+	float getScale() const { return scale_; }
 };

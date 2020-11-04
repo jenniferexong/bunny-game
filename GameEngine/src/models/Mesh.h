@@ -2,15 +2,15 @@
 
 class Mesh {
 private:
-	int m_vao_id;
-	int m_vertex_count;
+	int vao_id_;
+	int vertex_count_;
 
 public:
 	// Constructors
-	Mesh() : m_vao_id(-1), m_vertex_count(0) {}
-	Mesh(int vao_id, int vertex_count) : m_vao_id(vao_id), m_vertex_count(vertex_count) {}
+	Mesh() : vao_id_(-1), vertex_count_(0) {}
+	Mesh(int vao_id, int vertex_count) : vao_id_(vao_id), vertex_count_(vertex_count) {}
 
 	// Getters
-	inline int getId() const { return m_vao_id; }
-	inline int getVertexCount() const { return m_vertex_count; }
+	inline int getId() const { return vao_id_; }
+	inline int getVertexCount() const { return vertex_count_; }
 };

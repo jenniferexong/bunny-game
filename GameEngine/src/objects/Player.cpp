@@ -12,46 +12,46 @@ const float Player::terrain_height = 0.f;
 void Player::updatePosition()
 {
 	updateSpeed();
-	rotate(_current_turn_speed * Application::frame_delta, 0, 0);
-	float distance = _current_speed * Application::frame_delta;
+	rotate(current_turn_speed_ * Application::frame_delta, 0, 0);
+	float distance = current_speed_ * Application::frame_delta;
 
 	float offset_angle = -90.f;
 	// calculating new position (x, z)
-	float x = distance * glm::sin(glm::radians(_rotation.x + offset_angle));
-	float z = distance * glm::cos(glm::radians(_rotation.x + offset_angle));
+	float x = distance * glm::sin(glm::radians(rotation_.x + offset_angle));
+	float z = distance * glm::cos(glm::radians(rotation_.x + offset_angle));
 
 	// calculating new y position
-	float y = _up_velocity * Application::frame_delta;
+	float y = up_velocity_ * Application::frame_delta;
 
 	move(x, y, z);
 
 	// Check if hits the ground
-	if (_position.y < terrain_height) {
-		_position.y = terrain_height;
-		_up_velocity = 0;
+	if (position_.y < terrain_height) {
+		position_.y = terrain_height;
+		up_velocity_ = 0;
 	}
 }
 
 void Player::jump()
 {
-	if (_position.y == terrain_height)
-		_up_velocity = jump_power;
+	if (position_.y == terrain_height)
+		up_velocity_ = jump_power;
 }
 
 void Player::fall()
 {
-	_up_velocity += gravity * Application::frame_delta;
+	up_velocity_ += gravity * Application::frame_delta;
 }
 
 void Player::updateSpeed()
 {
 	// movement forward and backwards
 	if (Application::move_keys[Application::Key::W]) {
-		_current_speed = run_speed;
+		current_speed_ = run_speed;
 	} else if (Application::move_keys[Application::Key::S]) {
-		_current_speed = -run_speed;
+		current_speed_ = -run_speed;
 	} else {
-		_current_speed = 0;
+		current_speed_ = 0;
 	}
 
 	// jumping
@@ -62,11 +62,11 @@ void Player::updateSpeed()
 
 	// Turning clockwise
 	if (Application::move_keys[Application::Key::D]) {
-		_current_turn_speed = -turn_speed;
+		current_turn_speed_ = -turn_speed;
 	} else if (Application::move_keys[Application::Key::A]) { // Turning anticlockwise
-		_current_turn_speed = turn_speed;
+		current_turn_speed_ = turn_speed;
 	} else {
-		_current_turn_speed = 0;
+		current_turn_speed_ = 0;
 	}
 
 }
