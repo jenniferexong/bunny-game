@@ -43,7 +43,7 @@ Mesh Loader::loadToVao(const string& obj_file)
 int Loader::loadTexture(const string& file_name)
 {
 	// Loading the image
-	stbi_set_flip_vertically_on_load(0); // IF UPSIDE DOWN TEXTURE, CHANGE THIS
+	stbi_set_flip_vertically_on_load(1); // IF UPSIDE DOWN TEXTURE, CHANGE THIS
 	int width, height, bpp; // bits per pixel
 	unsigned char* buffer = stbi_load(file_name.c_str(), &width, &height, &bpp, 4);
 

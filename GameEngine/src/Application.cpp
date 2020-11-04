@@ -34,16 +34,10 @@ map<Application::Key, bool> Application::move_keys = {
 void Application::render() {
 	long long current_frame_time = getCurrentTime();
 	frame_delta = float(current_frame_time - previous_frame_time) / 1000.f; // in seconds
-	
-	// animate
-	//_entity.move(0, 0, -0.1f);
 
-	//e.rotate(0.1f, 0, 0);
-
-	player_.updatePosition();
-	cout << "posx: " << player_.getPosition().x << ", posz: " << player_.getPosition().z << endl;
-	//camera.updatePosition();
-	renderer_.processEntity(player_);
+	player_->updatePosition();
+	camera.updateView();
+	renderer_.processEntity(*player_);
 
 	// Process all entities
 	for (Entity e: scene_) {
@@ -51,7 +45,6 @@ void Application::render() {
 	}
 
 	renderer_.processTerrain(terrain_1_);
-	//_renderer.processTerrain(_terrain_2);
 
 	renderer_.render(sun);
 
@@ -64,13 +57,14 @@ void Application::makeTest()
 
 	Material white = Material(1.f, 10.f);
 	auto player_model = makeModel("bunny", "white", white);
-	player_ = Player(player_model, vec3(150.f, 0, -20), vec3(-90, 0, 0), 1);
+	player_ = make_shared<Player>(player_model, vec3(150.f, 0, -20), vec3(0.f, 0, 0), 0.5f);
+	player_->setRotationOffset(-90.f, 0, 0);
+	camera = Camera(player_);
 
 	auto texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
 	Texture blend_map = Texture(loader.loadTexture("res/textures/terrain1.png"));
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
 	terrain_1_ = Terrain(0, -1, ground_texture);
-	terrain_2_ = Terrain(-1, -1, ground_texture);
 
 	Material teapot_material = Material(1.f, 10.f);
 	shared_ptr<TexturedModel> teapot_model = makeModel("teapot", "test", teapot_material);
@@ -86,8 +80,9 @@ void Application::makeTest()
 	// Making grass
 	for (int i = 0; i < 100; i++) {
 		Entity grass = Entity(grass_model);
-		grass.setPosition(linearRand(-80.f, 80.f), 0, linearRand(-80.f, 80.f));
-		//_scene.push_back(grass);
+		grass.setPosition(linearRand(0.f, 300.f), 0, linearRand(0.f, -300.f));
+		grass.setScale(linearRand(1.f, 3.f));
+		scene_.push_back(grass);
 	}
 }
 

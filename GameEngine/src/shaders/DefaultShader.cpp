@@ -56,7 +56,7 @@ void DefaultShader::loadModelMatrix(const Entity& entity) const
 {
 	// Loading transformation matrix
 	glm::mat4 t_matrix = Maths::createTransformationMatrix(entity.getPosition(), 
-		entity.getRotation(), entity.getScale());
+		entity.getActualRotation(), entity.getScale());
 	loadMatrix(locations_.at(UniformVariable::TransformationMatrix), t_matrix);
 }
 

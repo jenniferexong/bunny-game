@@ -24,11 +24,10 @@ private:
 
 	MasterRenderer renderer_;
 
-	Player player_;
+	std::shared_ptr<Player> player_;
 	std::vector<Entity> scene_;
 	Entity entity_;
 	Terrain terrain_1_;
-	Terrain terrain_2_;
 
 public:
 	enum class Key { W, A, S, D, Q, E, Space };

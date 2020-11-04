@@ -2,18 +2,29 @@
 
 #include <glm/glm.hpp>
 
+#include <memory>
+
+#include <../objects/Player.h>
+
 using glm::vec3;
 
 class Camera {
 private:
-	static const float move_offset;
-	vec3 position_;
-	vec3 rotation_; // yaw, pitch, roll
+	static const float height_above_player;
+	static const float distance_behind_player;
+
+	std::shared_ptr<Player> player_;
+
+	vec3 position_ = vec3(0);
+	vec3 rotation_ = vec3(0); // yaw, pitch, roll
 
 public:
-	Camera() : position_(vec3(150.f, 5, 0)), rotation_(vec3(0)) {}
+	Camera() = default;
 
-	void updatePosition();
+	Camera(std::shared_ptr<Player> player): player_(std::move(player)) {}
+
+	void updateView();
+	void print();
 
 	vec3 getPosition() const { return position_; }
 	vec3 getRotation() const { return rotation_; }
