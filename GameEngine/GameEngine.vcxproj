@@ -31,6 +31,7 @@
     <ClCompile Include="src\render_engine\Loader.cpp" />
     <ClCompile Include="src\render_engine\MasterRenderer.cpp" />
     <ClCompile Include="src\render_engine\TerrainRenderer.cpp" />
+    <ClCompile Include="src\render_engine\WavefrontData.cpp" />
     <ClCompile Include="src\shaders\DefaultShader.cpp" />
     <ClCompile Include="src\shaders\Shader.cpp" />
     <ClCompile Include="src\shaders\TerrainShader.cpp" />
