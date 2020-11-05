@@ -1,6 +1,9 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include <string>
+#include <vector>
 
 #include "../models/Mesh.h"
 #include "../models/Texture.h"
@@ -17,7 +20,9 @@ private:
 	TerrainTexture texture_;
 
 	Mesh generate(const std::string& height_map);
-	float getHeight(int x, int y, int image_size, const unsigned char* buffer);
+	float getHeight(int x, int z, int image_size, const unsigned char* buffer);
+	glm::vec3 getPosition(int x, int z, int image_size, const std::vector<float>& positions);
+	glm::vec3 calculateNormal(int x, int z, int image_size, const std::vector<float>& positions);
 
 public:
 	Terrain() : x_(0), z_(0) {}
