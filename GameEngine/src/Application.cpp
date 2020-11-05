@@ -184,7 +184,7 @@ void Application::mouseButtonCallback(int button, int action, int mods)
 
 void Application::scrollCallBack(double x_offset, double y_offset)
 {
-
+	camera.zoom(y_offset);
 }
 
 
