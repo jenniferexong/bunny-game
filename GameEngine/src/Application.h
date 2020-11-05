@@ -29,14 +29,17 @@ private:
 	Terrain terrain_1_;
 
 	static double previous_mouse_x;
+	static double previous_mouse_y;
 
 public:
 	enum class Key { W, A, S, D, Q, E, Space, Esc };
+	enum class MouseButton { Left, Right };
 
 	static GLFWwindow* window;
 	static Camera camera;
 	static std::shared_ptr<Player> player;
 	static std::map<Key, bool> move_keys; 
+	static std::map<MouseButton, bool> mouse_buttons; 
 	static Light sun;
 	static Loader loader;
 	static vec3 sky_color;

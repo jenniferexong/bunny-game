@@ -1,10 +1,10 @@
 #include "Camera.h"
 #include "../Application.h"
 
-const float Camera::pitch = 10;
 const float Camera::min_distance = 20;
 const float Camera::max_distance = 50;
 
+float Camera::pitch = 20;
 float Camera::distance_from_player = 25;
 
 using namespace glm;
@@ -12,10 +12,13 @@ using namespace glm;
 void Camera::zoom(float amount)
 {
 	distance_from_player -= amount;
-	if (distance_from_player > max_distance)
-		distance_from_player = max_distance;
-	else if (distance_from_player < min_distance)
-		distance_from_player = min_distance;
+	distance_from_player = clamp(distance_from_player, min_distance, max_distance);
+}
+
+void Camera::changePitch(double amount)
+{
+	pitch += float(amount);
+	pitch = clamp(pitch, 1.f, 90.f);
 }
 
 void Camera::updateView() {
@@ -34,6 +37,8 @@ void Camera::updateView() {
 	vec3 offset = distance_behind_player * vec3(dx, 0, dz);
 	position_ = player_position + offset;
 	position_.y = player_position.y + height_above_player; // set height of camera
+
+	rotation_.y = pitch;
 
 	rotation_.x = -player_rotation.x;
 }

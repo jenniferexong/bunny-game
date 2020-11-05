@@ -21,6 +21,7 @@ vec3 Application::sky_color = vec3(0.039, 0.184, 0.243);
 shared_ptr<Player> Application::player = nullptr;
 
 double Application::previous_mouse_x = 0;
+double Application::previous_mouse_y = 0;
 
 // Time keeping
 long long Application::previous_frame_time = Application::getCurrentTime();
@@ -28,6 +29,10 @@ float Application::frame_delta = 0;
 
 map<Application::Key, bool> Application::move_keys = {
 	{Key::W, false}, {Key::A, false}, {Key::S, false}, {Key::D, false}, {Key::Q, false}, {Key::E, false}
+};
+
+map<Application::MouseButton, bool> Application::mouse_buttons = {
+	{MouseButton::Left, false}, {MouseButton::Right, false}
 };
 
 /**
@@ -180,12 +185,31 @@ void Application::keyCallback(int key, int scan_code, int action, int mods)
 void Application::cursorPosCallback(double x, double y)
 {
 	player->changeDirection(x - previous_mouse_x);
+	if (mouse_buttons[MouseButton::Left]) {
+		camera.changePitch(y - previous_mouse_y);
+	}
 	previous_mouse_x = x;
+	previous_mouse_y = y;
 }
 
 void Application::mouseButtonCallback(int button, int action, int mods)
 {
-
+	switch (button) {
+	case GLFW_MOUSE_BUTTON_LEFT:
+		if (action == GLFW_PRESS) 
+			mouse_buttons[MouseButton::Left] = true;
+		else if (action == GLFW_RELEASE)
+			mouse_buttons[MouseButton::Left] = false;
+		break;
+	case GLFW_MOUSE_BUTTON_RIGHT:
+		if (action == GLFW_PRESS) 
+			mouse_buttons[MouseButton::Right] = true;
+		else if (action == GLFW_RELEASE)
+			mouse_buttons[MouseButton::Right] = false;
+		break;
+	default:
+		break;
+	}
 }
 
 void Application::scrollCallBack(double x_offset, double y_offset)

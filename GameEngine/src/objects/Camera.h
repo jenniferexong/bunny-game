@@ -10,10 +10,9 @@ using glm::vec3;
 
 class Camera {
 private:
-	static const float pitch;
-
 	static float distance_from_player; // changed with mouse scroll
 
+	static float pitch;
 	static const float min_distance;
 	static const float max_distance;
 
@@ -30,6 +29,7 @@ public:
 	void updateView();
 	void zoom(float amount);
 	void print();
+	void changePitch(double amount);
 
 	vec3 getPosition() const { return position_; }
 	vec3 getRotation() const { return rotation_; }
