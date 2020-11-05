@@ -14,7 +14,8 @@ private:
 	static const float jump_power;
 	static const float terrain_height;
 
-	float current_speed_ = 0;
+	float forward_speed_ = 0;
+	float side_speed_ = 0;
 	float current_turn_speed_ = 0;
 	float up_velocity_ = 0;
 
@@ -26,6 +27,7 @@ public:
 	Player(std::shared_ptr<TexturedModel> model, vec3 position, vec3 rotation, float scale)
 		: Entity(std::move(model), position, rotation, scale) {}
 
+	void changeDirection(double amount);
 	void updatePosition();
 	void updateSpeed();
 };

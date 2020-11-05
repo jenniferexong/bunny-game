@@ -18,6 +18,9 @@ Camera Application::camera = Camera();
 Light Application::sun = Light(glm::vec3(0.f, 100.f, 1000.f), glm::vec3(1.f));
 Loader Application::loader = Loader();
 vec3 Application::sky_color = vec3(0.039, 0.184, 0.243);
+shared_ptr<Player> Application::player = nullptr;
+
+double Application::previous_mouse_x = 0;
 
 // Time keeping
 long long Application::previous_frame_time = Application::getCurrentTime();
@@ -35,9 +38,9 @@ void Application::render() {
 	long long current_frame_time = getCurrentTime();
 	frame_delta = float(current_frame_time - previous_frame_time) / 1000.f; // in seconds
 
-	player_->updatePosition();
+	player->updatePosition();
 	camera.updateView();
-	renderer_.processEntity(*player_);
+	renderer_.processEntity(*player);
 
 	// Process all entities
 	for (Entity e: scene_) {
@@ -57,9 +60,9 @@ void Application::makeTest()
 
 	Material white = Material(1.f, 10.f);
 	auto player_model = makeModel("bunny", "white", white);
-	player_ = make_shared<Player>(player_model, vec3(150.f, 0, -20), vec3(0.f, 0, 0), 0.5f);
-	player_->setRotationOffset(-90.f, 0, 0);
-	camera = Camera(player_);
+	player = make_shared<Player>(player_model, vec3(150.f, 0, -20), vec3(0.f, 0, 0), 2.f);
+	player->setRotationOffset(180.f, 0, 0);
+	camera = Camera(player);
 
 	auto texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
 	Texture blend_map = Texture(loader.loadTexture("res/textures/terrain1.png"));
@@ -167,6 +170,8 @@ void Application::keyCallback(int key, int scan_code, int action, int mods)
 			move_keys[Key::Space] = false;
 		}
 		break;
+	case GLFW_KEY_ESCAPE:
+		exit(EXIT_SUCCESS);
 	default:
 		break;
 	}
@@ -174,7 +179,8 @@ void Application::keyCallback(int key, int scan_code, int action, int mods)
 
 void Application::cursorPosCallback(double x, double y)
 {
-
+	player->changeDirection(x - previous_mouse_x);
+	previous_mouse_x = x;
 }
 
 void Application::mouseButtonCallback(int button, int action, int mods)
@@ -184,7 +190,7 @@ void Application::mouseButtonCallback(int button, int action, int mods)
 
 void Application::scrollCallBack(double x_offset, double y_offset)
 {
-	camera.zoom(y_offset);
+	camera.zoom(float(y_offset));
 }
 
 

@@ -14,7 +14,8 @@ class Entity {
 protected:
 	std::shared_ptr<TexturedModel> model_; // pointer for run time polymorphism
 	vec3 position_, rotation_; // yaw, pitch, roll
-	vec3 rotation_offset_ = vec3(0);
+	vec3 default_rotation_offset_ = vec3(0);
+	vec3 rotation_offset_;
 	float scale_;
 
 public:
@@ -31,7 +32,7 @@ public:
 	// Setters
 	void setPosition(float x, float y, float z) { position_ = vec3(x, y, z); }
 	void setRotation(float yaw, float pitch, float roll) { rotation_ = vec3(yaw, pitch, roll); }
-	void setRotationOffset(float yaw, float pitch, float roll) { rotation_offset_ = vec3(yaw, pitch, roll); }
+	void setRotationOffset(float yaw, float pitch, float roll);
 	void setScale(float scale) { scale_ = scale; }
 
 	// Getters

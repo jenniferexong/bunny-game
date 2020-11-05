@@ -4,7 +4,7 @@
 #include "../Application.h"
 
 const float Player::run_speed = 30.f; // per second
-const float Player::turn_speed = 130.f; // degrees per second
+const float Player::turn_speed = 1000.f; // degrees per second
 const float Player::gravity = -50.f;
 const float Player::jump_power = 30.f;
 const float Player::terrain_height = 0.f;
@@ -13,23 +13,28 @@ void Player::updatePosition()
 {
 	updateSpeed();
 	rotate(current_turn_speed_ * Application::frame_delta, 0, 0);
-	float distance = current_speed_ * Application::frame_delta;
+	float forward_distance = forward_speed_ * Application::frame_delta;
+	float side_distance = side_speed_ * Application::frame_delta;
 
-	//float offset_angle = -90.f;
-	// calculating new position (x, z)
-	float x = distance * glm::sin(glm::radians(rotation_.x));
-	float z = distance * glm::cos(glm::radians(rotation_.x));
+	// calculating new position (forward movement)
+	float fx = forward_distance * glm::sin(glm::radians(rotation_.x));
+	float fz = forward_distance * glm::cos(glm::radians(rotation_.x));
+	// side movement
+	float sx = side_distance * glm::cos(glm::radians(-rotation_.x));
+	float sz = side_distance * glm::sin(glm::radians(-rotation_.x));
 
 	// calculating new y position
 	float y = up_velocity_ * Application::frame_delta;
 
-	move(x, y, z);
+	move(fx + sx, y, fz + sz);
 
 	// Check if hits the ground
 	if (position_.y < terrain_height) {
 		position_.y = terrain_height;
 		up_velocity_ = 0;
 	}
+
+	current_turn_speed_ = 0;
 }
 
 void Player::jump()
@@ -43,15 +48,29 @@ void Player::fall()
 	up_velocity_ += gravity * Application::frame_delta;
 }
 
+void Player::changeDirection(double amount)
+{
+	printf("mouse: %f\n", amount);
+	if (amount > 0)
+		current_turn_speed_ = -turn_speed;
+	else if (amount < 0)
+		current_turn_speed_ = turn_speed;
+}
+
+
 void Player::updateSpeed()
 {
 	// movement forward and backwards
 	if (Application::move_keys[Application::Key::W]) {
-		current_speed_ = -run_speed;
+		// make the player face forwards
+		rotation_offset_ = default_rotation_offset_;
+		forward_speed_ = -run_speed;
 	} else if (Application::move_keys[Application::Key::S]) {
-		current_speed_ = run_speed;
+		// make the player face backwards
+		rotation_offset_ = default_rotation_offset_ + vec3(180.f, 0, 0);
+		forward_speed_ = run_speed;
 	} else {
-		current_speed_ = 0;
+		forward_speed_ = 0;
 	}
 
 	// jumping
@@ -60,15 +79,19 @@ void Player::updateSpeed()
 
 	fall();
 
-	// Turning clockwise
+	// Running to the right
 	if (Application::move_keys[Application::Key::D]) {
-		current_turn_speed_ = turn_speed;
-	} else if (Application::move_keys[Application::Key::A]) { // Turning anticlockwise
-		current_turn_speed_ = -turn_speed;
+		// make the player face to the right
+		rotation_offset_ = default_rotation_offset_ - vec3(90.f, 0, 0); 
+		side_speed_ = run_speed;
+	} else if (Application::move_keys[Application::Key::A]) { // running left
+		// make the player face to the left
+		rotation_offset_ = default_rotation_offset_ + vec3(90.f, 0 , 0);
+		side_speed_ = -run_speed;
 	} else {
-		current_turn_speed_ = 0;
+		side_speed_ = 0;
 	}
-
 }
+
 
 

@@ -72,9 +72,15 @@ void WavefrontData::processIndices(const string& vertex, const vector<vec3>& in_
 	positions.push_back(position.z);
 
 	std::getline(str, num, '/');
-	vec2 texture_coord = in_textures.at(stoi(num) - 1);
-	texture_coords.push_back(texture_coord.x);
-	texture_coords.push_back(texture_coord.y);
+	if (num == "") { // no texture coordinate
+		texture_coords.push_back(0);
+		texture_coords.push_back(0);
+	}
+	else {
+		vec2 texture_coord = in_textures.at(stoi(num) - 1);
+		texture_coords.push_back(texture_coord.x);
+		texture_coords.push_back(texture_coord.y);
+	}
 
 	std::getline(str, num);
 	vec3 normal = in_normals.at(stoi(num) - 1);

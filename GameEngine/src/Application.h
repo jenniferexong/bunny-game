@@ -24,16 +24,18 @@ private:
 
 	MasterRenderer renderer_;
 
-	std::shared_ptr<Player> player_;
 	std::vector<Entity> scene_;
 	Entity entity_;
 	Terrain terrain_1_;
 
+	static double previous_mouse_x;
+
 public:
-	enum class Key { W, A, S, D, Q, E, Space };
+	enum class Key { W, A, S, D, Q, E, Space, Esc };
 
 	static GLFWwindow* window;
 	static Camera camera;
+	static std::shared_ptr<Player> player;
 	static std::map<Key, bool> move_keys; 
 	static Light sun;
 	static Loader loader;

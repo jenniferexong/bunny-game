@@ -31,6 +31,7 @@ int main(void)
 
     Application::window = glfwCreateWindow(1280, 720, "", NULL, NULL);
     GLFWwindow* window = Application::window;
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     if (!window) {
         glfwTerminate();
