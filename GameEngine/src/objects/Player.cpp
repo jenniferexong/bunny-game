@@ -4,7 +4,7 @@
 #include "../Application.h"
 
 const float Player::run_speed = 30.f; // per second
-const float Player::turn_speed = 1000.f; // degrees per second
+const float Player::turn_speed = 400.f; // degrees per second
 const float Player::gravity = -50.f;
 const float Player::jump_power = 30.f;
 const float Player::terrain_height = 0.f;
@@ -50,7 +50,6 @@ void Player::fall()
 
 void Player::changeDirection(double amount)
 {
-	printf("mouse: %f\n", amount);
 	if (amount > 0)
 		current_turn_speed_ = -turn_speed;
 	else if (amount < 0)

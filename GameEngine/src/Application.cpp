@@ -72,7 +72,7 @@ void Application::makeTest()
 	auto texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
 	Texture blend_map = Texture(loader.loadTexture("res/textures/terrain1.png"));
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
-	terrain_1_ = Terrain(0, -1, ground_texture);
+	terrain_1_ = Terrain(0, -1, ground_texture, "res/textures/height-map.png");
 
 	Material teapot_material = Material(1.f, 10.f);
 	shared_ptr<TexturedModel> teapot_model = makeModel("teapot", "test", teapot_material);
