@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#include <../objects/Player.h>
+#include "../objects/Player.h"
 
 using glm::vec3;
 
