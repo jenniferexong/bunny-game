@@ -9,11 +9,16 @@ using glm::vec3;
 
 class Player final: public Entity {
 private:
+	enum class State {
+		N, E, S, W, NE, SE, SW, NW
+	};
+
 	static const float run_speed;
 	static const float turn_speed;
 	static const float gravity;
 	static const float jump_power;
 
+	State state_ = State::N;
 	float forward_speed_ = 0;
 	float side_speed_ = 0;
 	float current_turn_speed_ = 0;
@@ -23,6 +28,7 @@ private:
 
 	void jump();
 	void fall();
+	glm::vec3 getRotationOffset();
 
 public:
 	Player() = default;

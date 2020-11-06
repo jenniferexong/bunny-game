@@ -60,7 +60,7 @@ void TerrainShader::loadModelMatrix(const Terrain& terrain) const
 {
 	// Loading transformation matrix
 	glm::vec3 position(terrain.getX(), 0, terrain.getZ());
-	glm::mat4 t_matrix = Maths::createTransformationMatrix(position, glm::vec3(0), 1);
+	glm::mat4 t_matrix = Maths::createTransformationMatrix(position, glm::vec3(0), 1, glm::mat4(1));
 
 	loadMatrix(locations_.at(UniformVariable::TransformationMatrix), t_matrix);
 }

@@ -14,6 +14,7 @@ MasterRenderer::MasterRenderer()
 {
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
+	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	enableCulling();
 
 	entity_shader_ = std::make_shared<DefaultShader>();

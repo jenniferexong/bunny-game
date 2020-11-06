@@ -33,7 +33,7 @@ void main() {
     
     vec4 blendMapValue = texture(uBlendMap, f_in.textureCoords);
     float blackAmount = 1 - (blendMapValue.r + blendMapValue.g + blendMapValue.b);
-    vec2 tiledCoords = f_in.textureCoords * 20.0;
+    vec2 tiledCoords = f_in.textureCoords * 25.0;
     blackTexture = texture(uBaseTexture, tiledCoords) * blackAmount;
     redTexture = texture(uRedTexture, tiledCoords) * blendMapValue.r;
     greenTexture = texture(uGreenTexture, tiledCoords) * blendMapValue.g;
