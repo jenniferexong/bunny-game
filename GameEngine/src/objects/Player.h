@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include "Entity.h"
+#include "Terrain.h"
 
 using glm::vec3;
 
@@ -12,12 +13,13 @@ private:
 	static const float turn_speed;
 	static const float gravity;
 	static const float jump_power;
-	static const float terrain_height;
 
 	float forward_speed_ = 0;
 	float side_speed_ = 0;
 	float current_turn_speed_ = 0;
 	float up_velocity_ = 0;
+
+	bool is_in_air = false;
 
 	void jump();
 	void fall();
@@ -28,6 +30,6 @@ public:
 		: Entity(std::move(model), position, rotation, scale) {}
 
 	void changeDirection(double amount);
-	void updatePosition();
+	void updatePosition(const Terrain& terrain);
 	void updateSpeed();
 };

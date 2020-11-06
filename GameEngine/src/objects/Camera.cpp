@@ -1,11 +1,11 @@
 #include "Camera.h"
 #include "../Application.h"
 
-const float Camera::min_distance = 20;
-const float Camera::max_distance = 50;
+const float Camera::min_distance = 10;
+const float Camera::max_distance = 30;
 
 float Camera::pitch = 20;
-float Camera::distance_from_player = 25;
+float Camera::distance_from_player = 15;
 
 using namespace glm;
 

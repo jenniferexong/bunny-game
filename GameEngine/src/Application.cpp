@@ -43,7 +43,7 @@ void Application::render() {
 	long long current_frame_time = getCurrentTime();
 	frame_delta = float(current_frame_time - previous_frame_time) / 1000.f; // in seconds
 
-	player->updatePosition();
+	player->updatePosition(terrain_1_);
 	camera.updateView();
 	renderer_.processEntity(*player);
 
@@ -65,7 +65,7 @@ void Application::makeTest()
 
 	Material white = Material(1.f, 10.f);
 	auto player_model = makeModel("bunny", "white", white);
-	player = make_shared<Player>(player_model, vec3(150.f, 0, -20), vec3(0.f, 0, 0), 2.f);
+	player = make_shared<Player>(player_model, vec3(150.f, 0, -20), vec3(0.f, 0, 0), 1.f);
 	player->setRotationOffset(180.f, 0, 0);
 	camera = Camera(player);
 
@@ -88,9 +88,13 @@ void Application::makeTest()
 	// Making grass
 	for (int i = 0; i < 100; i++) {
 		Entity grass = Entity(grass_model);
-		grass.setPosition(linearRand(0.f, 300.f), 0, linearRand(0.f, -300.f));
-		grass.setScale(linearRand(1.f, 3.f));
-		scene_.push_back(grass);
+		float x = linearRand(0.f, 510.f);
+		float z = linearRand(0.f, -510.f);
+		float y = terrain_1_.getHeightOfTerrain(x, z);
+		cout << "y: " << y << endl;
+		grass.setPosition(x, y, z);
+		//grass.setScale(0.3);
+		//scene_.push_back(grass);
 	}
 }
 

@@ -1,15 +1,20 @@
 
 #include "Player.h"
 
+#include <iostream>
+
+
 #include "../Application.h"
 
 const float Player::run_speed = 30.f; // per second
 const float Player::turn_speed = 400.f; // degrees per second
 const float Player::gravity = -50.f;
 const float Player::jump_power = 30.f;
-const float Player::terrain_height = 0.f;
 
-void Player::updatePosition()
+using std::cout;
+using std::endl;
+
+void Player::updatePosition(const Terrain& terrain)
 {
 	updateSpeed();
 	rotate(current_turn_speed_ * Application::frame_delta, 0, 0);
@@ -28,9 +33,12 @@ void Player::updatePosition()
 
 	move(fx + sx, y, fz + sz);
 
+	float terrain_height = terrain.getHeightOfTerrain(position_.x, position_.z);
+
 	// Check if hits the ground
 	if (position_.y < terrain_height) {
 		position_.y = terrain_height;
+		is_in_air = false;
 		up_velocity_ = 0;
 	}
 
@@ -39,8 +47,10 @@ void Player::updatePosition()
 
 void Player::jump()
 {
-	if (position_.y == terrain_height)
+	if (!is_in_air) {
 		up_velocity_ = jump_power;
+		is_in_air = true;
+	}
 }
 
 void Player::fall()
