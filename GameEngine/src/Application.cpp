@@ -65,7 +65,7 @@ void Application::makeTest()
 
 	Material white = Material(1.f, 10.f);
 	auto player_model = makeModel("bunny", "white", white);
-	player = make_shared<Player>(player_model, vec3(150.f, 0, -20), vec3(0.f, 0, 0), 1.f);
+	player = make_shared<Player>(player_model, vec3(255.f, 0, -20), vec3(0.f, 0, 0), 1.f);
 	player->setRotationOffset(180.f, 0, 0);
 	camera = Camera(player);
 
@@ -83,18 +83,17 @@ void Application::makeTest()
 	//_scene.push_back(teapot);
 
 	Material grass_material = Material(true, true);
-	shared_ptr<TexturedModel> grass_model = makeModel("grass-model", "grass-texture", grass_material);
+	shared_ptr<TexturedModel> grass_model = makeModel("grass", "grass-texture", grass_material);
 
 	// Making grass
-	for (int i = 0; i < 100; i++) {
+	for (int i = 0; i < 2000; i++) {
 		Entity grass = Entity(grass_model);
 		float x = linearRand(0.f, 510.f);
 		float z = linearRand(0.f, -510.f);
 		float y = terrain_1_.getHeightOfTerrain(x, z);
-		cout << "y: " << y << endl;
 		grass.setPosition(x, y, z);
-		//grass.setScale(0.3);
-		//scene_.push_back(grass);
+		grass.setRotation(linearRand(0.f, 90.f), 0, 0);
+		scene_.push_back(grass);
 	}
 }
 

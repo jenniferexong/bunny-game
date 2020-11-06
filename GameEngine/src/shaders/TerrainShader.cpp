@@ -22,7 +22,6 @@ void TerrainShader::bindAttributes()
 
 void TerrainShader::getAllUniformLocations()
 {
-	printf("loading locations into map\n");
 	locations_.insert({ UniformVariable::TransformationMatrix, getUniformLocation("uTransformationMatrix") });
 	locations_.insert({ UniformVariable::ProjectionMatrix, getUniformLocation("uProjectionMatrix") });
 	locations_.insert({ UniformVariable::ViewMatrix, getUniformLocation("uViewMatrix") });
@@ -37,7 +36,6 @@ void TerrainShader::getAllUniformLocations()
 	locations_.insert({ UniformVariable::GreenTexture, getUniformLocation("uGreenTexture") });
 	locations_.insert({ UniformVariable::BlueTexture, getUniformLocation("uBlueTexture") });
 	locations_.insert({ UniformVariable::BlendMap, getUniformLocation("uBlendMap") });
-	printf("size: %d\n", locations_.size());
 }
 
 void TerrainShader::loadUniformPerFrame(const Light& light) const

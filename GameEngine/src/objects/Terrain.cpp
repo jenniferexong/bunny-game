@@ -102,9 +102,9 @@ float Terrain::getHeightOfTerrain(float world_x, float world_z) const
 	int grid_z = (int) floor(terrain_z / grid_size);
 
 	// check if actually a valid grid on the terrain
-	if (grid_x >= (float) vertex_count_ - 1 || grid_z >= (float) vertex_count_ - 1 || grid_x < 0 || grid_z < 0) {
+	if (grid_x >= vertex_count_ - 1 || grid_z >= vertex_count_ - 1 || grid_x < 0 || grid_z < 0) 
 		return 0;
-	}
+
 	// get the x and z amount in its grid, in range [0, 1]
 	float x = fmod(terrain_x, grid_size) / grid_size;
 	float z = fmod(terrain_z, grid_size) / grid_size;
@@ -140,7 +140,6 @@ Mesh Terrain::generate(const string& height_map)
 
 	vertex_count_ = height;
 
-	//int count = vertex_count_ * vertex_count_;
 	vector<float> positions;
 	vector<float> normals;
 	vector<float> texture_coords;
@@ -182,9 +181,9 @@ Mesh Terrain::generate(const string& height_map)
 			indices.push_back(bottom_right);
 		}
 	}
-	if (buffer) { // if buffer contains data 
+
+	if (buffer)  // if buffer contains data 
 		stbi_image_free(buffer);
-	}
 
 	return Application::loader.loadToVao(positions, normals, texture_coords, indices);
 }
