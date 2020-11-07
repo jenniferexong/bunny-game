@@ -23,7 +23,6 @@ using std::string;
 class Application {
 private:
 	MasterRenderer renderer_;
-	GuiRenderer gui_renderer_;
 
 	std::vector<Entity> scene_;
 	std::vector<std::shared_ptr<GuiTexture>> guis_;

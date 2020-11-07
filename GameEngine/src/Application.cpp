@@ -49,16 +49,15 @@ void Application::render() {
 	renderer_.processEntity(*player);
 
 	// Process all entities
-	for (Entity e: scene_) {
+	for (const Entity& e: scene_) 
 		renderer_.processEntity(e);
-	}
 
 	renderer_.processTerrain(terrain_1_);
 
-	renderer_.render(sun);
+	for (const auto& gui: guis_) 
+		renderer_.processGui(gui);
 
-	// render gui
-	gui_renderer_.render(guis_);
+	renderer_.render(sun);
 
 	previous_frame_time = current_frame_time;
 }
@@ -71,11 +70,9 @@ void Application::makeTest()
 	glfwGetWindowSize(Application::window, &width, &height);
 
 	// GUI
-	// TODO: Make function to convert position in pixels to window percent
-	const float padding = 200;
+	const float padding = 100;
 	const float size = 150;
-	compass = make_shared<GuiTexture>(loader.loadTexture("res/textures/compass.png"), 
-		vec2(-1.f + padding/width, 1.f - padding/height), vec2(size/width, size/height));
+	compass = make_shared<GuiTexture>(loader.loadTexture("res/textures/compass.png"), vec2(padding, height - padding), vec2(size, size));
 	guis_.push_back(compass);
 
 	// Terrain
@@ -147,6 +144,41 @@ long long Application::getCurrentTime()
 	return ms.count();
 }
 
+void Application::scrollCallBack(double x_offset, double y_offset)
+{
+	camera.zoom(float(y_offset));
+}
+
+void Application::cursorPosCallback(double x, double y)
+{
+	player->changeDirection(x - previous_mouse_x);
+	if (mouse_buttons[MouseButton::Left]) {
+		camera.changePitch(y - previous_mouse_y);
+	}
+	previous_mouse_x = x;
+	previous_mouse_y = y;
+}
+
+void Application::mouseButtonCallback(int button, int action, int mods)
+{
+	switch (button) {
+	case GLFW_MOUSE_BUTTON_LEFT:
+		if (action == GLFW_PRESS) 
+			mouse_buttons[MouseButton::Left] = true;
+		else if (action == GLFW_RELEASE)
+			mouse_buttons[MouseButton::Left] = false;
+		break;
+	case GLFW_MOUSE_BUTTON_RIGHT:
+		if (action == GLFW_PRESS) 
+			mouse_buttons[MouseButton::Right] = true;
+		else if (action == GLFW_RELEASE)
+			mouse_buttons[MouseButton::Right] = false;
+		break;
+	default:
+		break;
+	}
+}
+
 void Application::keyCallback(int key, int scan_code, int action, int mods)
 {
 	switch (key) {
@@ -204,41 +236,6 @@ void Application::keyCallback(int key, int scan_code, int action, int mods)
 	default:
 		break;
 	}
-}
-
-void Application::cursorPosCallback(double x, double y)
-{
-	player->changeDirection(x - previous_mouse_x);
-	if (mouse_buttons[MouseButton::Left]) {
-		camera.changePitch(y - previous_mouse_y);
-	}
-	previous_mouse_x = x;
-	previous_mouse_y = y;
-}
-
-void Application::mouseButtonCallback(int button, int action, int mods)
-{
-	switch (button) {
-	case GLFW_MOUSE_BUTTON_LEFT:
-		if (action == GLFW_PRESS) 
-			mouse_buttons[MouseButton::Left] = true;
-		else if (action == GLFW_RELEASE)
-			mouse_buttons[MouseButton::Left] = false;
-		break;
-	case GLFW_MOUSE_BUTTON_RIGHT:
-		if (action == GLFW_PRESS) 
-			mouse_buttons[MouseButton::Right] = true;
-		else if (action == GLFW_RELEASE)
-			mouse_buttons[MouseButton::Right] = false;
-		break;
-	default:
-		break;
-	}
-}
-
-void Application::scrollCallBack(double x_offset, double y_offset)
-{
-	camera.zoom(float(y_offset));
 }
 
 

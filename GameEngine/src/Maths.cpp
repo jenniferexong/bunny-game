@@ -9,7 +9,6 @@ mat4 Maths::createTransformationMatrix(vec2 t, float r, vec2 s)
 {
 	mat4 matrix = mat4(1);
 	matrix = translate(matrix, vec3(t, 0));
-
 	matrix = scale(matrix, vec3(s, 1));
 	matrix = rotate(matrix, radians(r), vec3(0, 0, 1));
 

@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\gui\GuiTexture.cpp" />
     <ClCompile Include="src\Maths.cpp" />
     <ClCompile Include="src\objects\Camera.cpp" />
     <ClCompile Include="src\render_engine\EntityRenderer.cpp" />

@@ -30,21 +30,24 @@ void MasterRenderer::render(const Light& sun)
 {
 	prepare();
 
-	// entity shader
+	// terrain 
+	terrain_shader_->start();
+	terrain_shader_->loadUniformPerFrame(sun);
+	terrain_renderer_.render(terrains_);
+	terrain_shader_->stop();
+
+	// entities
 	entity_shader_->start();
 	// Loading some uniforms
 	entity_shader_->loadUniformPerFrame(sun);
 	entity_renderer_.render(entities_);
 	entity_shader_->stop();
 
-	// terrain shader
-	terrain_shader_->start();
-	terrain_shader_->loadUniformPerFrame(sun);
-	terrain_renderer_.render(terrains_);
-	terrain_shader_->stop();
+	gui_renderer_.render(guis_);
 
 	terrains_.clear();
 	entities_.clear();
+	guis_.clear();
 }
 
 void MasterRenderer::enableCulling()
@@ -88,4 +91,9 @@ void MasterRenderer::processEntity(const Entity& entity)
 void MasterRenderer::processTerrain(const Terrain& terrain)
 {
 	terrains_.push_back(terrain);
+}
+
+void MasterRenderer::processGui(const std::shared_ptr<GuiTexture>& gui)
+{
+	guis_.push_back(gui);
 }

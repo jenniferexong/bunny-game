@@ -31,7 +31,7 @@ void GuiRenderer::render(const std::vector<std::shared_ptr<GuiTexture>>& gui_tex
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glDisable(GL_DEPTH_TEST);
 
-	for (const auto gui: gui_textures) { // render
+	for (const auto& gui: gui_textures) { // render
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, gui->getTexture());
 		shader_.loadModelMatrix(*gui);

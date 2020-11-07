@@ -10,7 +10,7 @@ private:
 	glm::vec2 scale_; // size of quad in relation to size of the screen
 	
 public:
-	GuiTexture(int texture, glm::vec2 position, glm::vec2 scale) : texture_(texture), position_(position), scale_(scale) {}
+	GuiTexture(int texture, glm::vec2 position, glm::vec2 size);
 
 	int getTexture() const { return texture_; }
 	glm::vec2 getPosition() const { return position_; }
