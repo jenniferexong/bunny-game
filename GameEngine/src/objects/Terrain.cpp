@@ -20,7 +20,6 @@ Terrain::Terrain(int grid_x, int grid_z, TerrainTexture texture, const string& h
 	mesh_ = generate(height_map);
 }
 
-
 template <class Value>
 Value Terrain::barycentric(vec3 point, vec3 p1, vec3 p2, vec3 p3, Value v1, Value v2, Value v3) const
 {

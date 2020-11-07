@@ -3,8 +3,21 @@
 
 using namespace glm;
 
+
+/* Creates a transformation matrix for a gui component*/
+mat4 Maths::createTransformationMatrix(vec2 t, float r, vec2 s)
+{
+	mat4 matrix = mat4(1);
+	matrix = translate(matrix, vec3(t, 0));
+
+	matrix = scale(matrix, vec3(s, 1));
+	matrix = rotate(matrix, radians(r), vec3(0, 0, 1));
+
+	return matrix;
+}
+
 /* Helper function: uses Euler angles for rotation */
-mat4 Maths::createTransformationMatrix(const vec3 t, const vec3 r, const float s, mat4 alignment_matrix)
+mat4 Maths::createTransformationMatrix(vec3 t, vec3 r, float s, mat4 alignment_matrix)
 {
 	mat4 matrix = mat4(1);
 

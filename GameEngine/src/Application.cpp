@@ -19,6 +19,7 @@ Light Application::sun = Light(glm::vec3(0.f, 100.f, 1000.f), glm::vec3(1.f));
 Loader Application::loader = Loader();
 vec3 Application::sky_color = vec3(0.039, 0.184, 0.243);
 shared_ptr<Player> Application::player = nullptr;
+shared_ptr<GuiTexture> Application::compass = nullptr;
 
 double Application::previous_mouse_x = 0;
 double Application::previous_mouse_y = 0;
@@ -56,12 +57,26 @@ void Application::render() {
 
 	renderer_.render(sun);
 
+	// render gui
+	gui_renderer_.render(guis_);
+
 	previous_frame_time = current_frame_time;
 }
 
 void Application::makeTest()
 {
 	//TODO: Make files that you can read material properties from, and position, scale, rotation...
+
+	int width, height;
+	glfwGetWindowSize(Application::window, &width, &height);
+
+	// GUI
+	// TODO: Make function to convert position in pixels to window percent
+	const float padding = 200;
+	const float size = 150;
+	compass = make_shared<GuiTexture>(loader.loadTexture("res/textures/compass.png"), 
+		vec2(-1.f + padding/width, 1.f - padding/height), vec2(size/width, size/height));
+	guis_.push_back(compass);
 
 	// Terrain
 	auto texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");

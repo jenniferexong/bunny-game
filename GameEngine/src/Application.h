@@ -12,20 +12,21 @@
 #include "objects/Light.h"
 #include "render_engine/MasterRenderer.h"
 #include "render_engine/Loader.h"
-#include "shaders/DefaultShader.h"
+#include "shaders/EntityShader.h"
 #include "models/Texture.h"
 #include "objects/Player.h"
+#include "render_engine/GuiRenderer.h"
+#include "gui/GuiTexture.h"
 
 using std::string;
 
 class Application {
 private:
-	//std::shared_ptr<Player> m_player;
-
 	MasterRenderer renderer_;
+	GuiRenderer gui_renderer_;
 
 	std::vector<Entity> scene_;
-	Entity entity_;
+	std::vector<std::shared_ptr<GuiTexture>> guis_;
 	Terrain terrain_1_;
 
 	static double previous_mouse_x;
@@ -43,6 +44,7 @@ public:
 	static Light sun;
 	static Loader loader;
 	static vec3 sky_color;
+	static std::shared_ptr<GuiTexture> compass;
 
 	// Time keeping for frames
 	static int fps_cap;

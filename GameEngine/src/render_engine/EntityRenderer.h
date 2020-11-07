@@ -4,7 +4,7 @@
 #include <map>
 #include <vector>
 
-#include "../shaders/DefaultShader.h"
+#include "../shaders/EntityShader.h"
 #include "../objects/Entity.h"
 #include "../models/Model.h"
 

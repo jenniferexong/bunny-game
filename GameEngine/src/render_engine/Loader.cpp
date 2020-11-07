@@ -38,6 +38,15 @@ Mesh Loader::loadToVao(const string& obj_file)
 	return { vao_id, (int) data.indices.size() };
 }
 
+Mesh Loader::loadToVao(const vector<float>& positions)
+{
+	int vao_id = createVao();
+	storeInAttributeList(AttributeLocation::Position, 2, positions);
+	unbindVao();
+	return { vao_id, (int) positions.size() / 2 };
+}
+
+
 int Loader::loadTexture(const string& file_name)
 {
 	// Loading the image

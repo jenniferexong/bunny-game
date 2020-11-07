@@ -1,12 +1,12 @@
 
-#include "DefaultShader.h"
+#include "EntityShader.h"
 
 #include "../render_engine/MasterRenderer.h"
 #include "../Application.h"
 #include "../Location.h"
 
-const std::string DefaultShader::vertex_file = "res/shaders/default_vert.glsl";
-const std::string DefaultShader::fragment_file = "res/shaders/default_frag.glsl";
+const std::string DefaultShader::vertex_file = "res/shaders/entity_vert.glsl";
+const std::string DefaultShader::fragment_file = "res/shaders/entity_frag.glsl";
 
 void DefaultShader::setUp()
 {
@@ -15,9 +15,9 @@ void DefaultShader::setUp()
 
 void DefaultShader::bindAttributes()
 {
-	bindAttribute(AttributeLocation::Position, "position");
-	bindAttribute(AttributeLocation::Normal, "normal");
-	bindAttribute(AttributeLocation::Texture, "textureCoords");
+	bindAttribute(AttributeLocation::Position, "aPosition");
+	bindAttribute(AttributeLocation::Normal, "aNormal");
+	bindAttribute(AttributeLocation::Texture, "aTextureCoords");
 }
 
 void DefaultShader::getAllUniformLocations()
