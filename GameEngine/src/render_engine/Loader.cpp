@@ -34,7 +34,7 @@ Mesh Loader::loadToVao(const string& obj_file)
 	storeInAttributeList(AttributeLocation::Texture, 2, data.texture_coords);
 
 	bindIbo(data.indices);
-	unbindVao(); // unbinding
+	unbindVao(); 
 	return { vao_id, (int) data.indices.size() };
 }
 
@@ -61,7 +61,7 @@ int Loader::loadTexture(const string& file_name)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	if (buffer) { // if buffer contains data 
+	if (buffer) { 
 		stbi_image_free(buffer);
 	}
 

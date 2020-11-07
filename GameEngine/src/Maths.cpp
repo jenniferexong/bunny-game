@@ -15,10 +15,10 @@ mat4 Maths::createTransformationMatrix(const vec3 t, const vec3 r, const float s
 	float pitch = r.y;
 	float roll = r.z;
 
+	matrix = matrix * alignment_matrix;
 	matrix = rotate(matrix, radians(yaw), vec3(0, 1, 0));
 	matrix = rotate(matrix, radians(pitch), vec3(1, 0, 0));
 	matrix = rotate(matrix, radians(roll), vec3(0, 0, 1));
-	matrix = matrix * alignment_matrix;
 
 	matrix = scale(matrix, vec3(s));
 

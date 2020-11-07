@@ -9,7 +9,7 @@ using glm::vec3;
 
 class Player final: public Entity {
 private:
-	enum class State {
+	enum class DirectionState {
 		N, E, S, W, NE, SE, SW, NW
 	};
 
@@ -18,7 +18,7 @@ private:
 	static const float gravity;
 	static const float jump_power;
 
-	State state_ = State::N;
+	DirectionState state_ = DirectionState::N;
 	float forward_speed_ = 0;
 	float side_speed_ = 0;
 	float current_turn_speed_ = 0;

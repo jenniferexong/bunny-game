@@ -11,25 +11,29 @@
 class Terrain {
 private:
 	static const float size;
-	//static const int vertex_count;
 	static const float max_height;
 	static const float max_pixel_color;
 	
 	int vertex_count_; // number of vertices on a side of the square
 	float x_, z_;
-	std::vector<float> heights_;
-	std::vector<float> positions_;
-	std::vector<float> normals_;
 	Mesh mesh_;
 	TerrainTexture texture_;
 
+	std::vector<float> heights_;
+	std::vector<float> positions_;
+	std::vector<float> normals_;
+
 	Mesh generate(const std::string& height_map);
+
+	template <class Value>
+	Value barycentric(glm::vec3 point, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, Value v1, Value v2, Value v3) const;
+
 	float calculateHeight(int row, int col, const unsigned char* buffer);
 	glm::vec3 calculateNormal(int row, int col) const;
+
 	glm::vec3 getPosition(int row, int col) const;
 	glm::vec3 getNormal(int row, int col) const;
 	float getHeight(int x, int z) const;
-	float barycentric(glm::vec3 point, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, float h1, float h2, float h3) const;
 
 public:
 	Terrain() = default;

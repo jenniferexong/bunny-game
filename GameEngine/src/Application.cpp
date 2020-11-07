@@ -63,24 +63,25 @@ void Application::makeTest()
 {
 	//TODO: Make files that you can read material properties from, and position, scale, rotation...
 
+	// Terrain
 	auto texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
 	Texture blend_map = Texture(loader.loadTexture("res/textures/terrain1.png"));
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
 	terrain_1_ = Terrain(0, -1, ground_texture, "res/textures/height-map.png");
 
+	// Bunny player
 	Material white = Material(1.f, 10.f);
 	auto player_model = makeModel("bunny", "white", white);
 	float player_x = 255.f;
-	float player_z = -10.f;
+	float player_z = -20.f;
 	float player_y = terrain_1_.getHeightOfTerrain(player_x, player_z);
 	player = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(0.f, 0, 0), 1.f);
 	player->setRotationOffset(180.f, 0, 0);
 	camera = Camera(player);
 
-
+	// teapot
 	Material teapot_material = Material(1.f, 10.f);
 	shared_ptr<TexturedModel> teapot_model = makeModel("teapot", "test", teapot_material);
-
 	Entity teapot = Entity(teapot_model);
 	teapot.setPosition(0, 0, -20);
 	teapot.setScale(1);
@@ -97,6 +98,7 @@ void Application::makeTest()
 		float y = terrain_1_.getHeightOfTerrain(x, z);
 		grass.setPosition(x, y, z);
 		grass.setRotation(linearRand(0.f, 90.f), 0, 0);
+		grass.setAlignmentRotation(terrain_1_.getNormalOfTerrain(x, z));
 		scene_.push_back(grass);
 	}
 }

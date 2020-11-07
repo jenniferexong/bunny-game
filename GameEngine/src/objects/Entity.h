@@ -35,6 +35,7 @@ public:
 	void setPosition(float x, float y, float z) { position_ = vec3(x, y, z); }
 	void setRotation(float yaw, float pitch, float roll) { rotation_ = vec3(yaw, pitch, roll); }
 	void setRotationOffset(float yaw, float pitch, float roll);
+	void setAlignmentRotation(vec3 surface_normal);
 	void setScale(float scale) { scale_ = scale; }
 
 	// Getters
