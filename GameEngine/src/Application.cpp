@@ -109,15 +109,30 @@ void Application::makeTest()
 		float z = linearRand(0.f, -510.f);
 		float y = terrain_1_.getHeightOfTerrain(x, z);
 		grass.setPosition(x, y, z);
-		grass.setRotation(linearRand(0.f, 90.f), 0, 0);
+		grass.setRotation(linearRand(0.f, 360.f), 0, 0);
 		grass.setAlignmentRotation(terrain_1_.getNormalOfTerrain(x, z));
 		scene_.push_back(grass);
 	}
 
-	//lights.emplace_back(vec3(0.f, 100, 1000), vec3(1.f)); // sun
-	lights.emplace_back(vec3(50.f, 5, -50), vec3(0, 1.f, 1)); // cyan
-	lights.emplace_back(vec3(100.f, 5, -200), vec3(1.f, 0, 1)); // magenta
-	lights.emplace_back(vec3(400.f, 5, -100), vec3(0, 1.f, 0)); // green
+	Material flower_material = Material(false, true);
+	shared_ptr<TexturedModel> flower_model = makeModel("flower", "flower", flower_material);
+	lights.emplace_back(vec3(0.f, 100, 1000), vec3(0.3f)); // sun
+	for (int i = 0; i < 50; i++) {
+		Entity flower = Entity(flower_model);
+		float x = linearRand(0.f, 510.f);
+		float z = linearRand(0.f, -510.f);
+		float y = terrain_1_.getHeightOfTerrain(x, z);
+		flower.setPosition(x, y, z);
+		flower.setRotation(linearRand(0.f, 360.f), -90, 0);
+		flower.setAlignmentRotation(terrain_1_.getNormalOfTerrain(x, z));
+		flower.setScale(0.1f);
+		scene_.push_back(flower);
+
+		// make light slightly above flower to give glow effect
+		
+		vec3 color = vec3(1.f, 1, 1);
+		lights.emplace_back(vec3(x, y + 3, z), color, Light::point_light_attenuation); // cyan
+	}
 }
 
 shared_ptr<TerrainTexturePack> Application::makeTexturePack(const string& base, const string& red,

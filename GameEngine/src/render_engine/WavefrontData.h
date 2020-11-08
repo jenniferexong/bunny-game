@@ -15,6 +15,7 @@ struct WavefrontData {
 	vector<float> normals;
 	vector<float> texture_coords;
 	vector<int> indices;
+	int face = 3; // 3 = triangles, 4 = quads
 
 	/* Loads in vertex data from an obj file */
 	WavefrontData(const std::string& file_name);

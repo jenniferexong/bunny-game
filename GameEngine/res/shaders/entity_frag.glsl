@@ -5,6 +5,8 @@ uniform sampler2D textureSampler;
 
 uniform vec3 uLightColor[100];
 uniform vec3 uLightPosition[100];
+uniform vec3 uAttenuation[100];
+
 uniform int uLightCount;
 uniform int uMaxLights;
 
@@ -31,7 +33,7 @@ void main() {
     vec3 toCamera = normalize(f_in.cameraPosition - f_in.position);
     vec3 norm = normalize(f_in.normal);
 
-    float ambientStrength = 0.5;
+    float ambientStrength = 0.4;
     vec3 ambient = ambientStrength * vec3(1);
 
     // Lighting calculations
@@ -39,14 +41,18 @@ void main() {
     vec3 specular = vec3(0);
 
     for (int i = 0; i < uLightCount && i < uMaxLights; i++) {
-        vec3 incidentLight = normalize(f_in.position - uLightPosition[i]);
+        vec3 lightToPoint = f_in.position - uLightPosition[i];
+        vec3 incidentLight = normalize(lightToPoint);
+
+        float dist = length(lightToPoint);
+        float attenuationFactor = uAttenuation[i].x + (uAttenuation[i].y * dist) + (uAttenuation[i].z * dist * dist);
         
         float diff = max(dot(norm, -incidentLight), 0.0);
-        diffuse += diff * uLightColor[i];
+        diffuse += (diff * uLightColor[i]) / attenuationFactor;
 
         vec3 reflectDir = reflect(incidentLight, norm);
         float spec = pow(max(dot(toCamera, reflectDir), 0.0), uShineDamper);
-        specular += uReflectivity * spec * uLightColor[i];
+        specular += (uReflectivity * spec * uLightColor[i]) / attenuationFactor;
     }
 
     vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * texture(textureSampler, f_in.textureCoords));

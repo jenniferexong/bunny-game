@@ -11,7 +11,7 @@ class TerrainShader final : public Shader {
 private:
 	enum class UniformVariable {
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
-		LightPosition, LightColor, LightCount, MaxLights,
+		LightPosition, LightColor, LightCount, MaxLights, Attenuation,
 		Reflectivity, ShineDamper, SkyColor,
 		BaseTexture, RedTexture, GreenTexture, BlueTexture, BlendMap 
 	};

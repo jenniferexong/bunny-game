@@ -20,7 +20,12 @@ void EntityRenderer::render(std::map<TexturedModel, std::vector<Entity>, Compare
 		const std::vector<Entity>& batch = entities.at(model);
 		for (const Entity &entity : batch) {
 			loadTransformation(entity);
-			glDrawElements(GL_TRIANGLES, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
+
+			if (entity.getModel().getMesh().getFace() == 4)
+				glDrawElements(GL_QUADS, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
+
+			else if (entity.getModel().getMesh().getFace() == 3)
+				glDrawElements(GL_TRIANGLES, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
 		}
 		unbindTexturedModel();
 	}

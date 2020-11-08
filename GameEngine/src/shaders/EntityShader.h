@@ -12,7 +12,7 @@ class DefaultShader final : public Shader {
 private:
 	enum class UniformVariable {
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
-		LightPosition, LightColor, LightCount, MaxLights,
+		LightPosition, LightColor, LightCount, MaxLights, Attenuation,
 		Reflectivity, ShineDamper, FakeLighting, SkyColor
 	};
 

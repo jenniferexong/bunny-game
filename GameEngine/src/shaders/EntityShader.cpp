@@ -26,14 +26,17 @@ void DefaultShader::getAllUniformLocations()
 	locations_.insert({ UniformVariable::ProjectionMatrix, getUniformLocation("uProjectionMatrix") });
 	locations_.insert({ UniformVariable::ViewMatrix, getUniformLocation("uViewMatrix") });
 	locations_.insert({ UniformVariable::InverseViewMatrix, getUniformLocation("uInverseViewMatrix") });
+
 	locations_.insert({ UniformVariable::LightColor, getUniformLocation("uLightColor") });
 	locations_.insert({ UniformVariable::LightPosition, getUniformLocation("uLightPosition") });
+	locations_.insert({ UniformVariable::LightCount, getUniformLocation("uLightCount") });
+	locations_.insert({ UniformVariable::MaxLights, getUniformLocation("uMaxLights") });
+	locations_.insert({ UniformVariable::Attenuation, getUniformLocation("uAttenuation") });
+
 	locations_.insert({ UniformVariable::Reflectivity, getUniformLocation("uReflectivity") });
 	locations_.insert({ UniformVariable::ShineDamper, getUniformLocation("uShineDamper") });
 	locations_.insert({ UniformVariable::FakeLighting, getUniformLocation("uFakeLighting") });
 	locations_.insert({ UniformVariable::SkyColor, getUniformLocation("uSkyColor") });
-	locations_.insert({ UniformVariable::LightCount, getUniformLocation("uLightCount") });
-	locations_.insert({ UniformVariable::MaxLights, getUniformLocation("uMaxLights") });
 }
 
 void DefaultShader::loadUniformPerFrame(const std::vector<Light>& lights) const
@@ -42,15 +45,19 @@ void DefaultShader::loadUniformPerFrame(const std::vector<Light>& lights) const
 	int num_lights = lights.size();
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec3> colors;
+	std::vector<glm::vec3> attenuations;
 	positions.reserve(num_lights);
 	colors.reserve(num_lights);
+	attenuations.reserve(num_lights);
 	for (const auto& l: lights) {
 		positions.emplace_back(l.getPosition());
 		colors.emplace_back(l.getColor());
+		attenuations.emplace_back(l.getAttenuation());
 	}
 
 	loadVectors(locations_.at(UniformVariable::LightPosition), positions);
 	loadVectors(locations_.at(UniformVariable::LightColor), colors);
+	loadVectors(locations_.at(UniformVariable::Attenuation), attenuations);
 	loadInt(locations_.at(UniformVariable::LightCount), num_lights);
 	loadInt(locations_.at(UniformVariable::MaxLights), Light::max_lights);
 

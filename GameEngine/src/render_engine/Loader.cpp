@@ -21,7 +21,7 @@ Mesh Loader::loadToVao(const vector<float>& positions, const vector<float> & nor
 
 	bindIbo(indices);
 	unbindVao(); // unbinding
-	return { vao_id, (int) indices.size() };
+	return { vao_id, (int) indices.size(), 3 };
 }
 
 /* Loads data from an obj file into a VAO */
@@ -35,7 +35,7 @@ Mesh Loader::loadToVao(const string& obj_file)
 
 	bindIbo(data.indices);
 	unbindVao(); 
-	return { vao_id, (int) data.indices.size() };
+	return { vao_id, (int) data.indices.size(), data.face};
 }
 
 Mesh Loader::loadToVao(const vector<float>& positions)
@@ -43,7 +43,7 @@ Mesh Loader::loadToVao(const vector<float>& positions)
 	int vao_id = createVao();
 	storeInAttributeList(AttributeLocation::Position, 2, positions);
 	unbindVao();
-	return { vao_id, (int) positions.size() / 2 };
+	return { vao_id, (int) positions.size() / 2, 3 };
 }
 
 

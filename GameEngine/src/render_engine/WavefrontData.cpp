@@ -23,7 +23,7 @@ void WavefrontData::loadData(const std::string& file_name)
 
 	if (obj_file.is_open()) {
 		std::string line, type;
-		std::string v1, v2, v3; // values 
+		std::string v1, v2, v3, v4; // values 
 
 		while (std::getline(obj_file, line)) {
 			std::istringstream str_stream(line);
@@ -43,6 +43,11 @@ void WavefrontData::loadData(const std::string& file_name)
 					processIndices(v1, in_positions, in_textures, in_normals);
 					processIndices(v2, in_positions, in_textures, in_normals);
 					processIndices(v3, in_positions, in_textures, in_normals);
+					if (!str_stream.eof()) {
+						str_stream >> v4;
+						face = 4;
+						processIndices(v4, in_positions, in_textures, in_normals);
+					}
 				}
 			}
 
@@ -72,7 +77,7 @@ void WavefrontData::processIndices(const string& vertex, const vector<vec3>& in_
 	positions.push_back(position.z);
 
 	std::getline(str, num, '/');
-	if (num == "") { // no texture coordinate
+	if (num.empty()) { // no texture coordinate
 		texture_coords.push_back(0);
 		texture_coords.push_back(0);
 	}
