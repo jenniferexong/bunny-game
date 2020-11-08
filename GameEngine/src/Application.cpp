@@ -4,6 +4,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/random.hpp>
 
+#include <fstream>
+#include <sstream>
 #include <iostream>
 #include <chrono>
 
@@ -20,6 +22,7 @@ vec3 Application::sky_color = vec3(0.039, 0.184, 0.243);
 shared_ptr<Player> Application::player = nullptr;
 shared_ptr<GuiTexture> Application::compass = nullptr;
 vector<Light> Application::lights;
+Light Application::sun = Light(vec3(0.f, 100, 1000), vec3(0.4f)); // sun
 
 double Application::previous_mouse_x = 0;
 double Application::previous_mouse_y = 0;
@@ -57,7 +60,14 @@ void Application::render() {
 	for (const auto& gui: guis_) 
 		renderer_.processGui(gui);
 
-	renderer_.render(lights);
+	// only render lights that are within a distance from the player
+	vector<Light> close_lights = { sun };
+	for (const auto& l: lights) {
+		if (glm::distance(player->getPosition(), l.getPosition()) <= 250.f)
+			close_lights.push_back(l);
+	}
+
+	renderer_.render(close_lights);
 
 	previous_frame_time = current_frame_time;
 }
@@ -87,7 +97,7 @@ void Application::makeTest()
 	float player_x = 255.f;
 	float player_z = -20.f;
 	float player_y = terrain_1_.getHeightOfTerrain(player_x, player_z);
-	player = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(0.f, 0, 0), 1.f);
+	player = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(0.f, 0, 0), 1.5f);
 	player->setRotationOffset(180.f, 0, 0);
 	camera = Camera(player);
 
@@ -102,6 +112,8 @@ void Application::makeTest()
 	Material grass_material = Material(true, true);
 	shared_ptr<TexturedModel> grass_model = makeModel("grass", "grass-texture", grass_material);
 
+	int num_grass = 100000;
+	scene_.reserve(num_grass);
 	// Making grass
 	for (int i = 0; i < 2000; i++) {
 		Entity grass = Entity(grass_model);
@@ -114,25 +126,37 @@ void Application::makeTest()
 		scene_.push_back(grass);
 	}
 
-	Material flower_material = Material(false, true);
+	Material flower_material = Material(false, false);
 	shared_ptr<TexturedModel> flower_model = makeModel("flower", "flower", flower_material);
-	lights.emplace_back(vec3(0.f, 100, 1000), vec3(0.3f)); // sun
-	for (int i = 0; i < 50; i++) {
+
+	float x, y, z;
+	string line;
+
+	// reading positions from file
+	ifstream file("res/data/light-positions.txt");
+
+	while (getline(file, line)) {
 		Entity flower = Entity(flower_model);
-		float x = linearRand(0.f, 510.f);
-		float z = linearRand(0.f, -510.f);
-		float y = terrain_1_.getHeightOfTerrain(x, z);
+		//float x = linearRand(0.f, 510.f);
+		//float z = linearRand(0.f, -510.f);
+
+		std::stringstream str_stream(line);
+		str_stream >> x >> z;
+
+		y = terrain_1_.getHeightOfTerrain(x, z);
+		vec3 terrain_normal = terrain_1_.getNormalOfTerrain(x, z);
 		flower.setPosition(x, y, z);
 		flower.setRotation(linearRand(0.f, 360.f), -90, 0);
-		flower.setAlignmentRotation(terrain_1_.getNormalOfTerrain(x, z));
-		flower.setScale(0.1f);
+		flower.setAlignmentRotation(terrain_normal);
+		flower.setScale(0.15f);
 		scene_.push_back(flower);
 
 		// make light slightly above flower to give glow effect
-		
 		vec3 color = vec3(1.f, 1, 1);
-		lights.emplace_back(vec3(x, y + 3, z), color, Light::point_light_attenuation); // cyan
+		vec3 light_pos = flower.getPosition() + (8.f * terrain_normal);
+		lights.emplace_back(light_pos, color, Light::point_light_attenuation); // cyan
 	}
+	file.close();
 }
 
 shared_ptr<TerrainTexturePack> Application::makeTexturePack(const string& base, const string& red,
@@ -242,6 +266,16 @@ void Application::keyCallback(int key, int scan_code, int action, int mods)
 			move_keys[Key::E] = true;
 		} else if(action == GLFW_RELEASE) {
 			move_keys[Key::E] = false;
+		}
+		break;
+	case GLFW_KEY_L: 
+		if (action == GLFW_RELEASE) {
+			// Create and open a text file
+			ofstream light_positions("res/data/light-positions.txt", ios::app);
+
+			vec3 position = player->getPosition();
+			// Write to the file
+			light_positions << position.x << " " << position.z << endl;
 		}
 		break;
 	case GLFW_KEY_SPACE: 

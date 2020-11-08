@@ -32,7 +32,7 @@ private:
 	static double previous_mouse_y;
 
 public:
-	enum class Key { W, A, S, D, Q, E, Space, Esc };
+	enum class Key { W, A, S, D, Q, E, L, Space, Esc };
 	enum class MouseButton { Left, Right };
 
 	static GLFWwindow* window;
@@ -40,6 +40,7 @@ public:
 	static std::shared_ptr<Player> player;
 	static std::map<Key, bool> move_keys; 
 	static std::map<MouseButton, bool> mouse_buttons; 
+	static Light sun;
 	static std::vector<Light> lights;
 	static Loader loader;
 	static vec3 sky_color;

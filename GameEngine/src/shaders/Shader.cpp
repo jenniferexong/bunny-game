@@ -110,7 +110,6 @@ void Shader::loadMatrix(int location, glm::mat4 matrix) const
 
 void Shader::loadVectors(int location, const std::vector<vec3>& vectors) const
 {
-	printf("size: %d\n", vectors.size());
 	glUniform3fv(location, vectors.size(), value_ptr(vectors[0]));
 }
 

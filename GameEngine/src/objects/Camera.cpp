@@ -5,7 +5,7 @@ const float Camera::min_distance = 10;
 const float Camera::max_distance = 30;
 
 float Camera::pitch = 20;
-float Camera::distance_from_player = 15;
+float Camera::distance_from_player = 20;
 
 using namespace glm;
 
