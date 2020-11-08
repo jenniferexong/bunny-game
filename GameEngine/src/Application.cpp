@@ -132,13 +132,10 @@ void Application::makeTest()
 	float x, y, z;
 	string line;
 
-	// reading positions from file
+	// reading light positions from file
 	ifstream file("res/data/light-positions.txt");
-
 	while (getline(file, line)) {
 		Entity flower = Entity(flower_model);
-		//float x = linearRand(0.f, 510.f);
-		//float z = linearRand(0.f, -510.f);
 
 		std::stringstream str_stream(line);
 		str_stream >> x >> z;
@@ -155,6 +152,27 @@ void Application::makeTest()
 		vec3 color = vec3(1.f, 1, 1);
 		vec3 light_pos = flower.getPosition() + (8.f * terrain_normal);
 		lights.emplace_back(light_pos, color, Light::point_light_attenuation); // cyan
+	}
+	file.close();
+
+	Material carrot_material = Material();
+	shared_ptr<TexturedModel> carrot_model = makeModel("carrot", "carrot", carrot_material);
+
+	// reading carrot positions from file
+	file = ifstream("res/data/carrot-positions.txt");
+	while (getline(file, line)) {
+		Entity carrot = Entity(carrot_model);
+
+		std::stringstream str_stream(line);
+		str_stream >> x >> z;
+
+		y = terrain_1_.getHeightOfTerrain(x, z);
+		vec3 terrain_normal = terrain_1_.getNormalOfTerrain(x, z);
+		carrot.setPosition(x, y + 0.5, z);
+		carrot.setRotation(linearRand(0.f, 360.f), 0, 0);
+		carrot.setAlignmentRotation(terrain_normal);
+		carrot.setScale(0.02f);
+		scene_.push_back(carrot);
 	}
 	file.close();
 }
@@ -270,12 +288,13 @@ void Application::keyCallback(int key, int scan_code, int action, int mods)
 		break;
 	case GLFW_KEY_L: 
 		if (action == GLFW_RELEASE) {
+			string entity = "carrot";
 			// Create and open a text file
-			ofstream light_positions("res/data/light-positions.txt", ios::app);
+			ofstream positions("res/data/" + entity + "-positions.txt", ios::app);
 
 			vec3 position = player->getPosition();
 			// Write to the file
-			light_positions << position.x << " " << position.z << endl;
+			positions << position.x << " " << position.z << endl;
 		}
 		break;
 	case GLFW_KEY_SPACE: 

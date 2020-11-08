@@ -5,7 +5,7 @@
 
 #include "../Application.h"
 
-const float Player::run_speed = 20.f; // per second
+const float Player::run_speed = 25.f; // per second
 const float Player::turn_speed = 100.f; // degrees per second
 const float Player::gravity = -70.f;
 const float Player::jump_power = 30.f;
@@ -39,6 +39,7 @@ vec3 Player::getRotationOffset()
 void Player::updatePosition(const Terrain& terrain)
 {
 	updateSpeed();
+
 	rotate(current_turn_speed_ * Application::frame_delta, 0, 0);
 	Application::compass->setRotation(-rotation_.x);
 
@@ -69,6 +70,7 @@ void Player::updatePosition(const Terrain& terrain)
 		// Align with the normal of the terrain at current position
 		setAlignmentRotation(terrain.getNormalOfTerrain(position_.x, position_.z));
 	}
+
 	current_turn_speed_ = 0;
 }
 
