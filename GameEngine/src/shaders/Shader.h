@@ -28,8 +28,8 @@ protected:
 	void loadInt(int location, int value) const;
 	void loadVector(int location, vec3 vector) const;
 	void loadMatrix(int location, glm::mat4 matrix) const;
-	void loadVectors(int location, std::vector<vec3>& vectors) const;
-	void loadMatrices(int location, std::vector<glm::mat4>& matrices) const;
+	void loadVectors(int location, const std::vector<vec3>& vectors) const;
+	void loadMatrices(int location, const std::vector<glm::mat4>& matrices) const;
 
 public:
 	//Shader(const std::string& vert_file, const std::string& frag_file); // constructor

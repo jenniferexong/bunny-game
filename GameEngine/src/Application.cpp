@@ -15,11 +15,11 @@ using namespace std;
 /* Static variables */
 GLFWwindow* Application::window = nullptr;
 Camera Application::camera = Camera();
-Light Application::sun = Light(glm::vec3(0.f, 100.f, 1000.f), glm::vec3(1.f));
 Loader Application::loader = Loader();
 vec3 Application::sky_color = vec3(0.039, 0.184, 0.243);
 shared_ptr<Player> Application::player = nullptr;
 shared_ptr<GuiTexture> Application::compass = nullptr;
+vector<Light> Application::lights;
 
 double Application::previous_mouse_x = 0;
 double Application::previous_mouse_y = 0;
@@ -57,7 +57,7 @@ void Application::render() {
 	for (const auto& gui: guis_) 
 		renderer_.processGui(gui);
 
-	renderer_.render(sun);
+	renderer_.render(lights);
 
 	previous_frame_time = current_frame_time;
 }
@@ -113,6 +113,11 @@ void Application::makeTest()
 		grass.setAlignmentRotation(terrain_1_.getNormalOfTerrain(x, z));
 		scene_.push_back(grass);
 	}
+
+	//lights.emplace_back(vec3(0.f, 100, 1000), vec3(1.f)); // sun
+	lights.emplace_back(vec3(50.f, 5, -50), vec3(0, 1.f, 1)); // cyan
+	lights.emplace_back(vec3(100.f, 5, -200), vec3(1.f, 0, 1)); // magenta
+	lights.emplace_back(vec3(400.f, 5, -100), vec3(0, 1.f, 0)); // green
 }
 
 shared_ptr<TerrainTexturePack> Application::makeTexturePack(const string& base, const string& red,

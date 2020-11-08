@@ -24,7 +24,7 @@ public:
 
 	MasterRenderer();
 	void prepare();
-	void render(const Light& sun);
+	void render(const std::vector<Light>& lights);
 	void processEntity(const Entity& entity);
 	void processTerrain(const Terrain& terrain);
 	void processGui(const std::shared_ptr<GuiTexture>& gui);

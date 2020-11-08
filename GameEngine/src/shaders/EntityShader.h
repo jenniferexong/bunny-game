@@ -12,7 +12,8 @@ class DefaultShader final : public Shader {
 private:
 	enum class UniformVariable {
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
-		LightPosition, LightColor, Reflectivity, ShineDamper, FakeLighting, SkyColor
+		LightPosition, LightColor, LightCount, MaxLights,
+		Reflectivity, ShineDamper, FakeLighting, SkyColor
 	};
 
 	static const std::string vertex_file;
@@ -26,7 +27,7 @@ protected:
 
 public:
 	void setUp() override;
-	void loadUniformPerFrame(const Light& light) const;
+	void loadUniformPerFrame(const std::vector<Light>& lights) const;
 	void loadModelMatrix(const Entity& entity) const;
 	void loadMaterial(const Material& material) const;
 };

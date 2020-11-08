@@ -26,20 +26,20 @@ MasterRenderer::MasterRenderer()
 	terrain_renderer_ = TerrainRenderer(terrain_shader_);
 }
 
-void MasterRenderer::render(const Light& sun)
+void MasterRenderer::render(const std::vector<Light>& lights)
 {
 	prepare();
 
 	// terrain 
 	terrain_shader_->start();
-	terrain_shader_->loadUniformPerFrame(sun);
+	terrain_shader_->loadUniformPerFrame(lights);
 	terrain_renderer_.render(terrains_);
 	terrain_shader_->stop();
 
 	// entities
 	entity_shader_->start();
 	// Loading some uniforms
-	entity_shader_->loadUniformPerFrame(sun);
+	entity_shader_->loadUniformPerFrame(lights);
 	entity_renderer_.render(entities_);
 	entity_shader_->stop();
 

@@ -108,12 +108,13 @@ void Shader::loadMatrix(int location, glm::mat4 matrix) const
 	glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(matrix));
 }
 
-void Shader::loadVectors(int location, std::vector<vec3>& vectors) const
+void Shader::loadVectors(int location, const std::vector<vec3>& vectors) const
 {
+	printf("size: %d\n", vectors.size());
 	glUniform3fv(location, vectors.size(), value_ptr(vectors[0]));
 }
 
-void Shader::loadMatrices(int location, std::vector<glm::mat4>& matrices) const
+void Shader::loadMatrices(int location, const std::vector<glm::mat4>& matrices) const
 {
 	glUniformMatrix4fv(location, matrices.size(), GL_FALSE, value_ptr(matrices[0]));
 }

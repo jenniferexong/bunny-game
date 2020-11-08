@@ -3,8 +3,11 @@
 // Uniform data
 uniform sampler2D textureSampler;
 
-uniform vec3 uLightColor;
-uniform vec3 uLightPosition;
+uniform vec3 uLightColor[100];
+uniform vec3 uLightPosition[100];
+uniform int uLightCount;
+uniform int uMaxLights;
+
 uniform float uReflectivity;
 uniform float uShineDamper;
 uniform vec3 uSkyColor;
@@ -12,7 +15,6 @@ uniform vec3 uSkyColor;
 in VertexData {
     vec3 position;
     vec3 normal;
-    vec3 color;
     vec2 textureCoords;
     vec3 cameraPosition;
     float visibility;
@@ -26,22 +28,27 @@ void main() {
     if (textureCol.a < 0.5) {
         discard;
     }
+    vec3 toCamera = normalize(f_in.cameraPosition - f_in.position);
+    vec3 norm = normalize(f_in.normal);
 
     float ambientStrength = 0.5;
-    vec3 ambient = ambientStrength * uLightColor;
+    vec3 ambient = ambientStrength * vec3(1);
 
-    vec3 norm = normalize(f_in.normal);
-    vec3 incidentLight = normalize(f_in.position - uLightPosition);
-    
-    float diff = max(dot(norm, -incidentLight), 0.0);
-    vec3 diffuse = diff * uLightColor;
+    // Lighting calculations
+    vec3 diffuse = vec3(0);
+    vec3 specular = vec3(0);
 
-    vec3 toCamera = normalize(f_in.cameraPosition - f_in.position);
-    vec3 reflectDir = reflect(incidentLight, norm);
-    float spec = pow(max(dot(toCamera, reflectDir), 0.0), uShineDamper);
-    vec3 specular = uReflectivity * spec * uLightColor;
+    for (int i = 0; i < uLightCount && i < uMaxLights; i++) {
+        vec3 incidentLight = normalize(f_in.position - uLightPosition[i]);
+        
+        float diff = max(dot(norm, -incidentLight), 0.0);
+        diffuse += diff * uLightColor[i];
+
+        vec3 reflectDir = reflect(incidentLight, norm);
+        float spec = pow(max(dot(toCamera, reflectDir), 0.0), uShineDamper);
+        specular += uReflectivity * spec * uLightColor[i];
+    }
 
     vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * texture(textureSampler, f_in.textureCoords));
-    //vec3 result = (ambient + diffuse + specular) * f_in.color;
     outColor = mix(vec4(uSkyColor, 1.0), vec4(result, 1.0), f_in.visibility);  // mix with sky colour depending on visibility
 }
