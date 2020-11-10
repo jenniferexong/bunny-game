@@ -6,6 +6,7 @@
 
 #include <map>
 #include <memory>
+#include <set>
 
 #include "objects/Entity.h"
 #include "objects/Camera.h"
@@ -19,17 +20,26 @@
 #include "gui/GuiTexture.h"
 
 using std::string;
+using std::map;
+using std::shared_ptr;
+using std::set;
+using std::vector;
 
 class Application {
 private:
 	MasterRenderer renderer_;
 
-	std::vector<Entity> scene_;
-	std::vector<std::shared_ptr<GuiTexture>> guis_;
+	map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, CompareTexturedModel> entities_;
+	//std::vector<Entity> scene_;
+	vector<shared_ptr<GuiTexture>> guis_;
 	Terrain terrain_1_;
 
 	static double previous_mouse_x;
 	static double previous_mouse_y;
+
+	std::shared_ptr<TexturedModel> makeModel(const string& obj_name, const string& texture_name, const Material& material) const;
+	std::shared_ptr<TerrainTexturePack> makeTexturePack(const string& base, const string& red, const string& green, const string& blue) const;
+	void loadPositionsFromFile(shared_ptr<set<shared_ptr<Entity>>> set, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale);
 
 public:
 	enum class Key { W, A, S, D, Q, E, L, Space, Esc };
@@ -55,8 +65,6 @@ public:
 	void render();
 
 	void makeTest();
-	std::shared_ptr<TexturedModel> makeModel(const string& obj_name, const string& texture_name, const Material& material) const;
-	std::shared_ptr<TerrainTexturePack> makeTexturePack(const string& base, const string& red, const string& green, const string& blue) const;
 
 	static long long getCurrentTime();
 

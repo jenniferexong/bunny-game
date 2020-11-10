@@ -39,21 +39,12 @@ map<Application::MouseButton, bool> Application::mouse_buttons = {
 	{MouseButton::Left, false}, {MouseButton::Right, false}
 };
 
-/**
-	Method to render everything in the _scene.
-	Player position may be updated so need to change the view transform
-*/
 void Application::render() {
 	long long current_frame_time = getCurrentTime();
 	frame_delta = float(current_frame_time - previous_frame_time) / 1000.f; // in seconds
 
 	player->updatePosition(terrain_1_);
 	camera.updateView();
-	renderer_.processEntity(*player);
-
-	// Process all entities
-	for (const Entity& e: scene_) 
-		renderer_.processEntity(e);
 
 	renderer_.processTerrain(terrain_1_);
 
@@ -67,7 +58,7 @@ void Application::render() {
 			close_lights.push_back(l);
 	}
 
-	renderer_.render(close_lights);
+	renderer_.render(entities_, close_lights);
 
 	previous_frame_time = current_frame_time;
 }
@@ -91,88 +82,83 @@ void Application::makeTest()
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
 	terrain_1_ = Terrain(0, -1, ground_texture, "res/textures/height-map.png");
 
+	// Making materials
+	Material player_material = Material(1.f, 10.f);
+	Material grass_material = Material(true, true);
+	Material flower_material = Material(false, false);
+	Material carrot_material = Material();
+
+	auto player_model = makeModel("bunny", "white", player_material);
+	auto grass_model = makeModel("grass", "grass-texture", grass_material);
+	auto flower_model = makeModel("flower", "flower", flower_material);
+	auto carrot_model = makeModel("carrot", "carrot", carrot_material);
+
+	auto player_set = make_shared<set<shared_ptr<Entity>>>();
+	auto grass_set = make_shared<set<shared_ptr<Entity>>>();
+	auto flower_set = make_shared<set<shared_ptr<Entity>>>();
+	auto carrot_set = make_shared<set<shared_ptr<Entity>>>();
+
+	entities_.insert({ player_model, player_set });
+	entities_.insert({ grass_model, grass_set });
+	entities_.insert({ flower_model, flower_set });
+	entities_.insert({ carrot_model, carrot_set });
+
 	// Bunny player
-	Material white = Material(1.f, 10.f);
-	auto player_model = makeModel("bunny", "white", white);
 	float player_x = 255.f;
 	float player_z = -20.f;
 	float player_y = terrain_1_.getHeightOfTerrain(player_x, player_z);
 	player = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(0.f, 0, 0), 1.5f);
 	player->setRotationOffset(180.f, 0, 0);
-	camera = Camera(player);
 
-	// teapot
-	Material teapot_material = Material(1.f, 10.f);
-	shared_ptr<TexturedModel> teapot_model = makeModel("teapot", "test", teapot_material);
-	Entity teapot = Entity(teapot_model);
-	teapot.setPosition(0, 0, -20);
-	teapot.setScale(1);
-	//_scene.push_back(teapot);
-
-	Material grass_material = Material(true, true);
-	shared_ptr<TexturedModel> grass_model = makeModel("grass", "grass-texture", grass_material);
+	player_set->insert(player);
 
 	int num_grass = 100000;
-	scene_.reserve(num_grass);
-	// Making grass
 	for (int i = 0; i < 2000; i++) {
-		Entity grass = Entity(grass_model);
+		auto grass = make_shared<Entity>(grass_model);
 		float x = linearRand(0.f, 510.f);
 		float z = linearRand(0.f, -510.f);
 		float y = terrain_1_.getHeightOfTerrain(x, z);
-		grass.setPosition(x, y, z);
-		grass.setRotation(linearRand(0.f, 360.f), 0, 0);
-		grass.setAlignmentRotation(terrain_1_.getNormalOfTerrain(x, z));
-		scene_.push_back(grass);
+		grass->setPosition(x, y, z);
+		grass->setRotation(linearRand(0.f, 90.f), 0, 0);
+		grass->setAlignmentRotation(terrain_1_.getNormalOfTerrain(x, z));
+		grass_set->insert(grass);
 	}
 
-	Material flower_material = Material(false, false);
-	shared_ptr<TexturedModel> flower_model = makeModel("flower", "flower", flower_material);
+	loadPositionsFromFile(carrot_set, carrot_model, "carrot", vec3(0), 0.02f);
+	loadPositionsFromFile(flower_set, flower_model, "flower", vec3(0, -90.f, 0), 0.15f);
 
+	// Position the lights above flowers
+	vec3 color = vec3(1.f, 1, 1);
+	for (const auto& flower: *flower_set) {
+		vec3 flower_pos = flower->getPosition();
+		vec3 terrain_normal = terrain_1_.getNormalOfTerrain(flower_pos.x, flower_pos.z);
+		vec3 light_pos = flower_pos + (8.f * terrain_normal);
+		lights.emplace_back(light_pos, color, Light::point_light_attenuation); // cyan
+	}
+
+	camera = Camera(player);
+}
+
+void Application::loadPositionsFromFile(shared_ptr<set<shared_ptr<Entity>>> set, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale)
+{
 	float x, y, z;
 	string line;
 
-	// reading light positions from file
-	ifstream file("res/data/light-positions.txt");
+	ifstream file("res/data/" + name + "-positions.txt");
 	while (getline(file, line)) {
-		Entity flower = Entity(flower_model);
+		auto entity = make_shared<Entity>(model);
 
 		std::stringstream str_stream(line);
 		str_stream >> x >> z;
 
 		y = terrain_1_.getHeightOfTerrain(x, z);
 		vec3 terrain_normal = terrain_1_.getNormalOfTerrain(x, z);
-		flower.setPosition(x, y, z);
-		flower.setRotation(linearRand(0.f, 360.f), -90, 0);
-		flower.setAlignmentRotation(terrain_normal);
-		flower.setScale(0.15f);
-		scene_.push_back(flower);
-
-		// make light slightly above flower to give glow effect
-		vec3 color = vec3(1.f, 1, 1);
-		vec3 light_pos = flower.getPosition() + (8.f * terrain_normal);
-		lights.emplace_back(light_pos, color, Light::point_light_attenuation); // cyan
-	}
-	file.close();
-
-	Material carrot_material = Material();
-	shared_ptr<TexturedModel> carrot_model = makeModel("carrot", "carrot", carrot_material);
-
-	// reading carrot positions from file
-	file = ifstream("res/data/carrot-positions.txt");
-	while (getline(file, line)) {
-		Entity carrot = Entity(carrot_model);
-
-		std::stringstream str_stream(line);
-		str_stream >> x >> z;
-
-		y = terrain_1_.getHeightOfTerrain(x, z);
-		vec3 terrain_normal = terrain_1_.getNormalOfTerrain(x, z);
-		carrot.setPosition(x, y + 0.5, z);
-		carrot.setRotation(linearRand(0.f, 360.f), 0, 0);
-		carrot.setAlignmentRotation(terrain_normal);
-		carrot.setScale(0.02f);
-		scene_.push_back(carrot);
+		entity->setPosition(x, y, z);
+		entity->setRotation(linearRand(0.f, 360.f), 0, 0);
+		entity->rotate(rotation.x, rotation.y, rotation.z);
+		entity->setAlignmentRotation(terrain_normal);
+		entity->setScale(scale);
+		set->insert(entity);
 	}
 	file.close();
 }
@@ -288,7 +274,7 @@ void Application::keyCallback(int key, int scan_code, int action, int mods)
 		break;
 	case GLFW_KEY_L: 
 		if (action == GLFW_RELEASE) {
-			string entity = "carrot";
+			string entity = "tree";
 			// Create and open a text file
 			ofstream positions("res/data/" + entity + "-positions.txt", ios::app);
 

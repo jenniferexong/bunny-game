@@ -11,52 +11,51 @@
 using std::cout;
 using std::endl;
 
-void EntityRenderer::render(const std::map<TexturedModel, std::vector<Entity>, CompareTexturedModel>& entities)
+void EntityRenderer::render(const map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, CompareTexturedModel> & entities)
 {
-	for (auto const& element : entities) {
-		const TexturedModel& model = element.first;
-		prepareTexturedModel(model);
-		const std::vector<Entity>& batch = entities.at(model);
-		for (const Entity &entity : batch) {
-			loadTransformation(entity);
+	for (const auto& element : entities) {
+		const auto& model = element.first;
+		prepareTexturedModel(*model);
+		const auto& batch = element.second;
+		for (const auto &entity : *batch) {
+			loadTransformation(*entity);
 
-			if (entity.getModel().getMesh().getFace() == 4)
-				glDrawElements(GL_QUADS, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
+			if (model->getMesh().getFace() == 4)
+				glDrawElements(GL_QUADS, model->getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
 
-			else if (entity.getModel().getMesh().getFace() == 3)
-				glDrawElements(GL_TRIANGLES, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
+			else if (model->getMesh().getFace() == 3)
+				glDrawElements(GL_TRIANGLES, model->getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
 		}
 		unbindTexturedModel();
 	}
 }
 
-void EntityRenderer::renderInstanced(const std::map<TexturedModel, std::vector<Entity>, CompareTexturedModel>& entities)
+void EntityRenderer::renderInstanced(const map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, CompareTexturedModel>& entities)
 {
 	auto float_data = std::make_shared<vector<float>>();
 
-	for (auto const& element : entities) {
-		const TexturedModel& model = element.first;
-		prepareTexturedModel(model);
-		const std::vector<Entity>& batch = entities.at(model);
+	for (const auto& element : entities) {
+		const auto& model = element.first;
+		prepareTexturedModel(*model);
+		const auto& batch = element.second;
 
-		Entity e = batch.at(0);
-		int vao_id = e.getModel().getMesh().getId();
+		int vao_id = model->getMesh().getId();
 
 		float_data->clear();
-		float_data->reserve(batch.size());
+		float_data->reserve(batch->size());
 
-		loadTransformations(batch, float_data); // load all the transformation matrices into float_data
+		loadTransformations(*batch, float_data); // load all the transformation matrices into float_data
 
 		// update vbo
-		glBindBuffer(GL_ARRAY_BUFFER, e.getModel().getMesh().getModelMatrixVbo());
+		glBindBuffer(GL_ARRAY_BUFFER, model->getMesh().getModelMatrixVbo());
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * float_data->size(), float_data->data(), GL_STATIC_DRAW);
 
-		if (e.getModel().getMesh().getFace() == 4) {
-			glDrawElementsInstanced(GL_QUADS, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0, batch.size());
+		if (model->getMesh().getFace() == 4) {
+			glDrawElementsInstanced(GL_QUADS, model->getMesh().getVertexCount(), GL_UNSIGNED_INT, 0, batch->size());
 		}
 
-		else if (e.getModel().getMesh().getFace() == 3) {
-			glDrawElementsInstanced(GL_TRIANGLES, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0, batch.size());
+		else if (model->getMesh().getFace() == 3) {
+			glDrawElementsInstanced(GL_TRIANGLES, model->getMesh().getVertexCount(), GL_UNSIGNED_INT, 0, batch->size());
 		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -64,11 +63,11 @@ void EntityRenderer::renderInstanced(const std::map<TexturedModel, std::vector<E
 	}
 }
 
-void EntityRenderer::loadTransformations(const std::vector<Entity>& entities, std::shared_ptr<vector<float>> float_data)
+void EntityRenderer::loadTransformations(const std::set<shared_ptr<Entity>>& entities, std::shared_ptr<vector<float>> float_data)
 {
 	for (const auto& e: entities) {
-		glm::mat4 t_matrix = Maths::createTransformationMatrix(e.getPosition(), 
-			e.getActualRotation(), e.getScale(), e.getAlignmentRotation());
+		glm::mat4 t_matrix = Maths::createTransformationMatrix(e->getPosition(), 
+			e->getActualRotation(), e->getScale(), e->getAlignmentRotation());
 
 		glm::vec4 col_1 = t_matrix[0];
 		glm::vec4 col_2 = t_matrix[1];

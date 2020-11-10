@@ -26,7 +26,7 @@ MasterRenderer::MasterRenderer()
 	terrain_renderer_ = TerrainRenderer(terrain_shader_);
 }
 
-void MasterRenderer::render(const std::vector<Light>& lights)
+void MasterRenderer::render(const map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, CompareTexturedModel>& entities, std::vector<Light>& lights)
 {
 	prepare();
 
@@ -41,13 +41,12 @@ void MasterRenderer::render(const std::vector<Light>& lights)
 	// Loading some uniforms
 	entity_shader_->loadUniformPerFrame(lights);
 	//entity_renderer_.render(entities_);
-	entity_renderer_.renderInstanced(entities_);
+	entity_renderer_.renderInstanced(entities);
 	entity_shader_->stop();
 
 	gui_renderer_.render(guis_);
 
 	terrains_.clear();
-	entities_.clear();
 	guis_.clear();
 }
 
@@ -77,16 +76,6 @@ void MasterRenderer::prepare()
 	// Setting the projection matrix
 	float aspect_ratio = (float) width / height;
 	projection_matrix = glm::perspective(fov, aspect_ratio, near_plane, far_plane);
-}
-
-void MasterRenderer::processEntity(const Entity& entity)
-{
-	const TexturedModel& model = entity.getModel();
-	if (entities_.find(model) == entities_.end()) {
-		std::vector<Entity> list;
-		entities_.insert({ model, list });
-	}
-	entities_.at(model).push_back(entity);
 }
 
 void MasterRenderer::processTerrain(const Terrain& terrain)
