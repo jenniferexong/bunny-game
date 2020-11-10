@@ -10,6 +10,7 @@ uniform int uFakeLighting;
 layout(location = 0) in vec3 aPosition;
 layout(location = 1) in vec3 aNormal;
 layout(location = 2) in vec2 aTextureCoords;
+layout(location = 3) in mat4 aModelMatrices;
 
 out VertexData {
     vec3 position;
@@ -24,7 +25,8 @@ const float fogGradient = 1.5;
 
 void main() {
     // vertex position in world coordinates (only multiplied by model transformation)
-    vec4 worldPosition = uTransformationMatrix * vec4(aPosition, 1); 
+    //vec4 worldPosition = uTransformationMatrix * vec4(aPosition, 1); 
+    vec4 worldPosition = aModelMatrices * vec4(aPosition, 1); 
     vec4 positionRelativeToCamera = uViewMatrix * worldPosition;
 
     v_out.position = vec3(worldPosition);
@@ -34,7 +36,8 @@ void main() {
     //v_out.normal = mat3(transpose(inverse(uTransformationMatrix))) * aNormal;
     
     vec3 actualNormal = uFakeLighting == 1 ? vec3(0.0, 1.0, 0.0) : aNormal;
-    v_out.normal = vec3(uTransformationMatrix * vec4(actualNormal, 0));
+    //v_out.normal = vec3(uTransformationMatrix * vec4(actualNormal, 0));
+    v_out.normal = vec3(aModelMatrices * vec4(actualNormal, 0));
     v_out.cameraPosition = vec3(uInverseViewMatrix * vec4(0, 0, 0, 1));
 
     v_out.textureCoords = aTextureCoords;

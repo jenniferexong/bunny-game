@@ -5,22 +5,23 @@
 #include "../Application.h"
 #include "../Location.h"
 
-const std::string DefaultShader::vertex_file = "res/shaders/entity_vert.glsl";
-const std::string DefaultShader::fragment_file = "res/shaders/entity_frag.glsl";
+const std::string EntityShader::vertex_file = "res/shaders/entity_vert.glsl";
+const std::string EntityShader::fragment_file = "res/shaders/entity_frag.glsl";
 
-void DefaultShader::setUp()
+void EntityShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
 }
 
-void DefaultShader::bindAttributes()
+void EntityShader::bindAttributes()
 {
 	bindAttribute(AttributeLocation::Position, "aPosition");
 	bindAttribute(AttributeLocation::Normal, "aNormal");
 	bindAttribute(AttributeLocation::Texture, "aTextureCoords");
+	bindAttribute(AttributeLocation::ModelMatrixColumn1, "aModelMatrices");
 }
 
-void DefaultShader::getAllUniformLocations()
+void EntityShader::getAllUniformLocations()
 {
 	locations_.insert({ UniformVariable::TransformationMatrix, getUniformLocation("uTransformationMatrix") });
 	locations_.insert({ UniformVariable::ProjectionMatrix, getUniformLocation("uProjectionMatrix") });
@@ -39,7 +40,7 @@ void DefaultShader::getAllUniformLocations()
 	locations_.insert({ UniformVariable::SkyColor, getUniformLocation("uSkyColor") });
 }
 
-void DefaultShader::loadUniformPerFrame(const std::vector<Light>& lights) const
+void EntityShader::loadUniformPerFrame(const std::vector<Light>& lights) const
 {
 	// Loading light variables
 	int num_lights = lights.size();
@@ -73,7 +74,7 @@ void DefaultShader::loadUniformPerFrame(const std::vector<Light>& lights) const
 	loadVector(locations_.at(UniformVariable::SkyColor), Application::sky_color);
 }
 
-void DefaultShader::loadModelMatrix(const Entity& entity) const
+void EntityShader::loadModelMatrix(const Entity& entity) const
 {
 	// Loading transformation matrix
 	glm::mat4 t_matrix = Maths::createTransformationMatrix(entity.getPosition(), 
@@ -81,7 +82,7 @@ void DefaultShader::loadModelMatrix(const Entity& entity) const
 	loadMatrix(locations_.at(UniformVariable::TransformationMatrix), t_matrix);
 }
 
-void DefaultShader::loadMaterial(const Material& material) const
+void EntityShader::loadMaterial(const Material& material) const
 {
 	// Loading shine values
 	loadFloat(locations_.at(UniformVariable::Reflectivity), material.reflectivity);

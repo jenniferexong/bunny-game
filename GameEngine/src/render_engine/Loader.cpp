@@ -25,6 +25,7 @@ Mesh Loader::loadToVao(const vector<float>& positions, const vector<float> & nor
 }
 
 /* Loads data from an obj file into a VAO */
+/*
 Mesh Loader::loadToVao(const string& obj_file)
 {
 	WavefrontData data = WavefrontData(obj_file);
@@ -36,6 +37,22 @@ Mesh Loader::loadToVao(const string& obj_file)
 	bindIbo(data.indices);
 	unbindVao(); 
 	return { vao_id, (int) data.indices.size(), data.face};
+}
+*/
+
+InstancedMesh Loader::loadToVao(const string& obj_file)
+{
+	WavefrontData data = WavefrontData(obj_file);
+	int vao_id = createVao();
+	storeInAttributeList(AttributeLocation::Position, 3, data.positions);
+	storeInAttributeList(AttributeLocation::Normal, 3, data.normals);
+	storeInAttributeList(AttributeLocation::Texture, 2, data.texture_coords);
+
+	bindIbo(data.indices);
+
+	int vbo_id = createModelMatrixVbo();
+	unbindVao(); 
+	return { vao_id, vbo_id, (int) data.indices.size(), data.face };
 }
 
 Mesh Loader::loadToVao(const vector<float>& positions)
@@ -79,6 +96,7 @@ int Loader::loadTexture(const string& file_name)
 	return texture_id;
 }
 
+
 /* Returns the id of a vao */
 int Loader::createVao()
 {
@@ -100,6 +118,31 @@ void Loader::storeInAttributeList(int attrib_num, int coord_size, const vector<f
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.size(), data.data(), GL_STATIC_DRAW);
 	glVertexAttribPointer(attrib_num, coord_size, GL_FLOAT, GL_FALSE, 0, nullptr);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+int Loader::createModelMatrixVbo()
+{
+	GLuint vbo_id;
+	glGenBuffers(1, &vbo_id);
+	vbos_.push_back(&vbo_id);
+
+	//this.modelViewBuffer = MemoryUtil.memAllocFloat(numInstances * MATRIX_SIZE_FLOATS);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
+	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn1, 4, GL_FLOAT, false, sizeof(float) * 16, (void*) (sizeof(float) * 0));
+	glVertexAttribDivisor(AttributeLocation::ModelMatrixColumn1, 1);
+
+	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn2, 4, GL_FLOAT, false, sizeof(float) * 16, (void*) (sizeof(float) * 4));
+	glVertexAttribDivisor(AttributeLocation::ModelMatrixColumn2, 1);
+
+	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn3, 4, GL_FLOAT, false, sizeof(float) * 16, (void*) (sizeof(float) * 8));
+	glVertexAttribDivisor(AttributeLocation::ModelMatrixColumn3, 1);
+
+	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn4, 4, GL_FLOAT, false, sizeof(float) * 16, (void*) (sizeof(float) * 12));
+	glVertexAttribDivisor(AttributeLocation::ModelMatrixColumn4, 1);
+	//glEnableVertexAttribArray();
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	return vbo_id;
 }
 
 void Loader::bindIbo(const vector<int>& indices)

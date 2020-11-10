@@ -3,6 +3,7 @@
 #include <glm/glm.hpp>
 
 #include <memory>
+#include <vector>
 
 #include "../models/Model.h"
 

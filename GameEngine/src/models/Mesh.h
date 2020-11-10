@@ -1,7 +1,7 @@
 #pragma once
 
 class Mesh {
-private:
+protected:
 	int vao_id_;
 	int vertex_count_;
 	int face_ = 3;
@@ -15,4 +15,15 @@ public:
 	int getFace() const { return face_; }
 	int getId() const { return vao_id_; }
 	int getVertexCount() const { return vertex_count_; }
+};
+
+class InstancedMesh final: public Mesh {
+private:
+	int model_matrix_vbo_;
+
+public:
+	InstancedMesh(int vao_id, int model_matrix_vbo, int vertex_count, int face) : Mesh(vao_id, vertex_count, face),
+		model_matrix_vbo_(model_matrix_vbo) {}
+
+	int getModelMatrixVbo() const { return model_matrix_vbo_; }
 };

@@ -17,7 +17,7 @@ MasterRenderer::MasterRenderer()
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	enableCulling();
 
-	entity_shader_ = std::make_shared<DefaultShader>();
+	entity_shader_ = std::make_shared<EntityShader>();
 	terrain_shader_ = std::make_shared<TerrainShader>();
 	entity_shader_->setUp();
 	terrain_shader_->setUp();
@@ -40,7 +40,8 @@ void MasterRenderer::render(const std::vector<Light>& lights)
 	entity_shader_->start();
 	// Loading some uniforms
 	entity_shader_->loadUniformPerFrame(lights);
-	entity_renderer_.render(entities_);
+	//entity_renderer_.render(entities_);
+	entity_renderer_.renderInstanced(entities_);
 	entity_shader_->stop();
 
 	gui_renderer_.render(guis_);

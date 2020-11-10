@@ -194,7 +194,7 @@ shared_ptr<TexturedModel> Application::makeModel(const string& obj_name,
 {
 	const string obj_prefix("res/objects/");
 	const string texture_prefix("res/textures/");
-	Mesh mesh = loader.loadToVao(obj_prefix + obj_name + ".obj");
+	InstancedMesh mesh = loader.loadToVao(obj_prefix + obj_name + ".obj");
 	ModelTexture texture(loader.loadTexture(texture_prefix + texture_name + ".png"), material);
 	return make_shared<TexturedModel>(mesh, texture);
 }

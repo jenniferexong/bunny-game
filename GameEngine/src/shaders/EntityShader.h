@@ -8,7 +8,7 @@
 #include "../objects/Light.h"
 #include "../models/Material.h"
 
-class DefaultShader final : public Shader {
+class EntityShader final : public Shader {
 private:
 	enum class UniformVariable {
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,

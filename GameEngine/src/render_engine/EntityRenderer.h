@@ -16,16 +16,20 @@ struct CompareTexturedModel {
 
 class EntityRenderer {
 private:
-	std::shared_ptr<DefaultShader> shader_;
+	std::shared_ptr<EntityShader> shader_;
 
 	void prepareTexturedModel(const TexturedModel& model);
 	void unbindTexturedModel();
 	void loadTransformation(const Entity& entity);
+	void loadTransformations(const std::vector<Entity>& entities, std::shared_ptr<std::vector<float>> float_data);
 
 public:
 	EntityRenderer(): shader_(nullptr) {}
-	EntityRenderer(std::shared_ptr<DefaultShader> shader) : shader_(std::move(shader)) {}
-	void render(std::map<TexturedModel, std::vector<Entity>, CompareTexturedModel>& entities);
+	EntityRenderer(std::shared_ptr<EntityShader> shader) : shader_(std::move(shader)) {}
+
+	void render(const std::map<TexturedModel, std::vector<Entity>, CompareTexturedModel>& entities);
+
+	void renderInstanced(const std::map<TexturedModel, std::vector<Entity>, CompareTexturedModel>& entities);
 };
 
 

@@ -26,6 +26,9 @@ public:
 
 	Mesh loadToVao(const vector<float>& positions);
 
-	Mesh loadToVao(const std::string& obj_file);
+	int createModelMatrixVbo();
+
+	//Mesh loadToVao(const std::string& obj_file);
+	InstancedMesh loadToVao(const std::string& obj_file);
 	int loadTexture(const std::string& file_name);
 };
