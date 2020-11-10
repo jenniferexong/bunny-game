@@ -1,6 +1,5 @@
 
 #include <GL/glew.h>
-#include <stb_image/stb_image.h>
 
 #include "Loader.h"
 
@@ -55,12 +54,36 @@ InstancedMesh Loader::loadToVao(const string& obj_file)
 	return { vao_id, vbo_id, (int) data.indices.size(), data.face };
 }
 
-Mesh Loader::loadToVao(const vector<float>& positions)
+Mesh Loader::loadToVao(const vector<float>& positions, int dimensions)
 {
 	int vao_id = createVao();
-	storeInAttributeList(AttributeLocation::Position, 2, positions);
+	storeInAttributeList(AttributeLocation::Position, dimensions, positions);
 	unbindVao();
-	return { vao_id, (int) positions.size() / 2, 3 };
+	return { vao_id, (int) positions.size() / dimensions, 3 };
+}
+
+int Loader::loadCubeMap(std::vector<std::string> texture_names)
+{
+	GLuint texture_id;
+	glGenTextures(1, &texture_id);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, texture_id);
+
+	// order of textures for faces must be: right, left, top, bottom, back, front
+	for (int i = 0; i < 6; i++) {
+		SkyboxTextureData data = SkyboxTextureData(texture_names.at(i));
+		glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGBA, data.width, data.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.buffer);
+		data.unload();
+	}
+
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	//glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
+	textures_.push_back(&texture_id);
+	return texture_id;
 }
 
 

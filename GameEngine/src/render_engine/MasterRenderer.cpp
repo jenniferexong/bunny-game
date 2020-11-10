@@ -30,19 +30,22 @@ void MasterRenderer::render(const map<shared_ptr<TexturedModel>, shared_ptr<set<
 {
 	prepare();
 
+	// entities
+	entity_shader_->start();
+	// Loading some uniforms
+	entity_shader_->loadUniformPerFrame(lights);
+	//entity_renderer_.render(entities);
+	entity_renderer_.renderInstanced(entities);
+	entity_shader_->stop();
+
 	// terrain 
 	terrain_shader_->start();
 	terrain_shader_->loadUniformPerFrame(lights);
 	terrain_renderer_.render(terrains_);
 	terrain_shader_->stop();
 
-	// entities
-	entity_shader_->start();
-	// Loading some uniforms
-	entity_shader_->loadUniformPerFrame(lights);
-	//entity_renderer_.render(entities_);
-	entity_renderer_.renderInstanced(entities);
-	entity_shader_->stop();
+	// skybox
+	skybox_renderer_.render();
 
 	gui_renderer_.render(guis_);
 

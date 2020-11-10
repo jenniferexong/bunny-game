@@ -5,8 +5,8 @@
 #include "../Application.h"
 #include "../Location.h"
 
-const std::string TerrainShader::vertex_file = "res/shaders/terrain_vert.glsl";
-const std::string TerrainShader::fragment_file = "res/shaders/terrain_frag.glsl";
+const std::string TerrainShader::vertex_file = "res/shaders/terrain-vert.glsl";
+const std::string TerrainShader::fragment_file = "res/shaders/terrain-frag.glsl";
 
 void TerrainShader::setUp()
 {

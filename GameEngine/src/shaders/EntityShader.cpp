@@ -5,8 +5,8 @@
 #include "../Application.h"
 #include "../Location.h"
 
-const std::string EntityShader::vertex_file = "res/shaders/entity_vert.glsl";
-const std::string EntityShader::fragment_file = "res/shaders/entity_frag.glsl";
+const std::string EntityShader::vertex_file = "res/shaders/entity-vert.glsl";
+const std::string EntityShader::fragment_file = "res/shaders/entity-frag.glsl";
 
 void EntityShader::setUp()
 {

@@ -3,6 +3,7 @@
 #include "EntityRenderer.h"
 #include "TerrainRenderer.h"
 #include "GuiRenderer.h"
+#include "SkyboxRenderer.h"
 
 class MasterRenderer {
 private:
@@ -11,6 +12,7 @@ private:
 	EntityRenderer entity_renderer_;
 	TerrainRenderer terrain_renderer_;
 	GuiRenderer gui_renderer_;
+	SkyboxRenderer skybox_renderer_;
 
 	std::vector<Terrain> terrains_;
 	std::vector<std::shared_ptr<GuiTexture>> guis_;

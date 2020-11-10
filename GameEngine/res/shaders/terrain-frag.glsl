@@ -48,7 +48,7 @@ void main() {
     vec3 toCamera = normalize(f_in.cameraPosition - f_in.position);
 
     // Light calculation
-    float ambientStrength = 0.1;
+    float ambientStrength = 0.2;
     vec3 ambient = ambientStrength * vec3(1.f);
 
     vec3 diffuse = vec3(0);

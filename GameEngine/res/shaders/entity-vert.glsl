@@ -1,7 +1,7 @@
 #version 330 core 
 
 // Uniform data
-uniform mat4 uTransformationMatrix;
+//uniform mat4 uTransformationMatrix;
 uniform mat4 uProjectionMatrix;
 uniform mat4 uViewMatrix;
 uniform mat4 uInverseViewMatrix;
@@ -20,8 +20,8 @@ out VertexData {
     float visibility;
 } v_out; 
 
-const float density = 0.007;
-const float fogGradient = 1.5;
+const float density = 0.005;
+const float fogGradient = 2.5;
 
 void main() {
     // vertex position in world coordinates (only multiplied by model transformation)

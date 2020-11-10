@@ -4,8 +4,8 @@
 #include "../Location.h"
 #include "../Maths.h"
 
-const std::string GuiShader::vertex_file = "res/shaders/gui_vert.glsl";
-const std::string GuiShader::fragment_file = "res/shaders/gui_frag.glsl";
+const std::string GuiShader::vertex_file = "res/shaders/gui-vert.glsl";
+const std::string GuiShader::fragment_file = "res/shaders/gui-frag.glsl";
 
 void GuiShader::bindAttributes()
 {

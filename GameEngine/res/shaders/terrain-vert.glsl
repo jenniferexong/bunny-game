@@ -18,8 +18,8 @@ out VertexData {
     float visibility;
 } v_out; 
 
-const float density = 0.007;
-const float fogGradient = 1.5;
+const float density = 0.005;
+const float fogGradient = 2.5;
 
 void main() {
     vec4 worldPosition = uTransformationMatrix * vec4(aPosition, 1); 

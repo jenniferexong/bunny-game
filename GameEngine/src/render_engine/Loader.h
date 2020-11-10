@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stb_image/stb_image.h>
+
 #include <vector>
 #include <string>
 
@@ -24,11 +26,31 @@ public:
 	Mesh loadToVao(const vector<float>& positions, const vector<float>& normals, 
 		const vector<float>& texture_coords, const vector<int>& indices);
 
-	Mesh loadToVao(const vector<float>& positions);
+	Mesh loadToVao(const vector<float>& positions, int dimensions);
+	int loadCubeMap(std::vector<std::string> texture_files);
 
 	int createModelMatrixVbo();
 
 	//Mesh loadToVao(const std::string& obj_file);
 	InstancedMesh loadToVao(const std::string& obj_file);
 	int loadTexture(const std::string& file_name);
+};
+
+struct SkyboxTextureData {
+	int width, height;
+	unsigned char* buffer;
+
+	SkyboxTextureData(const std::string& file_name)
+	{
+		std::string file_path = "res/textures/skybox/" + file_name + ".png";
+		stbi_set_flip_vertically_on_load(0); // IF UPSIDE DOWN TEXTURE, CHANGE THIS
+		int bpp; // bits per pixel
+		buffer = stbi_load(file_path.c_str(), &width, &height, &bpp, 4);
+	}
+
+	void unload()
+	{
+		if (buffer) 
+			stbi_image_free(buffer);
+	}
 };

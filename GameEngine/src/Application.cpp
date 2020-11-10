@@ -18,7 +18,7 @@ using namespace std;
 GLFWwindow* Application::window = nullptr;
 Camera Application::camera = Camera();
 Loader Application::loader = Loader();
-vec3 Application::sky_color = vec3(0.039, 0.184, 0.243);
+vec3 Application::sky_color = vec3(0.525f, 0.407, 0.443);
 shared_ptr<Player> Application::player = nullptr;
 shared_ptr<GuiTexture> Application::compass = nullptr;
 vector<Light> Application::lights;
