@@ -8,5 +8,9 @@ namespace AttributeLocation {
 }
 
 namespace TextureLocation {
-	enum Location { Base = 0, Red = 1, Green = 2, Blue = 3, BlendMap = 4};
+	enum Location { Base = 0, Red = 1, Green = 2, Blue = 3, BlendMap = 4 };
+}
+
+namespace CubeMapLocation {
+	enum Location { Sky = 0, Stars = 1 };
 }

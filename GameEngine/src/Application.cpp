@@ -43,9 +43,11 @@ void Application::render() {
 	long long current_frame_time = getCurrentTime();
 	frame_delta = float(current_frame_time - previous_frame_time) / 1000.f; // in seconds
 
+	// dim the sun
 	const float dim = 0.05f;
-	vec3 darkened = max(sun.getColor() - (frame_delta * vec3(dim)), vec3(0.2f));
+	vec3 darkened = max(sun.getColor() - (frame_delta * vec3(dim)), vec3(0.15f));
 	sun.setColor(darkened);
+
 	player->updatePosition(terrain_1_);
 	camera.updateView();
 

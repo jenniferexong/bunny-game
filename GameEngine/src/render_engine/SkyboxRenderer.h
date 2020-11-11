@@ -12,11 +12,15 @@ class SkyboxRenderer {
 private:
 	static const float cube_size;
 	static const std::vector<float> vertex_positions;
-	static const std::vector<std::string> texture_names;
+	static const std::vector<std::string> sky_texture_names;
+	static const std::vector<std::string> star_texture_names;
 
 	Mesh cube_;
-	int texture_id_;
+	int sky_texture_id_;
+	int star_texture_id_;
 	SkyboxShader shader_;
+
+	void bindTextures();
 
 public:
 	SkyboxRenderer();

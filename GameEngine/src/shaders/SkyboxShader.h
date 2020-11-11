@@ -8,13 +8,13 @@ class SkyboxShader final: public Shader {
 	
 private:
 	enum class UniformVariable {
-		ProjectionMatrix, ViewMatrix, FogColor, AmbientLight, SunStrength
+		ProjectionMatrix, ViewMatrix, FogColor, AmbientLight, SunStrength,
+		SkyTexture, StarsTexture
 	};
 
 	static const std::string vertex_file;
 	static const std::string fragment_file;
 	static const float rotate_speed;
-	static glm::vec3 ambient_light;
 
 	float current_rotation_ = 0.f;
 
@@ -27,4 +27,5 @@ protected:
 public:
 	void setUp() override;
 	void loadUniforms();
+	void connectTextureUnits();
 };
