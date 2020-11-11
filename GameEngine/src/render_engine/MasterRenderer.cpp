@@ -6,7 +6,7 @@
 #include "../Application.h"
 
 const float MasterRenderer::fov = 70.f;
-const float MasterRenderer::near_plane = 0.1f;
+const float MasterRenderer::near_plane = 1.f;
 const float MasterRenderer::far_plane = 1000.f;
 glm::mat4 MasterRenderer::projection_matrix = glm::mat4(0);
 
