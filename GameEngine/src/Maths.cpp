@@ -62,7 +62,7 @@ mat4 Maths::createSkyViewMatrix(const Camera& camera)
 	float pitch = camera.getRotation().y;
 	float yaw = camera.getRotation().x;
 
-	//matrix = rotate(matrix, radians(pitch), vec3(1, 0, 0));
+	matrix = rotate(matrix, radians(pitch), vec3(1, 0, 0));
 	matrix = rotate(matrix, radians(yaw), vec3(0, 1, 0));
 
 	return matrix;

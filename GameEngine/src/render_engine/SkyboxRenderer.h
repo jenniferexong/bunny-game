@@ -16,8 +16,9 @@ private:
 	static const std::vector<std::string> star_texture_names;
 
 	Mesh cube_;
-	int sky_texture_id_;
-	int star_texture_id_;
+	int day_texture_id_;
+	int night_texture_id_;
+	float time = 0;
 	SkyboxShader shader_;
 
 	void bindTextures();

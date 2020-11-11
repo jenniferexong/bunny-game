@@ -12,5 +12,5 @@ namespace TextureLocation {
 }
 
 namespace CubeMapLocation {
-	enum Location { Sky = 0, Stars = 1 };
+	enum Location { Day = 0, Night = 1 };
 }

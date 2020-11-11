@@ -22,8 +22,9 @@ void SkyboxShader::getAllUniformLocations()
 	SkyboxShader::locations_.insert({ UniformVariable::FogColor, getUniformLocation("uFogColor") });
 	SkyboxShader::locations_.insert({ UniformVariable::AmbientLight, getUniformLocation("uAmbientLight") });
 	SkyboxShader::locations_.insert({ UniformVariable::SunStrength, getUniformLocation("uSunStrength") });
-	SkyboxShader::locations_.insert({ UniformVariable::SkyTexture, getUniformLocation("uSkyTexture") });
-	SkyboxShader::locations_.insert({ UniformVariable::StarsTexture, getUniformLocation("uStarsTexture") });
+	SkyboxShader::locations_.insert({ UniformVariable::DayTexture, getUniformLocation("uDayTexture") });
+	SkyboxShader::locations_.insert({ UniformVariable::NightTexture, getUniformLocation("uNightTexture") });
+	SkyboxShader::locations_.insert({ UniformVariable::BlendFactor, getUniformLocation("uBlendFactor") });
 }
 
 void SkyboxShader::setUp()
@@ -31,10 +32,15 @@ void SkyboxShader::setUp()
 	Shader::setUp(vertex_file, fragment_file);
 }
 
+void SkyboxShader::loadBlendFactor(float blend)
+{
+	loadFloat(locations_.at(UniformVariable::BlendFactor), blend);
+}
+
 void SkyboxShader::connectTextureUnits()
 {
-	loadInt(locations_.at(UniformVariable::SkyTexture), CubeMapLocation::Sky);
-	loadInt(locations_.at(UniformVariable::StarsTexture), CubeMapLocation::Stars);
+	loadInt(locations_.at(UniformVariable::DayTexture), CubeMapLocation::Day);
+	loadInt(locations_.at(UniformVariable::NightTexture), CubeMapLocation::Night);
 }
 
 /* Load projection and view matrix */
@@ -45,7 +51,8 @@ void SkyboxShader::loadUniforms()
 
 	loadVector(locations_.at(UniformVariable::FogColor), Application::fog_color);
 
-	loadVector(locations_.at(UniformVariable::SunStrength), Application::sun.getColor());
+	//loadVector(locations_.at(UniformVariable::SunStrength), Application::sun.getColor());
+
 
 	// View matrix
 	glm::mat4 v_matrix = Maths::createSkyViewMatrix(Application::camera);

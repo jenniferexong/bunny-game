@@ -22,7 +22,7 @@ vec3 Application::fog_color = vec3(0.301, 0.525, 0.560f);
 shared_ptr<Player> Application::player = nullptr;
 shared_ptr<GuiTexture> Application::compass = nullptr;
 vector<Light> Application::lights;
-Light Application::sun = Light(vec3(0.f, 100, 1000), vec3(1.0f)); // sun
+Light Application::sun = Light(vec3(0.f, 100, 1000), vec3(0.5f)); // sun
 
 double Application::previous_mouse_x = 0;
 double Application::previous_mouse_y = 0;
@@ -46,7 +46,7 @@ void Application::render() {
 	// dim the sun
 	const float dim = 0.05f;
 	vec3 darkened = max(sun.getColor() - (frame_delta * vec3(dim)), vec3(0.15f));
-	sun.setColor(darkened);
+	//sun.setColor(darkened);
 
 	player->updatePosition(terrain_1_);
 	camera.updateView();
@@ -82,10 +82,10 @@ void Application::makeTest()
 	guis_.push_back(compass);
 
 	// Terrain
-	auto texture_pack = makeTexturePack("default-ground", "light-ground", "blue-ground", "path");
+	auto texture_pack = makeTexturePack("green", "teal", "green", "path copy");
 	Texture blend_map = Texture(loader.loadTexture("res/textures/terrain1.png"));
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
-	terrain_1_ = Terrain(0, -1, ground_texture, "res/textures/height-map.png");
+	terrain_1_ = Terrain(0, -1, ground_texture, "res/textures/heightmap.png");
 
 	// Making materials
 	Material player_material = Material(1.f, 10.f);
@@ -109,8 +109,8 @@ void Application::makeTest()
 	entities_.insert({ carrot_model, carrot_set });
 
 	// Bunny player
-	float player_x = 255.f;
-	float player_z = -20.f;
+	float player_x = 328.411f;
+	float player_z = -19.45f;
 	float player_y = terrain_1_.getHeightOfTerrain(player_x, player_z);
 	player = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(0.f, 0, 0), 1.5f);
 	player->setRotationOffset(180.f, 0, 0);
@@ -279,7 +279,7 @@ void Application::keyCallback(int key, int scan_code, int action, int mods)
 		break;
 	case GLFW_KEY_L: 
 		if (action == GLFW_RELEASE) {
-			string entity = "tree";
+			string entity = "flower";
 			// Create and open a text file
 			ofstream positions("res/data/" + entity + "-positions.txt", ios::app);
 

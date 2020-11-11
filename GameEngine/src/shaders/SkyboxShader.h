@@ -9,7 +9,7 @@ class SkyboxShader final: public Shader {
 private:
 	enum class UniformVariable {
 		ProjectionMatrix, ViewMatrix, FogColor, AmbientLight, SunStrength,
-		SkyTexture, StarsTexture
+		DayTexture, NightTexture, BlendFactor
 	};
 
 	static const std::string vertex_file;
@@ -28,4 +28,5 @@ public:
 	void setUp() override;
 	void loadUniforms();
 	void connectTextureUnits();
+	void loadBlendFactor(float blend);
 };
