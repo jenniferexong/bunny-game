@@ -32,6 +32,6 @@ void SkyboxShader::loadUniforms() const
 	loadMatrix(locations_.at(UniformVariable::ProjectionMatrix), MasterRenderer::projection_matrix);
 
 	// View matrix
-	glm::mat4 v_matrix = Maths::createViewMatrix(Application::camera);
+	glm::mat4 v_matrix = Maths::createSkyViewMatrix(Application::camera);
 	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
 }

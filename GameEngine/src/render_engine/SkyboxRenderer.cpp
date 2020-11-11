@@ -24,6 +24,9 @@ const std::vector<std::string> SkyboxRenderer::texture_names = {
 void SkyboxRenderer::render()
 {
 	shader_.start();
+	//glDepthMask(GL_FALSE);
+	//glDepthRange(1.0, 1.0);
+
 	glBindVertexArray(cube_.getId());
 	glEnableVertexAttribArray(AttributeLocation::Position);
 
@@ -36,6 +39,9 @@ void SkyboxRenderer::render()
 
 	glDisableVertexAttribArray(AttributeLocation::Position);
 	glBindVertexArray(0);
+
+	//glDepthRange(0.0, 1.0);
+	//glDepthMask(GL_TRUE);
 
 	shader_.stop();
 }

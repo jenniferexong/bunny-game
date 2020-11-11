@@ -53,3 +53,17 @@ mat4 Maths::createViewMatrix(const Camera& camera)
 	matrix = translate(matrix, -camera.getPosition());
 	return matrix;
 }
+
+/* View matrix but without translation component*/
+mat4 Maths::createSkyViewMatrix(const Camera& camera)
+{
+	mat4 matrix = mat4(1);
+	// Rotate pitch, then yaw
+	float pitch = camera.getRotation().y;
+	float yaw = camera.getRotation().x;
+
+	matrix = rotate(matrix, radians(pitch), vec3(1, 0, 0));
+	matrix = rotate(matrix, radians(yaw), vec3(0, 1, 0));
+
+	return matrix;
+}
