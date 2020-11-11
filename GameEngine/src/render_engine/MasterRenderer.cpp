@@ -67,7 +67,7 @@ void MasterRenderer::disableCulling()
 /* Clears the window */
 void MasterRenderer::prepare()
 {
-	glm::vec3 sky = Application::sky_color;
+	glm::vec3 sky = Application::fog_color;
 	glClearColor(sky.x, sky.y, sky.z, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 

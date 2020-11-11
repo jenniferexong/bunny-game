@@ -35,7 +35,8 @@ void TerrainShader::getAllUniformLocations()
 
 	locations_.insert({ UniformVariable::Reflectivity, getUniformLocation("uReflectivity") });
 	locations_.insert({ UniformVariable::ShineDamper, getUniformLocation("uShineDamper") });
-	locations_.insert({ UniformVariable::SkyColor, getUniformLocation("uSkyColor") });
+	locations_.insert({ UniformVariable::FogColor, getUniformLocation("uFogColor") });
+	locations_.insert({ UniformVariable::SunStrength, getUniformLocation("uSunStrength") });
 
 	locations_.insert({ UniformVariable::BaseTexture, getUniformLocation("uBaseTexture") });
 	locations_.insert({ UniformVariable::RedTexture, getUniformLocation("uRedTexture") });
@@ -63,6 +64,9 @@ void TerrainShader::loadUniformPerFrame(const std::vector<Light>& lights) const
 	loadVectors(locations_.at(UniformVariable::LightPosition), positions);
 	loadVectors(locations_.at(UniformVariable::LightColor), colors);
 	loadVectors(locations_.at(UniformVariable::Attenuation), attenuations);
+
+	loadVector(locations_.at(UniformVariable::SunStrength), Application::sun.getColor());
+
 	loadInt(locations_.at(UniformVariable::LightCount), num_lights);
 	loadInt(locations_.at(UniformVariable::MaxLights), Light::max_lights);
 
@@ -75,7 +79,7 @@ void TerrainShader::loadUniformPerFrame(const std::vector<Light>& lights) const
 	loadMatrix(locations_.at(UniformVariable::InverseViewMatrix), inverse(v_matrix));
 
 	// sky colour
-	loadVector(locations_.at(UniformVariable::SkyColor), Application::sky_color);
+	loadVector(locations_.at(UniformVariable::FogColor), Application::fog_color);
 }
 
 void TerrainShader::loadModelMatrix(const Terrain& terrain) const

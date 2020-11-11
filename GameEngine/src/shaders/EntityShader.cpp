@@ -37,7 +37,8 @@ void EntityShader::getAllUniformLocations()
 	locations_.insert({ UniformVariable::Reflectivity, getUniformLocation("uReflectivity") });
 	locations_.insert({ UniformVariable::ShineDamper, getUniformLocation("uShineDamper") });
 	locations_.insert({ UniformVariable::FakeLighting, getUniformLocation("uFakeLighting") });
-	locations_.insert({ UniformVariable::SkyColor, getUniformLocation("uSkyColor") });
+	locations_.insert({ UniformVariable::FogColor, getUniformLocation("uFogColor") });
+	locations_.insert({ UniformVariable::SunStrength, getUniformLocation("uSunStrength") });
 }
 
 void EntityShader::loadUniformPerFrame(const std::vector<Light>& lights) const
@@ -59,6 +60,9 @@ void EntityShader::loadUniformPerFrame(const std::vector<Light>& lights) const
 	loadVectors(locations_.at(UniformVariable::LightPosition), positions);
 	loadVectors(locations_.at(UniformVariable::LightColor), colors);
 	loadVectors(locations_.at(UniformVariable::Attenuation), attenuations);
+
+	loadVector(locations_.at(UniformVariable::SunStrength), Application::sun.getColor());
+
 	loadInt(locations_.at(UniformVariable::LightCount), num_lights);
 	loadInt(locations_.at(UniformVariable::MaxLights), Light::max_lights);
 
@@ -71,7 +75,7 @@ void EntityShader::loadUniformPerFrame(const std::vector<Light>& lights) const
 	loadMatrix(locations_.at(UniformVariable::InverseViewMatrix), inverse(v_matrix));
 	 
 	// Sky colour
-	loadVector(locations_.at(UniformVariable::SkyColor), Application::sky_color);
+	loadVector(locations_.at(UniformVariable::FogColor), Application::fog_color);
 }
 
 void EntityShader::loadModelMatrix(const Entity& entity) const

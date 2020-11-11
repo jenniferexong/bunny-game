@@ -12,7 +12,7 @@ private:
 	enum class UniformVariable {
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
 		LightPosition, LightColor, LightCount, MaxLights, Attenuation,
-		Reflectivity, ShineDamper, SkyColor,
+		Reflectivity, ShineDamper, FogColor, SunStrength,
 		BaseTexture, RedTexture, GreenTexture, BlueTexture, BlendMap 
 	};
 

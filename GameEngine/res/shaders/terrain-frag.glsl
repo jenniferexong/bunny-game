@@ -15,7 +15,8 @@ uniform int uLightCount;
 uniform int uMaxLights;
 uniform float uReflectivity;
 uniform float uShineDamper;
-uniform vec3 uSkyColor;
+uniform vec3 uFogColor;
+uniform vec3 uSunStrength;
 
 in VertexData {
     vec3 position;
@@ -48,8 +49,8 @@ void main() {
     vec3 toCamera = normalize(f_in.cameraPosition - f_in.position);
 
     // Light calculation
-    float ambientStrength = 0.2;
-    vec3 ambient = ambientStrength * vec3(1.f);
+    float ambientStrength = 0.8;
+    vec3 ambient = ambientStrength * uSunStrength;
 
     vec3 diffuse = vec3(0);
     vec3 specular = vec3(0);
@@ -70,6 +71,7 @@ void main() {
         specular += (uReflectivity * spec * uLightColor[i]) / attenuationFactor;
     }
 
+    vec3 fogColor = uSunStrength * uFogColor;
     vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * totalColor);
-    outColor = mix(vec4(uSkyColor, 1.0), vec4(result, 1.0), f_in.visibility);  // mix with sky colour depending on visibility
+    outColor = mix(vec4(fogColor, 1.0), vec4(result, 1.0), f_in.visibility);  // mix with sky colour depending on visibility
 }

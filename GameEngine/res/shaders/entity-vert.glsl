@@ -21,7 +21,7 @@ out VertexData {
 } v_out; 
 
 const float density = 0.005;
-const float fogGradient = 2.5;
+const float fogGradient = 2.0;
 
 void main() {
     // vertex position in world coordinates (only multiplied by model transformation)

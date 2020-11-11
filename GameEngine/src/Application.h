@@ -53,7 +53,7 @@ public:
 	static Light sun;
 	static std::vector<Light> lights;
 	static Loader loader;
-	static vec3 sky_color;
+	static vec3 fog_color;
 	static std::shared_ptr<GuiTexture> compass;
 
 	// Time keeping for frames

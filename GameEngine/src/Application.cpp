@@ -18,11 +18,11 @@ using namespace std;
 GLFWwindow* Application::window = nullptr;
 Camera Application::camera = Camera();
 Loader Application::loader = Loader();
-vec3 Application::sky_color = vec3(0.525f, 0.407, 0.443);
+vec3 Application::fog_color = vec3(0.301, 0.525, 0.560f);
 shared_ptr<Player> Application::player = nullptr;
 shared_ptr<GuiTexture> Application::compass = nullptr;
 vector<Light> Application::lights;
-Light Application::sun = Light(vec3(0.f, 100, 1000), vec3(0.4f)); // sun
+Light Application::sun = Light(vec3(0.f, 100, 1000), vec3(1.0f)); // sun
 
 double Application::previous_mouse_x = 0;
 double Application::previous_mouse_y = 0;
@@ -43,6 +43,9 @@ void Application::render() {
 	long long current_frame_time = getCurrentTime();
 	frame_delta = float(current_frame_time - previous_frame_time) / 1000.f; // in seconds
 
+	const float dim = 0.05f;
+	vec3 darkened = max(sun.getColor() - (frame_delta * vec3(dim)), vec3(0.2f));
+	sun.setColor(darkened);
 	player->updatePosition(terrain_1_);
 	camera.updateView();
 
