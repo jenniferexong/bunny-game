@@ -3,6 +3,8 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
+#include "../Application.h"
+
 void Entity::move(float dx, float dy, float dz)
 {
 	position_ += vec3(dx, dy, dz);

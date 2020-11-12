@@ -54,7 +54,7 @@ InstancedMesh Loader::loadToVao(const string& obj_file)
 	unbindVao(); 
 	InstancedMesh mesh = InstancedMesh(vao_id, vbo_id, (int)data.indices.size(), data.face);
 	mesh.setBoundingSphere(BoundingSphere(data.model_center, data.model_radius));
-	return { vao_id, vbo_id, (int) data.indices.size(), data.face };
+	return mesh;
 }
 
 Mesh Loader::loadToVao(const vector<float>& positions, int dimensions)

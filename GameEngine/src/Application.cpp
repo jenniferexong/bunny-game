@@ -25,6 +25,7 @@ MousePicker Application::mouse_picker = MousePicker();
 
 vec3 Application::fog_color = vec3(0.301, 0.525, 0.560f);
 shared_ptr<Player> Application::player = nullptr;
+shared_ptr<Entity> Application::selected = nullptr;
 shared_ptr<GuiTexture> Application::compass = nullptr;
 vector<Light> Application::lights;
 Light Application::sun = Light(vec3(0.f, 100, 1000), vec3(0.1f)); // sun
@@ -53,7 +54,6 @@ void Application::render() {
 	camera.updateView();
 	mouse_picker.update(); // must update after camera is moved
 
-
 	renderer_.processTerrain(terrain_1_);
 
 	for (const auto& gui: guis_) 
@@ -65,6 +65,8 @@ void Application::render() {
 		if (glm::distance(player->getPosition(), l.getPosition()) <= 250.f)
 			close_lights.push_back(l);
 	}
+
+	select(mouse_picker.selectEntity(entities_));
 
 	renderer_.render(entities_, close_lights);
 
@@ -159,6 +161,16 @@ void Application::makeTest()
 	test->setScale(0.2f);
 
 	entity_set->insert(test);
+}
+
+void Application::select(shared_ptr<Entity> entity)
+{
+	selected = std::move(entity);
+	if (selected == nullptr)
+		cout << "nothing selected" << endl;
+	else
+		cout << "selected" << endl;
+
 }
 
 void Application::loadPositionsFromFile(shared_ptr<set<shared_ptr<Entity>>> set, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale)

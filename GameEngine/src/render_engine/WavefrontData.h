@@ -19,7 +19,7 @@ struct WavefrontData {
 
 	// bounding sphere
 	vec4 model_center;
-	vec4 model_radius;
+	float model_radius;
 
 	int face = 3; // 3 = triangles, 4 = quads
 

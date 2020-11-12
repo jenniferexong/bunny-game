@@ -65,7 +65,7 @@ void WavefrontData::loadData(const std::string& file_name)
 
 	// set the bounding sphere variables
 	float diameter = glm::max(glm::max(max_.x - min_.x, max_.y - min_.y), max_.z - min_.z);
-	model_radius = vec4(diameter/2, 0, 0, 0); // vector so we can apply model transformations
+	model_radius = diameter/2; // vector so we can apply model transformations
 	float centre_x = min_.x + ((max_.x - min_.x) / 2);
 	float centre_y = min_.y + ((max_.y - min_.y) / 2);
 	float centre_z = min_.z + ((max_.z - min_.z) / 2);

@@ -176,5 +176,8 @@
     <ClInclude Include="src\models\BoundingSphere.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\gui\RayIntersection.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -39,6 +39,8 @@ private:
 	static double previous_mouse_x_;
 	static double previous_mouse_y_;
 
+	void select(shared_ptr<Entity> entity);
+
 	std::shared_ptr<TexturedModel> makeModel(const string& obj_name, const string& texture_name, const Material& material) const;
 	std::shared_ptr<TerrainTexturePack> makeTexturePack(const string& base, const string& red, const string& green, const string& blue) const;
 	void loadPositionsFromFile(shared_ptr<set<shared_ptr<Entity>>> set, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale);
@@ -56,6 +58,7 @@ public:
 	static MousePicker mouse_picker;
 
 	static std::shared_ptr<Player> player;
+	static std::shared_ptr<Entity> selected;
 	static std::map<Key, bool> move_keys; 
 	static std::map<MouseButton, bool> mouse_buttons; 
 	static Light sun;

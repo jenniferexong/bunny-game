@@ -48,4 +48,5 @@ public:
 	vec3 getActualRotation() const { return rotation_ + rotation_offset_; }
 	glm::mat4 getAlignmentRotation() const { return alignment_rotation_; }
 	float getScale() const { return scale_; }
+	bool isSelectable() const { return selectable_; }
 };

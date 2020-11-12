@@ -48,6 +48,7 @@
     <ClInclude Include="src\CompareTexturedModel.h" />
     <ClInclude Include="src\gui\GuiTexture.h" />
     <ClInclude Include="src\gui\MousePicker.h" />
+    <ClInclude Include="src\gui\RayIntersection.h" />
     <ClInclude Include="src\models\BoundingSphere.h" />
     <ClInclude Include="src\models\Material.h" />
     <ClInclude Include="src\objects\Camera.h" />
