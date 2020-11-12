@@ -56,7 +56,8 @@ void main() {
         specular += (uReflectivity * spec * uLightColor[i]) / attenuationFactor;
     }
 
-    vec3 fogColor = uSunStrength * uFogColor;
+    //vec3 fogColor = uSunStrength * uFogColor;
     vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * texture(textureSampler, f_in.textureCoords));
-    outColor = mix(vec4(fogColor, 1.0), vec4(result, 1.0), f_in.visibility);  // mix with sky colour depending on visibility
+    outColor = vec4(result, 1.0);
+    //outColor = mix(vec4(fogColor, 1.0), vec4(result, 1.0), f_in.visibility);  // mix with sky colour depending on visibility
 }

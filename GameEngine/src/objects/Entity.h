@@ -21,6 +21,8 @@ protected:
 	glm::mat4 alignment_rotation_ = glm::mat4(1);
 	float scale_;
 
+	bool selectable_ = true;
+
 public:
 	Entity() : model_(nullptr), position_(vec3(0)), rotation_(vec3(0)), scale_(1) {}
 

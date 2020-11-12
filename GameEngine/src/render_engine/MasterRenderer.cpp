@@ -5,9 +5,6 @@
 
 #include "../Application.h"
 
-const float MasterRenderer::fov = 70.f;
-const float MasterRenderer::near_plane = 1.f;
-const float MasterRenderer::far_plane = 1000.f;
 glm::mat4 MasterRenderer::projection_matrix = glm::mat4(0);
 
 MasterRenderer::MasterRenderer()
@@ -76,9 +73,7 @@ void MasterRenderer::prepare()
 	glfwGetWindowSize(Application::window, &width, &height);
 	glViewport(0, 0, width, height);
 
-	// Setting the projection matrix
-	float aspect_ratio = (float) width / height;
-	projection_matrix = glm::perspective(fov, aspect_ratio, near_plane, far_plane);
+	projection_matrix = Application::getProjectionMatrix();
 }
 
 void MasterRenderer::processTerrain(const Terrain& terrain)

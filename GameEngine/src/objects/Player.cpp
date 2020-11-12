@@ -5,12 +5,19 @@
 
 #include "../Application.h"
 
-const float Player::run_speed = 25.f; // per second
-const float Player::turn_speed = 100.f; // degrees per second
+const float Player::run_speed = 30.f; // per second
+const float Player::turn_speed = 130.f; // degrees per second
 const float Player::gravity = -70.f;
 const float Player::jump_power = 30.f;
 
 using namespace glm;
+
+Player::Player(std::shared_ptr<TexturedModel> model, vec3 position, vec3 rotation, float scale)
+		: Entity(std::move(model), position, rotation, scale)
+{
+	selectable_ = false;
+}
+	
 
 vec3 Player::getRotationOffset()
 {

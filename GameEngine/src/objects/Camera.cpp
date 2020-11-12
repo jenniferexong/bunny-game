@@ -4,8 +4,8 @@
 const float Camera::min_distance = 10;
 const float Camera::max_distance = 30;
 
-float Camera::pitch = 10;
-float Camera::distance_from_player = 20;
+float Camera::pitch = 1.f;
+float Camera::distance_from_player = 12;
 
 using namespace glm;
 
@@ -17,8 +17,8 @@ void Camera::zoom(float amount)
 
 void Camera::changePitch(double amount)
 {
-	pitch += float(amount);
-	pitch = clamp(pitch, 1.f, 90.f);
+	pitch += float(amount/15.f);
+	pitch = clamp(pitch, -90.f, 90.f);
 }
 
 void Camera::updateView() {
@@ -31,8 +31,9 @@ void Camera::updateView() {
 	float dx = 1.f * glm::sin(glm::radians(player_rotation.x));
 	float dz = 1.f * glm::cos(glm::radians(player_rotation.x));
 
-	float distance_behind_player = distance_from_player * cos(radians(pitch));
-	float height_above_player = distance_from_player * sin(radians(pitch)) + (0.4f * distance_from_player);
+	float view_angle = glm::clamp(pitch, 0.1f, 90.f);
+	float distance_behind_player = distance_from_player * cos(radians(view_angle));
+	float height_above_player = distance_from_player * sin(radians(view_angle)) + (0.4f * distance_from_player);
 
 	vec3 offset = distance_behind_player * vec3(dx, 0, dz);
 	position_ = player_position + offset;

@@ -37,7 +37,7 @@ void main() {
     
     vec4 blendMapValue = texture(uBlendMap, f_in.textureCoords);
     float blackAmount = 1 - (blendMapValue.r + blendMapValue.g + blendMapValue.b);
-    vec2 tiledCoords = f_in.textureCoords * 25.0;
+    vec2 tiledCoords = f_in.textureCoords * 30.0;
     blackTexture = texture(uBaseTexture, tiledCoords) * blackAmount;
     redTexture = texture(uRedTexture, tiledCoords) * blendMapValue.r;
     greenTexture = texture(uGreenTexture, tiledCoords) * blendMapValue.g;
@@ -71,7 +71,8 @@ void main() {
         specular += (uReflectivity * spec * uLightColor[i]) / attenuationFactor;
     }
 
-    vec3 fogColor = uSunStrength * uFogColor;
+    //vec3 fogColor = uSunStrength * uFogColor;
     vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * totalColor);
-    outColor = mix(vec4(fogColor, 1.0), vec4(result, 1.0), f_in.visibility);  // mix with sky colour depending on visibility
+    outColor = vec4(result, 1.0);
+    //outColor = mix(vec4(fogColor, 1.0), vec4(result, 1.0), f_in.visibility);  // mix with sky colour depending on visibility
 }

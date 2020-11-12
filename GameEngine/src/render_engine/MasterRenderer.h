@@ -19,9 +19,6 @@ private:
 
 public:
 	static glm::mat4 projection_matrix;
-	static const float fov;
-	static const float near_plane;
-	static const float far_plane;
 
 	MasterRenderer();
 	void prepare();

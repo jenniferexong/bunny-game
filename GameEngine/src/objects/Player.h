@@ -32,8 +32,7 @@ private:
 
 public:
 	Player() = default;
-	Player(std::shared_ptr<TexturedModel> model, vec3 position, vec3 rotation, float scale)
-		: Entity(std::move(model), position, rotation, scale) {}
+	Player(std::shared_ptr<TexturedModel> model, vec3 position, vec3 rotation, float scale);
 
 	void changeDirection(double amount);
 	void updatePosition(const Terrain& terrain);

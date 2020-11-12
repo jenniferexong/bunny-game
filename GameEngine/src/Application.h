@@ -18,6 +18,7 @@
 #include "objects/Player.h"
 #include "render_engine/GuiRenderer.h"
 #include "gui/GuiTexture.h"
+#include "gui/MousePicker.h"
 
 using std::string;
 using std::map;
@@ -45,8 +46,14 @@ public:
 	enum class Key { W, A, S, D, Q, E, L, Space, Esc };
 	enum class MouseButton { Left, Right };
 
+	static const float fov;
+	static const float near_plane;
+	static const float far_plane;
+
 	static GLFWwindow* window;
 	static Camera camera;
+	static MousePicker mouse_picker;
+
 	static std::shared_ptr<Player> player;
 	static std::map<Key, bool> move_keys; 
 	static std::map<MouseButton, bool> mouse_buttons; 
@@ -65,6 +72,8 @@ public:
 	void render();
 
 	void makeTest();
+
+	static glm::mat4 getProjectionMatrix();
 
 	static long long getCurrentTime();
 

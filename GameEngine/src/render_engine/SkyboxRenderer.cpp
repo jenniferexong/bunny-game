@@ -53,36 +53,48 @@ void SkyboxRenderer::render()
 void SkyboxRenderer::bindTextures()
 {
 	// TODO: make sunlight change with day and night, fix fog?
+	float min_sunlight = 0.2f;
+	float max_sunlight = 0.9f;
+	float sunlight = 0.f;
 	time += Application::frame_delta * 1000;
 	time = fmod(time, 24000);
-	int texture1;
-	int texture2;
+	int texture_1;
+	int texture_2;
 	float blend_factor;
+	// Night
 	if (time >= 0 && time < 5000) {
-		texture1 = night_texture_id_;
-		texture2 = night_texture_id_;
+		texture_1 = night_texture_id_;
+		texture_2 = night_texture_id_;
 		blend_factor = (time - 0) / (5000 - 0);
+		sunlight = min_sunlight;
 	}
+	// sunrise
 	else if (time >= 5000 && time < 8000) {
-		texture1 = night_texture_id_;
-		texture2 = day_texture_id_;
+		texture_1 = night_texture_id_;
+		texture_2 = day_texture_id_;
 		blend_factor = (time - 5000) / (8000 - 5000);
+		sunlight = min_sunlight + (blend_factor * (max_sunlight - min_sunlight));
 	}
+	// day
 	else if (time >= 8000 && time < 21000) {
-		texture1 = day_texture_id_;
-		texture2 = day_texture_id_;
+		texture_1 = day_texture_id_;
+		texture_2 = day_texture_id_;
 		blend_factor = (time - 8000) / (21000 - 8000);
+		sunlight = max_sunlight;
 	}
+	// sunset
 	else {
-		texture1 = day_texture_id_;
-		texture2 = night_texture_id_;
+		texture_1 = day_texture_id_;
+		texture_2 = night_texture_id_;
 		blend_factor = (time - 21000) / (24000 - 21000);
+		sunlight = max_sunlight - (blend_factor * (max_sunlight - min_sunlight));
 	}
+	Application::sun.setColor(vec3(sunlight));
 
 	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, texture1);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, texture_1);
 	glActiveTexture(GL_TEXTURE1);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, texture2);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, texture_2);
 	shader_.loadBlendFactor(blend_factor);
 }
 

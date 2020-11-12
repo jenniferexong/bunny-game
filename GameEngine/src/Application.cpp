@@ -15,14 +15,19 @@ using namespace glm;
 using namespace std;
 
 /* Static variables */
+const float Application::fov = 70.f;
+const float Application::near_plane = 1.f;
+const float Application::far_plane = 1000.f;
 GLFWwindow* Application::window = nullptr;
 Camera Application::camera = Camera();
 Loader Application::loader = Loader();
+MousePicker Application::mouse_picker = MousePicker();
+
 vec3 Application::fog_color = vec3(0.301, 0.525, 0.560f);
 shared_ptr<Player> Application::player = nullptr;
 shared_ptr<GuiTexture> Application::compass = nullptr;
 vector<Light> Application::lights;
-Light Application::sun = Light(vec3(0.f, 100, 1000), vec3(0.5f)); // sun
+Light Application::sun = Light(vec3(0.f, 100, 1000), vec3(0.1f)); // sun
 
 double Application::previous_mouse_x = 0;
 double Application::previous_mouse_y = 0;
@@ -43,13 +48,10 @@ void Application::render() {
 	long long current_frame_time = getCurrentTime();
 	frame_delta = float(current_frame_time - previous_frame_time) / 1000.f; // in seconds
 
-	// dim the sun
-	const float dim = 0.05f;
-	vec3 darkened = max(sun.getColor() - (frame_delta * vec3(dim)), vec3(0.15f));
-	//sun.setColor(darkened);
-
 	player->updatePosition(terrain_1_);
 	camera.updateView();
+	mouse_picker.update(); // must update after camera is moved
+
 
 	renderer_.processTerrain(terrain_1_);
 
@@ -78,33 +80,35 @@ void Application::makeTest()
 	// GUI
 	const float padding = 100;
 	const float size = 150;
-	compass = make_shared<GuiTexture>(loader.loadTexture("res/textures/compass.png"), vec2(padding, height - padding), vec2(size, size));
+	compass = make_shared<GuiTexture>(loader.loadTexture("res/textures/compass.png"), vec2(padding, height - padding), vec2(size));
+
+	const float cross_hair_size = 60;
+	const vec2 center = vec2((float)width / 2, (float)height / 2);
+	auto cross_hair = make_shared<GuiTexture>(loader.loadTexture("res/textures/cross-hair.png"), center, vec2(cross_hair_size));
+
+	guis_.push_back(cross_hair);
 	guis_.push_back(compass);
 
 	// Terrain
-	auto texture_pack = makeTexturePack("green", "teal", "green", "path copy");
+	auto texture_pack = makeTexturePack("green", "green", "light-green", "rocks");
 	Texture blend_map = Texture(loader.loadTexture("res/textures/terrain1.png"));
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
 	terrain_1_ = Terrain(0, -1, ground_texture, "res/textures/heightmap.png");
 
 	// Making materials
-	Material player_material = Material(1.f, 10.f);
-	Material grass_material = Material(true, true);
+	Material player_material = Material();
 	Material flower_material = Material(false, false);
-	Material carrot_material = Material();
+	Material carrot_material = Material(10.f, 20.f);
 
 	auto player_model = makeModel("bunny", "white", player_material);
-	auto grass_model = makeModel("grass", "grass-texture", grass_material);
 	auto flower_model = makeModel("flower", "flower", flower_material);
 	auto carrot_model = makeModel("carrot", "carrot", carrot_material);
 
 	auto player_set = make_shared<set<shared_ptr<Entity>>>();
-	auto grass_set = make_shared<set<shared_ptr<Entity>>>();
 	auto flower_set = make_shared<set<shared_ptr<Entity>>>();
 	auto carrot_set = make_shared<set<shared_ptr<Entity>>>();
 
 	entities_.insert({ player_model, player_set });
-	entities_.insert({ grass_model, grass_set });
 	entities_.insert({ flower_model, flower_set });
 	entities_.insert({ carrot_model, carrot_set });
 
@@ -112,22 +116,10 @@ void Application::makeTest()
 	float player_x = 328.411f;
 	float player_z = -19.45f;
 	float player_y = terrain_1_.getHeightOfTerrain(player_x, player_z);
-	player = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(0.f, 0, 0), 1.5f);
+	player = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(0.f, 0, 0), 1.2f);
 	player->setRotationOffset(180.f, 0, 0);
 
 	player_set->insert(player);
-
-	int num_grass = 100000;
-	for (int i = 0; i < 2000; i++) {
-		auto grass = make_shared<Entity>(grass_model);
-		float x = linearRand(0.f, 510.f);
-		float z = linearRand(0.f, -510.f);
-		float y = terrain_1_.getHeightOfTerrain(x, z);
-		grass->setPosition(x, y, z);
-		grass->setRotation(linearRand(0.f, 90.f), 0, 0);
-		grass->setAlignmentRotation(terrain_1_.getNormalOfTerrain(x, z));
-		grass_set->insert(grass);
-	}
 
 	loadPositionsFromFile(carrot_set, carrot_model, "carrot", vec3(0), 0.02f);
 	loadPositionsFromFile(flower_set, flower_model, "flower", vec3(0, -90.f, 0), 0.15f);
@@ -137,7 +129,7 @@ void Application::makeTest()
 	for (const auto& flower: *flower_set) {
 		vec3 flower_pos = flower->getPosition();
 		vec3 terrain_normal = terrain_1_.getNormalOfTerrain(flower_pos.x, flower_pos.z);
-		vec3 light_pos = flower_pos + (8.f * terrain_normal);
+		vec3 light_pos = flower_pos + (15.f * terrain_normal);
 		lights.emplace_back(light_pos, color, Light::point_light_attenuation); // cyan
 	}
 
@@ -159,7 +151,7 @@ void Application::loadPositionsFromFile(shared_ptr<set<shared_ptr<Entity>>> set,
 		y = terrain_1_.getHeightOfTerrain(x, z);
 		vec3 terrain_normal = terrain_1_.getNormalOfTerrain(x, z);
 		entity->setPosition(x, y, z);
-		entity->setRotation(linearRand(0.f, 360.f), 0, 0);
+		entity->setRotation(linearRand(0.f, 90.f), 0, 0);
 		entity->rotate(rotation.x, rotation.y, rotation.z);
 		entity->setAlignmentRotation(terrain_normal);
 		entity->setScale(scale);
@@ -197,6 +189,17 @@ long long Application::getCurrentTime()
 	return ms.count();
 }
 
+glm::mat4 Application::getProjectionMatrix()
+{
+	int width, height;
+	glfwGetWindowSize(Application::window, &width, &height);
+
+	// Setting the projection matrix
+	float aspect_ratio = (float)width / height;
+	return glm::perspective(fov, aspect_ratio, near_plane, far_plane);
+}
+
+
 void Application::scrollCallBack(double x_offset, double y_offset)
 {
 	camera.zoom(float(y_offset));
@@ -205,9 +208,7 @@ void Application::scrollCallBack(double x_offset, double y_offset)
 void Application::cursorPosCallback(double x, double y)
 {
 	player->changeDirection(x - previous_mouse_x);
-	if (mouse_buttons[MouseButton::Left]) {
-		camera.changePitch(y - previous_mouse_y);
-	}
+	camera.changePitch(y - previous_mouse_y);
 	previous_mouse_x = x;
 	previous_mouse_y = y;
 }

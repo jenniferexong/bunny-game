@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\gui\GuiTexture.cpp" />
+    <ClCompile Include="src\gui\MousePicker.cpp" />
     <ClCompile Include="src\Maths.cpp" />
     <ClCompile Include="src\models\Mesh.cpp" />
     <ClCompile Include="src\objects\Camera.cpp" />
@@ -46,6 +47,7 @@
   <ItemGroup>
     <ClInclude Include="src\CompareTexturedModel.h" />
     <ClInclude Include="src\gui\GuiTexture.h" />
+    <ClInclude Include="src\gui\MousePicker.h" />
     <ClInclude Include="src\models\Material.h" />
     <ClInclude Include="src\objects\Camera.h" />
     <ClInclude Include="src\render_engine\EntityRenderer.h" />
