@@ -51,7 +51,7 @@ int main(void)
 
     // Make the application
     Application application;
-    application.makeTest();
+    application.setup();
 
     application_ptr = &application;
 

@@ -39,6 +39,7 @@ Mesh Loader::loadToVao(const string& obj_file)
 }
 */
 
+/* Also sets the bounding sphere information for the mesh */
 InstancedMesh Loader::loadToVao(const string& obj_file)
 {
 	WavefrontData data = WavefrontData(obj_file);
@@ -51,6 +52,8 @@ InstancedMesh Loader::loadToVao(const string& obj_file)
 
 	int vbo_id = createModelMatrixVbo();
 	unbindVao(); 
+	InstancedMesh mesh = InstancedMesh(vao_id, vbo_id, (int)data.indices.size(), data.face);
+	mesh.setBoundingSphere(BoundingSphere(data.model_center, data.model_radius));
 	return { vao_id, vbo_id, (int) data.indices.size(), data.face };
 }
 

@@ -4,6 +4,7 @@
 #include <sstream>
 #include <iostream>
 #include <fstream>
+#include <limits>
 
 using std::string;
 
@@ -61,6 +62,14 @@ void WavefrontData::loadData(const std::string& file_name)
 	else {
 		std::cerr << "Error reading obj file: " << file_name << std::endl;
 	}
+
+	// set the bounding sphere variables
+	float diameter = glm::max(glm::max(max_.x - min_.x, max_.y - min_.y), max_.z - min_.z);
+	model_radius = vec4(diameter/2, 0, 0, 0); // vector so we can apply model transformations
+	float centre_x = min_.x + ((max_.x - min_.x) / 2);
+	float centre_y = min_.y + ((max_.y - min_.y) / 2);
+	float centre_z = min_.z + ((max_.z - min_.z) / 2);
+	model_center = vec4(centre_x, centre_y, centre_z, 1);
 }
 
 void WavefrontData::processIndices(const string& vertex, const vector<vec3>& in_positions, const vector<vec2>& in_textures, const vector<vec3>& in_normals)
@@ -72,6 +81,8 @@ void WavefrontData::processIndices(const string& vertex, const vector<vec3>& in_
 	// adding each number to m_indices (note they start from 1, not 0)
 	std::getline(str, num, '/');
 	vec3 position = in_positions.at(stoi(num) - 1);
+	setMinMax(position);
+
 	positions.push_back(position.x);
 	positions.push_back(position.y);
 	positions.push_back(position.z);
@@ -94,4 +105,15 @@ void WavefrontData::processIndices(const string& vertex, const vector<vec3>& in_
 	normals.push_back(normal.z);
 
 	current_index_++;
+}
+
+void WavefrontData::setMinMax(vec3 position)
+{
+	min_.x = position.x < min_.x ? position.x : min_.x;
+	min_.y = position.y < min_.y ? position.y : min_.y;
+	min_.z = position.z < min_.z ? position.z : min_.z;
+
+	max_.x = position.x > max_.x ? position.x : max_.x;
+	max_.y = position.y > max_.y ? position.y : max_.y;
+	max_.z = position.z > max_.z ? position.z : max_.z;
 }

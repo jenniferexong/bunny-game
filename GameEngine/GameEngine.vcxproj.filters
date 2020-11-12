@@ -173,5 +173,8 @@
     <ClInclude Include="src\gui\MousePicker.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\models\BoundingSphere.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

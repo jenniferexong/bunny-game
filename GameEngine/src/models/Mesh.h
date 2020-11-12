@@ -1,5 +1,7 @@
 #pragma once
 
+#include "BoundingSphere.h"
+
 class Mesh {
 protected:
 	int vao_id_;
@@ -19,6 +21,7 @@ public:
 
 class InstancedMesh final: public Mesh {
 private:
+	BoundingSphere bounding_sphere_;
 	int model_matrix_vbo_;
 
 public:
@@ -26,4 +29,7 @@ public:
 		model_matrix_vbo_(model_matrix_vbo) {}
 
 	int getModelMatrixVbo() const { return model_matrix_vbo_; }
+	BoundingSphere getBoundingSphere() const { return bounding_sphere_; }
+
+	void setBoundingSphere(const BoundingSphere& sphere) { bounding_sphere_ = sphere; }
 };

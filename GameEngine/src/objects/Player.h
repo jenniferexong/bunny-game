@@ -14,14 +14,12 @@ private:
 	};
 
 	static const float run_speed;
-	static const float turn_speed;
 	static const float gravity;
 	static const float jump_power;
 
 	DirectionState state_ = DirectionState::N;
 	float forward_speed_ = 0;
 	float side_speed_ = 0;
-	float current_turn_speed_ = 0;
 	float up_velocity_ = 0;
 
 	bool is_in_air = false;

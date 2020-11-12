@@ -6,7 +6,6 @@
 #include "../Application.h"
 
 const float Player::run_speed = 30.f; // per second
-const float Player::turn_speed = 130.f; // degrees per second
 const float Player::gravity = -70.f;
 const float Player::jump_power = 30.f;
 
@@ -47,7 +46,6 @@ void Player::updatePosition(const Terrain& terrain)
 {
 	updateSpeed();
 
-	rotate(current_turn_speed_ * Application::frame_delta, 0, 0);
 	Application::compass->setRotation(-rotation_.x);
 
 	float forward_distance = forward_speed_ * Application::frame_delta;
@@ -77,8 +75,6 @@ void Player::updatePosition(const Terrain& terrain)
 		// Align with the normal of the terrain at current position
 		setAlignmentRotation(terrain.getNormalOfTerrain(position_.x, position_.z));
 	}
-
-	current_turn_speed_ = 0;
 }
 
 void Player::jump()
@@ -96,10 +92,7 @@ void Player::fall()
 
 void Player::changeDirection(double amount)
 {
-	if (amount > 0)
-		current_turn_speed_ = -turn_speed;
-	else if (amount < 0)
-		current_turn_speed_ = turn_speed;
+	rotate(-amount, 0, 0);
 }
 
 

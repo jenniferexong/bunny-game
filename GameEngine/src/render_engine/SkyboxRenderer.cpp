@@ -52,7 +52,7 @@ void SkyboxRenderer::render()
 
 void SkyboxRenderer::bindTextures()
 {
-	// TODO: make sunlight change with day and night, fix fog?
+	// TODO: fix fog?
 	float min_sunlight = 0.2f;
 	float max_sunlight = 0.9f;
 	float sunlight = 0.f;

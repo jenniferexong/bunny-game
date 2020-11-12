@@ -22,6 +22,8 @@ private:
 	vec3 rotation_ = vec3(0, pitch, 0); // yaw, pitch, roll
 
 public:
+	static const float turn_speed;
+
 	Camera() = default;
 
 	Camera(std::shared_ptr<Player> player): player_(std::move(player)) {}

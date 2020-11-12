@@ -35,8 +35,9 @@ private:
 	vector<shared_ptr<GuiTexture>> guis_;
 	Terrain terrain_1_;
 
-	static double previous_mouse_x;
-	static double previous_mouse_y;
+	static bool first_mouse_movement_;
+	static double previous_mouse_x_;
+	static double previous_mouse_y_;
 
 	std::shared_ptr<TexturedModel> makeModel(const string& obj_name, const string& texture_name, const Material& material) const;
 	std::shared_ptr<TerrainTexturePack> makeTexturePack(const string& base, const string& red, const string& green, const string& blue) const;
@@ -71,6 +72,8 @@ public:
 	// Rendering everything
 	void render();
 
+	void setup();
+	void makeGame();
 	void makeTest();
 
 	static glm::mat4 getProjectionMatrix();

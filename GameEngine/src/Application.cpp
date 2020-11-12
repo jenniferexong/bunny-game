@@ -29,8 +29,9 @@ shared_ptr<GuiTexture> Application::compass = nullptr;
 vector<Light> Application::lights;
 Light Application::sun = Light(vec3(0.f, 100, 1000), vec3(0.1f)); // sun
 
-double Application::previous_mouse_x = 0;
-double Application::previous_mouse_y = 0;
+bool Application::first_mouse_movement_ = true;
+double Application::previous_mouse_x_ = 0;
+double Application::previous_mouse_y_ = 0;
 
 // Time keeping
 long long Application::previous_frame_time = Application::getCurrentTime();
@@ -70,7 +71,7 @@ void Application::render() {
 	previous_frame_time = current_frame_time;
 }
 
-void Application::makeTest()
+void Application::setup()
 {
 	//TODO: Make files that you can read material properties from, and position, scale, rotation...
 
@@ -97,20 +98,9 @@ void Application::makeTest()
 
 	// Making materials
 	Material player_material = Material();
-	Material flower_material = Material(false, false);
-	Material carrot_material = Material(10.f, 20.f);
-
 	auto player_model = makeModel("bunny", "white", player_material);
-	auto flower_model = makeModel("flower", "flower", flower_material);
-	auto carrot_model = makeModel("carrot", "carrot", carrot_material);
-
 	auto player_set = make_shared<set<shared_ptr<Entity>>>();
-	auto flower_set = make_shared<set<shared_ptr<Entity>>>();
-	auto carrot_set = make_shared<set<shared_ptr<Entity>>>();
-
 	entities_.insert({ player_model, player_set });
-	entities_.insert({ flower_model, flower_set });
-	entities_.insert({ carrot_model, carrot_set });
 
 	// Bunny player
 	float player_x = 328.411f;
@@ -120,6 +110,26 @@ void Application::makeTest()
 	player->setRotationOffset(180.f, 0, 0);
 
 	player_set->insert(player);
+
+	camera = Camera(player);
+
+	//makeGame();
+	makeTest();
+}
+
+void Application::makeGame()
+{
+	Material flower_material = Material(false, false);
+	Material carrot_material = Material(10.f, 20.f);
+
+	auto flower_model = makeModel("flower", "flower", flower_material);
+	auto carrot_model = makeModel("carrot", "carrot", carrot_material);
+
+	auto flower_set = make_shared<set<shared_ptr<Entity>>>();
+	auto carrot_set = make_shared<set<shared_ptr<Entity>>>();
+
+	entities_.insert({ flower_model, flower_set });
+	entities_.insert({ carrot_model, carrot_set });
 
 	loadPositionsFromFile(carrot_set, carrot_model, "carrot", vec3(0), 0.02f);
 	loadPositionsFromFile(flower_set, flower_model, "flower", vec3(0, -90.f, 0), 0.15f);
@@ -132,8 +142,23 @@ void Application::makeTest()
 		vec3 light_pos = flower_pos + (15.f * terrain_normal);
 		lights.emplace_back(light_pos, color, Light::point_light_attenuation); // cyan
 	}
+}
 
-	camera = Camera(player);
+void Application::makeTest()
+{
+	Material material = Material();
+	auto model = makeModel("flower", "flower", material);
+	auto entity_set = make_shared<set<shared_ptr<Entity>>>();
+	entities_.insert({ model, entity_set });
+
+	player->setPosition(100, terrain_1_.getHeightOfTerrain(100, -100), -100);
+
+	auto test = make_shared<Entity>(model);
+	test->setPosition(100, terrain_1_.getHeightOfTerrain(100, -120) + 10, -120);
+	test->setRotation(0, -90.f, 0);
+	test->setScale(0.2f);
+
+	entity_set->insert(test);
 }
 
 void Application::loadPositionsFromFile(shared_ptr<set<shared_ptr<Entity>>> set, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale)
@@ -207,10 +232,20 @@ void Application::scrollCallBack(double x_offset, double y_offset)
 
 void Application::cursorPosCallback(double x, double y)
 {
-	player->changeDirection(x - previous_mouse_x);
-	camera.changePitch(y - previous_mouse_y);
-	previous_mouse_x = x;
-	previous_mouse_y = y;
+	if (first_mouse_movement_) {
+		first_mouse_movement_ = false;
+		previous_mouse_x_ = x;
+		previous_mouse_y_ = y;
+		return;
+	}
+
+	const float sensitivity = 0.1f;
+	float x_offset = (x - previous_mouse_x_) * sensitivity;
+	float y_offset = (y - previous_mouse_y_) * sensitivity;
+	player->changeDirection(x_offset);
+	camera.changePitch(y_offset);
+	previous_mouse_x_ = x;
+	previous_mouse_y_ = y;
 }
 
 void Application::mouseButtonCallback(int button, int action, int mods)
