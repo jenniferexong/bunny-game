@@ -30,6 +30,7 @@ public:
 	int loadCubeMap(std::vector<std::string> texture_files);
 
 	int createModelMatrixVbo();
+	int createModelColorVbo();
 
 	//Mesh loadToVao(const std::string& obj_file);
 	InstancedMesh loadToVao(const std::string& obj_file);

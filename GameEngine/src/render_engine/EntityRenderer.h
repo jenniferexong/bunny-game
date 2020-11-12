@@ -22,6 +22,7 @@ private:
 	void unbindTexturedModel();
 	void loadTransformation(const Entity& entity);
 	void loadTransformations(const set<shared_ptr<Entity>>& entities, shared_ptr<std::vector<float>> float_data);
+	void loadColors(const std::set<shared_ptr<Entity>>& entities, std::shared_ptr<std::vector<float>> float_data);
 
 public:
 	EntityRenderer(): shader_(nullptr) {}

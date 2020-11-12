@@ -70,6 +70,9 @@ void Application::render() {
 
 	renderer_.render(entities_, close_lights);
 
+	if (selected != nullptr)
+		selected->unhighlight();
+
 	previous_frame_time = current_frame_time;
 }
 
@@ -115,8 +118,8 @@ void Application::setup()
 
 	camera = Camera(player);
 
-	//makeGame();
-	makeTest();
+	makeGame();
+	//makeTest();
 }
 
 void Application::makeGame()
@@ -166,11 +169,8 @@ void Application::makeTest()
 void Application::select(shared_ptr<Entity> entity)
 {
 	selected = std::move(entity);
-	if (selected == nullptr)
-		cout << "nothing selected" << endl;
-	else
-		cout << "selected" << endl;
-
+	if (selected != nullptr) 
+		selected->highlight();
 }
 
 void Application::loadPositionsFromFile(shared_ptr<set<shared_ptr<Entity>>> set, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale)

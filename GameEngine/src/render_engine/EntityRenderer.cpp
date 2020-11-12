@@ -32,7 +32,8 @@ void EntityRenderer::render(const map<shared_ptr<TexturedModel>, shared_ptr<set<
 
 void EntityRenderer::renderInstanced(const map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, CompareTexturedModel>& entities)
 {
-	auto float_data = std::make_shared<vector<float>>();
+	auto model_matrix_data = std::make_shared<vector<float>>();
+	auto color_data = std::make_shared<vector<float>>();
 
 	for (const auto& element : entities) {
 		const auto& model = element.first;
@@ -41,14 +42,22 @@ void EntityRenderer::renderInstanced(const map<shared_ptr<TexturedModel>, shared
 
 		int vao_id = model->getMesh().getId();
 
-		float_data->clear();
-		float_data->reserve(batch->size());
+		model_matrix_data->clear();
+		model_matrix_data->reserve(batch->size());
+		color_data->clear();
+		color_data->reserve(batch->size());
 
-		loadTransformations(*batch, float_data); // load all the transformation matrices into float_data
+		loadTransformations(*batch, model_matrix_data); // load all the transformation matrices into float_data
+		loadColors(*batch, color_data); // load all the transformation matrices into float_data
 
-		// update vbo
+		// update vbos
 		glBindBuffer(GL_ARRAY_BUFFER, model->getMesh().getModelMatrixVbo());
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * float_data->size(), float_data->data(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * model_matrix_data->size(), model_matrix_data->data(), GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		// colors
+		glBindBuffer(GL_ARRAY_BUFFER, model->getMesh().getModelColorVbo());
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * color_data->size(), color_data->data(), GL_STATIC_DRAW);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		if (model->getMesh().getFace() == 4) {
 			glDrawElementsInstanced(GL_QUADS, model->getMesh().getVertexCount(), GL_UNSIGNED_INT, 0, batch->size());
@@ -58,8 +67,15 @@ void EntityRenderer::renderInstanced(const map<shared_ptr<TexturedModel>, shared
 			glDrawElementsInstanced(GL_TRIANGLES, model->getMesh().getVertexCount(), GL_UNSIGNED_INT, 0, batch->size());
 		}
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		unbindTexturedModel();
+	}
+}
+
+void EntityRenderer::loadColors(const std::set<shared_ptr<Entity>>& entities, std::shared_ptr<vector<float>> float_data)
+{
+	for (const auto& e : entities) {
+		float brightness = e->getBrightness();
+		float_data->push_back(brightness);
 	}
 }
 
@@ -114,6 +130,8 @@ void EntityRenderer::prepareTexturedModel(const TexturedModel& model)
 	glEnableVertexAttribArray(AttributeLocation::ModelMatrixColumn2);
 	glEnableVertexAttribArray(AttributeLocation::ModelMatrixColumn3);
 	glEnableVertexAttribArray(AttributeLocation::ModelMatrixColumn4);
+	// color
+	glEnableVertexAttribArray(AttributeLocation::ModelColor);
 	
 	shader_->loadMaterial(texture.getMaterial());
 
@@ -132,6 +150,7 @@ void EntityRenderer::unbindTexturedModel()
 	glDisableVertexAttribArray(AttributeLocation::ModelMatrixColumn2);
 	glDisableVertexAttribArray(AttributeLocation::ModelMatrixColumn3);
 	glDisableVertexAttribArray(AttributeLocation::ModelMatrixColumn4);
+	glDisableVertexAttribArray(AttributeLocation::ModelColor);
 	glBindVertexArray(0); // unbind 
 }
 

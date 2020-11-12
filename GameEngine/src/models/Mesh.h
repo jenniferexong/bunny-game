@@ -23,12 +23,15 @@ class InstancedMesh final: public Mesh {
 private:
 	BoundingSphere bounding_sphere_;
 	int model_matrix_vbo_;
+	int model_color_vbo_;
 
 public:
-	InstancedMesh(int vao_id, int model_matrix_vbo, int vertex_count, int face) : Mesh(vao_id, vertex_count, face),
-		model_matrix_vbo_(model_matrix_vbo) {}
+	InstancedMesh(int vao_id, int model_matrix_vbo, int model_color_vbo, int vertex_count, int face) : Mesh(vao_id, vertex_count, face),
+		model_matrix_vbo_(model_matrix_vbo), model_color_vbo_(model_color_vbo) {}
 
 	int getModelMatrixVbo() const { return model_matrix_vbo_; }
+	int getModelColorVbo() const { return model_color_vbo_; }
+
 	BoundingSphere getBoundingSphere() const { return bounding_sphere_; }
 
 	void setBoundingSphere(const BoundingSphere& sphere) { bounding_sphere_ = sphere; }

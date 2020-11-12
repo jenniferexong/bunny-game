@@ -3,7 +3,7 @@
 namespace AttributeLocation {
 	enum Location {
 		Position = 0, Normal = 1, Texture = 2, ModelMatrixColumn1 = 3, ModelMatrixColumn2 = 4,
-		ModelMatrixColumn3 = 5, ModelMatrixColumn4 = 6
+		ModelMatrixColumn3 = 5, ModelMatrixColumn4 = 6, ModelColor = 7
 	};
 }
 

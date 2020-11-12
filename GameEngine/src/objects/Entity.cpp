@@ -32,3 +32,12 @@ void Entity::setAlignmentRotation(vec3 surface_normal)
 	}
 }
 
+void Entity::highlight()
+{
+	brightness_ = 3.f;
+}
+
+void Entity::unhighlight()
+{
+	brightness_ = 0.8f;
+}

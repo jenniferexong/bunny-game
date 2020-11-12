@@ -20,6 +20,7 @@ in VertexData {
     vec3 normal;
     vec2 textureCoords;
     vec3 cameraPosition;
+    float modelBrightness;
     float visibility;
 } f_in; 
 
@@ -31,11 +32,13 @@ void main() {
     if (textureCol.a < 0.5) {
         discard;
     }
+
     vec3 toCamera = normalize(f_in.cameraPosition - f_in.position);
     vec3 norm = normalize(f_in.normal);
 
-    float ambientStrength = 0.8;
+    float ambientStrength = f_in.modelBrightness;
     vec3 ambient = ambientStrength * uSunStrength;
+    vec4 modelColor = texture(textureSampler, f_in.textureCoords);
 
     // Lighting calculations
     vec3 diffuse = vec3(0);
@@ -57,7 +60,7 @@ void main() {
     }
 
     //vec3 fogColor = uSunStrength * uFogColor;
-    vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * texture(textureSampler, f_in.textureCoords));
+    vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * modelColor);
     outColor = vec4(result, 1.0);
     //outColor = mix(vec4(fogColor, 1.0), vec4(result, 1.0), f_in.visibility);  // mix with sky colour depending on visibility
 }

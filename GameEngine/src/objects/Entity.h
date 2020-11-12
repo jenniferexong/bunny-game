@@ -22,8 +22,10 @@ protected:
 	float scale_;
 
 	bool selectable_ = true;
+	float brightness_ = 0.8f;
 
 public:
+
 	Entity() : model_(nullptr), position_(vec3(0)), rotation_(vec3(0)), scale_(1) {}
 
 	Entity(std::shared_ptr<TexturedModel> model) : model_(std::move(model)), position_(vec3(0)), rotation_(vec3(0)), scale_(1) {}
@@ -49,4 +51,8 @@ public:
 	glm::mat4 getAlignmentRotation() const { return alignment_rotation_; }
 	float getScale() const { return scale_; }
 	bool isSelectable() const { return selectable_; }
+	float getBrightness() const { return brightness_; }
+
+	void highlight();
+	void unhighlight();
 };

@@ -51,8 +51,9 @@ InstancedMesh Loader::loadToVao(const string& obj_file)
 	bindIbo(data.indices);
 
 	int vbo_id = createModelMatrixVbo();
+	int color_vbo_id = createModelColorVbo();
 	unbindVao(); 
-	InstancedMesh mesh = InstancedMesh(vao_id, vbo_id, (int)data.indices.size(), data.face);
+	InstancedMesh mesh = InstancedMesh(vao_id, vbo_id, color_vbo_id, (int)data.indices.size(), data.face);
 	mesh.setBoundingSphere(BoundingSphere(data.model_center, data.model_radius));
 	return mesh;
 }
@@ -152,24 +153,36 @@ int Loader::createModelMatrixVbo()
 	glGenBuffers(1, &vbo_id);
 	vbos_.push_back(&vbo_id);
 
-	//this.modelViewBuffer = MemoryUtil.memAllocFloat(numInstances * MATRIX_SIZE_FLOATS);
-
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
-	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn1, 4, GL_FLOAT, false, sizeof(float) * 16, (void*) (sizeof(float) * 0));
+	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn1, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*) (sizeof(float) * 0));
 	glVertexAttribDivisor(AttributeLocation::ModelMatrixColumn1, 1);
 
-	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn2, 4, GL_FLOAT, false, sizeof(float) * 16, (void*) (sizeof(float) * 4));
+	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn2, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*) (sizeof(float) * 4));
 	glVertexAttribDivisor(AttributeLocation::ModelMatrixColumn2, 1);
 
-	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn3, 4, GL_FLOAT, false, sizeof(float) * 16, (void*) (sizeof(float) * 8));
+	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn3, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*) (sizeof(float) * 8));
 	glVertexAttribDivisor(AttributeLocation::ModelMatrixColumn3, 1);
 
-	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn4, 4, GL_FLOAT, false, sizeof(float) * 16, (void*) (sizeof(float) * 12));
+	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn4, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*) (sizeof(float) * 12));
 	glVertexAttribDivisor(AttributeLocation::ModelMatrixColumn4, 1);
-	//glEnableVertexAttribArray();
+
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	return vbo_id;
 }
+
+int Loader::createModelColorVbo()
+{
+	GLuint vbo_id;
+	glGenBuffers(1, &vbo_id);
+	vbos_.push_back(&vbo_id);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
+	glVertexAttribPointer(AttributeLocation::ModelColor, 1, GL_FLOAT, false, sizeof(float), nullptr);
+	glVertexAttribDivisor(AttributeLocation::ModelColor, 1);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	return vbo_id;
+}
+
 
 void Loader::bindIbo(const vector<int>& indices)
 {
