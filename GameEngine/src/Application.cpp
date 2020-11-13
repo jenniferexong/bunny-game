@@ -214,7 +214,7 @@ shared_ptr<TexturedModel> Application::makeModel(const string& obj_name,
 {
 	const string obj_prefix("res/objects/");
 	const string texture_prefix("res/textures/");
-	InstancedMesh mesh = loader.loadToVao(obj_prefix + obj_name + ".obj");
+	InstancedMesh mesh = loader.loadToVaoInstanced(obj_prefix + obj_name + ".obj");
 	ModelTexture texture(loader.loadTexture(texture_prefix + texture_name + ".png"), material);
 	return make_shared<TexturedModel>(mesh, texture);
 }
@@ -252,8 +252,8 @@ void Application::cursorPosCallback(double x, double y)
 	}
 
 	const float sensitivity = 0.1f;
-	float x_offset = (x - previous_mouse_x_) * sensitivity;
-	float y_offset = (y - previous_mouse_y_) * sensitivity;
+	float x_offset = float(x - previous_mouse_x_) * sensitivity;
+	float y_offset = float(y - previous_mouse_y_) * sensitivity;
 	player->changeDirection(x_offset);
 	camera.changePitch(y_offset);
 	previous_mouse_x_ = x;

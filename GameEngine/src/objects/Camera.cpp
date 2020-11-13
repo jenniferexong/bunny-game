@@ -17,7 +17,7 @@ void Camera::zoom(float amount)
 
 void Camera::changePitch(double amount)
 {
-	pitch += amount;
+	pitch += float(amount);
 	pitch = clamp(pitch, -90.f, 90.f);
 }
 

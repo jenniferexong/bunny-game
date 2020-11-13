@@ -24,7 +24,6 @@ Mesh Loader::loadToVao(const vector<float>& positions, const vector<float> & nor
 }
 
 /* Loads data from an obj file into a VAO */
-/*
 Mesh Loader::loadToVao(const string& obj_file)
 {
 	WavefrontData data = WavefrontData(obj_file);
@@ -37,10 +36,9 @@ Mesh Loader::loadToVao(const string& obj_file)
 	unbindVao(); 
 	return { vao_id, (int) data.indices.size(), data.face};
 }
-*/
 
 /* Also sets the bounding sphere information for the mesh */
-InstancedMesh Loader::loadToVao(const string& obj_file)
+InstancedMesh Loader::loadToVaoInstanced(const string& obj_file)
 {
 	WavefrontData data = WavefrontData(obj_file);
 	int vao_id = createVao();
@@ -50,11 +48,15 @@ InstancedMesh Loader::loadToVao(const string& obj_file)
 
 	bindIbo(data.indices);
 
-	int vbo_id = createModelMatrixVbo();
-	int color_vbo_id = createModelColorVbo();
-	unbindVao(); 
-	InstancedMesh mesh = InstancedMesh(vao_id, vbo_id, color_vbo_id, (int)data.indices.size(), data.face);
+	InstancedMesh mesh = InstancedMesh(vao_id, (int)data.indices.size(), data.face);
 	mesh.setBoundingSphere(BoundingSphere(data.model_center, data.model_radius));
+
+	int model_matrix_vbo = createInstancedVbo(AttributeLocation::ModelMatrixColumn1, 4, 16, 4);
+	int brightness_vbo = createInstancedVbo(AttributeLocation::ModelBrightness, 1, 1, 0);
+	mesh.setVbos(model_matrix_vbo, brightness_vbo);
+
+	unbindVao(); 
+
 	return mesh;
 }
 
@@ -84,7 +86,6 @@ int Loader::loadCubeMap(std::vector<std::string> texture_names)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
-	//glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	textures_.push_back(&texture_id);
 	return texture_id;
@@ -147,38 +148,23 @@ void Loader::storeInAttributeList(int attrib_num, int coord_size, const vector<f
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-int Loader::createModelMatrixVbo()
+/*
+ * num_elements: number of float in one block of data (eg. 16 in a 4x4 matrix)
+ * blocks: 4 blocks (of vec4) in a 4x4 matrix
+ * offset_size: offset in floats (eg. offset of 4 floats in a 4x4 matrix)
+ */
+int Loader::createInstancedVbo(int start_location, int blocks, int num_elements, int offset)
 {
 	GLuint vbo_id;
 	glGenBuffers(1, &vbo_id);
 	vbos_.push_back(&vbo_id);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
-	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn1, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*) (sizeof(float) * 0));
-	glVertexAttribDivisor(AttributeLocation::ModelMatrixColumn1, 1);
+	for (int i = 0; i < blocks; i++) {
+		glVertexAttribPointer(start_location + i, blocks, GL_FLOAT, GL_FALSE, sizeof(float) * num_elements, (void*) (sizeof(float) * (i * offset)));
+		glVertexAttribDivisor(start_location + i, 1); 
+	}
 
-	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn2, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*) (sizeof(float) * 4));
-	glVertexAttribDivisor(AttributeLocation::ModelMatrixColumn2, 1);
-
-	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn3, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*) (sizeof(float) * 8));
-	glVertexAttribDivisor(AttributeLocation::ModelMatrixColumn3, 1);
-
-	glVertexAttribPointer(AttributeLocation::ModelMatrixColumn4, 4, GL_FLOAT, GL_FALSE, sizeof(float) * 16, (void*) (sizeof(float) * 12));
-	glVertexAttribDivisor(AttributeLocation::ModelMatrixColumn4, 1);
-
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-	return vbo_id;
-}
-
-int Loader::createModelColorVbo()
-{
-	GLuint vbo_id;
-	glGenBuffers(1, &vbo_id);
-	vbos_.push_back(&vbo_id);
-
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
-	glVertexAttribPointer(AttributeLocation::ModelColor, 1, GL_FLOAT, false, sizeof(float), nullptr);
-	glVertexAttribDivisor(AttributeLocation::ModelColor, 1);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	return vbo_id;
 }

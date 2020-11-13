@@ -55,7 +55,7 @@ void EntityRenderer::renderInstanced(const map<shared_ptr<TexturedModel>, shared
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * model_matrix_data->size(), model_matrix_data->data(), GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		// colors
-		glBindBuffer(GL_ARRAY_BUFFER, model->getMesh().getModelColorVbo());
+		glBindBuffer(GL_ARRAY_BUFFER, model->getMesh().getModelBrightnessVbo());
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * color_data->size(), color_data->data(), GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
@@ -131,7 +131,7 @@ void EntityRenderer::prepareTexturedModel(const TexturedModel& model)
 	glEnableVertexAttribArray(AttributeLocation::ModelMatrixColumn3);
 	glEnableVertexAttribArray(AttributeLocation::ModelMatrixColumn4);
 	// color
-	glEnableVertexAttribArray(AttributeLocation::ModelColor);
+	glEnableVertexAttribArray(AttributeLocation::ModelBrightness);
 	
 	shader_->loadMaterial(texture.getMaterial());
 
@@ -150,7 +150,7 @@ void EntityRenderer::unbindTexturedModel()
 	glDisableVertexAttribArray(AttributeLocation::ModelMatrixColumn2);
 	glDisableVertexAttribArray(AttributeLocation::ModelMatrixColumn3);
 	glDisableVertexAttribArray(AttributeLocation::ModelMatrixColumn4);
-	glDisableVertexAttribArray(AttributeLocation::ModelColor);
+	glDisableVertexAttribArray(AttributeLocation::ModelBrightness);
 	glBindVertexArray(0); // unbind 
 }
 

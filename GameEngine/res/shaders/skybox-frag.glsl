@@ -27,7 +27,7 @@ void main() {
 
     // 0 means use fog colour, 1 means use texture colour
     factor = clamp(factor, 0.0, 1.0);
-    //finalColor = vec4(uSunStrength, 1.0) * mix(vec4(uFogColor, 1.0), finalColor, factor);
 
     outColor = finalColor;
+    //finalColor = vec4(uSunStrength, 1.0) * mix(vec4(uFogColor, 1.0), finalColor, factor);
 }

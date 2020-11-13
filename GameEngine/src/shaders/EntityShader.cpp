@@ -19,6 +19,7 @@ void EntityShader::bindAttributes()
 	bindAttribute(AttributeLocation::Normal, "aNormal");
 	bindAttribute(AttributeLocation::Texture, "aTextureCoords");
 	bindAttribute(AttributeLocation::ModelMatrixColumn1, "aModelMatrices");
+	bindAttribute(AttributeLocation::ModelBrightness, "aModelBrightness");
 }
 
 void EntityShader::getAllUniformLocations()
