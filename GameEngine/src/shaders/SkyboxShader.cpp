@@ -44,18 +44,18 @@ void SkyboxShader::connectTextureUnits()
 }
 
 /* Load projection and view matrix */
-void SkyboxShader::loadUniforms() 
+void SkyboxShader::loadUniforms(const Camera& camera) 
 {
 	// Loading projection matrix
 	loadMatrix(locations_.at(UniformVariable::ProjectionMatrix), MasterRenderer::projection_matrix);
 
-	loadVector(locations_.at(UniformVariable::FogColor), Application::fog_color);
+	//loadVector(locations_.at(UniformVariable::FogColor), Application::fog_color);
 
 	//loadVector(locations_.at(UniformVariable::SunStrength), Application::sun.getColor());
 
 
 	// View matrix
-	glm::mat4 v_matrix = Maths::createSkyViewMatrix(Application::camera);
+	glm::mat4 v_matrix = Maths::createSkyViewMatrix(camera);
 	current_rotation_ += rotate_speed * Application::frame_delta;
 	//v_matrix = glm::rotate(v_matrix, current_rotation_, vec3(0, 1.f, 0));
 	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);

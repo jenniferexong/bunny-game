@@ -11,9 +11,9 @@ const float SkyboxRenderer::cube_size = 500.f;
 SkyboxRenderer::SkyboxRenderer()
 {
 	printf("create skybox renderer\n");
-	cube_ = Application::loader.loadToVao(vertex_positions, 3);
-	day_texture_id_ = Application::loader.loadCubeMap(sky_texture_names);
-	night_texture_id_ = Application::loader.loadCubeMap(star_texture_names);
+	cube_ = Application::loader->loadToVao(vertex_positions, 3);
+	day_texture_id_ = Application::loader->loadCubeMap(sky_texture_names);
+	night_texture_id_ = Application::loader->loadCubeMap(star_texture_names);
 	shader_.setUp();
 
 	shader_.start();
@@ -31,16 +31,16 @@ const std::vector<std::string> SkyboxRenderer::star_texture_names = {
 };
 
 
-void SkyboxRenderer::render()
+void SkyboxRenderer::render(const shared_ptr<Scene>& scene)
 {
 	shader_.start();
 
 	glBindVertexArray(cube_.getId());
 	glEnableVertexAttribArray(AttributeLocation::Position);
 
-	bindTextures();
+	bindTextures(scene);
 
-	shader_.loadUniforms();
+	shader_.loadUniforms(scene->getCamera());
 
 	glDrawArrays(GL_TRIANGLES, 0, cube_.getVertexCount());
 
@@ -50,14 +50,14 @@ void SkyboxRenderer::render()
 	shader_.stop();
 }
 
-void SkyboxRenderer::bindTextures()
+void SkyboxRenderer::bindTextures(const shared_ptr<Scene>& scene)
 {
 	// TODO: fix fog?
 	float min_sunlight = 0.2f;
 	float max_sunlight = 0.9f;
 	float sunlight = 0.f;
 	time += Application::frame_delta * 1000;
-	time = fmod(time, 24000);
+	time = fmod(time, 24000.f);
 	int texture_1;
 	int texture_2;
 	float blend_factor;
@@ -89,7 +89,7 @@ void SkyboxRenderer::bindTextures()
 		blend_factor = (time - 21000) / (24000 - 21000);
 		sunlight = max_sunlight - (blend_factor * (max_sunlight - min_sunlight));
 	}
-	Application::sun.setColor(vec3(sunlight));
+	scene->getSun()->setColor(vec3(sunlight));
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texture_1);

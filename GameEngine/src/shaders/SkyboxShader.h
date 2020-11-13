@@ -26,7 +26,7 @@ protected:
 
 public:
 	void setUp() override;
-	void loadUniforms();
+	void loadUniforms(const Camera& camera);
 	void connectTextureUnits();
 	void loadBlendFactor(float blend);
 };

@@ -6,10 +6,10 @@ using std::map;
 using std::shared_ptr;
 using std::set;
 
-void MousePicker::update()
+void MousePicker::update(glm::mat4 projection_matrix, const Camera& camera)
 {
-	projection_matrix_ = Application::getProjectionMatrix();
-	view_matrix_ = Maths::createViewMatrix(Application::camera);
+	projection_matrix_ = projection_matrix;
+	view_matrix_ = Maths::createViewMatrix(camera);
 	calculateMouseRay();
 
 	//printf("%.2f, %.2f, %.2f\n", current_ray_direction_.x, current_ray_direction_.y, current_ray_direction_.z);

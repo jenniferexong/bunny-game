@@ -148,7 +148,7 @@ Mesh Terrain::generate(const string& height_map)
 	if (buffer)
 		stbi_image_free(buffer);
 
-	return Application::loader.loadToVao(positions_, normals_, texture_coords, indices);
+	return Application::loader->loadToVao(positions_, normals_, texture_coords, indices);
 }
 
 float Terrain::calculateHeight(int row, int col, const unsigned char* buffer)

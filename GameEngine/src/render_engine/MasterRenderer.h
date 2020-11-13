@@ -4,6 +4,7 @@
 #include "TerrainRenderer.h"
 #include "GuiRenderer.h"
 #include "SkyboxRenderer.h"
+#include "../scene/Scene.h"
 
 class MasterRenderer {
 private:
@@ -21,8 +22,9 @@ public:
 	static glm::mat4 projection_matrix;
 
 	MasterRenderer();
-	void prepare();
-	void render(const map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, CompareTexturedModel>& entities, std::vector<Light>& lights);
+	void prepare(glm::mat4 proj_matrix);
+	void renderScene(const shared_ptr<Scene>& scene);
+	void render(const shared_ptr<Scene>& scene);
 	void processTerrain(const Terrain& terrain);
 	void processGui(const std::shared_ptr<GuiTexture>& gui);
 

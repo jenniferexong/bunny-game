@@ -1,8 +1,7 @@
 
 // External Libraries
 #include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <imgui/imgui.h>
+#include <GLFW/glfw3.h> BOOST_PYTHON_OPAQUE_SPECIALIZED_TYPE_ID(GLFWwindow)
 
 // std
 #include <iostream>
@@ -29,8 +28,8 @@ int main(void)
     if (!glfwInit())
         return -1;
 
-    Application::window = glfwCreateWindow(1280, 720, "", NULL, NULL);
-    GLFWwindow* window = Application::window;
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "", NULL, NULL);
+    //GLFWwindow* window = Application::window;
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     if (!window) {
@@ -50,8 +49,7 @@ int main(void)
 	}
 
     // Make the application
-    Application application;
-    application.setup();
+    Application application(make_shared<GLFWwindow*>(window));
 
     application_ptr = &application;
 

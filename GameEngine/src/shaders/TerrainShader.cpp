@@ -45,17 +45,17 @@ void TerrainShader::getAllUniformLocations()
 	locations_.insert({ UniformVariable::BlendMap, getUniformLocation("uBlendMap") });
 }
 
-void TerrainShader::loadUniformPerFrame(const std::vector<Light>& lights) const
+void TerrainShader::loadUniformPerFrame(const shared_ptr<Scene>& scene) const
 {
 	// Loading light variables
-	int num_lights = lights.size();
+	int num_lights = scene->getLights().size();
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec3> colors;
 	std::vector<glm::vec3> attenuations;
 	positions.reserve(num_lights);
 	colors.reserve(num_lights);
 	attenuations.reserve(num_lights);
-	for (const auto& l : lights) {
+	for (const auto& l : scene->getLights()) {
 		positions.emplace_back(l.getPosition());
 		colors.emplace_back(l.getColor());
 		attenuations.emplace_back(l.getAttenuation());
@@ -65,7 +65,7 @@ void TerrainShader::loadUniformPerFrame(const std::vector<Light>& lights) const
 	loadVectors(locations_.at(UniformVariable::LightColor), colors);
 	loadVectors(locations_.at(UniformVariable::Attenuation), attenuations);
 
-	loadVector(locations_.at(UniformVariable::SunStrength), Application::sun.getColor());
+	loadVector(locations_.at(UniformVariable::SunStrength), scene->getSun()->getColor());
 
 	loadInt(locations_.at(UniformVariable::LightCount), num_lights);
 	loadInt(locations_.at(UniformVariable::MaxLights), Light::max_lights);
@@ -74,12 +74,12 @@ void TerrainShader::loadUniformPerFrame(const std::vector<Light>& lights) const
 	loadMatrix(locations_.at(UniformVariable::ProjectionMatrix), MasterRenderer::projection_matrix);
 
 	// View matrix
-	glm::mat4 v_matrix = Maths::createViewMatrix(Application::camera);
+	glm::mat4 v_matrix = Maths::createViewMatrix(scene->getCamera());
 	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
 	loadMatrix(locations_.at(UniformVariable::InverseViewMatrix), inverse(v_matrix));
 
 	// sky colour
-	loadVector(locations_.at(UniformVariable::FogColor), Application::fog_color);
+	//loadVector(locations_.at(UniformVariable::FogColor), Application::fog_color);
 }
 
 void TerrainShader::loadModelMatrix(const Terrain& terrain) const

@@ -4,9 +4,8 @@
 #include <vector>
 
 #include "../models/Mesh.h"
-
+#include "../scene/Scene.h"
 #include "../shaders/SkyboxShader.h"
-
 
 class SkyboxRenderer {
 private:
@@ -21,9 +20,9 @@ private:
 	float time = 0;
 	SkyboxShader shader_;
 
-	void bindTextures();
+	void bindTextures(const shared_ptr<Scene>& scene);
 
 public:
 	SkyboxRenderer();
-	void render();
+	void render(const shared_ptr<Scene>& scene);
 };

@@ -4,6 +4,9 @@
 
 #include "Entity.h"
 #include "Terrain.h"
+#include "../UserInput.h"
+#include "../gui/GuiTexture.h"
+#include "../scene/Scene.h"
 
 using glm::vec3;
 
@@ -39,6 +42,6 @@ public:
 	bool isInAir() const { return is_in_air_; }
 
 	void changeDirection(double amount);
-	void updatePosition(const Terrain& terrain);
-	void updateSpeed();
+	void updatePosition(const Terrain& terrain, const std::shared_ptr<GuiTexture>& compass, const std::map<Key, bool>& move_keys);
+	void updateSpeed(const std::map<Key, bool>& move_keys);
 };

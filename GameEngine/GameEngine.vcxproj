@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\scene\GameScene.cpp" />
     <ClCompile Include="src\gui\GuiTexture.cpp" />
     <ClCompile Include="src\gui\MousePicker.cpp" />
     <ClCompile Include="src\Maths.cpp" />
@@ -37,6 +38,7 @@
     <ClCompile Include="src\render_engine\SkyboxRenderer.cpp" />
     <ClCompile Include="src\render_engine\TerrainRenderer.cpp" />
     <ClCompile Include="src\render_engine\WavefrontData.cpp" />
+    <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\shaders\EntityShader.cpp" />
     <ClCompile Include="src\shaders\GuiShader.cpp" />
     <ClCompile Include="src\shaders\Shader.cpp" />
@@ -46,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CompareTexturedModel.h" />
+    <ClInclude Include="src\scene\GameScene.h" />
     <ClInclude Include="src\gui\GuiTexture.h" />
     <ClInclude Include="src\gui\MousePicker.h" />
     <ClInclude Include="src\gui\RayIntersection.h" />
@@ -68,12 +71,14 @@
     <ClInclude Include="src\models\Model.h" />
     <ClInclude Include="src\render_engine\WavefrontData.h" />
     <ClInclude Include="src\models\Texture.h" />
+    <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\shaders\GuiShader.h" />
     <ClInclude Include="src\shaders\Shader.h" />
     <ClInclude Include="src\shaders\EntityShader.h" />
     <ClInclude Include="src\objects\Player.h" />
     <ClInclude Include="src\shaders\SkyboxShader.h" />
     <ClInclude Include="src\shaders\TerrainShader.h" />
+    <ClInclude Include="src\UserInput.h" />
     <ClInclude Include="src\vendor\stb_image\stb_image.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

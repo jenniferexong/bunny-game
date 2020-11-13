@@ -7,6 +7,7 @@
 #include "../objects/Entity.h"
 #include "../objects/Light.h"
 #include "../models/Material.h"
+#include "../scene/Scene.h"
 
 class EntityShader final : public Shader {
 private:
@@ -27,7 +28,7 @@ protected:
 
 public:
 	void setUp() override;
-	void loadUniformPerFrame(const std::vector<Light>& lights) const;
+	void loadUniformPerFrame(const shared_ptr<Scene>& scene) const;
 	void loadModelMatrix(const Entity& entity) const;
 	void loadMaterial(const Material& material) const;
 };

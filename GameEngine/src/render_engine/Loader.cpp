@@ -5,6 +5,7 @@
 
 #include <iostream>
 
+#include "WavefrontData.h"
 #include "../Location.h"
 
 using namespace std;

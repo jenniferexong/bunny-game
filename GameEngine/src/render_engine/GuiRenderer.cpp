@@ -16,7 +16,7 @@ GuiRenderer::GuiRenderer()
 	std::vector<float> positions = {
 		-1, 1, -1, -1, 1, 1, 1, -1
 	};
-	quad_mesh = Mesh(Application::loader.loadToVao(positions, 2));
+	quad_mesh = Mesh(Application::loader->loadToVao(positions, 2));
 	shader_.setUp();
 }
 

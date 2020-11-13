@@ -42,11 +42,11 @@ vec3 Player::getRotationOffset()
 	}
 }
 
-void Player::updatePosition(const Terrain& terrain)
+void Player::updatePosition(const Terrain& terrain, const shared_ptr<GuiTexture>& compass, const std::map<Key, bool>& move_keys)
 {
-	updateSpeed();
+	updateSpeed(move_keys);
 
-	Application::compass->setRotation(-rotation_.x);
+	compass->setRotation(-rotation_.x);
 
 	float forward_distance = forward_speed_ * Application::frame_delta;
 	float side_distance = side_speed_ * Application::frame_delta;
@@ -92,21 +92,21 @@ void Player::fall()
 
 void Player::changeDirection(double amount)
 {
-	rotate(-amount, 0, 0);
+	rotate((float) -amount, 0, 0);
 }
 
 
-void Player::updateSpeed()
+void Player::updateSpeed(const std::map<Key, bool>& move_keys)
 {
 	forward_speed_ = 0;
 	side_speed_ = 0;
-	if (Application::move_keys[Application::Key::W]) {
-		if (Application::move_keys[Application::Key::A]) { // NW
+	if (move_keys.at(Key::W)) {
+		if (move_keys.at(Key::A)) { // NW
 			state_ = DirectionState::NW;
 			forward_speed_ = -run_speed;
 			side_speed_ = -run_speed;
 		}
-		else if (Application::move_keys[Application::Key::D]) { // NE
+		else if (move_keys.at(Key::D)) { // NE
 			state_ = DirectionState::NE;
 			forward_speed_ = -run_speed;
 			side_speed_ = run_speed;
@@ -116,13 +116,13 @@ void Player::updateSpeed()
 			forward_speed_ = -run_speed;
 		}
 	}
-	else if (Application::move_keys[Application::Key::S]) {
-		if (Application::move_keys[Application::Key::A]) { // SW
+	else if (move_keys.at(Key::S)) {
+		if (move_keys.at(Key::A)) { // SW
 			state_ = DirectionState::SW;
 			forward_speed_ = run_speed;
 			side_speed_ = -run_speed;
 		}
-		else if (Application::move_keys[Application::Key::D]) { // SE
+		else if (move_keys.at(Key::D)) { // SE
 			state_ = DirectionState::SE;
 			forward_speed_ = run_speed;
 			side_speed_ = run_speed;
@@ -133,19 +133,19 @@ void Player::updateSpeed()
 		}
 			
 	}
-	else if (Application::move_keys[Application::Key::D]) { // E
+	else if (move_keys.at(Key::D)) { // E
 		// make the player face to the right
 		state_ = DirectionState::E;
 		side_speed_ = run_speed;
 	}
-	else if (Application::move_keys[Application::Key::A]) { // W
+	else if (move_keys.at(Key::A)) { // W
 		// make the player face to the left
 		state_ = DirectionState::W;
 		side_speed_ = -run_speed;
 	}
 
 	// jumping
-	if (Application::move_keys[Application::Key::Space])
+	if (move_keys.at(Key::Space))
 		jump();
 
 	fall();
