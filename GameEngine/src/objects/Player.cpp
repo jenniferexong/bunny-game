@@ -69,7 +69,7 @@ void Player::updatePosition(const Terrain& terrain)
 	// Check if hits the ground
 	if (position_.y < terrain_height) {
 		position_.y = terrain_height;
-		is_in_air = false;
+		is_in_air_ = false;
 		up_velocity_ = 0;
 
 		// Align with the normal of the terrain at current position
@@ -79,9 +79,9 @@ void Player::updatePosition(const Terrain& terrain)
 
 void Player::jump()
 {
-	if (!is_in_air) {
+	if (!is_in_air_) {
 		up_velocity_ = jump_power;
-		is_in_air = true;
+		is_in_air_ = true;
 	}
 }
 

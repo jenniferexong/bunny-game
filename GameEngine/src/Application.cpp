@@ -51,7 +51,7 @@ void Application::render() {
 	frame_delta = float(current_frame_time - previous_frame_time) / 1000.f; // in seconds
 
 	player->updatePosition(terrain_1_);
-	camera.updateView();
+	camera.updateView(terrain_1_);
 	mouse_picker.update(); // must update after camera is moved
 
 	renderer_.processTerrain(terrain_1_);

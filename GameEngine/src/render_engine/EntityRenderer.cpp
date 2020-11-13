@@ -33,7 +33,7 @@ void EntityRenderer::render(const map<shared_ptr<TexturedModel>, shared_ptr<set<
 void EntityRenderer::renderInstanced(const map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, CompareTexturedModel>& entities)
 {
 	auto model_matrix_data = std::make_shared<vector<float>>();
-	auto color_data = std::make_shared<vector<float>>();
+	auto model_brightness_data = std::make_shared<vector<float>>();
 
 	for (const auto& element : entities) {
 		const auto& model = element.first;
@@ -44,11 +44,11 @@ void EntityRenderer::renderInstanced(const map<shared_ptr<TexturedModel>, shared
 
 		model_matrix_data->clear();
 		model_matrix_data->reserve(batch->size());
-		color_data->clear();
-		color_data->reserve(batch->size());
+		model_brightness_data->clear();
+		model_brightness_data->reserve(batch->size());
 
 		loadTransformations(*batch, model_matrix_data); // load all the transformation matrices into float_data
-		loadColors(*batch, color_data); // load all the transformation matrices into float_data
+		loadColors(*batch, model_brightness_data); // load all the transformation matrices into float_data
 
 		// update vbos
 		glBindBuffer(GL_ARRAY_BUFFER, model->getMesh().getModelMatrixVbo());
@@ -56,7 +56,7 @@ void EntityRenderer::renderInstanced(const map<shared_ptr<TexturedModel>, shared
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 		// colors
 		glBindBuffer(GL_ARRAY_BUFFER, model->getMesh().getModelBrightnessVbo());
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * color_data->size(), color_data->data(), GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * model_brightness_data->size(), model_brightness_data->data(), GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		if (model->getMesh().getFace() == 4) {

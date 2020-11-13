@@ -23,13 +23,7 @@ void Entity::setRotationOffset(float yaw, float pitch, float roll)
 
 void Entity::setAlignmentRotation(vec3 surface_normal)
 {
-	const vec3 up = vec3(0, 1.f, 0);
-	if (surface_normal != up) {
-		float angle_between = -acos(dot(surface_normal, up));
-		vec3 rotation_axis = cross(surface_normal, up);
-		glm::mat4 rotation_matrix = glm::rotate(glm::mat4(1), angle_between, rotation_axis);
-		alignment_rotation_ = rotation_matrix;
-	}
+	alignment_rotation_ = Maths::getAlignmentRotation(surface_normal);
 }
 
 void Entity::highlight()

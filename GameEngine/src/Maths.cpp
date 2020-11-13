@@ -3,6 +3,36 @@
 
 using namespace glm;
 
+/* Calculates the directional vector based on yaw pitch and roll
+ * Note: in the case of the player, this is the direction the player moves in if W is pressed
+ */
+vec3 Maths::getLookDirection(vec3 initial_direction, vec3 rotation, mat4 alignment_matrix)
+{
+	vec4 direction = vec4(initial_direction, 0);
+	float yaw = rotation.x;
+	float pitch = rotation.y;
+	float roll = rotation.z;
+	mat4 matrix = mat4(1);
+
+	matrix = matrix * alignment_matrix;
+	matrix = rotate(matrix, radians(yaw), vec3(0, 1, 0));
+	matrix = rotate(matrix, radians(pitch), vec3(1, 0, 0));
+	matrix = rotate(matrix, radians(roll), vec3(0, 0, 1));
+	direction = matrix * direction;
+	return vec3(normalize(direction));
+}
+
+mat4 Maths::getAlignmentRotation(vec3 surface_normal)
+{
+	mat4 matrix = mat4(1.f);
+	const vec3 up = vec3(0, 1.f, 0);
+	if (surface_normal != up) {
+		float angle_between = -acos(dot(surface_normal, up));
+		vec3 rotation_axis = cross(surface_normal, up);
+		matrix = glm::rotate(glm::mat4(1), angle_between, rotation_axis);
+	}
+	return matrix;
+}
 
 /* Creates a transformation matrix for a gui component*/
 mat4 Maths::createTransformationMatrix(vec2 t, float r, vec2 s)
