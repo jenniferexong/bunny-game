@@ -23,9 +23,13 @@ using std::vector;
 
 class Camera;
 
+using entity_map = unordered_map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, TexturedModelHash, TexturedModelEquality>;
+using entity_set = shared_ptr<set<shared_ptr<Entity>>>;
+
 class Environment {
 private:
-	unordered_map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, TexturedModelHash, TexturedModelEquality> entities_;
+	entity_map entities_;
+
 	vector<Terrain> terrains_;
 	vector<Water> water_;
 	vector<shared_ptr<Light>> lights_;
@@ -37,13 +41,13 @@ public:
 	void addTerrain(const Terrain& terrain);
 	void addEntity(const shared_ptr<Entity>& entity);
 	void addWater(const Water& water);
-	void addEntitySet(const shared_ptr<set<shared_ptr<Entity>>>& entity_set);
+	void addEntitySet(const entity_set& set);
 	void setLights(const vector<shared_ptr<Light>>& lights);
 	void setCamera(const shared_ptr<Camera>& camera);
 	void setSun(const shared_ptr<Light>& sun);
 	void setSkybox(const Skybox& skybox);
 
-	const unordered_map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, TexturedModelHash, TexturedModelEquality>& getEntities() const { return entities_; }
+	const entity_map& getEntities() const { return entities_; }
 	const vector<Terrain>& getTerrains() const { return terrains_; }
 	const vector<Water>& getWater() const { return water_; }
 	const vector<shared_ptr<Light>>& getLights() const { return lights_; }

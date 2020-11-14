@@ -11,9 +11,9 @@ void Environment::addEntity(const shared_ptr<Entity>& entity)
 	entity_set->insert(entity);
 }
 
-void Environment::addEntitySet(const shared_ptr<set<shared_ptr<Entity>>>& entity_set)
+void Environment::addEntitySet(const entity_set& set)
 {
-	for (const auto& e: *entity_set)
+	for (const auto& e: *set)
 		addEntity(e);
 }
 

@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="src\environment\Skybox.cpp" />
     <ClCompile Include="src\environment\Water.cpp" />
+    <ClCompile Include="src\renderers\WaterFrameBuffers.cpp" />
     <ClCompile Include="src\renderers\WaterRenderer.cpp" />
     <ClCompile Include="src\scene\Environment.cpp" />
     <ClCompile Include="src\scene\GameScene.cpp" />
@@ -55,6 +56,7 @@
     <ClInclude Include="src\environment\Skybox.h" />
     <ClInclude Include="src\environment\Water.h" />
     <ClInclude Include="src\renderers\GuiRenderer.h" />
+    <ClInclude Include="src\renderers\WaterFrameBuffers.h" />
     <ClInclude Include="src\renderers\WaterRenderer.h" />
     <ClInclude Include="src\scene\Environment.h" />
     <ClInclude Include="src\scene\GameScene.h" />

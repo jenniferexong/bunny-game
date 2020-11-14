@@ -79,9 +79,8 @@ void MasterRenderer::prepare(glm::mat4 proj_matrix)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Set viewport to entire window 
-	int width, height;
-	glfwGetWindowSize(*Application::window, &width, &height);
-	glViewport(0, 0, width, height);
+	glm::ivec2 window_size = Application::getWindowSize();
+	glViewport(0, 0, window_size.x, window_size.y);
 
 	projection_matrix = proj_matrix;
 }
