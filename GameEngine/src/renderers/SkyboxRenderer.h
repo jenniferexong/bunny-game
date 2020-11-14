@@ -17,9 +17,9 @@ private:
 
 	float time = 0;
 
-	void bindTextures(const Environment& environment);
+	void bindTextures(const Environment& environment, bool progress_time);
 
 public:
 	SkyboxRenderer();
-	void render(const Environment& environment);
+	void render(const Environment& environment, bool progress_time);
 };

@@ -38,7 +38,6 @@ public:
 	void render();
 
 	// Helper functions
-	static glm::ivec2 getWindowSize();
 	static std::shared_ptr<TexturedModel> makeModel(const string& obj_name, const string& texture_name, const Material& material);
 	static std::shared_ptr<TerrainTexturePack> makeTexturePack(const string& base, const string& red, const string& green, const string& blue);
 	static void loadPositionsFromFile(const Terrain& terrain, Environment& environment, shared_ptr<TexturedModel> model, 

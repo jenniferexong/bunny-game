@@ -36,17 +36,11 @@ void Application::render() {
 	frame_delta = float(current_frame_time - previous_frame_time) / 1000.f; // in seconds
 
 	current_scene->update();
+
 	renderer_.renderAll(current_scene);
 	current_scene->postRenderUpdate();
 
 	previous_frame_time = current_frame_time;
-}
-
-glm::ivec2 Application::getWindowSize()
-{
-	int width, height;
-	glfwGetWindowSize(*window, &width, &height);
-	return { width, height };
 }
 
 void Application::loadPositionsFromFile(const Terrain& terrain, Environment& environment, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale)

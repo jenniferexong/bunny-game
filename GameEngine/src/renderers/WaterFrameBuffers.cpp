@@ -55,8 +55,7 @@ void WaterFrameBuffers::unbindCurrentFrameBuffer()
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
-	glm::ivec2 window_size = Application::getWindowSize();
-	glViewport(0, 0, window_size.x, window_size.y);
+	glViewport(0, 0, MasterRenderer::window_width, MasterRenderer::window_height);
 }
 
 void WaterFrameBuffers::bindFrameBuffer(int frame_buffer, int width, int height)
@@ -64,8 +63,7 @@ void WaterFrameBuffers::bindFrameBuffer(int frame_buffer, int width, int height)
 	glBindTexture(GL_TEXTURE_2D, 0); // ensure texture isn't bound
 	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
 
-	glm::ivec2 window_size = Application::getWindowSize();
-	glViewport(0, 0, window_size.x, window_size.y);
+	glViewport(0, 0, MasterRenderer::window_width, MasterRenderer::window_height);
 }
 
 int WaterFrameBuffers::createFrameBuffer()
@@ -88,7 +86,6 @@ int WaterFrameBuffers::createTextureAttachment(int width, int height)
 	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture, 0);
 	return texture;
 }
-
 
 int WaterFrameBuffers::createDepthTextureAttachment(int width, int height)
 {

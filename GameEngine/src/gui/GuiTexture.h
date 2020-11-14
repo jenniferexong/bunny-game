@@ -17,6 +17,7 @@ public:
 	float getRotation() const { return rotation_; }
 	glm::vec2 getScale() const { return scale_; }
 
+	void setTexture(int texture) { texture_ = texture; }
 	void setPosition(glm::vec2 position) { position_ = position; }
 	void setRotation(float rotation) { rotation_ = rotation; }
 	void setScale(glm::vec2 scale) { scale_ = scale; }

@@ -11,6 +11,8 @@
 using std::shared_ptr;
 using std::make_shared;
 
+shared_ptr<GuiTexture> GameScene::test_gui_ = nullptr;
+
 GameScene::GameScene(shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader)
 {
 	window_ = std::move(window);
@@ -138,6 +140,10 @@ void GameScene::makeTest()
 	z = -244.911f;
 	Water water = Water(x, z, -15);
 	environment_.addWater(water);
+
+	// testing rendering to fbo by rendering it to a gui texture
+	test_gui_ = std::make_shared<GuiTexture>(-1, glm::vec2(1280 - 300, 720 - 200), glm::vec2(1280/3.f, 720/3.f));
+	guis_.push_back(test_gui_);
 }
 
 glm::mat4 GameScene::getProjectionMatrix()

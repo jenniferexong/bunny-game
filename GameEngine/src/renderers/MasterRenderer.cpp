@@ -5,7 +5,11 @@
 
 #include "../Application.h"
 
+#include "../scene/GameScene.h"
+
 glm::mat4 MasterRenderer::projection_matrix = glm::mat4(1);
+int MasterRenderer::window_width = 1280;
+int MasterRenderer::window_height = 720;
 
 MasterRenderer::MasterRenderer()
 {
@@ -25,17 +29,29 @@ MasterRenderer::MasterRenderer()
 
 void MasterRenderer::renderAll(const shared_ptr<Scene>& scene)
 {
-	renderScene(scene);
+	int width, height;
+	glfwGetWindowSize(*Application::window, &width, &height);
+	window_width = width;
+	window_height = height;
+
+	// testing fbo:
+	GameScene::test_gui_->setTexture(water_fbos_.getRefractionTexture());
+	
+	// render scene to fbos (not including water)
+	water_fbos_.bindReflectionFrameBuffer();
+	renderScene(scene, false);
+	water_fbos_.unbindCurrentFrameBuffer();
+	// refraction
+	water_fbos_.bindRefractionFrameBuffer();
+	renderScene(scene, false);
+	water_fbos_.unbindCurrentFrameBuffer();
+
+	renderScene(scene, true);
 	water_renderer_.render(scene->getEnvironment());
 	gui_renderer_.render(scene->getGuis());
 }
 
-void MasterRenderer::renderScene(const shared_ptr<Scene>& scene)
-{
-	render(scene);
-}
-
-void MasterRenderer::render(const shared_ptr<Scene>& scene)
+void MasterRenderer::renderScene(const shared_ptr<Scene>& scene, bool progress_time)
 {
 	prepare(scene->getProjectionMatrix());
 
@@ -57,8 +73,7 @@ void MasterRenderer::render(const shared_ptr<Scene>& scene)
 		terrain_shader_->stop();
 	}
 
-	// skybox TOD0: put skybox into environment
-	skybox_renderer_.render(scene->getEnvironment());
+	skybox_renderer_.render(scene->getEnvironment(), progress_time);
 }
 
 void MasterRenderer::enableCulling()
@@ -79,8 +94,13 @@ void MasterRenderer::prepare(glm::mat4 proj_matrix)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	// Set viewport to entire window 
-	glm::ivec2 window_size = Application::getWindowSize();
-	glViewport(0, 0, window_size.x, window_size.y);
+	/*
+	int width, height;
+	glfwGetWindowSize(*Application::window, &width, &height);
+	window_width = width;
+	window_height = height;
+	*/
+	glViewport(0, 0, window_width, window_height);
 
 	projection_matrix = proj_matrix;
 }

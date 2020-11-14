@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\environment\Skybox.cpp" />
     <ClCompile Include="src\environment\Water.cpp" />
     <ClCompile Include="src\renderers\WaterFrameBuffers.cpp" />
@@ -31,7 +32,6 @@
     <ClCompile Include="src\models\Mesh.cpp" />
     <ClCompile Include="src\environment\Camera.cpp" />
     <ClCompile Include="src\renderers\EntityRenderer.cpp" />
-    <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\environment\Entity.cpp" />
     <ClCompile Include="src\environment\Light.cpp" />
     <ClCompile Include="src\Main.cpp" />

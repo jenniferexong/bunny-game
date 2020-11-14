@@ -20,14 +20,14 @@ SkyboxRenderer::SkyboxRenderer()
 	shader_.stop();
 }
 
-void SkyboxRenderer::render(const Environment& environment)
+void SkyboxRenderer::render(const Environment& environment, bool progress_time)
 {
 	shader_.start();
 
 	glBindVertexArray(cube_.getId());
 	glEnableVertexAttribArray(AttributeLocation::Position);
 
-	bindTextures(environment);
+	bindTextures(environment, progress_time);
 
 	shader_.loadUniforms(*environment.getCamera());
 
@@ -39,13 +39,15 @@ void SkyboxRenderer::render(const Environment& environment)
 	shader_.stop();
 }
 
-void SkyboxRenderer::bindTextures(const Environment& environment)
+void SkyboxRenderer::bindTextures(const Environment& environment, bool progress_time)
 {
 	float min_sunlight = 0.2f;
 	float max_sunlight = 0.9f;
 	float sunlight = 0.f;
 
-	time += Application::frame_delta * 1000;
+	if (progress_time)
+		time += Application::frame_delta * 1000;
+
 	time = fmod(time, 24000.f);
 	int texture_1;
 	int texture_2;

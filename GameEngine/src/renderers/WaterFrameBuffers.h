@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <glm/vec2.hpp>
 
 class WaterFrameBuffers {
 private:
@@ -16,10 +17,6 @@ private:
 	int refraction_texture_;
 	int refraction_depth_texture_;
 
-	void bindReflectionFrameBuffer();
-	void bindRefractionFrameBuffer();
-	void unbindCurrentFrameBuffer();
-
 	void initializeFrameBuffers();
 
 	void bindFrameBuffer(int frame_buffer, int width, int height);
@@ -32,6 +29,10 @@ private:
 public:
 	WaterFrameBuffers(); 
 	~WaterFrameBuffers();
+
+	void bindReflectionFrameBuffer();
+	void bindRefractionFrameBuffer();
+	void unbindCurrentFrameBuffer();
 
 	int getReflectionTexture() const { return reflection_texture_; }
 	int getRefractionTexture() const { return refraction_texture_; }

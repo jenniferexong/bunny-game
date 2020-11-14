@@ -49,6 +49,7 @@ int main(void)
 	}
 
     // Make the application
+    cout << 1 << endl;
     Application application(make_shared<GLFWwindow*>(window));
 
     application_ptr = &application;
