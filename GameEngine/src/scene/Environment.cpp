@@ -17,10 +17,14 @@ void Environment::addEntitySet(const shared_ptr<set<shared_ptr<Entity>>>& entity
 		addEntity(e);
 }
 
-
 void Environment::addTerrain(const Terrain& terrain)
 {
 	terrains_.push_back(terrain);
+}
+
+void Environment::addWater(const Water& water)
+{
+	water_.push_back(water);
 }
 
 void Environment::setLights(const vector<shared_ptr<Light>>& lights)

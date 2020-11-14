@@ -26,6 +26,7 @@ MasterRenderer::MasterRenderer()
 void MasterRenderer::renderAll(const shared_ptr<Scene>& scene)
 {
 	renderScene(scene);
+	water_renderer_.render(scene->getEnvironment());
 	gui_renderer_.render(scene->getGuis());
 }
 

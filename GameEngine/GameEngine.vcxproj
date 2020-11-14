@@ -20,6 +20,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\environment\Skybox.cpp" />
+    <ClCompile Include="src\environment\Water.cpp" />
+    <ClCompile Include="src\renderers\WaterRenderer.cpp" />
     <ClCompile Include="src\scene\Environment.cpp" />
     <ClCompile Include="src\scene\GameScene.cpp" />
     <ClCompile Include="src\gui\GuiTexture.cpp" />
@@ -39,6 +41,7 @@
     <ClCompile Include="src\renderers\MasterRenderer.cpp" />
     <ClCompile Include="src\renderers\SkyboxRenderer.cpp" />
     <ClCompile Include="src\renderers\TerrainRenderer.cpp" />
+    <ClCompile Include="src\shaders\WaterShader.cpp" />
     <ClCompile Include="src\WavefrontData.cpp" />
     <ClCompile Include="src\shaders\EntityShader.cpp" />
     <ClCompile Include="src\shaders\GuiShader.cpp" />
@@ -50,7 +53,9 @@
   <ItemGroup>
     <ClInclude Include="src\CompareTexturedModel.h" />
     <ClInclude Include="src\environment\Skybox.h" />
+    <ClInclude Include="src\environment\Water.h" />
     <ClInclude Include="src\renderers\GuiRenderer.h" />
+    <ClInclude Include="src\renderers\WaterRenderer.h" />
     <ClInclude Include="src\scene\Environment.h" />
     <ClInclude Include="src\scene\GameScene.h" />
     <ClInclude Include="src\gui\GuiTexture.h" />
@@ -72,6 +77,7 @@
     <ClInclude Include="src\renderers\TerrainRenderer.h" />
     <ClInclude Include="src\models\Mesh.h" />
     <ClInclude Include="src\models\Model.h" />
+    <ClInclude Include="src\shaders\WaterShader.h" />
     <ClInclude Include="src\WavefrontData.h" />
     <ClInclude Include="src\models\Texture.h" />
     <ClInclude Include="src\scene\Scene.h" />

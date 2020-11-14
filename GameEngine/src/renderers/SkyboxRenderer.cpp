@@ -12,7 +12,6 @@ const float SkyboxRenderer::cube_size = 500.f;
 
 SkyboxRenderer::SkyboxRenderer()
 {
-	printf("create skybox renderer\n");
 	cube_ = Application::loader->loadToVao(vertex_positions, 3);
 	shader_.setUp();
 

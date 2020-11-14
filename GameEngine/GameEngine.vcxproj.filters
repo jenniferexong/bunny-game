@@ -96,6 +96,15 @@
     <ClCompile Include="src\environment\Skybox.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\shaders\WaterShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderers\WaterRenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\environment\Water.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Vendor\stb_image\stb_image.h">
@@ -201,6 +210,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\renderers\GuiRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\shaders\WaterShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderers\WaterRenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\environment\Water.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,21 +9,19 @@
 #include "../Application.h"
 #include "../gui/GuiTexture.h"
 
-Mesh GuiRenderer::quad_mesh = Mesh();
-
 GuiRenderer::GuiRenderer()
 {
 	std::vector<float> positions = {
 		-1, 1, -1, -1, 1, 1, 1, -1
 	};
-	quad_mesh = Mesh(Application::loader->loadToVao(positions, 2));
+	quad_mesh_ = Mesh(Application::loader->loadToVao(positions, 2));
 	shader_.setUp();
 }
 
 void GuiRenderer::render(const std::vector<std::shared_ptr<GuiTexture>>& gui_textures)
 {
 	shader_.start();
-	glBindVertexArray(quad_mesh.getId());
+	glBindVertexArray(quad_mesh_.getId());
 	glEnableVertexAttribArray(AttributeLocation::Position);
 
 	// enabling transparency, disable depth test
@@ -35,7 +33,7 @@ void GuiRenderer::render(const std::vector<std::shared_ptr<GuiTexture>>& gui_tex
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, gui->getTexture());
 		shader_.loadModelMatrix(*gui);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, quad_mesh.getVertexCount());
+		glDrawArrays(GL_TRIANGLE_STRIP, 0, quad_mesh_.getVertexCount());
 	}
 
 	glEnable(GL_DEPTH_TEST);

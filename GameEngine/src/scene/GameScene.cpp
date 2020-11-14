@@ -17,8 +17,8 @@ GameScene::GameScene(shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader)
 	loader_ = std::move(loader);
 
 	setup();
-	makeGame();
-	//makeTest();
+	//makeGame();
+	makeTest();
 }
 
 void GameScene::update()
@@ -89,6 +89,10 @@ void GameScene::setup()
 	camera_ = make_shared<Camera>(player);
 	environment_.setCamera(camera_);
 	environment_.setSun(sun_);
+
+	// skybox
+	Skybox sky = Skybox("skybox-textures-day", "skybox-textures-night");
+	environment_.setSkybox(sky);
 }
 
 void GameScene::makeGame()
@@ -113,10 +117,6 @@ void GameScene::makeGame()
 		vec3 light_pos = flower_pos + (15.f * terrain_normal);
 		lights_.emplace_back(make_shared<Light>(light_pos, color, Light::point_light_attenuation)); // cyan
 	}
-
-	// skybox
-	Skybox sky = Skybox("skybox-textures-day", "skybox-textures-night");
-	environment_.setSkybox(sky);
 }
 
 void GameScene::makeTest()
@@ -124,13 +124,20 @@ void GameScene::makeTest()
 	Material material = Material();
 	auto model = Application::makeModel("flower", "flower", material);
 
-	player->setPosition(100, terrain_1_.getHeightOfTerrain(100, -100), -100);
+	float x = 283.491f;
+	float z = -195.017f;
+	player->setPosition(x, terrain_1_.getHeightOfTerrain(x, z), z);
 
 	auto test = make_shared<Entity>(model);
 	test->setPosition(100, terrain_1_.getHeightOfTerrain(100, -120) + 10, -120);
 	test->setRotation(0, -90.f, 0);
 	test->setScale(0.2f);
 	environment_.addEntity(test);
+
+	x = 338.833f;
+	z = -244.911f;
+	Water water = Water(x, z, -15);
+	environment_.addWater(water);
 }
 
 glm::mat4 GameScene::getProjectionMatrix()
@@ -177,7 +184,7 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 		break;
 	case GLFW_KEY_L: 
 		if (action == GLFW_RELEASE) {
-			string entity = "flower";
+			string entity = "test";
 			// Create and open a text file
 			std::ofstream positions("res/data/" + entity + "-positions.txt", std::ios::app);
 
