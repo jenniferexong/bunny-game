@@ -4,7 +4,7 @@
 
 #include <memory>
 
-#include "../objects/Player.h"
+#include "../environment/Player.h"
 
 using glm::vec3;
 
@@ -30,7 +30,7 @@ public:
 	void updateView(const Terrain& terrain);
 	void zoom(float amount);
 	void print();
-	void changePitch(double amount);
+	void changePitch(float amount);
 
 	vec3 getPosition() const { return position_; }
 	vec3 getRotation() const { return rotation_; }

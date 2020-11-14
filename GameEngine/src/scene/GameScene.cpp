@@ -21,24 +21,22 @@ GameScene::GameScene(shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader)
 	//makeTest();
 }
 
-vector<Light> GameScene::getLights()
-{
-	// only render lights that are within a distance from the player
-	vector<Light> close_lights = { *sun_ };
-	for (const auto& l : lights_) {
-		if (glm::distance(player->getPosition(), l.getPosition()) <= 250.f)
-			close_lights.push_back(l);
-	}
-	return close_lights;
-}
-
 void GameScene::update()
 {
-	player->updatePosition(terrain_1_, compass, move_keys_);
-	camera_.updateView(terrain_1_);
-	mouse_picker.update(getProjectionMatrix(), camera_); // must update after camera is moved
+	// only render lights that are within a distance from the player
+	close_lights_.clear();
+	close_lights_.push_back(sun_);
+	for (const auto& l : lights_) {
+		if (glm::distance(player->getPosition(), l->getPosition()) <= 250.f)
+			close_lights_.push_back(l);
+	}
+	environment_.setLights(close_lights_);
 
-	selected = mouse_picker.selectEntity(entities_);
+	player->updatePosition(terrain_1_, compass, move_keys_);
+	camera_->updateView(terrain_1_);
+	mouse_picker.update(getProjectionMatrix(), *camera_); // must update after camera is moved
+
+	selected = mouse_picker.selectEntity(environment_);
 	if (selected != nullptr) 
 		selected->highlight();
 }
@@ -74,13 +72,11 @@ void GameScene::setup()
 	Texture blend_map = Texture(loader_->loadTexture("res/textures/terrain1.png"));
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
 	terrain_1_ = Terrain(0, -1, ground_texture, "res/textures/heightmap.png");
-	terrains_.push_back(terrain_1_); //TODO: could be problem
+	environment_.addTerrain(terrain_1_);
 
 	// Player
 	Material player_material = Material();
 	auto player_model = Application::makeModel("bunny", "white", player_material);
-	auto player_set = make_shared<set<shared_ptr<Entity>>>();
-	entities_.insert({ player_model, player_set });
 
 	// Bunny player
 	float player_x = 328.411f;
@@ -88,10 +84,11 @@ void GameScene::setup()
 	float player_y = terrain_1_.getHeightOfTerrain(player_x, player_z);
 	player = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(0.f, 0, 0), 1.2f);
 	player->setRotationOffset(180.f, 0, 0);
+	environment_.addEntity(player);
 
-	player_set->insert(player);
-
-	camera_ = Camera(player);
+	camera_ = make_shared<Camera>(player);
+	environment_.setCamera(camera_);
+	environment_.setSun(sun_);
 }
 
 void GameScene::makeGame()
@@ -103,13 +100,10 @@ void GameScene::makeGame()
 	auto carrot_model = Application::makeModel("carrot", "carrot", carrot_material);
 
 	auto flower_set = make_shared<set<shared_ptr<Entity>>>();
-	auto carrot_set = make_shared<set<shared_ptr<Entity>>>();
 
-	entities_.insert({ flower_model, flower_set });
-	entities_.insert({ carrot_model, carrot_set });
-
-	Application::loadPositionsFromFile(terrain_1_, carrot_set, carrot_model, "carrot", vec3(0), 0.02f);
-	Application::loadPositionsFromFile(terrain_1_, flower_set, flower_model, "flower", vec3(0, -90.f, 0), 0.15f);
+	Application::loadPositionsFromFile(terrain_1_, environment_, carrot_model, "carrot", vec3(0), 0.02f);
+	Application::loadPositionsFromFileToSet(terrain_1_, flower_set, flower_model, "flower", vec3(0, -90.f, 0), 0.15f);
+	environment_.addEntitySet(flower_set);
 
 	// Position the lights above flowers
 	vec3 color = vec3(1.f, 1, 1);
@@ -117,7 +111,7 @@ void GameScene::makeGame()
 		vec3 flower_pos = flower->getPosition();
 		vec3 terrain_normal = terrain_1_.getNormalOfTerrain(flower_pos.x, flower_pos.z);
 		vec3 light_pos = flower_pos + (15.f * terrain_normal);
-		lights_.emplace_back(light_pos, color, Light::point_light_attenuation); // cyan
+		lights_.emplace_back(make_shared<Light>(light_pos, color, Light::point_light_attenuation)); // cyan
 	}
 }
 
@@ -125,8 +119,6 @@ void GameScene::makeTest()
 {
 	Material material = Material();
 	auto model = Application::makeModel("flower", "flower", material);
-	auto entity_set = make_shared<set<shared_ptr<Entity>>>();
-	entities_.insert({ model, entity_set });
 
 	player->setPosition(100, terrain_1_.getHeightOfTerrain(100, -100), -100);
 
@@ -134,8 +126,7 @@ void GameScene::makeTest()
 	test->setPosition(100, terrain_1_.getHeightOfTerrain(100, -120) + 10, -120);
 	test->setRotation(0, -90.f, 0);
 	test->setScale(0.2f);
-
-	entity_set->insert(test);
+	environment_.addEntity(test);
 }
 
 glm::mat4 GameScene::getProjectionMatrix()
@@ -214,11 +205,11 @@ void GameScene::cursorPosCallback(double x, double y)
 		return;
 	}
 
-	const float sensitivity = 0.1f;
+	const float sensitivity = 0.07f;
 	float x_offset = float(x - previous_mouse_x_) * sensitivity;
 	float y_offset = float(y - previous_mouse_y_) * sensitivity;
 	player->changeDirection(x_offset);
-	camera_.changePitch(y_offset);
+	camera_->changePitch(y_offset);
 	previous_mouse_x_ = x;
 	previous_mouse_y_ = y;
 }
@@ -245,7 +236,7 @@ void GameScene::mouseButtonCallback(int button, int action, int mods)
 
 void GameScene::scrollCallBack(double x_offset, double y_offset)
 {
-	camera_.zoom(float(y_offset));
+	camera_->zoom(float(y_offset));
 }
 
 

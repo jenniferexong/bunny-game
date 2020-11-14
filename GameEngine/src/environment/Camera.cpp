@@ -17,9 +17,9 @@ void Camera::zoom(float amount)
 	distance_from_player = clamp(distance_from_player, min_distance, max_distance);
 }
 
-void Camera::changePitch(double amount)
+void Camera::changePitch(float amount)
 {
-	rotation_.y += float(amount);
+	rotation_.y += amount;
 	rotation_.y = clamp(rotation_.y, -90.f, 90.f);
 }
 
@@ -32,21 +32,6 @@ void Camera::updateView(const Terrain& terrain) {
 	// get the direction the player is looking in
 	float dx = 1.f * glm::sin(glm::radians(player_rotation.x));
 	float dz = 1.f * glm::cos(glm::radians(player_rotation.x));
-
-	/*
-	vec3 up_vector = vec3(0, 1.f, 0);
-
-	vec3 terrain_normal = terrain.getNormalOfTerrain(player_position.x, player_position.z);
-	vec3 player_backwards_direction = -Maths::getLookDirection(player_->getInitialDirection(), player_->getRotation(), Maths::getAlignmentRotation(terrain_normal));
-
-	// project -player_direction onto horizontal plane
-	vec3 projection_onto_up = glm::proj(player_backwards_direction, up_vector);
-	vec3 projection_onto_plane = player_backwards_direction - projection_onto_up;
-
-	float min_view_angle = degrees(acos(dot(normalize(projection_onto_plane), player_backwards_direction)));
-	if (player_backwards_direction.y < 0)
-		min_view_angle *= -1;
-	*/
 
 	float view_angle = rotation_.y;
 	float distance_behind_player = distance_from_player * cos(radians(view_angle));

@@ -42,7 +42,31 @@ void Application::render() {
 	previous_frame_time = current_frame_time;
 }
 
-void Application::loadPositionsFromFile(const Terrain& terrain, shared_ptr<set<shared_ptr<Entity>>> set, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale)
+void Application::loadPositionsFromFile(const Terrain& terrain, Environment& environment, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale)
+{
+	float x, y, z;
+	string line;
+
+	ifstream file("res/data/" + name + "-positions.txt");
+	while (getline(file, line)) {
+		auto entity = make_shared<Entity>(model);
+
+		std::stringstream str_stream(line);
+		str_stream >> x >> z;
+
+		y = terrain.getHeightOfTerrain(x, z);
+		vec3 terrain_normal = terrain.getNormalOfTerrain(x, z);
+		entity->setPosition(x, y, z);
+		entity->setRotation(linearRand(0.f, 90.f), 0, 0);
+		entity->rotate(rotation.x, rotation.y, rotation.z);
+		entity->setAlignmentRotation(terrain_normal);
+		entity->setScale(scale);
+		environment.addEntity(entity);
+	}
+	file.close();
+}
+
+void Application::loadPositionsFromFileToSet(const Terrain& terrain, shared_ptr<set<shared_ptr<Entity>>> set, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale)
 {
 	float x, y, z;
 	string line;

@@ -1,6 +1,7 @@
 ﻿#include "MousePicker.h"
 
 #include "../Application.h"
+#include "../scene/Environment.h"
 
 using std::map;
 using std::shared_ptr;
@@ -16,14 +17,14 @@ void MousePicker::update(glm::mat4 projection_matrix, const Camera& camera)
 	//printf("%.2f, %.2f, %.2f\n", current_ray_origin_.x, current_ray_origin_.y, current_ray_origin_.z);
 }
 
-std::shared_ptr<Entity> MousePicker::selectEntity(const map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, CompareTexturedModel>& entities)
+std::shared_ptr<Entity> MousePicker::selectEntity(Environment& environment)
 {
 	shared_ptr<Entity> selected = nullptr;
 	float max_distance = 1000.f;
 	float min_distance = std::numeric_limits<float>::max();
 
 	// iterate through all the entities and check for ray intersection with its bounding sphere
-	for (const auto& element: entities) {
+	for (const auto& element: environment.getEntities()) {
 		for (const auto& e: *element.second) {
 			RayIntersection intersect = getIntersection(e);
 
@@ -45,7 +46,7 @@ RayIntersection MousePicker::getIntersection(const shared_ptr<Entity>& entity)
 	glm::mat4 model_matrix = Maths::createTransformationMatrix(entity->getPosition(), entity->getActualRotation(),
 		entity->getScale(), entity->getAlignmentRotation());
 
-	const auto& bounding_sphere = entity->getModel().getMesh().getBoundingSphere();
+	const auto& bounding_sphere = entity->getModel()->getMesh().getBoundingSphere();
 	vec3 sphere_center = vec3(model_matrix * bounding_sphere.getCenter());
 	float sphere_radius = entity->getScale() * bounding_sphere.getRadius();
 

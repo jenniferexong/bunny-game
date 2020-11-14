@@ -90,9 +90,9 @@ void Player::fall()
 	up_velocity_ += gravity * Application::frame_delta;
 }
 
-void Player::changeDirection(double amount)
+void Player::changeDirection(float amount)
 {
-	rotate((float) -amount, 0, 0);
+	rotate(-amount, 0, 0);
 }
 
 

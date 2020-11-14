@@ -8,8 +8,7 @@
 
 #include "../Application.h"
 #include "../UserInput.h"
-#include "../objects/Camera.h"
-
+#include "../environment/Camera.h"
 #include "../gui/MousePicker.h"
 #include "../render_engine/Loader.h"
 
@@ -26,7 +25,9 @@ private:
 	shared_ptr<Entity> selected = nullptr;
 	Terrain terrain_1_;
 	shared_ptr<Light> sun_ = std::make_shared<Light>(vec3(0.f, 100, 1000), vec3(0.1f));
-	Camera camera_;
+	shared_ptr<Camera> camera_;
+	vector<shared_ptr<Light>> lights_;
+	vector<shared_ptr<Light>> close_lights_;
 
 	map<Key, bool> move_keys_ = {
 		{Key::W, false}, {Key::A, false}, {Key::S, false}, {Key::D, false}, {Key::Space, false}
@@ -48,9 +49,6 @@ public:
 	GameScene(shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader);
 
 	glm::mat4 getProjectionMatrix() override;
-	shared_ptr<Light> getSun() override { return sun_; }
-	Camera getCamera() override { return camera_; }
-	vector<Light> getLights() override;
 
 	void update() override;
 	void postRenderUpdate() override;

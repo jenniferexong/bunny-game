@@ -2,17 +2,14 @@
 
 #include <glm/glm.hpp>
 
-#include <map>
 #include <memory>
-#include <set>
 
 #include "RayIntersection.h"
 
-#include "../CompareTexturedModel.h"
 #include "../models/Model.h"
-#include "../objects/Entity.h"
-//#include "../objects/Camera.h"
+#include "../environment/Entity.h"
 
+class Environment;
 class Camera;
 
 class MousePicker {
@@ -27,7 +24,7 @@ public:
 	MousePicker() : current_ray_direction_(glm::vec3(0.f)), projection_matrix_(glm::mat4(1.f)), view_matrix_(glm::mat4(1.f)) {}
 
 	void update(glm::mat4 projection_matrix, const Camera& camera); // update the projection and view matrix
-	std::shared_ptr<Entity> selectEntity(const std::map<std::shared_ptr<TexturedModel>, std::shared_ptr<std::set<std::shared_ptr<Entity>>>, CompareTexturedModel>& entities);
+	std::shared_ptr<Entity> selectEntity(Environment& environment);
 
 	glm::vec3 getCurrentRay() { return current_ray_direction_; }
 };

@@ -25,12 +25,6 @@ MasterRenderer::MasterRenderer()
 
 void MasterRenderer::renderScene(const shared_ptr<Scene>& scene)
 {
-	for (const auto& terrain: scene->getTerrains())
-		processTerrain(terrain);
-
-	for (const auto& gui: scene->getGuis())
-		processGui(gui);
-
 	render(scene);
 }
 
@@ -39,26 +33,27 @@ void MasterRenderer::render(const shared_ptr<Scene>& scene)
 	prepare(scene->getProjectionMatrix());
 
 	// entities
-	entity_shader_->start();
-	// Loading some uniforms
-	entity_shader_->loadUniformPerFrame(scene);
-	//entity_renderer_.render(entities);
-	entity_renderer_.renderInstanced(scene->getEntities());
-	entity_shader_->stop();
+	if (!scene->getEnvironment().getEntities().empty()) {
+		entity_shader_->start();
+		// Loading some uniforms
+		entity_shader_->loadUniformPerFrame(scene->getEnvironment());
+		//entity_renderer_.render(entities);
+		entity_renderer_.renderInstanced(scene->getEnvironment());
+		entity_shader_->stop();
+	}
 
 	// terrain 
-	terrain_shader_->start();
-	terrain_shader_->loadUniformPerFrame(scene);
-	terrain_renderer_.render(terrains_);
-	terrain_shader_->stop();
+	if (!scene->getEnvironment().getTerrains().empty()) {
+		terrain_shader_->start();
+		terrain_shader_->loadUniformPerFrame(scene->getEnvironment());
+		terrain_renderer_.render(scene->getEnvironment().getTerrains());
+		terrain_shader_->stop();
+	}
 
 	// skybox TOD0: put skybox into GameScene
 	skybox_renderer_.render(scene);
 
-	gui_renderer_.render(guis_);
-
-	terrains_.clear();
-	guis_.clear();
+	gui_renderer_.render(scene->getGuis());
 }
 
 void MasterRenderer::enableCulling()
@@ -84,14 +79,4 @@ void MasterRenderer::prepare(glm::mat4 proj_matrix)
 	glViewport(0, 0, width, height);
 
 	projection_matrix = proj_matrix;
-}
-
-void MasterRenderer::processTerrain(const Terrain& terrain)
-{
-	terrains_.push_back(terrain);
-}
-
-void MasterRenderer::processGui(const std::shared_ptr<GuiTexture>& gui)
-{
-	guis_.push_back(gui);
 }

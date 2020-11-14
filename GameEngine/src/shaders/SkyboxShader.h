@@ -4,6 +4,8 @@
 
 #include "Shader.h"
 
+class Camera;
+
 class SkyboxShader final: public Shader {
 	
 private:

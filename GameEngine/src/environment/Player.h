@@ -25,8 +25,6 @@ private:
 	float side_speed_ = 0;
 	float up_velocity_ = 0;
 
-	vec3 initial_direction_ = vec3(0, 0, -1.f);
-
 	bool is_in_air_ = false;
 
 	void jump();
@@ -37,11 +35,10 @@ public:
 	Player() = default;
 	Player(std::shared_ptr<TexturedModel> model, vec3 position, vec3 rotation, float scale);
 
-	vec3 getInitialDirection() const { return initial_direction_; }
 	bool isMoving() const { return (forward_speed_ != 0 || side_speed_ != 0); }
 	bool isInAir() const { return is_in_air_; }
 
-	void changeDirection(double amount);
+	void changeDirection(float amount);
 	void updatePosition(const Terrain& terrain, const std::shared_ptr<GuiTexture>& compass, const std::map<Key, bool>& move_keys);
 	void updateSpeed(const std::map<Key, bool>& move_keys);
 };

@@ -7,9 +7,9 @@
 #include <map>
 #include <memory>
 
-#include "objects/Entity.h"
 #include "render_engine/MasterRenderer.h"
 #include "render_engine/Loader.h"
+#include "environment/Entity.h"
 #include "models/Texture.h"
 #include "scene/Scene.h"
 
@@ -40,7 +40,9 @@ public:
 	// Helper functions
 	static std::shared_ptr<TexturedModel> makeModel(const string& obj_name, const string& texture_name, const Material& material);
 	static std::shared_ptr<TerrainTexturePack> makeTexturePack(const string& base, const string& red, const string& green, const string& blue);
-	static void loadPositionsFromFile(const Terrain& terrain, shared_ptr<set<shared_ptr<Entity>>> set, shared_ptr<TexturedModel> model, 
+	static void loadPositionsFromFile(const Terrain& terrain, Environment& environment, shared_ptr<TexturedModel> model, 
+		const std::string& name, vec3 rotation, float scale);
+	static void loadPositionsFromFileToSet(const Terrain& terrain, shared_ptr<set<shared_ptr<Entity>>> set, shared_ptr<TexturedModel> model, 
 		const std::string& name, vec3 rotation, float scale);
 
     static void keyCallback(int key, int scan_code, int action, int mods);

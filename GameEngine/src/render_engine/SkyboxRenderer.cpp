@@ -40,7 +40,7 @@ void SkyboxRenderer::render(const shared_ptr<Scene>& scene)
 
 	bindTextures(scene);
 
-	shader_.loadUniforms(scene->getCamera());
+	shader_.loadUniforms(*scene->getEnvironment().getCamera());
 
 	glDrawArrays(GL_TRIANGLES, 0, cube_.getVertexCount());
 
@@ -89,7 +89,7 @@ void SkyboxRenderer::bindTextures(const shared_ptr<Scene>& scene)
 		blend_factor = (time - 21000) / (24000 - 21000);
 		sunlight = max_sunlight - (blend_factor * (max_sunlight - min_sunlight));
 	}
-	scene->getSun()->setColor(vec3(sunlight));
+	scene->getEnvironment().getSun()->setColor(vec3(sunlight));
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texture_1);

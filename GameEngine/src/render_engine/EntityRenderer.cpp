@@ -11,9 +11,9 @@
 using std::cout;
 using std::endl;
 
-void EntityRenderer::render(const map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, CompareTexturedModel> & entities)
+void EntityRenderer::render(const Environment& environment)
 {
-	for (const auto& element : entities) {
+	for (const auto& element : environment.getEntities()) {
 		const auto& model = element.first;
 		prepareTexturedModel(*model);
 		const auto& batch = element.second;
@@ -30,12 +30,12 @@ void EntityRenderer::render(const map<shared_ptr<TexturedModel>, shared_ptr<set<
 	}
 }
 
-void EntityRenderer::renderInstanced(const map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, CompareTexturedModel>& entities)
+void EntityRenderer::renderInstanced(const Environment& environment)
 {
 	auto model_matrix_data = std::make_shared<vector<float>>();
 	auto model_brightness_data = std::make_shared<vector<float>>();
 
-	for (const auto& element : entities) {
+	for (const auto& element : environment.getEntities()) {
 		const auto& model = element.first;
 		prepareTexturedModel(*model);
 		const auto& batch = element.second;

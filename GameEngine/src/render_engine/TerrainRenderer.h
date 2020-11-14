@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "../shaders/TerrainShader.h"
-#include "../objects/Terrain.h"
+#include "../environment/Terrain.h"
 
 class TerrainRenderer {
 private:

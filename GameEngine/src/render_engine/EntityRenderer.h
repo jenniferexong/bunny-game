@@ -6,9 +6,8 @@
 #include <set>
 
 #include "../shaders/EntityShader.h"
-#include "../objects/Entity.h"
+#include "../environment/Entity.h"
 #include "../models/Model.h"
-#include "../CompareTexturedModel.h"
 
 using std::map;
 using std::set;
@@ -28,9 +27,9 @@ public:
 	EntityRenderer(): shader_(nullptr) {}
 	EntityRenderer(std::shared_ptr<EntityShader> shader) : shader_(std::move(shader)) {}
 
-	void render(const map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, CompareTexturedModel>& entities);
+	void render(const Environment& environment);
 
-	void renderInstanced(const map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, CompareTexturedModel>& entities);
+	void renderInstanced(const Environment& environment);
 };
 
 

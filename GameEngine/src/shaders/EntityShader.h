@@ -4,8 +4,7 @@
 
 #include <map>
 
-#include "../objects/Entity.h"
-#include "../objects/Light.h"
+#include "../environment/Entity.h"
 #include "../models/Material.h"
 #include "../scene/Scene.h"
 
@@ -28,7 +27,7 @@ protected:
 
 public:
 	void setUp() override;
-	void loadUniformPerFrame(const shared_ptr<Scene>& scene) const;
+	void loadUniformPerFrame(const Environment& environment) const;
 	void loadModelMatrix(const Entity& entity) const;
 	void loadMaterial(const Material& material) const;
 };

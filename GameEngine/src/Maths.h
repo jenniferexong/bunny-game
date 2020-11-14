@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "objects/Camera.h"
+#include "environment/Camera.h"
 
 namespace Maths {
 	glm::vec3 getLookDirection(vec3 initial_direction, vec3 rotation, glm::mat4 alignment_matrix);

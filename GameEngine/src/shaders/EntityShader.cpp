@@ -42,27 +42,27 @@ void EntityShader::getAllUniformLocations()
 	locations_.insert({ UniformVariable::SunStrength, getUniformLocation("uSunStrength") });
 }
 
-void EntityShader::loadUniformPerFrame(const shared_ptr<Scene>& scene) const
+void EntityShader::loadUniformPerFrame(const Environment& environment) const
 {
 	// Loading light variables
-	int num_lights = scene->getLights().size();
+	int num_lights = environment.getLights().size();
 	std::vector<glm::vec3> positions;
 	std::vector<glm::vec3> colors;
 	std::vector<glm::vec3> attenuations;
 	positions.reserve(num_lights);
 	colors.reserve(num_lights);
 	attenuations.reserve(num_lights);
-	for (const auto& l: scene->getLights()) {
-		positions.emplace_back(l.getPosition());
-		colors.emplace_back(l.getColor());
-		attenuations.emplace_back(l.getAttenuation());
+	for (const auto& l: environment.getLights()) {
+		positions.emplace_back(l->getPosition());
+		colors.emplace_back(l->getColor());
+		attenuations.emplace_back(l->getAttenuation());
 	}
 
 	loadVectors(locations_.at(UniformVariable::LightPosition), positions);
 	loadVectors(locations_.at(UniformVariable::LightColor), colors);
 	loadVectors(locations_.at(UniformVariable::Attenuation), attenuations);
 
-	loadVector(locations_.at(UniformVariable::SunStrength), scene->getSun()->getColor());
+	loadVector(locations_.at(UniformVariable::SunStrength), environment.getSun()->getColor());
 
 	loadInt(locations_.at(UniformVariable::LightCount), num_lights);
 	loadInt(locations_.at(UniformVariable::MaxLights), Light::max_lights);
@@ -71,7 +71,7 @@ void EntityShader::loadUniformPerFrame(const shared_ptr<Scene>& scene) const
 	loadMatrix(locations_.at(UniformVariable::ProjectionMatrix), MasterRenderer::projection_matrix);
 
 	// View matrix
-	glm::mat4 v_matrix = Maths::createViewMatrix(scene->getCamera());
+	glm::mat4 v_matrix = Maths::createViewMatrix(*environment.getCamera());
 	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
 	loadMatrix(locations_.at(UniformVariable::InverseViewMatrix), inverse(v_matrix));
 	 

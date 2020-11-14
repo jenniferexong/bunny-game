@@ -16,7 +16,6 @@ protected:
 	vec3 position_, rotation_; // yaw, pitch, roll
 	vec3 default_rotation_offset_ = vec3(0);
 	vec3 rotation_offset_;
-	vec3 up_vector_ = vec3(0, 1.f, 0);
 	glm::mat4 alignment_rotation_ = glm::mat4(1);
 	float scale_;
 
@@ -43,7 +42,7 @@ public:
 	void setScale(float scale) { scale_ = scale; }
 
 	// Getters
-	TexturedModel getModel() const { return *model_; }
+	std::shared_ptr<TexturedModel> getModel() const { return model_; }
 	vec3 getPosition() const { return position_; }
 	vec3 getRotation() const { return rotation_; }
 	vec3 getActualRotation() const { return rotation_ + rotation_offset_; }

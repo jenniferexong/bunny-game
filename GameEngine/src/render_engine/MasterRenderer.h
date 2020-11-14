@@ -15,9 +15,6 @@ private:
 	GuiRenderer gui_renderer_;
 	SkyboxRenderer skybox_renderer_;
 
-	std::vector<Terrain> terrains_;
-	std::vector<std::shared_ptr<GuiTexture>> guis_;
-
 public:
 	static glm::mat4 projection_matrix;
 
