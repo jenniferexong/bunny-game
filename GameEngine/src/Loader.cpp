@@ -6,7 +6,7 @@
 #include <iostream>
 
 #include "WavefrontData.h"
-#include "../Location.h"
+#include "Location.h"
 
 using namespace std;
 using namespace glm;

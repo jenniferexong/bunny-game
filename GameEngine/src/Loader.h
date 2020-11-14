@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#include "../models/Mesh.h"
+#include "models/Mesh.h"
 
 using std::vector;
 

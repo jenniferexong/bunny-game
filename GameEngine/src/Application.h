@@ -7,8 +7,8 @@
 #include <map>
 #include <memory>
 
-#include "render_engine/MasterRenderer.h"
-#include "render_engine/Loader.h"
+#include "renderers/MasterRenderer.h"
+#include "Loader.h"
 #include "environment/Entity.h"
 #include "models/Texture.h"
 #include "scene/Scene.h"

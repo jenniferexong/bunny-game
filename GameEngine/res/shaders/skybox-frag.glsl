@@ -3,8 +3,6 @@
 uniform samplerCube uDayTexture;
 uniform samplerCube uNightTexture;
 
-uniform vec3 uFogColor;
-uniform vec3 uSunStrength;
 uniform float uBlendFactor;
 
 in VertexData {

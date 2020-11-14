@@ -10,6 +10,7 @@
 #include "../models/Model.h"
 #include "../environment/Entity.h"
 #include "../environment/Light.h"
+#include "../environment/Skybox.h"
 #include "../environment/Terrain.h"
 
 using std::string;
@@ -27,8 +28,7 @@ private:
 	vector<shared_ptr<Light>> lights_;
 	shared_ptr<Light> sun_;
 	shared_ptr<Camera> camera_;
-	//skybox class
-	// Skybox skybox;
+	Skybox skybox_;
 
 public:
 	void addTerrain(const Terrain& terrain);
@@ -37,12 +37,12 @@ public:
 	void setLights(const vector<shared_ptr<Light>>& lights);
 	void setCamera(const shared_ptr<Camera>& camera);
 	void setSun(const shared_ptr<Light>& sun);
-	void setSkybox();
+	void setSkybox(const Skybox& skybox);
 
 	const unordered_map<shared_ptr<TexturedModel>, shared_ptr<set<shared_ptr<Entity>>>, TexturedModelHash, TexturedModelEquality>& getEntities() const { return entities_; }
 	const vector<Terrain>& getTerrains() const { return terrains_; }
 	const vector<shared_ptr<Light>>& getLights() const { return lights_; }
 	const shared_ptr<Light>& getSun() const { return sun_; }
 	const shared_ptr<Camera>& getCamera() const { return camera_; }
-	//virtual const Skybox& getSkybox() { return lights_; } //how to check if there isn't one
+	const Skybox& getSkybox() const { return skybox_; }
 };

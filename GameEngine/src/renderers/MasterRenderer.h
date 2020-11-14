@@ -20,8 +20,11 @@ public:
 
 	MasterRenderer();
 	void prepare(glm::mat4 proj_matrix);
+
+	void renderAll(const shared_ptr<Scene>& scene);
 	void renderScene(const shared_ptr<Scene>& scene);
 	void render(const shared_ptr<Scene>& scene);
+
 	void processTerrain(const Terrain& terrain);
 	void processGui(const std::shared_ptr<GuiTexture>& gui);
 

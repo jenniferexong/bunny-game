@@ -1,0 +1,6 @@
+stars-right
+stars-left
+stars-top
+stars-bottom
+stars-back
+stars-front

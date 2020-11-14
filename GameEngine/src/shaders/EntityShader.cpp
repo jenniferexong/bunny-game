@@ -1,7 +1,7 @@
 
 #include "EntityShader.h"
 
-#include "../render_engine/MasterRenderer.h"
+#include "../renderers/MasterRenderer.h"
 #include "../Application.h"
 #include "../Location.h"
 

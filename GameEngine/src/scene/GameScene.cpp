@@ -113,6 +113,10 @@ void GameScene::makeGame()
 		vec3 light_pos = flower_pos + (15.f * terrain_normal);
 		lights_.emplace_back(make_shared<Light>(light_pos, color, Light::point_light_attenuation)); // cyan
 	}
+
+	// skybox
+	Skybox sky = Skybox("skybox-textures-day", "skybox-textures-night");
+	environment_.setSkybox(sky);
 }
 
 void GameScene::makeTest()

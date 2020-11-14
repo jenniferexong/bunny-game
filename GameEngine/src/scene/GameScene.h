@@ -10,7 +10,7 @@
 #include "../UserInput.h"
 #include "../environment/Camera.h"
 #include "../gui/MousePicker.h"
-#include "../render_engine/Loader.h"
+#include "../Loader.h"
 
 class GameScene: public Scene {
 private:

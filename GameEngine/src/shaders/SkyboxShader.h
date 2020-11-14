@@ -10,7 +10,7 @@ class SkyboxShader final: public Shader {
 	
 private:
 	enum class UniformVariable {
-		ProjectionMatrix, ViewMatrix, FogColor, AmbientLight, SunStrength,
+		ProjectionMatrix, ViewMatrix, 
 		DayTexture, NightTexture, BlendFactor
 	};
 

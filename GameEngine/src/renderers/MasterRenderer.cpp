@@ -23,6 +23,12 @@ MasterRenderer::MasterRenderer()
 	terrain_renderer_ = TerrainRenderer(terrain_shader_);
 }
 
+void MasterRenderer::renderAll(const shared_ptr<Scene>& scene)
+{
+	renderScene(scene);
+	gui_renderer_.render(scene->getGuis());
+}
+
 void MasterRenderer::renderScene(const shared_ptr<Scene>& scene)
 {
 	render(scene);
@@ -50,10 +56,8 @@ void MasterRenderer::render(const shared_ptr<Scene>& scene)
 		terrain_shader_->stop();
 	}
 
-	// skybox TOD0: put skybox into GameScene
-	skybox_renderer_.render(scene);
-
-	gui_renderer_.render(scene->getGuis());
+	// skybox TOD0: put skybox into environment
+	skybox_renderer_.render(scene->getEnvironment());
 }
 
 void MasterRenderer::enableCulling()

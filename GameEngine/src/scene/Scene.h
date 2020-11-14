@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "../gui/GuiTexture.h"
-#include "../render_engine/Loader.h"
+#include "../Loader.h"
 
 using std::string;
 using std::map;

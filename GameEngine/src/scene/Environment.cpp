@@ -39,9 +39,9 @@ void Environment::setSun(const shared_ptr<Light>& sun)
  }
 
 
-void Environment::setSkybox()
+void Environment::setSkybox(const Skybox& skybox)
 {
-
+	skybox_ = skybox;
 }
 
 
