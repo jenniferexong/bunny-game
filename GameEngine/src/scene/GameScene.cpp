@@ -19,8 +19,8 @@ GameScene::GameScene(shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader)
 	loader_ = std::move(loader);
 
 	setup();
-	//makeGame();
-	makeTest();
+	makeGame();
+	//makeTest();
 }
 
 void GameScene::update()

@@ -10,7 +10,6 @@
 #include <chrono>
 
 #include "models/Texture.h"
-
 #include "scene/GameScene.h"
 
 using namespace glm;
