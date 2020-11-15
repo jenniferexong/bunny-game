@@ -16,11 +16,19 @@ void WaterShader::getAllUniformLocations()
 	locations_.insert({ UniformVariable::TransformationMatrix, getUniformLocation("uTransformationMatrix") });
 	locations_.insert({ UniformVariable::ProjectionMatrix, getUniformLocation("uProjectionMatrix") });
 	locations_.insert({ UniformVariable::ViewMatrix, getUniformLocation("uViewMatrix") });
+	locations_.insert({ UniformVariable::Reflection, getUniformLocation("uReflection") });
+	locations_.insert({ UniformVariable::Refraction, getUniformLocation("uRefraction") });
 }
 
 void WaterShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
+}
+
+void WaterShader::connectTextureUnits()
+{
+	loadInt(locations_.at(UniformVariable::Reflection), WaterTextureLocation::Reflection);
+	loadInt(locations_.at(UniformVariable::Refraction), WaterTextureLocation::Refraction);
 }
 
 void WaterShader::loadUniformPerFrame(const Camera& camera)

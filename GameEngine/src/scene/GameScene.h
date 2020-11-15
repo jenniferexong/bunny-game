@@ -47,8 +47,8 @@ private:
 	
 public:
 	//testing
-	static shared_ptr<GuiTexture> reflection_gui;
-	static shared_ptr<GuiTexture> refraction_gui;
+	//static shared_ptr<GuiTexture> reflection_gui;
+	//static shared_ptr<GuiTexture> refraction_gui;
 
 	GameScene(shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader);
 

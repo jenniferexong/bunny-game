@@ -26,7 +26,6 @@ MasterRenderer::MasterRenderer()
 
 	entity_renderer_ = EntityRenderer(entity_shader_);
 	terrain_renderer_ = TerrainRenderer(terrain_shader_);
-
 }
 
 void MasterRenderer::renderAll(const shared_ptr<Scene>& scene)
@@ -37,8 +36,8 @@ void MasterRenderer::renderAll(const shared_ptr<Scene>& scene)
 	window_height = height;
 
 	// testing fbo:
-	GameScene::reflection_gui->setTexture(water_fbos_.getReflectionTexture());
-	GameScene::refraction_gui->setTexture(water_fbos_.getRefractionTexture());
+	//GameScene::reflection_gui->setTexture(water_fbos_.getReflectionTexture());
+	//GameScene::refraction_gui->setTexture(water_fbos_.getRefractionTexture());
 
 	// render scene to fbos (not including water)
 	// reflection

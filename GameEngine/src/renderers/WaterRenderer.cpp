@@ -5,7 +5,7 @@
 #include "../Application.h"
 #include "../Location.h"
 
-WaterRenderer::WaterRenderer()
+WaterRenderer::WaterRenderer(const WaterFrameBuffers& fbos)
 {
 	shader_.setUp();
 
@@ -15,6 +15,13 @@ WaterRenderer::WaterRenderer()
 	};
 
 	quad_ = Application::loader->loadToVao(positions, 2);
+
+	reflection_id_ = fbos.getReflectionTexture();
+	refraction_id_ = fbos.getRefractionTexture();
+
+	shader_.start();
+	shader_.connectTextureUnits();
+	shader_.stop();
 }
 
 void WaterRenderer::render(const Environment& environment)
@@ -33,6 +40,11 @@ void WaterRenderer::prepare(const Camera& camera)
 	shader_.loadUniformPerFrame(camera);
 	glBindVertexArray(quad_.getId());
 	glEnableVertexAttribArray(AttributeLocation::Position);
+
+	glActiveTexture(GL_TEXTURE0 + WaterTextureLocation::Reflection);
+	glBindTexture(GL_TEXTURE_2D, reflection_id_);
+	glActiveTexture(GL_TEXTURE0 + WaterTextureLocation::Refraction);
+	glBindTexture(GL_TEXTURE_2D, refraction_id_);
 }
 
 void WaterRenderer::unbind()

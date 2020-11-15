@@ -11,8 +11,8 @@
 using std::shared_ptr;
 using std::make_shared;
 
-shared_ptr<GuiTexture> GameScene::reflection_gui= nullptr;
-shared_ptr<GuiTexture> GameScene::refraction_gui = nullptr;
+//shared_ptr<GuiTexture> GameScene::reflection_gui= nullptr;
+//shared_ptr<GuiTexture> GameScene::refraction_gui = nullptr;
 
 GameScene::GameScene(shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader)
 {
@@ -146,11 +146,13 @@ void GameScene::makeTest()
 	Water water = Water(x, z, -15);
 	environment_.addWater(water);
 
+	/*
 	// testing rendering to fbo by rendering it to a gui texture
 	reflection_gui= std::make_shared<GuiTexture>(-1, glm::vec2(1280 - 300, 720 - 200), glm::vec2(1280/3.f, 720/3.f));
 	refraction_gui = std::make_shared<GuiTexture>(-1, glm::vec2(300, 720 - 200), glm::vec2(1280/3.f, 720/3.f));
 	guis_.push_back(reflection_gui);
 	guis_.push_back(refraction_gui);
+	*/
 }
 
 glm::mat4 GameScene::getProjectionMatrix()

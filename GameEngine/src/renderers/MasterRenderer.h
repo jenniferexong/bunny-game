@@ -16,11 +16,11 @@ private:
 
 	EntityRenderer entity_renderer_;
 	TerrainRenderer terrain_renderer_;
-	WaterRenderer water_renderer_;
 	GuiRenderer gui_renderer_;
 	SkyboxRenderer skybox_renderer_;
 
-	WaterFrameBuffers water_fbos_;
+	WaterFrameBuffers water_fbos_ = WaterFrameBuffers();
+	WaterRenderer water_renderer_ = WaterRenderer(water_fbos_);
 
 public:
 	static glm::mat4 projection_matrix;

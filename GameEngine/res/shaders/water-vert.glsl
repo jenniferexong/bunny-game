@@ -7,10 +7,10 @@ uniform mat4 uProjectionMatrix;
 uniform mat4 uViewMatrix;
 
 out VertexData {
-    vec2 textureCoords;
+    vec4 clipSpace;
 } v_out;
 
 void main() {
-    gl_Position = uProjectionMatrix * uViewMatrix * uTransformationMatrix * vec4(aPosition.x, 0.0, aPosition.y, 1.0);
-	v_out.textureCoords = vec2(aPosition.x / 2.0 + 0.5, aPosition.y / 2.0 + 0.5);
+    v_out.clipSpace = uProjectionMatrix * uViewMatrix * uTransformationMatrix * vec4(aPosition.x, 0.0, aPosition.y, 1.0);
+    gl_Position = v_out.clipSpace;
 }
