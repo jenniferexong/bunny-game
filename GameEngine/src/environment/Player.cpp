@@ -77,6 +77,15 @@ void Player::updatePosition(const Terrain& terrain, const shared_ptr<GuiTexture>
 	}
 }
 
+bool Player::isInWater(const vector<Water>& water) const
+{
+	for (const auto& w: water) {
+		
+	}
+	return false;
+}
+
+
 void Player::jump()
 {
 	if (!is_in_air_) {

@@ -5,7 +5,7 @@ class WaterShader final: public Shader {
 private:
 	enum class UniformVariable {
 		TransformationMatrix, ViewMatrix, ProjectionMatrix,
-		Reflection, Refraction
+		Reflection, Refraction, DistortionMap, MoveFactor
 	};
 
 	std::unordered_map<UniformVariable, int> locations_;
@@ -19,6 +19,6 @@ private:
 public:
 	void setUp() override;
 	void loadModelMatrix(const Water& water);
-	void loadUniformPerFrame(const Camera& camera);
+	void loadUniformPerFrame(const Camera& camera, float move_factor);
 	void connectTextureUnits();
 };

@@ -19,6 +19,9 @@ WaterRenderer::WaterRenderer(const WaterFrameBuffers& fbos)
 	reflection_id_ = fbos.getReflectionTexture();
 	refraction_id_ = fbos.getRefractionTexture();
 
+	// load the dudv map
+	dudv_id_ = Application::loader->loadTexture("res/textures/water-dudv.png");
+
 	shader_.start();
 	shader_.connectTextureUnits();
 	shader_.stop();
@@ -37,7 +40,12 @@ void WaterRenderer::render(const Environment& environment)
 void WaterRenderer::prepare(const Camera& camera)
 {
 	shader_.start();
-	shader_.loadUniformPerFrame(camera);
+
+	// move the water ripples
+	move_factor_ += wave_speed * Application::frame_delta;
+	move_factor_ = fmod(move_factor_, 1.f);
+	shader_.loadUniformPerFrame(camera, move_factor_);
+
 	glBindVertexArray(quad_.getId());
 	glEnableVertexAttribArray(AttributeLocation::Position);
 
@@ -45,6 +53,8 @@ void WaterRenderer::prepare(const Camera& camera)
 	glBindTexture(GL_TEXTURE_2D, reflection_id_);
 	glActiveTexture(GL_TEXTURE0 + WaterTextureLocation::Refraction);
 	glBindTexture(GL_TEXTURE_2D, refraction_id_);
+	glActiveTexture(GL_TEXTURE0 + WaterTextureLocation::DistortionMap);
+	glBindTexture(GL_TEXTURE_2D, dudv_id_);
 }
 
 void WaterRenderer::unbind()

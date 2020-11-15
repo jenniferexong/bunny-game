@@ -37,6 +37,7 @@ public:
 
 	bool isMoving() const { return (forward_speed_ != 0 || side_speed_ != 0); }
 	bool isInAir() const { return is_in_air_; }
+	bool isInWater(const vector<Water>& water) const;
 
 	void changeDirection(float amount);
 	void updatePosition(const Terrain& terrain, const std::shared_ptr<GuiTexture>& compass, const std::map<Key, bool>& move_keys);

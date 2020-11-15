@@ -18,6 +18,8 @@ void WaterShader::getAllUniformLocations()
 	locations_.insert({ UniformVariable::ViewMatrix, getUniformLocation("uViewMatrix") });
 	locations_.insert({ UniformVariable::Reflection, getUniformLocation("uReflection") });
 	locations_.insert({ UniformVariable::Refraction, getUniformLocation("uRefraction") });
+	locations_.insert({ UniformVariable::DistortionMap, getUniformLocation("uDistortionMap") });
+	locations_.insert({ UniformVariable::MoveFactor, getUniformLocation("uMoveFactor") });
 }
 
 void WaterShader::setUp()
@@ -29,9 +31,10 @@ void WaterShader::connectTextureUnits()
 {
 	loadInt(locations_.at(UniformVariable::Reflection), WaterTextureLocation::Reflection);
 	loadInt(locations_.at(UniformVariable::Refraction), WaterTextureLocation::Refraction);
+	loadInt(locations_.at(UniformVariable::DistortionMap), WaterTextureLocation::DistortionMap);
 }
 
-void WaterShader::loadUniformPerFrame(const Camera& camera)
+void WaterShader::loadUniformPerFrame(const Camera& camera, float move_factor)
 {
 	// Loading projection matrix
 	loadMatrix(locations_.at(UniformVariable::ProjectionMatrix), MasterRenderer::projection_matrix);
@@ -39,6 +42,8 @@ void WaterShader::loadUniformPerFrame(const Camera& camera)
 	// View matrix
 	glm::mat4 v_matrix = Maths::createViewMatrix(camera);
 	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
+
+	loadFloat(locations_.at(UniformVariable::MoveFactor), move_factor);
 }
 
 void WaterShader::loadModelMatrix(const Water& water)

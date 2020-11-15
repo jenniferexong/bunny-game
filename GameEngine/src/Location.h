@@ -8,7 +8,9 @@ namespace AttributeLocation {
 }
 
 namespace WaterTextureLocation {
-	enum Location { Reflection = 0, Refraction = 1 };
+	enum Location {
+		Reflection = 0, Refraction = 1, DistortionMap = 2
+	};
 }
 
 
