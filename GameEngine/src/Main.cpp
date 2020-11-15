@@ -44,12 +44,10 @@ int main(void)
 	glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 	if (GLEW_OK != err) {
-        cout << "!1" << endl;
-        //abort();
+        abort();
 	}
 
     // Make the application
-    cout << 1 << endl;
     Application application(make_shared<GLFWwindow*>(window));
 
     application_ptr = &application;

@@ -13,7 +13,17 @@ int WaterFrameBuffers::refraction_height = 720;
 
 WaterFrameBuffers::WaterFrameBuffers()
 {
-	initializeFrameBuffers();
+	// initialize frame buffers
+	// reflection
+	reflection_frame_buffer_ = createFrameBuffer();	
+	reflection_texture_ = createTextureAttachment(reflection_width, reflection_height);
+	reflection_depth_buffer_ = createDepthBufferAttachment(reflection_width, reflection_height);
+	unbindCurrentFrameBuffer();
+
+	// refraction
+	refraction_frame_buffer_ = createFrameBuffer();
+	refraction_texture_ = createTextureAttachment(refraction_width, refraction_height);
+	refraction_depth_texture_ = createDepthTextureAttachment(refraction_width, refraction_height);
 }
 
 WaterFrameBuffers::~WaterFrameBuffers()
@@ -25,20 +35,6 @@ WaterFrameBuffers::~WaterFrameBuffers()
 	glDeleteFramebuffers(frame_buffers.size(), (GLuint*)frame_buffers.data());
 	glDeleteRenderbuffers(render_buffers.size(), (GLuint*) render_buffers.data());
 	glDeleteTextures(textures.size(), (GLuint*) textures.data());
-}
-
-void WaterFrameBuffers::initializeFrameBuffers()
-{
-	// reflection
-	reflection_frame_buffer_ = createFrameBuffer();	
-	reflection_texture_ = createTextureAttachment(reflection_width, reflection_height);
-	reflection_depth_buffer_ = createDepthBufferAttachment(reflection_width, reflection_height);
-	unbindCurrentFrameBuffer();
-
-	// refraction
-	refraction_frame_buffer_ = createFrameBuffer();
-	refraction_texture_ = createTextureAttachment(refraction_width, refraction_height);
-	refraction_depth_texture_ = createDepthTextureAttachment(refraction_width, refraction_height);
 }
 
 void WaterFrameBuffers::bindReflectionFrameBuffer()
@@ -63,7 +59,7 @@ void WaterFrameBuffers::bindFrameBuffer(int frame_buffer, int width, int height)
 	glBindTexture(GL_TEXTURE_2D, 0); // ensure texture isn't bound
 	glBindFramebuffer(GL_FRAMEBUFFER, frame_buffer);
 
-	glViewport(0, 0, MasterRenderer::window_width, MasterRenderer::window_height);
+	glViewport(0, 0, width, height);
 }
 
 int WaterFrameBuffers::createFrameBuffer()

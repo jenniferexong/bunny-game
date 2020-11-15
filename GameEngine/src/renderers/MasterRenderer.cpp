@@ -30,7 +30,7 @@ MasterRenderer::MasterRenderer()
 void MasterRenderer::renderAll(const shared_ptr<Scene>& scene)
 {
 	int width, height;
-	glfwGetWindowSize(*Application::window, &width, &height);
+	glfwGetFramebufferSize(*Application::window, &width, &height);
 	window_width = width;
 	window_height = height;
 
@@ -93,14 +93,7 @@ void MasterRenderer::prepare(glm::mat4 proj_matrix)
 	glClearColor(1, 1, 1, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	// Set viewport to entire window 
-	/*
-	int width, height;
-	glfwGetWindowSize(*Application::window, &width, &height);
-	window_width = width;
-	window_height = height;
-	*/
-	glViewport(0, 0, window_width, window_height);
+	//glViewport(0, 0, window_width, window_height);
 
 	projection_matrix = proj_matrix;
 }
