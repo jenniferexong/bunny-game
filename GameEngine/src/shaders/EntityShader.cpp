@@ -40,9 +40,11 @@ void EntityShader::getAllUniformLocations()
 	locations_.insert({ UniformVariable::FakeLighting, getUniformLocation("uFakeLighting") });
 	locations_.insert({ UniformVariable::FogColor, getUniformLocation("uFogColor") });
 	locations_.insert({ UniformVariable::SunStrength, getUniformLocation("uSunStrength") });
+
+	locations_.insert({ UniformVariable::ClippingPlane, getUniformLocation("uClippingPlane") });
 }
 
-void EntityShader::loadUniformPerFrame(const Environment& environment) const
+void EntityShader::loadUniformPerFrame(const Environment& environment, glm::vec4 clipping_plane) const
 {
 	// Loading light variables
 	int num_lights = environment.getLights().size();
@@ -74,6 +76,9 @@ void EntityShader::loadUniformPerFrame(const Environment& environment) const
 	glm::mat4 v_matrix = Maths::createViewMatrix(*environment.getCamera());
 	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
 	loadMatrix(locations_.at(UniformVariable::InverseViewMatrix), inverse(v_matrix));
+
+	// load clipping plane
+	loadVector(locations_.at(UniformVariable::ClippingPlane), clipping_plane);
 	 
 	// Sky colour
 	//loadVector(locations_.at(UniformVariable::FogColor), Application::fog_color);

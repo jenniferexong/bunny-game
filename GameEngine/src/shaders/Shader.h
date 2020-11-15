@@ -27,6 +27,7 @@ protected:
 	void loadBoolean(int location, bool value) const;
 	void loadInt(int location, int value) const;
 	void loadVector(int location, vec3 vector) const;
+	void loadVector(int location, glm::vec4 vector) const;
 	void loadMatrix(int location, glm::mat4 matrix) const;
 	void loadVectors(int location, const std::vector<vec3>& vectors) const;
 	void loadMatrices(int location, const std::vector<glm::mat4>& matrices) const;

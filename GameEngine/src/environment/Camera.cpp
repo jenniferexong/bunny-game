@@ -47,6 +47,23 @@ void Camera::updateView(const Terrain& terrain) {
 	rotation_.x = -player_rotation.x;
 }
 
+/* Moves camera under water, then inverts the pitch */
+void Camera::positionForReflection(float water_height)
+{
+	float distance = position_.y - water_height;
+	position_.y -= 2 * distance;
+	rotation_.y *= -1;
+}
+
+/* Moves camera back to original position above water */
+void Camera::positionForRefraction(float water_height)
+{
+	float distance = water_height - position_.y;
+	position_.y += 2 * distance;
+	rotation_.y *= -1; // invert
+}
+
+
 void Camera::print()
 {
 	printf("Camera: x: %.1f, y: %.1f, z: %.1f, y: %.1f, p: %.1f, r: %.1f\n",

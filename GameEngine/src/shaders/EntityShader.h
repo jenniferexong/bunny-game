@@ -13,7 +13,8 @@ private:
 	enum class UniformVariable {
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
 		LightPosition, LightColor, LightCount, MaxLights, Attenuation,
-		Reflectivity, ShineDamper, FakeLighting, FogColor, SunStrength
+		Reflectivity, ShineDamper, FakeLighting, FogColor, SunStrength,
+		ClippingPlane
 	};
 
 	static const std::string vertex_file;
@@ -27,7 +28,7 @@ protected:
 
 public:
 	void setUp() override;
-	void loadUniformPerFrame(const Environment& environment) const;
+	void loadUniformPerFrame(const Environment& environment, glm::vec4 clipping_plane) const;
 	void loadModelMatrix(const Entity& entity) const;
 	void loadMaterial(const Material& material) const;
 };

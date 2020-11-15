@@ -15,7 +15,8 @@ private:
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
 		LightPosition, LightColor, LightCount, MaxLights, Attenuation,
 		Reflectivity, ShineDamper, FogColor, SunStrength,
-		BaseTexture, RedTexture, GreenTexture, BlueTexture, BlendMap 
+		BaseTexture, RedTexture, GreenTexture, BlueTexture, BlendMap,
+		ClippingPlane
 	};
 
 	static const std::string vertex_file;
@@ -29,7 +30,7 @@ protected:
 
 public:
 	void setUp() override;
-	void loadUniformPerFrame(const Environment& environment) const;
+	void loadUniformPerFrame(const Environment& environment, glm::vec4 clipping_plane) const;
 	void loadMaterial(const Material& material) const;
 	void loadModelMatrix(const Terrain& terrain) const;
 	void connectTextureUnits() const;

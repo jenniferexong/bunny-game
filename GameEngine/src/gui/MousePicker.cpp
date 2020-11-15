@@ -30,7 +30,7 @@ std::shared_ptr<Entity> MousePicker::selectEntity(Environment& environment)
 
 			// check if it is the closest intersection
 			if (intersect.valid_intersection) {
-				float distance = glm::distance(current_ray_origin_, intersect.intersection_point);
+				float distance = glm::length(current_ray_origin_ - intersect.intersection_point);
 				if (e->isSelectable() && distance < min_distance && distance < max_distance) {
 					selected = e;
 				}

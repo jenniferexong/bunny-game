@@ -3,6 +3,8 @@
 uniform mat4 uProjectionMatrix;
 uniform mat4 uViewMatrix;
 
+uniform vec4 uClippingPlane;
+
 layout(location = 0) in vec3 aPosition;
 
 out VertexData {

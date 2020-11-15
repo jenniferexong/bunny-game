@@ -32,6 +32,9 @@ public:
 	void print();
 	void changePitch(float amount);
 
+	void positionForReflection(float water_height);
+	void positionForRefraction(float water_height);
+
 	vec3 getPosition() const { return position_; }
 	vec3 getRotation() const { return rotation_; }
 };

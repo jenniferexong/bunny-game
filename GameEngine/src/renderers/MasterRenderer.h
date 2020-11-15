@@ -32,7 +32,7 @@ public:
 	void prepare(glm::mat4 proj_matrix);
 
 	void renderAll(const shared_ptr<Scene>& scene);
-	void renderScene(const shared_ptr<Scene>& scene, bool progress_time);
+	void renderScene(const shared_ptr<Scene>& scene, glm::vec4 clipping_plane, bool progress_time);
 
 	static void enableCulling();
 	static void disableCulling();

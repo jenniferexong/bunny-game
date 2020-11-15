@@ -13,6 +13,7 @@ int MasterRenderer::window_height = 720;
 
 MasterRenderer::MasterRenderer()
 {
+	glEnable(GL_CLIP_PLANE0);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
 	//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -25,6 +26,7 @@ MasterRenderer::MasterRenderer()
 
 	entity_renderer_ = EntityRenderer(entity_shader_);
 	terrain_renderer_ = TerrainRenderer(terrain_shader_);
+
 }
 
 void MasterRenderer::renderAll(const shared_ptr<Scene>& scene)
@@ -35,25 +37,28 @@ void MasterRenderer::renderAll(const shared_ptr<Scene>& scene)
 	window_height = height;
 
 	// testing fbo:
-	//GameScene::test_gui_->setTexture(water_fbos_.getRefractionTexture());
-	
-	// render scene to fbos (not including water)
-	/*
-	water_fbos_.bindReflectionFrameBuffer();
-	renderScene(scene, false);
-	water_fbos_.unbindCurrentFrameBuffer();
-	// refraction
-	water_fbos_.bindRefractionFrameBuffer();
-	renderScene(scene, false);
-	water_fbos_.unbindCurrentFrameBuffer();
-	*/
+	GameScene::reflection_gui->setTexture(water_fbos_.getReflectionTexture());
+	GameScene::refraction_gui->setTexture(water_fbos_.getRefractionTexture());
 
-	renderScene(scene, true);
+	// render scene to fbos (not including water)
+	// reflection
+	scene->getEnvironment().getCamera()->positionForReflection(-15.f);
+	water_fbos_.bindReflectionFrameBuffer();
+	renderScene(scene, Water::getReflectionPlane(), false);
+	water_fbos_.unbindCurrentFrameBuffer();
+
+	// refraction
+	scene->getEnvironment().getCamera()->positionForRefraction(-15.f);
+	water_fbos_.bindRefractionFrameBuffer();
+	renderScene(scene, Water::getRefractionPlane(), false);
+	water_fbos_.unbindCurrentFrameBuffer();
+
+	renderScene(scene, glm::vec4(0), true);
 	water_renderer_.render(scene->getEnvironment());
 	gui_renderer_.render(scene->getGuis());
 }
 
-void MasterRenderer::renderScene(const shared_ptr<Scene>& scene, bool progress_time)
+void MasterRenderer::renderScene(const shared_ptr<Scene>& scene, glm::vec4 clipping_plane, bool progress_time)
 {
 	prepare(scene->getProjectionMatrix());
 
@@ -61,7 +66,7 @@ void MasterRenderer::renderScene(const shared_ptr<Scene>& scene, bool progress_t
 	if (!scene->getEnvironment().getEntities().empty()) {
 		entity_shader_->start();
 		// Loading some uniforms
-		entity_shader_->loadUniformPerFrame(scene->getEnvironment());
+		entity_shader_->loadUniformPerFrame(scene->getEnvironment(), clipping_plane);
 		//entity_renderer_.render(entities);
 		entity_renderer_.renderInstanced(scene->getEnvironment());
 		entity_shader_->stop();
@@ -70,7 +75,7 @@ void MasterRenderer::renderScene(const shared_ptr<Scene>& scene, bool progress_t
 	// terrain 
 	if (!scene->getEnvironment().getTerrains().empty()) {
 		terrain_shader_->start();
-		terrain_shader_->loadUniformPerFrame(scene->getEnvironment());
+		terrain_shader_->loadUniformPerFrame(scene->getEnvironment(), clipping_plane);
 		terrain_renderer_.render(scene->getEnvironment().getTerrains());
 		terrain_shader_->stop();
 	}

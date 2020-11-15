@@ -11,7 +11,8 @@
 using std::shared_ptr;
 using std::make_shared;
 
-shared_ptr<GuiTexture> GameScene::test_gui_ = nullptr;
+shared_ptr<GuiTexture> GameScene::reflection_gui= nullptr;
+shared_ptr<GuiTexture> GameScene::refraction_gui = nullptr;
 
 GameScene::GameScene(shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader)
 {
@@ -19,8 +20,8 @@ GameScene::GameScene(shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader)
 	loader_ = std::move(loader);
 
 	setup();
-	makeGame();
-	//makeTest();
+	//makeGame();
+	makeTest();
 }
 
 void GameScene::update()
@@ -47,6 +48,7 @@ void GameScene::postRenderUpdate()
 {
 	if (selected != nullptr)
 		selected->unhighlight();
+	selected = nullptr;
 }
 
 using glm::vec2;
@@ -136,14 +138,19 @@ void GameScene::makeTest()
 	test->setScale(0.2f);
 	environment_.addEntity(test);
 
+	auto flower_model = Application::makeModel("flower", "flower", Material());
+	Application::loadPositionsFromFile(terrain_1_, environment_, flower_model, "test-flowers", vec3(0, -90.f, 0), 0.15f);
+
 	x = 338.833f;
 	z = -244.911f;
 	Water water = Water(x, z, -15);
 	environment_.addWater(water);
 
 	// testing rendering to fbo by rendering it to a gui texture
-	test_gui_ = std::make_shared<GuiTexture>(-1, glm::vec2(1280 - 300, 720 - 200), glm::vec2(1280/3.f, 720/3.f));
-	guis_.push_back(test_gui_);
+	reflection_gui= std::make_shared<GuiTexture>(-1, glm::vec2(1280 - 300, 720 - 200), glm::vec2(1280/3.f, 720/3.f));
+	refraction_gui = std::make_shared<GuiTexture>(-1, glm::vec2(300, 720 - 200), glm::vec2(1280/3.f, 720/3.f));
+	guis_.push_back(reflection_gui);
+	guis_.push_back(refraction_gui);
 }
 
 glm::mat4 GameScene::getProjectionMatrix()
@@ -190,7 +197,7 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 		break;
 	case GLFW_KEY_L: 
 		if (action == GLFW_RELEASE) {
-			string entity = "test";
+			string entity = "test-flowers";
 			// Create and open a text file
 			std::ofstream positions("res/data/" + entity + "-positions.txt", std::ios::app);
 

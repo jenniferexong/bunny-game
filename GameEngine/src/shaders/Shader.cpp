@@ -103,6 +103,11 @@ void Shader::loadVector(int location, vec3 vector) const
 	glUniform3f(location, vector.x, vector.y, vector.z);
 }
 
+void Shader::loadVector(int location, glm::vec4 vector) const
+{
+	glUniform4f(location, vector.x, vector.y, vector.z, vector.w);
+}
+
 void Shader::loadMatrix(int location, glm::mat4 matrix) const
 {
 	glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(matrix));

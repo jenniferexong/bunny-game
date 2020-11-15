@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include <glm/vec4.hpp>
 
 // a square tile of water
 class Water {
@@ -14,4 +15,7 @@ public:
 	float getX() const { return centre_x; }
 	float getZ() const { return centre_z; }
 	float getHeight() const { return height_; }
+
+	static glm::vec4 getReflectionPlane();
+	static glm::vec4 getRefractionPlane();
 };
