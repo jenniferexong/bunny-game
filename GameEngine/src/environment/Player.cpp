@@ -47,6 +47,11 @@ void Player::updatePosition(const Environment& environment, const shared_ptr<Gui
 	Terrain terrain = environment.getTerrains().at(0);
 	updateSpeed(move_keys);
 
+	if (isInWater(environment.getWater())) {
+		forward_speed_ /= 3.f;
+		side_speed_ /= 3.f;
+	}
+
 	compass->setRotation(-rotation_.x);
 
 	float forward_distance = forward_speed_ * Application::frame_delta;
