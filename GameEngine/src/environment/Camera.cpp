@@ -11,8 +11,12 @@ float Camera::distance_from_player = 12;
 
 using namespace glm;
 
-void Camera::zoom(float amount)
+/* Positive amount = zoom in */
+void Camera::zoom(float amount, const vector<Water>& water)
 {
+	if (player_->isInWater(water) && position_.y <= -14.f && amount > 0)
+		return;
+
 	distance_from_player -= amount;
 	distance_from_player = clamp(distance_from_player, min_distance, max_distance);
 }
@@ -24,7 +28,7 @@ void Camera::changePitch(float amount)
 }
 
 /* calculate the position of the camera based on the player */
-void Camera::updateView(const Terrain& terrain) {
+void Camera::updateView(const Terrain& terrain, const vector<Water>& water) {
 
 	vec3 player_position = player_->getPosition();
 	vec3 player_rotation = player_->getRotation();
@@ -43,6 +47,11 @@ void Camera::updateView(const Terrain& terrain) {
 
 	float min_height = terrain.getHeightOfTerrain(position_.x, position_.z) + 3.f;
 	position_.y = max(position_.y, min_height);
+
+	// stop camera from going under the water
+	if (player_->isInWater(water)) {
+		position_.y = max(position_.y, -14.f);
+	}
 
 	rotation_.x = -player_rotation.x;
 }

@@ -40,6 +40,6 @@ public:
 	bool isInWater(const vector<Water>& water) const;
 
 	void changeDirection(float amount);
-	void updatePosition(const Terrain& terrain, const std::shared_ptr<GuiTexture>& compass, const std::map<Key, bool>& move_keys);
+	void updatePosition(const Environment& environment, const std::shared_ptr<GuiTexture>& compass, const std::map<Key, bool>& move_keys);
 	void updateSpeed(const std::map<Key, bool>& move_keys);
 };

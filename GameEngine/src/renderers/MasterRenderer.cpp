@@ -35,10 +35,6 @@ void MasterRenderer::renderAll(const shared_ptr<Scene>& scene)
 	window_width = width;
 	window_height = height;
 
-	// testing fbo:
-	//GameScene::reflection_gui->setTexture(water_fbos_.getReflectionTexture());
-	//GameScene::refraction_gui->setTexture(water_fbos_.getRefractionTexture());
-
 	// render scene to fbos (not including water)
 	// reflection
 	scene->getEnvironment().getCamera()->positionForReflection(-15.f);

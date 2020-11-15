@@ -42,8 +42,9 @@ vec3 Player::getRotationOffset()
 	}
 }
 
-void Player::updatePosition(const Terrain& terrain, const shared_ptr<GuiTexture>& compass, const std::map<Key, bool>& move_keys)
+void Player::updatePosition(const Environment& environment, const shared_ptr<GuiTexture>& compass, const std::map<Key, bool>& move_keys)
 {
+	Terrain terrain = environment.getTerrains().at(0);
 	updateSpeed(move_keys);
 
 	compass->setRotation(-rotation_.x);
@@ -66,6 +67,12 @@ void Player::updatePosition(const Terrain& terrain, const shared_ptr<GuiTexture>
 	float terrain_height = terrain.getHeightOfTerrain(position_.x, position_.z);
 	rotation_offset_ = getRotationOffset();
 
+	// swim in water
+	if (isInWater(environment.getWater())) {
+		position_.y = max(-16.5f, position_.y);
+		setAlignmentRotation(vec3(0, 1.f, 0));
+	}
+
 	// Check if hits the ground
 	if (position_.y < terrain_height) {
 		position_.y = terrain_height;
@@ -80,7 +87,8 @@ void Player::updatePosition(const Terrain& terrain, const shared_ptr<GuiTexture>
 bool Player::isInWater(const vector<Water>& water) const
 {
 	for (const auto& w: water) {
-		
+		if (w.containsPoint(position_))
+			return true;
 	}
 	return false;
 }

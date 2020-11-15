@@ -11,9 +11,6 @@
 using std::shared_ptr;
 using std::make_shared;
 
-//shared_ptr<GuiTexture> GameScene::reflection_gui= nullptr;
-//shared_ptr<GuiTexture> GameScene::refraction_gui = nullptr;
-
 GameScene::GameScene(shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader)
 {
 	window_ = std::move(window);
@@ -35,8 +32,8 @@ void GameScene::update()
 	}
 	environment_.setLights(close_lights_);
 
-	player->updatePosition(terrain_1_, compass, move_keys_);
-	camera_->updateView(terrain_1_);
+	player->updatePosition(environment_, compass, move_keys_);
+	camera_->updateView(terrain_1_, environment_.getWater());
 	mouse_picker.update(getProjectionMatrix(), *camera_); // must update after camera is moved
 
 	selected = mouse_picker.selectEntity(environment_);
@@ -145,14 +142,6 @@ void GameScene::makeTest()
 	z = -244.911f;
 	Water water = Water(x, z, -15);
 	environment_.addWater(water);
-
-	/*
-	// testing rendering to fbo by rendering it to a gui texture
-	reflection_gui= std::make_shared<GuiTexture>(-1, glm::vec2(1280 - 300, 720 - 200), glm::vec2(1280/3.f, 720/3.f));
-	refraction_gui = std::make_shared<GuiTexture>(-1, glm::vec2(300, 720 - 200), glm::vec2(1280/3.f, 720/3.f));
-	guis_.push_back(reflection_gui);
-	guis_.push_back(refraction_gui);
-	*/
 }
 
 glm::mat4 GameScene::getProjectionMatrix()
@@ -262,7 +251,7 @@ void GameScene::mouseButtonCallback(int button, int action, int mods)
 
 void GameScene::scrollCallBack(double x_offset, double y_offset)
 {
-	camera_->zoom(float(y_offset));
+	camera_->zoom(float(y_offset), environment_.getWater());
 }
 
 
