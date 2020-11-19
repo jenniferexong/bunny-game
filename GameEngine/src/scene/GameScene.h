@@ -24,7 +24,7 @@ private:
 	shared_ptr<GuiTexture> compass = nullptr;
 	shared_ptr<Entity> selected = nullptr;
 	Terrain terrain_1_;
-	shared_ptr<Light> sun_ = std::make_shared<Light>(vec3(0.f, 100, 1000), vec3(0.1f));
+	shared_ptr<Light> sun_ = std::make_shared<Light>(vec3(0.f, 700, -1000), vec3(0.1f));
 	shared_ptr<Camera> camera_;
 	vector<shared_ptr<Light>> lights_;
 	vector<shared_ptr<Light>> close_lights_;

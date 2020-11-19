@@ -21,7 +21,11 @@ void WaterShader::getAllUniformLocations()
 	locations_.insert({ UniformVariable::Reflection, getUniformLocation("uReflection") });
 	locations_.insert({ UniformVariable::Refraction, getUniformLocation("uRefraction") });
 	locations_.insert({ UniformVariable::DistortionMap, getUniformLocation("uDistortionMap") });
+	locations_.insert({ UniformVariable::NormalMap, getUniformLocation("uNormalMap") });
 	locations_.insert({ UniformVariable::MoveFactor, getUniformLocation("uMoveFactor") });
+
+	locations_.insert({ UniformVariable::LightColor, getUniformLocation("uLightColor") });
+	locations_.insert({ UniformVariable::LightPosition, getUniformLocation("uLightPosition") });
 }
 
 void WaterShader::setUp()
@@ -34,19 +38,24 @@ void WaterShader::connectTextureUnits()
 	loadInt(locations_.at(UniformVariable::Reflection), WaterTextureLocation::Reflection);
 	loadInt(locations_.at(UniformVariable::Refraction), WaterTextureLocation::Refraction);
 	loadInt(locations_.at(UniformVariable::DistortionMap), WaterTextureLocation::DistortionMap);
+	loadInt(locations_.at(UniformVariable::NormalMap), WaterTextureLocation::NormalMap);
 }
 
-void WaterShader::loadUniformPerFrame(const Camera& camera, float move_factor)
+void WaterShader::loadUniformPerFrame(const Environment& environment, float move_factor)
 {
 	// Loading projection matrix
 	loadMatrix(locations_.at(UniformVariable::ProjectionMatrix), MasterRenderer::projection_matrix);
 
 	// View matrix
+	Camera camera = *environment.getCamera();
 	glm::mat4 v_matrix = Maths::createViewMatrix(camera);
 	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
 	loadVector(locations_.at(UniformVariable::CameraPosition), camera.getPosition());
 
 	loadFloat(locations_.at(UniformVariable::MoveFactor), move_factor);
+
+	loadVector(locations_.at(UniformVariable::LightColor), environment.getSun()->getColor());
+	loadVector(locations_.at(UniformVariable::LightPosition), environment.getSun()->getPosition());
 }
 
 void WaterShader::loadModelMatrix(const Water& water)

@@ -12,15 +12,15 @@ private:
 	WaterShader shader_;
 
 	int reflection_id_, refraction_id_;
-	int dudv_id_;
+	int dudv_id_, normal_id_;
 
-	const float wave_speed = 0.05f;
+	const float wave_speed = 0.02f;
 	float move_factor_ = 0;
 
 public:
 	WaterRenderer(const WaterFrameBuffers& fbos);
 
 	void render(const Environment& environment);
-	void prepare(const Camera& camera);
+	void prepare(const Environment& environment);
 	void unbind();
 };
