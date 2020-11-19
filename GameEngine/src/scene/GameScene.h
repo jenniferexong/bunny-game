@@ -14,10 +14,6 @@
 
 class GameScene: public Scene {
 private:
-	const float fov = 70.f;
-	const float near_plane = 1.f;
-	const float far_plane = 1000.f;
-
 	MousePicker mouse_picker;
 
 	shared_ptr<Player> player = nullptr;

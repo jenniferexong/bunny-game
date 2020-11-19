@@ -18,6 +18,7 @@ WaterRenderer::WaterRenderer(const WaterFrameBuffers& fbos)
 
 	reflection_id_ = fbos.getReflectionTexture();
 	refraction_id_ = fbos.getRefractionTexture();
+	depth_id_ = fbos.getRefractionDepthTexture();
 
 	// load the dudv map
 	const string texture_path = "res/textures/";
@@ -59,10 +60,16 @@ void WaterRenderer::prepare(const Environment& environment)
 	glBindTexture(GL_TEXTURE_2D, dudv_id_);
 	glActiveTexture(GL_TEXTURE0 + WaterTextureLocation::NormalMap);
 	glBindTexture(GL_TEXTURE_2D, normal_id_);
+	glActiveTexture(GL_TEXTURE0 + WaterTextureLocation::DepthMap);
+	glBindTexture(GL_TEXTURE_2D, depth_id_);
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 void WaterRenderer::unbind()
 {
+	glDisable(GL_BLEND);
 	glDisableVertexAttribArray(AttributeLocation::Position);
 	glBindVertexArray(0);
 	shader_.stop();

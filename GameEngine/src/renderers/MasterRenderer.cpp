@@ -8,6 +8,10 @@
 #include "../scene/GameScene.h"
 
 glm::mat4 MasterRenderer::projection_matrix = glm::mat4(1);
+float MasterRenderer::fov = 70.f;
+float MasterRenderer::near_plane = 0.1f;
+float MasterRenderer::far_plane = 1000.f;
+
 int MasterRenderer::window_width = 1280;
 int MasterRenderer::window_height = 720;
 

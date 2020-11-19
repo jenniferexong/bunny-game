@@ -22,10 +22,14 @@ void WaterShader::getAllUniformLocations()
 	locations_.insert({ UniformVariable::Refraction, getUniformLocation("uRefraction") });
 	locations_.insert({ UniformVariable::DistortionMap, getUniformLocation("uDistortionMap") });
 	locations_.insert({ UniformVariable::NormalMap, getUniformLocation("uNormalMap") });
+	locations_.insert({ UniformVariable::DepthMap, getUniformLocation("uDepthMap") });
 	locations_.insert({ UniformVariable::MoveFactor, getUniformLocation("uMoveFactor") });
 
 	locations_.insert({ UniformVariable::LightColor, getUniformLocation("uLightColor") });
 	locations_.insert({ UniformVariable::LightPosition, getUniformLocation("uLightPosition") });
+
+	locations_.insert({ UniformVariable::NearPlane, getUniformLocation("uNearPlane") });
+	locations_.insert({ UniformVariable::FarPlane, getUniformLocation("uFarPlane") });
 }
 
 void WaterShader::setUp()
@@ -39,12 +43,17 @@ void WaterShader::connectTextureUnits()
 	loadInt(locations_.at(UniformVariable::Refraction), WaterTextureLocation::Refraction);
 	loadInt(locations_.at(UniformVariable::DistortionMap), WaterTextureLocation::DistortionMap);
 	loadInt(locations_.at(UniformVariable::NormalMap), WaterTextureLocation::NormalMap);
+	loadInt(locations_.at(UniformVariable::DepthMap), WaterTextureLocation::DepthMap);
 }
 
 void WaterShader::loadUniformPerFrame(const Environment& environment, float move_factor)
 {
 	// Loading projection matrix
 	loadMatrix(locations_.at(UniformVariable::ProjectionMatrix), MasterRenderer::projection_matrix);
+
+	// Near and far planes
+	loadFloat(locations_.at(UniformVariable::NearPlane), MasterRenderer::near_plane);
+	loadFloat(locations_.at(UniformVariable::FarPlane), MasterRenderer::far_plane);
 
 	// View matrix
 	Camera camera = *environment.getCamera();

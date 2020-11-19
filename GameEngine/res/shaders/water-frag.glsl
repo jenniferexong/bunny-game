@@ -4,10 +4,15 @@ uniform sampler2D uReflection;
 uniform sampler2D uRefraction;
 uniform sampler2D uDistortionMap;
 uniform sampler2D uNormalMap;
+uniform sampler2D uDepthMap;
+
 uniform float uMoveFactor; // simulate moving water ripples
 
 uniform vec3 uLightColor;
 uniform vec3 uLightPosition;
+
+uniform float uNearPlane;
+uniform float uFarPlane;
 
 in VertexData {
     vec3 position;
@@ -30,12 +35,23 @@ void main() {
 	distortedTexCoords = f_in.textureCoords + vec2(distortedTexCoords.x, distortedTexCoords.y + uMoveFactor);
 	vec2 totalDistortion = (texture(uDistortionMap, distortedTexCoords).rg * 2.0 - 1.0) * distortionStrength;
 
-    vec2 reflectionCoords = vec2(uvCoords.x, -uvCoords.y) + totalDistortion;
+    vec2 reflectionCoords = vec2(uvCoords.x, -uvCoords.y);
+    vec2 refractionCoords = vec2(uvCoords.x, uvCoords.y);
+
+    // depth calculations
+    float depth = texture(uDepthMap, refractionCoords).r;
+    // distance from the camera to the terrain under the water
+    float floorDistance = 2.0 * uNearPlane * uFarPlane / (uFarPlane + uNearPlane - (depth * 2.0 - 1.0) * (uFarPlane - uNearPlane));
+    depth = gl_FragCoord.z;
+    // distance from the camera to the water fragment
+    float waterDistance = 2.0 * uNearPlane * uFarPlane / (uFarPlane + uNearPlane - (depth * 2.0 - 1.0) * (uFarPlane - uNearPlane));
+    float waterDepth = floorDistance - waterDistance;
+
+    refractionCoords = clamp(refractionCoords, 0.001, 0.999);
+    reflectionCoords += totalDistortion;
+    refractionCoords += totalDistortion;
     reflectionCoords.x = clamp(reflectionCoords.x, 0.001, 0.999);
     reflectionCoords.y = clamp(reflectionCoords.y, -0.999, -0.001);
-
-    vec2 refractionCoords = vec2(uvCoords.x, uvCoords.y) + totalDistortion;
-    refractionCoords = clamp(refractionCoords, 0.001, 0.999);
 
     vec4 reflectionColor = texture(uReflection, reflectionCoords);
     vec4 refractionColor = texture(uRefraction, refractionCoords);
@@ -58,5 +74,6 @@ void main() {
 
     // tint slightly
     finalColor = mix(finalColor, vec4(0, 0.1, 0.1, 1), 0.2) + vec4(specular, 0.0);
+    finalColor.a = clamp(waterDepth/2.0, 0.0, 1.0);
     outColor = finalColor;
 }

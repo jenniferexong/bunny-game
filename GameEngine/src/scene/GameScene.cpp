@@ -144,14 +144,14 @@ void GameScene::makeTest()
 	environment_.addWater(water);
 }
 
-glm::mat4 GameScene::getProjectionMatrix()
+glm::mat4 GameScene::getProjectionMatrix() // why is this in game scene
 {
 	int width, height;
 	glfwGetWindowSize(*window_, &width, &height);
 
 	// Setting the projection matrix
 	float aspect_ratio = (float)width / height;
-	return glm::perspective(fov, aspect_ratio, near_plane, far_plane);
+	return glm::perspective(MasterRenderer::fov, aspect_ratio, MasterRenderer::near_plane, MasterRenderer::far_plane);
 }
 
 

@@ -11,7 +11,7 @@ private:
 	Mesh quad_;
 	WaterShader shader_;
 
-	int reflection_id_, refraction_id_;
+	int reflection_id_, refraction_id_, depth_id_;
 	int dudv_id_, normal_id_;
 
 	const float wave_speed = 0.02f;

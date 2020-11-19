@@ -24,6 +24,10 @@ private:
 
 public:
 	static glm::mat4 projection_matrix;
+	static float fov;
+	static float near_plane;
+	static float far_plane;
+
 	// update every frame
 	static int window_width;
 	static int window_height;

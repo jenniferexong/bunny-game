@@ -5,8 +5,9 @@ class WaterShader final: public Shader {
 private:
 	enum class UniformVariable {
 		TransformationMatrix, ViewMatrix, ProjectionMatrix, CameraPosition,
-		Reflection, Refraction, DistortionMap, NormalMap, MoveFactor,
-		LightColor, LightPosition
+		Reflection, Refraction, DistortionMap, NormalMap, DepthMap, MoveFactor,
+		LightColor, LightPosition,
+		NearPlane, FarPlane
 	};
 
 	std::unordered_map<UniformVariable, int> locations_;
