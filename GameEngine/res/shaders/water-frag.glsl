@@ -21,19 +21,15 @@ in VertexData {
     vec3 toCamera;
 } f_in;
 
-const float distortionStrength = 0.010;
-const float shineDamper = 20.0;
-const float reflectivity = 0.5;
+const float distortionStrength = 0.03;
+const float shineDamper = 100.0;
+const float reflectivity = 0.6;
 
 out vec4 outColor;
 
 void main() {
     vec2 ndcCoords = vec2(f_in.clipSpace) / f_in.clipSpace.w;
     vec2 uvCoords = (ndcCoords + vec2(1.0)) / 2.0;
-
-	vec2 distortedTexCoords = texture(uDistortionMap, vec2(f_in.textureCoords.x + uMoveFactor, f_in.textureCoords.y)).rg * 0.1;
-	distortedTexCoords = f_in.textureCoords + vec2(distortedTexCoords.x, distortedTexCoords.y + uMoveFactor);
-	vec2 totalDistortion = (texture(uDistortionMap, distortedTexCoords).rg * 2.0 - 1.0) * distortionStrength;
 
     vec2 reflectionCoords = vec2(uvCoords.x, -uvCoords.y);
     vec2 refractionCoords = vec2(uvCoords.x, uvCoords.y);
@@ -47,6 +43,12 @@ void main() {
     float waterDistance = 2.0 * uNearPlane * uFarPlane / (uFarPlane + uNearPlane - (depth * 2.0 - 1.0) * (uFarPlane - uNearPlane));
     float waterDepth = floorDistance - waterDistance;
 
+    // water distortions
+	vec2 distortedTexCoords = texture(uDistortionMap, vec2(f_in.textureCoords.x + uMoveFactor, f_in.textureCoords.y)).rg * 0.1;
+	distortedTexCoords = f_in.textureCoords + vec2(distortedTexCoords.x, distortedTexCoords.y + uMoveFactor);
+	vec2 totalDistortion = (texture(uDistortionMap, distortedTexCoords).rg * 3.0 - 1.0) * distortionStrength;
+    totalDistortion *= clamp(waterDepth/20.0, 0.0, 1.0); // less distortion if water depth is < 20
+
     refractionCoords = clamp(refractionCoords, 0.001, 0.999);
     reflectionCoords += totalDistortion;
     refractionCoords += totalDistortion;
@@ -55,22 +57,25 @@ void main() {
 
     vec4 reflectionColor = texture(uReflection, reflectionCoords);
     vec4 refractionColor = texture(uRefraction, refractionCoords);
+    
+    // normal mapping
+    vec4 normalColor = texture(uNormalMap, distortedTexCoords);
+    // extract normal from colours
+    vec3 normal = normalize(vec3(normalColor.r * 2.0 - 1.0, normalColor.b * 5.0, normalColor.g * 2.0 - 1.0));
 
     // Fresnel effect
     vec3 toCamera = normalize(f_in.toCamera);
-    float fresnel = dot(toCamera, vec3(0.0, 1.0, 0.0));
+    float fresnel = dot(toCamera, normal);
 
     vec4 finalColor = mix(reflectionColor, refractionColor, fresnel); // blue
 
     // Specular highlights using normal mapping
-    vec4 normalColor = texture(uNormalMap, distortedTexCoords);
-    // extract normal from colours
-    vec3 normal = normalize(vec3(normalColor.r * 2.0 - 1.0, normalColor.b, normalColor.g * 2.0 - 1.0));
     vec3 lightToPoint = f_in.position - uLightPosition;
     vec3 incidentLight = normalize(lightToPoint);
     vec3 reflectDir = reflect(incidentLight, normal);
     float spec = pow(max(dot(toCamera, reflectDir), 0.0), shineDamper);
     vec3 specular = reflectivity * spec * uLightColor;
+    specular *= clamp(waterDepth/15.0, 0.0, 1.0); // dampen specular highlights when water less deep
 
     // tint slightly
     finalColor = mix(finalColor, vec4(0, 0.1, 0.1, 1), 0.2) + vec4(specular, 0.0);

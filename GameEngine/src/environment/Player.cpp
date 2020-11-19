@@ -74,8 +74,15 @@ void Player::updatePosition(const Environment& environment, const shared_ptr<Gui
 
 	// swim in water
 	if (isInWater(environment.getWater())) {
-		position_.y = max(-16.75f, position_.y);
-		setAlignmentRotation(vec3(0, 1.f, 0));
+		float min_height = -16.75f;
+		position_.y = max(min_height, position_.y);
+
+		// floating in water
+		if (position_.y <= min_height) {
+			setAlignmentRotation(vec3(0, 1.f, 0));
+			is_in_air_ = true;
+			up_velocity_ = 0;
+		}
 	}
 
 	// Check if hits the ground

@@ -14,7 +14,7 @@ out VertexData {
     vec3 toCamera;
 } v_out;
 
-const float tiling = 1.5;
+const float tiling = 0.9;
 
 void main() {
     vec4 worldPosition = uTransformationMatrix * vec4(aPosition.x, 0.0, aPosition.y, 1.0);

@@ -9,7 +9,8 @@ glm::vec4 Water::getReflectionPlane()
 
 glm::vec4 Water::getRefractionPlane()
 {
-	return { 0, -1.f, 0, -15 };
+	float bias = 1.f;
+	return { 0, -1.f, 0, -15 + bias };
 }
 
 /* Checks if the point is under this water tile */

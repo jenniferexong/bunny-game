@@ -66,6 +66,23 @@ void Application::loadPositionsFromFile(const Terrain& terrain, Environment& env
 	file.close();
 }
 
+void Application::loadWaterFromFile(Environment& environment, float water_height)
+{
+	const string file_name = "res/data/water-positions.txt";
+	float x, z;
+	string line;
+
+	ifstream file(file_name);
+	while (getline(file, line)) {
+		std::stringstream str_stream(line);
+		str_stream >> x >> z;
+
+		Water water = Water(x, z, water_height);
+		environment.addWater(water);
+	}
+	file.close();
+}
+
 void Application::loadPositionsFromFileToSet(const Terrain& terrain, shared_ptr<set<shared_ptr<Entity>>> set, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale)
 {
 	float x, y, z;

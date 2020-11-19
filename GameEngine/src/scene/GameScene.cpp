@@ -138,10 +138,7 @@ void GameScene::makeTest()
 	auto flower_model = Application::makeModel("flower", "flower", Material());
 	Application::loadPositionsFromFile(terrain_1_, environment_, flower_model, "test-flowers", vec3(0, -90.f, 0), 0.15f);
 
-	x = 338.833f;
-	z = -244.911f;
-	Water water = Water(x, z, -15);
-	environment_.addWater(water);
+	Application::loadWaterFromFile(environment_, -15.f);
 }
 
 glm::mat4 GameScene::getProjectionMatrix() // why is this in game scene
@@ -188,7 +185,7 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 		break;
 	case GLFW_KEY_L: 
 		if (action == GLFW_RELEASE) {
-			string entity = "test-flowers";
+			string entity = "water";
 			// Create and open a text file
 			std::ofstream positions("res/data/" + entity + "-positions.txt", std::ios::app);
 
