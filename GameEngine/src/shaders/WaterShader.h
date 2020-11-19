@@ -4,7 +4,7 @@
 class WaterShader final: public Shader {
 private:
 	enum class UniformVariable {
-		TransformationMatrix, ViewMatrix, ProjectionMatrix,
+		TransformationMatrix, ViewMatrix, ProjectionMatrix, CameraPosition,
 		Reflection, Refraction, DistortionMap, MoveFactor
 	};
 

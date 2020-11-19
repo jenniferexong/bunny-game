@@ -9,6 +9,7 @@ uniform float uMoveFactor; // simulate moving water ripples
 in VertexData {
     vec2 textureCoords;
     vec4 clipSpace;
+    vec3 toCamera;
 } f_in;
 
 const float distortionStrength = 0.03;
@@ -41,7 +42,11 @@ void main() {
     vec4 reflectionColor = texture(uReflection, reflectionCoords);
     vec4 refractionColor = texture(uRefraction, refractionCoords);
 
-    vec4 finalColor = mix(reflectionColor, refractionColor, 0.5); // blue
+    // Fresnel effect
+    vec3 toCamera = normalize(f_in.toCamera);
+    float fresnel = dot(toCamera, vec3(0.0, 1.0, 0.0));
+
+    vec4 finalColor = mix(reflectionColor, refractionColor, fresnel); // blue
 
     // tint slightly
     finalColor = mix(finalColor, vec4(0, 0.1, 0.1, 1), 0.2);

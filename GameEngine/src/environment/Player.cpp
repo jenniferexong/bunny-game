@@ -74,7 +74,7 @@ void Player::updatePosition(const Environment& environment, const shared_ptr<Gui
 
 	// swim in water
 	if (isInWater(environment.getWater())) {
-		position_.y = max(-16.5f, position_.y);
+		position_.y = max(-16.75f, position_.y);
 		setAlignmentRotation(vec3(0, 1.f, 0));
 	}
 

@@ -77,13 +77,13 @@ void GameScene::setup()
 
 	// Player
 	Material player_material = Material();
-	auto player_model = Application::makeModel("bunny", "white", player_material);
+	auto player_model = Application::makeModel("nibbles", "nibbles", player_material);
 
 	// Bunny player
 	float player_x = 328.411f;
 	float player_z = -19.45f;
 	float player_y = terrain_1_.getHeightOfTerrain(player_x, player_z);
-	player = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(0.f, 0, 0), 1.2f);
+	player = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(0.f, 0, 0), 0.7f);
 	player->setRotationOffset(180.f, 0, 0);
 	environment_.addEntity(player);
 
