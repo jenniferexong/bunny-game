@@ -6,6 +6,7 @@
 #include <stb_image/stb_image.h>
 
 #include "../Application.h"
+#include "../Location.h"
 
 using std::vector;
 using namespace glm;
@@ -95,17 +96,17 @@ float Terrain::getHeightOfTerrain(float world_x, float world_z) const
 /* Generates a mesh for the terrain */
 Mesh Terrain::generate(const string& height_map)
 {
+	const string file_path = FilePath::texture_path + height_map + ".png";
 	int width, height, bpp; // bits per pixel
-	unsigned char* buffer = stbi_load(height_map.c_str(), &width, &height, &bpp, 3); // 3 channels, rgb
+	unsigned char* buffer = stbi_load(file_path.c_str(), &width, &height, &bpp, 3); // 3 channels, rgb
 
 	vertex_count_ = height;
 	int count = vertex_count_ * vertex_count_;
 
-	vector<float> texture_coords;
 	vector<int> indices;
 	positions_.reserve(count * 3);
 	normals_.reserve(count * 3);
-	texture_coords.reserve(count * 2);
+	texture_coords_.reserve(count * 2);
 	indices.reserve(count);
 
 	for (int row = 0; row < vertex_count_; row++) { // row = z
@@ -116,25 +117,31 @@ Mesh Terrain::generate(const string& height_map)
 			positions_.emplace_back(ht);
 			positions_.emplace_back((float)row / ((float)vertex_count_ - 1) * size);
 
-			texture_coords.emplace_back((float)col / ((float)vertex_count_ - 1));
-			texture_coords.emplace_back((float)row / ((float)vertex_count_ - 1));
+			texture_coords_.emplace_back((float)col / ((float)vertex_count_ - 1));
+			texture_coords_.emplace_back((float)row / ((float)vertex_count_ - 1));
 		}
 	}
 
+	// calculate normals and tangents for each point on the grid
 	for (int row = 0; row < vertex_count_; row++) {
 		for (int col = 0; col < vertex_count_; col++) {
 			vec3 normal = calculateNormal(row, col);
 			normals_.emplace_back(normal.x);
 			normals_.emplace_back(normal.y);
 			normals_.emplace_back(normal.z);
+
+			vec3 tangent = calculateAverageTangent(row, col);
+			tangents_.emplace_back(tangent.x);
+			tangents_.emplace_back(tangent.y);
+			tangents_.emplace_back(tangent.z);
 		}
 	}
 
-	for (int gz = 0; gz < vertex_count_ - 1; gz++) {
-		for (int gx = 0; gx < vertex_count_ - 1; gx++) {
-			int top_left = (gz * vertex_count_) + gx;
+	for (int row = 0; row < vertex_count_ - 1; row++) {
+		for (int col = 0; col < vertex_count_ - 1; col++) {
+			int top_left = (row * vertex_count_) + col;
 			int top_right = top_left + 1;
-			int bottom_left = ((gz + 1) * vertex_count_) + gx;
+			int bottom_left = ((row + 1) * vertex_count_) + col;
 			int bottom_right = bottom_left + 1;
 			indices.emplace_back(top_left);
 			indices.emplace_back(bottom_left);
@@ -148,12 +155,12 @@ Mesh Terrain::generate(const string& height_map)
 	if (buffer)
 		stbi_image_free(buffer);
 
-	return Application::loader->loadToVao(positions_, normals_, texture_coords, indices);
+	return Application::loader->loadToVao(positions_, normals_, texture_coords_, tangents_, indices);
 }
 
 float Terrain::calculateHeight(int row, int col, const unsigned char* buffer)
 {
-	if (row < 0 || row >= vertex_count_ || col < 0 || col >= vertex_count_)
+	if (invalidVertex(row, col))
 		return 0;
 
 	int index = 3 * (row * vertex_count_ + col); // 3 channels
@@ -199,6 +206,75 @@ vec3 Terrain::calculateNormal(int row, int col) const
 
 	vec3 normal = ne_normal + se_normal + sw_normal + nw_normal;
 	return normalize(normal);
+}
+
+vec3 Terrain::calculateAverageTangent(int row, int col)
+{
+	vector<vec3> neighbouring_tangents;
+
+	ivec2 origin = ivec2(row, col);
+	ivec2 north = ivec2(row - 1, col);
+	ivec2 north_east = ivec2(row - 1, col + 1);
+	ivec2 east = ivec2(row, col + 1);
+	ivec2 south = ivec2(row + 1, col);
+	ivec2 south_west = ivec2(row + 1, col - 1);
+	ivec2 west = ivec2(row, col - 1);
+
+	// each vertex has a maximum of 6 neighbouring triangles
+	// NNE triangle
+	calculateTangent(north, origin, north_east, neighbouring_tangents);
+	// ENE triangle
+	calculateTangent(east, north_east, origin, neighbouring_tangents);
+	// SE triangle
+	calculateTangent(origin, south, east, neighbouring_tangents);
+	// SSW triangle
+	calculateTangent(south, origin, south_west, neighbouring_tangents);
+	// WSW triangle
+	calculateTangent(west, south_west, origin, neighbouring_tangents);
+	// NW triangle
+	calculateTangent(origin, north, west, neighbouring_tangents);
+
+	vec3 total(0.f);
+	for (auto t: neighbouring_tangents)
+		total += t;
+
+	// average
+	vec3 tangent = total / (float) neighbouring_tangents.size();
+	return normalize(tangent);
+}
+
+/* Calculates the tangent of the triangle where each vertex is given in row and col of the grid */
+void Terrain::calculateTangent(ivec2 v0 , ivec2 v1, ivec2 v2, vector<vec3>& tangents)
+{
+	if (invalidVertex(v0.x, v0.y) || invalidVertex(v1.x, v1.y) || invalidVertex(v2.x, v2.y))
+		return;
+
+	vec3 p0 = getPosition(v0.x, v0.y);
+	vec3 p1 = getPosition(v1.x, v1.y);
+	vec3 p2 = getPosition(v2.x, v2.y);
+	vec2 t0 = getTextureCoordinate(v0.x, v0.y);
+	vec2 t1 = getTextureCoordinate(v1.x, v1.y);
+	vec2 t2 = getTextureCoordinate(v2.x, v2.y);
+
+	vec3 delta_p1 = p1 - p0;
+	vec3 delta_p2 = p2 - p0;
+	vec2 delta_t1 = t1 - t0;
+	vec2 delta_t2 = t2 - t0;
+
+	float r = 1.f / (delta_t1.x * delta_t2.y - delta_t1.y * delta_t2.x);
+	vec3 tangent = (delta_p1 * delta_t2.y - delta_p2 * delta_t1.y) * r;
+	tangents.push_back(tangent);
+}
+
+bool Terrain::invalidVertex(int row, int col)
+{
+	return row < 0 || row >= vertex_count_ || col < 0 || col >= vertex_count_;
+}
+
+vec2 Terrain::getTextureCoordinate(int row, int col) const
+{
+	int index = 2 * (row * vertex_count_ + col); // 3 channels
+	return vec2(texture_coords_.at(index), texture_coords_.at(index + 1));
 }
 
 vec3 Terrain::getPosition(int row, int col) const

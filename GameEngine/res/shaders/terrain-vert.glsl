@@ -11,10 +11,12 @@ uniform vec4 uClippingPlane;
 layout(location = 0) in vec3 aPosition;
 layout(location = 1) in vec3 aNormal;
 layout(location = 2) in vec2 aTextureCoords;
+layout(location = 3) in vec3 aTangent;
 
 out VertexData {
     vec3 position;
     vec3 normal;
+    vec3 tangent;
     vec2 textureCoords;
     vec3 cameraPosition;
     float visibility;
@@ -37,6 +39,7 @@ void main() {
     //v_out.normal = mat3(transpose(inverse(uTransformationMatrix))) * aNormal;
     v_out.normal = vec3(uTransformationMatrix * vec4(aNormal, 0));
     v_out.cameraPosition = vec3(uInverseViewMatrix * vec4(0, 0, 0, 1));
+    v_out.tangent = aTangent;
 
     v_out.textureCoords = aTextureCoords;
 

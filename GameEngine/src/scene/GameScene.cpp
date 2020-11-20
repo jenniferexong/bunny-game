@@ -8,6 +8,8 @@
 
 #include <glm/gtc/random.hpp>
 
+#include "../Location.h"
+
 using std::shared_ptr;
 using std::make_shared;
 
@@ -59,20 +61,21 @@ void GameScene::setup()
 	// GUI
 	const float padding = 100;
 	const float size = 150;
-	compass = std::make_shared<GuiTexture>(loader_->loadTexture("res/textures/compass.png"), vec2(padding, height - padding), vec2(size));
+	compass = std::make_shared<GuiTexture>(loader_->loadTexture("compass"), vec2(padding, height - padding), vec2(size));
 
 	const float cross_hair_size = 60;
 	const vec2 center = vec2((float)width / 2, (float)height / 2);
-	auto cross_hair = make_shared<GuiTexture>(loader_->loadTexture("res/textures/cross-hair.png"), center, vec2(cross_hair_size));
+	auto cross_hair = make_shared<GuiTexture>(loader_->loadTexture("cross-hair"), center, vec2(cross_hair_size));
 
 	guis_.push_back(cross_hair);
 	guis_.push_back(compass);
 
 	// Terrains
 	auto texture_pack = Application::makeTexturePack("green", "green", "light-green", "rocks");
-	Texture blend_map = Texture(loader_->loadTexture("res/textures/terrain1.png"));
-	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map);
-	terrain_1_ = Terrain(0, -1, ground_texture, "res/textures/heightmap.png");
+	Texture blend_map = Texture(loader_->loadTexture("terrain1"));
+	Texture normal_map = Texture(loader_->loadTexture("rocks-normal"));
+	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map, normal_map);
+	terrain_1_ = Terrain(0, -1, ground_texture, "heightmap");
 	environment_.addTerrain(terrain_1_);
 
 	// Player
@@ -187,7 +190,7 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 		if (action == GLFW_RELEASE) {
 			string entity = "water";
 			// Create and open a text file
-			std::ofstream positions("res/data/" + entity + "-positions.txt", std::ios::app);
+			std::ofstream positions(FilePath::data_path + entity + "-positions.txt", std::ios::app);
 
 			vec3 position = player->getPosition();
 			// Write to the file

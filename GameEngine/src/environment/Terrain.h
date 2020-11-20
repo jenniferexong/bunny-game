@@ -23,6 +23,9 @@ private:
 	std::vector<float> positions_;
 	std::vector<float> normals_;
 
+	std::vector<float> texture_coords_;
+	std::vector<float> tangents_;
+
 	Mesh generate(const std::string& height_map);
 
 	template <class Value>
@@ -30,10 +33,15 @@ private:
 
 	float calculateHeight(int row, int col, const unsigned char* buffer);
 	glm::vec3 calculateNormal(int row, int col) const;
+	glm::vec3 calculateAverageTangent(int row, int col);
+	void calculateTangent(glm::ivec2 v0, glm::ivec2 v1, glm::ivec2 v2, std::vector<glm::vec3>& tangents);
 
 	glm::vec3 getPosition(int row, int col) const;
 	glm::vec3 getNormal(int row, int col) const;
+	glm::vec2 getTextureCoordinate(int row, int col) const;
 	float getHeight(int x, int z) const;
+
+	bool invalidVertex(int row, int col);
 
 public:
 	Terrain() = default;

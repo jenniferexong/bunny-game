@@ -1,9 +1,24 @@
 #pragma once
 
+#include <string>
+
+namespace FilePath {
+	const std::string texture_path = "res/textures/";
+	const std::string model_path = "res/objects/";
+	const std::string shader_path = "res/shaders/";
+	const std::string data_path = "res/data/";
+}
+
 namespace AttributeLocation {
 	enum Location {
 		Position = 0, Normal = 1, Texture = 2, ModelMatrixColumn1 = 3, ModelMatrixColumn2 = 4,
 		ModelMatrixColumn3 = 5, ModelMatrixColumn4 = 6, ModelBrightness = 7
+	};
+}
+
+namespace TerrainAttributeLocation {
+	enum Location {
+		Position = 0, Normal = 1, Texture = 2, Tangent = 3
 	};
 }
 

@@ -29,9 +29,10 @@ void TerrainRenderer::prepareTerrain(const Terrain& terrain)
 
 	// Render the mesh
 	glBindVertexArray(mesh.getId());
-	glEnableVertexAttribArray(AttributeLocation::Position);
-	glEnableVertexAttribArray(AttributeLocation::Normal);
-	glEnableVertexAttribArray(AttributeLocation::Texture);
+	glEnableVertexAttribArray(TerrainAttributeLocation::Position);
+	glEnableVertexAttribArray(TerrainAttributeLocation::Normal);
+	glEnableVertexAttribArray(TerrainAttributeLocation::Texture);
+	glEnableVertexAttribArray(TerrainAttributeLocation::Tangent);
 
 	// Binding textures
 	shader_->loadMaterial(texture.getMaterial());
@@ -59,9 +60,10 @@ void TerrainRenderer::bindTextures(const Terrain& terrain) {
 
 void TerrainRenderer::unbindTerrain()
 {
-	glDisableVertexAttribArray(AttributeLocation::Position);
-	glDisableVertexAttribArray(AttributeLocation::Normal);
-	glDisableVertexAttribArray(AttributeLocation::Texture);
+	glDisableVertexAttribArray(TerrainAttributeLocation::Position);
+	glDisableVertexAttribArray(TerrainAttributeLocation::Normal);
+	glDisableVertexAttribArray(TerrainAttributeLocation::Texture);
+	glDisableVertexAttribArray(TerrainAttributeLocation::Tangent);
 	glBindVertexArray(0); // unbind 
 }
 

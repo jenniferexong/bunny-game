@@ -38,17 +38,19 @@ class TerrainTexture {
 private:
 	std::shared_ptr<TerrainTexturePack> texture_pack_;
 	Texture blend_map_;
+	Texture normal_map_;
 	Material material_ = Material();
 
 public:
 	TerrainTexture() : texture_pack_(nullptr) {}
 
-	TerrainTexture(std::shared_ptr<TerrainTexturePack> texture_pack, Texture blend_map)
-		: texture_pack_(std::move(texture_pack)), blend_map_(blend_map) {}
+	TerrainTexture(std::shared_ptr<TerrainTexturePack> texture_pack, Texture blend_map, Texture normal_map)
+		: texture_pack_(std::move(texture_pack)), blend_map_(blend_map), normal_map_(normal_map) {}
 
 	Texture getBlendMap() const { return blend_map_; }
 	std::shared_ptr<TerrainTexturePack> getTexturePack() const { return texture_pack_; }
 
+	Texture getNormalMap() const { return normal_map_; }
 	Material getMaterial() const { return material_; }
 };
 

@@ -15,9 +15,10 @@ void TerrainShader::setUp()
 
 void TerrainShader::bindAttributes()
 {
-	bindAttribute(AttributeLocation::Position, "aPosition");
-	bindAttribute(AttributeLocation::Normal, "aNormal");
-	bindAttribute(AttributeLocation::Texture, "aTextureCoords");
+	bindAttribute(TerrainAttributeLocation::Position, "aPosition");
+	bindAttribute(TerrainAttributeLocation::Normal, "aNormal");
+	bindAttribute(TerrainAttributeLocation::Texture, "aTextureCoords");
+	bindAttribute(TerrainAttributeLocation::Tangent, "aTangent");
 }
 
 void TerrainShader::getAllUniformLocations()

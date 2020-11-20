@@ -9,6 +9,9 @@
 #include <iostream>
 #include <chrono>
 
+#include "Location.h"
+
+
 #include "models/Texture.h"
 #include "scene/GameScene.h"
 
@@ -47,7 +50,7 @@ void Application::loadPositionsFromFile(const Terrain& terrain, Environment& env
 	float x, y, z;
 	string line;
 
-	ifstream file("res/data/" + name + "-positions.txt");
+	ifstream file(FilePath::data_path + name + "-positions.txt");
 	while (getline(file, line)) {
 		auto entity = make_shared<Entity>(model);
 
@@ -68,7 +71,7 @@ void Application::loadPositionsFromFile(const Terrain& terrain, Environment& env
 
 void Application::loadWaterFromFile(Environment& environment, float water_height)
 {
-	const string file_name = "res/data/water-positions.txt";
+	const string file_name = FilePath::data_path + "water-positions.txt";
 	float x, z;
 	string line;
 
@@ -88,7 +91,7 @@ void Application::loadPositionsFromFileToSet(const Terrain& terrain, shared_ptr<
 	float x, y, z;
 	string line;
 
-	ifstream file("res/data/" + name + "-positions.txt");
+	ifstream file(FilePath::data_path + name + "-positions.txt");
 	while (getline(file, line)) {
 		auto entity = make_shared<Entity>(model);
 
@@ -110,11 +113,10 @@ void Application::loadPositionsFromFileToSet(const Terrain& terrain, shared_ptr<
 shared_ptr<TerrainTexturePack> Application::makeTexturePack(const string& base, const string& red,
 	const string &green, const string& blue) 
 {
-	const string prefix("res/textures/");
-	Texture base_texture = Texture(loader->loadTexture(prefix + base + ".png"));
-	Texture red_texture = Texture(loader->loadTexture(prefix + red + ".png"));
-	Texture green_texture = Texture(loader->loadTexture(prefix + green + ".png"));
-	Texture blue_texture = Texture(loader->loadTexture(prefix + blue + ".png"));
+	Texture base_texture = Texture(loader->loadTexture(base));
+	Texture red_texture = Texture(loader->loadTexture(red));
+	Texture green_texture = Texture(loader->loadTexture(green));
+	Texture blue_texture = Texture(loader->loadTexture(blue));
 
 	return make_shared<TerrainTexturePack>(base_texture, red_texture, green_texture, blue_texture);
 }
@@ -122,10 +124,8 @@ shared_ptr<TerrainTexturePack> Application::makeTexturePack(const string& base, 
 shared_ptr<TexturedModel> Application::makeModel(const string& obj_name,
 	const string& texture_name, const Material& material)
 {
-	const string obj_prefix("res/objects/");
-	const string texture_prefix("res/textures/");
-	InstancedMesh mesh = loader->loadToVaoInstanced(obj_prefix + obj_name + ".obj");
-	ModelTexture texture(loader->loadTexture(texture_prefix + texture_name + ".png"), material);
+	InstancedMesh mesh = loader->loadToVaoInstanced(obj_name);
+	ModelTexture texture(loader->loadTexture(texture_name), material);
 	return make_shared<TexturedModel>(mesh, texture);
 }
 

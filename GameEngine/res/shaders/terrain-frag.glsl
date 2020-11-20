@@ -21,6 +21,7 @@ uniform vec3 uSunStrength;
 in VertexData {
     vec3 position;
     vec3 normal;
+    vec3 tangent;
     vec2 textureCoords;
     vec3 cameraPosition;
     float visibility;

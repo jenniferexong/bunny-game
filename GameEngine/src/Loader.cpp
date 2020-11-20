@@ -24,10 +24,25 @@ Mesh Loader::loadToVao(const vector<float>& positions, const vector<float> & nor
 	return { vao_id, (int) indices.size(), 3 };
 }
 
-/* Loads data from an obj file into a VAO */
-Mesh Loader::loadToVao(const string& obj_file)
+Mesh Loader::loadToVao(const vector<float>& positions, const vector<float>& normals, 
+		const vector<float>& texture_coords, const vector<float>& tangents, const vector<int>& indices)
 {
-	WavefrontData data = WavefrontData(obj_file);
+	int vao_id = createVao();
+	storeInAttributeList(TerrainAttributeLocation::Position, 3, positions);
+	storeInAttributeList(TerrainAttributeLocation::Normal, 3, normals);
+	storeInAttributeList(TerrainAttributeLocation::Texture, 2, texture_coords);
+	storeInAttributeList(TerrainAttributeLocation::Tangent, 3, tangents);
+
+	bindIbo(indices);
+	unbindVao(); // unbinding
+	return { vao_id, (int) indices.size(), 3 };
+}
+
+/* Loads data from an obj file into a VAO */
+Mesh Loader::loadToVao(const string& obj_name)
+{
+	const string file_path = FilePath::model_path + obj_name + ".obj";
+	WavefrontData data = WavefrontData(file_path);
 	int vao_id = createVao();
 	storeInAttributeList(AttributeLocation::Position, 3, data.positions);
 	storeInAttributeList(AttributeLocation::Normal, 3, data.normals);
@@ -39,9 +54,10 @@ Mesh Loader::loadToVao(const string& obj_file)
 }
 
 /* Also sets the bounding sphere information for the mesh */
-InstancedMesh Loader::loadToVaoInstanced(const string& obj_file)
+InstancedMesh Loader::loadToVaoInstanced(const string& obj_name)
 {
-	WavefrontData data = WavefrontData(obj_file);
+	const string file_path = FilePath::model_path + obj_name + ".obj";
+	WavefrontData data = WavefrontData(file_path);
 	int vao_id = createVao();
 	storeInAttributeList(AttributeLocation::Position, 3, data.positions);
 	storeInAttributeList(AttributeLocation::Normal, 3, data.normals);
@@ -93,12 +109,13 @@ int Loader::loadCubeMap(std::vector<std::string> texture_names)
 }
 
 
-int Loader::loadTexture(const string& file_name)
+int Loader::loadTexture(const string& texture_name)
 {
+	const string file_path = FilePath::texture_path + texture_name + ".png";
 	// Loading the image
 	stbi_set_flip_vertically_on_load(1); // IF UPSIDE DOWN TEXTURE, CHANGE THIS
 	int width, height, bpp; // bits per pixel
-	unsigned char* buffer = stbi_load(file_name.c_str(), &width, &height, &bpp, 4);
+	unsigned char* buffer = stbi_load(file_path.c_str(), &width, &height, &bpp, 4);
 
 	GLuint texture_id;
 	glGenTextures(1, &texture_id);
@@ -120,7 +137,7 @@ int Loader::loadTexture(const string& file_name)
 		stbi_image_free(buffer);
 	}
 
-	printf("Loaded texture: %s, %d\n", file_name.c_str(), texture_id);
+	printf("Loaded texture: %s, %d\n", texture_name.c_str(), texture_id);
 	textures_.push_back(&texture_id);
 	return texture_id;
 }

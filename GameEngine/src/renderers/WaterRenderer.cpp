@@ -21,9 +21,8 @@ WaterRenderer::WaterRenderer(const WaterFrameBuffers& fbos)
 	depth_id_ = fbos.getRefractionDepthTexture();
 
 	// load the dudv map
-	const string texture_path = "res/textures/";
-	dudv_id_ = Application::loader->loadTexture(texture_path + "water-dudv.png");
-	normal_id_ = Application::loader->loadTexture(texture_path + "water-normal.png");
+	dudv_id_ = Application::loader->loadTexture("water-dudv");
+	normal_id_ = Application::loader->loadTexture("water-normal");
 
 	shader_.start();
 	shader_.connectTextureUnits();
