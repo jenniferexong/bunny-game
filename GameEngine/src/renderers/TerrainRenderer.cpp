@@ -56,6 +56,9 @@ void TerrainRenderer::bindTextures(const Terrain& terrain) {
 	// blend map
 	glActiveTexture(GL_TEXTURE0 + TextureLocation::BlendMap);
 	glBindTexture(GL_TEXTURE_2D, terrain.getTexture().getBlendMap().getId());
+	// normal map
+	glActiveTexture(GL_TEXTURE0 + TextureLocation::NormalMap);
+	glBindTexture(GL_TEXTURE_2D, terrain.getTexture().getNormalMap().getId());
 }
 
 void TerrainRenderer::unbindTerrain()

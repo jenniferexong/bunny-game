@@ -15,7 +15,7 @@ private:
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
 		LightPosition, LightColor, LightCount, MaxLights, Attenuation,
 		Reflectivity, ShineDamper, FogColor, SunStrength,
-		BaseTexture, RedTexture, GreenTexture, BlueTexture, BlendMap,
+		BaseTexture, RedTexture, GreenTexture, BlueTexture, BlendMap, NormalMap,
 		ClippingPlane
 	};
 

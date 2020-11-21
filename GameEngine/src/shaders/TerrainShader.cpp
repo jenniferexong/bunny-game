@@ -44,12 +44,18 @@ void TerrainShader::getAllUniformLocations()
 	locations_.insert({ UniformVariable::GreenTexture, getUniformLocation("uGreenTexture") });
 	locations_.insert({ UniformVariable::BlueTexture, getUniformLocation("uBlueTexture") });
 	locations_.insert({ UniformVariable::BlendMap, getUniformLocation("uBlendMap") });
+	locations_.insert({ UniformVariable::NormalMap, getUniformLocation("uNormalMap") });
 
 	locations_.insert({ UniformVariable::ClippingPlane, getUniformLocation("uClippingPlane") });
 }
 
 void TerrainShader::loadUniformPerFrame(const Environment& environment, glm::vec4 clipping_plane) const
 {
+	glm::mat4 v_matrix = Maths::createViewMatrix(*environment.getCamera());
+	// View matrix
+	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
+	loadMatrix(locations_.at(UniformVariable::InverseViewMatrix), inverse(v_matrix));
+
 	// Loading light variables
 	int num_lights = environment.getLights().size();
 	std::vector<glm::vec3> positions;
@@ -59,7 +65,7 @@ void TerrainShader::loadUniformPerFrame(const Environment& environment, glm::vec
 	colors.reserve(num_lights);
 	attenuations.reserve(num_lights);
 	for (const auto& l : environment.getLights()) {
-		positions.emplace_back(l->getPosition());
+		positions.emplace_back(vec3(v_matrix * glm::vec4(l->getPosition(), 1.f)));  // in eye space
 		colors.emplace_back(l->getColor());
 		attenuations.emplace_back(l->getAttenuation());
 	}
@@ -75,11 +81,6 @@ void TerrainShader::loadUniformPerFrame(const Environment& environment, glm::vec
 
 	// Loading projection matrix
 	loadMatrix(locations_.at(UniformVariable::ProjectionMatrix), MasterRenderer::projection_matrix);
-
-	// View matrix
-	glm::mat4 v_matrix = Maths::createViewMatrix(*environment.getCamera());
-	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
-	loadMatrix(locations_.at(UniformVariable::InverseViewMatrix), inverse(v_matrix));
 
 	// load clipping plane
 	loadVector(locations_.at(UniformVariable::ClippingPlane), clipping_plane);
@@ -111,4 +112,5 @@ void TerrainShader::connectTextureUnits() const
 	loadInt(locations_.at(UniformVariable::GreenTexture), TextureLocation::Green);
 	loadInt(locations_.at(UniformVariable::BlueTexture), TextureLocation::Blue);
 	loadInt(locations_.at(UniformVariable::BlendMap), TextureLocation::BlendMap);
+	loadInt(locations_.at(UniformVariable::NormalMap), TextureLocation::NormalMap);
 }
