@@ -42,7 +42,14 @@
     <ClCompile Include="src\renderers\MasterRenderer.cpp" />
     <ClCompile Include="src\renderers\SkyboxRenderer.cpp" />
     <ClCompile Include="src\renderers\TerrainRenderer.cpp" />
+    <ClCompile Include="src\scene\TestScene.cpp" />
     <ClCompile Include="src\shaders\WaterShader.cpp" />
+    <ClCompile Include="src\text\FontData.cpp" />
+    <ClCompile Include="src\text\FontType.cpp" />
+    <ClCompile Include="src\text\GuiText.cpp" />
+    <ClCompile Include="src\text\Text.cpp" />
+    <ClCompile Include="src\text\TextMaster.cpp" />
+    <ClCompile Include="src\text\TextMeshData.cpp" />
     <ClCompile Include="src\WavefrontData.cpp" />
     <ClCompile Include="src\shaders\EntityShader.cpp" />
     <ClCompile Include="src\shaders\GuiShader.cpp" />
@@ -50,6 +57,7 @@
     <ClCompile Include="src\shaders\SkyboxShader.cpp" />
     <ClCompile Include="src\shaders\TerrainShader.cpp" />
     <ClCompile Include="src\stb_image.cpp" />
+    <ClCompile Include="src\text\TextLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\CompareTexturedModel.h" />
@@ -79,7 +87,14 @@
     <ClInclude Include="src\renderers\TerrainRenderer.h" />
     <ClInclude Include="src\models\Mesh.h" />
     <ClInclude Include="src\models\Model.h" />
+    <ClInclude Include="src\scene\TestScene.h" />
     <ClInclude Include="src\shaders\WaterShader.h" />
+    <ClInclude Include="src\text\FontData.h" />
+    <ClInclude Include="src\text\FontType.h" />
+    <ClInclude Include="src\text\GuiText.h" />
+    <ClInclude Include="src\text\Text.h" />
+    <ClInclude Include="src\text\TextMaster.h" />
+    <ClInclude Include="src\text\TextMeshData.h" />
     <ClInclude Include="src\WavefrontData.h" />
     <ClInclude Include="src\models\Texture.h" />
     <ClInclude Include="src\scene\Scene.h" />
@@ -91,6 +106,7 @@
     <ClInclude Include="src\shaders\TerrainShader.h" />
     <ClInclude Include="src\UserInput.h" />
     <ClInclude Include="src\vendor\stb_image\stb_image.h" />
+    <ClInclude Include="src\text\TextLoader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

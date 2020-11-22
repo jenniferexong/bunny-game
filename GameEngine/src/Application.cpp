@@ -14,6 +14,7 @@
 
 #include "models/Texture.h"
 #include "scene/GameScene.h"
+#include "scene/TestScene.h"
 
 using namespace glm;
 using namespace std;
@@ -30,7 +31,8 @@ float Application::frame_delta = 0;
 Application::Application(const shared_ptr<GLFWwindow*>& w)
 {
 	window = w;
-	current_scene = make_shared<GameScene>(window, loader);
+	//current_scene = make_shared<GameScene>(window, loader);
+	current_scene = make_shared<TestScene>();
 }
 
 void Application::render() {
@@ -39,7 +41,10 @@ void Application::render() {
 
 	current_scene->update();
 
-	renderer_.renderAll(current_scene);
+	if (current_scene->isRenderable()) {
+		renderer_.renderAll(current_scene);
+	}
+
 	current_scene->postRenderUpdate();
 
 	previous_frame_time = current_frame_time;
