@@ -38,6 +38,17 @@ Mesh Loader::loadToVao(const vector<float>& positions, const vector<float>& norm
 	return { vao_id, (int) indices.size(), 3 };
 }
 
+/* Loading text mesh data to a vao (2d positions) */
+int Loader::loadToVao(const vector<float>& positions, const vector<float>& texture_coords)
+{
+	int vao_id = createVao();
+	storeInAttributeList(TextAttributeLocation::Position, 2, positions);
+	storeInAttributeList(TextAttributeLocation::Texture, 2, texture_coords);
+	unbindVao(); // unbinding
+	return vao_id;
+}
+
+
 /* Loads data from an obj file into a VAO */
 Mesh Loader::loadToVao(const string& obj_name)
 {

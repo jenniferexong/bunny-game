@@ -17,6 +17,12 @@ namespace AttributeLocation {
 	};
 }
 
+namespace TextAttributeLocation {
+	enum Location {
+		Position = 0, Texture = 1
+	};
+}
+
 namespace TerrainAttributeLocation {
 	enum Location {
 		Position = 0, Normal = 1, Texture = 2, Tangent = 3

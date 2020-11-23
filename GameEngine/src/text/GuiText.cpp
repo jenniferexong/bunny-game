@@ -4,7 +4,7 @@
 
 int GuiText::next_id = 0;
 
-GuiText::GuiText(const std::string& text, float font_size, const FontType& font, glm::vec2 position, float max_line_width, bool centered)
+GuiText::GuiText(const std::string& text, float font_size, std::shared_ptr<FontType> font, glm::vec2 position, float max_line_width, bool centered)
 {
 	// assign id
 	id_ = next_id++;
@@ -15,3 +15,10 @@ GuiText::GuiText(const std::string& text, float font_size, const FontType& font,
 	max_line_width_ = max_line_width;
 	centered_ = centered;
 }
+
+void GuiText::setMeshDataInfo(int vao, int vertex_count)
+{
+	mesh_vao_ = vao;
+	vertex_count_ = vertex_count;
+}
+

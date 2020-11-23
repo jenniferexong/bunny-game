@@ -12,6 +12,7 @@
 
 #include "../gui/GuiTexture.h"
 #include "../Loader.h"
+#include "../text/TextMaster.h"
 
 using std::string;
 using std::map;
@@ -26,11 +27,13 @@ protected:
 
 	Environment environment_;
 	vector<shared_ptr<GuiTexture>> guis_;
+	TextMaster text_;
 	bool renderable_ = true;
 
 public:
 	virtual const vector<shared_ptr<GuiTexture>>& getGuis() const { return guis_; }
 	virtual const Environment& getEnvironment() { return environment_; }
+	virtual const TextMaster& getText() { return text_; }
 
 	virtual void update() = 0;
 	virtual void postRenderUpdate() = 0;

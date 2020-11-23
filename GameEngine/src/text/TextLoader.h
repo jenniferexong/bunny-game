@@ -1,23 +1,33 @@
 #pragma once
 #include <string>
 
-#include "TextMeshData.h"
+#include "GuiText.h"
+#include "Text.h"
 
-class GuiText;
+struct TextMeshData {
+	std::vector<float> positions;
+	std::vector<float> texture_coords;
 
-class TextLoader
-{
+	int getVertexCount() const { return (int)positions.size() / 2; }
+};
+
+class TextLoader {
+private:
+	std::vector<Line> structureText(GuiText& gui_text);
+	TextMeshData createQuadData(GuiText& text, const std::vector<Line>& lines);
+	void addVertices(const Character& character, double font_size, double cursor_x, double cursor_y, std::vector<float>& positions);
+	void addTextureCoords(const Character& character, std::vector<float>& texture_coords);
+	void addData(std::vector<float>& data, float x, float y, float max_x, float max_y);
+		
 public:
 	static const double line_height;
 	static const int space_ascii;
 
-	TextLoader() = default;
-	TextLoader(const std::string& font_name);
+	//TextLoader(const std::string& font_name);
 
 /*
  * Takes in an unloaded text and calculates all of the vertices
  * for the quads on which the text will be rendered.
  */ 
-	TextMeshData loadData(const GuiText& text); // createTextMesh
+	TextMeshData createMesh(GuiText& text); // createTextMesh
 };
-

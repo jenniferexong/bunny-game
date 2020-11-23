@@ -29,6 +29,10 @@ public:
 		const vector<float>& texture_coords, const vector<float>& tangents, const vector<int>& indices);
 
 	Mesh loadToVao(const vector<float>& positions, int dimensions);
+
+	// Test mesh (2d positions)
+	int loadToVao(const vector<float>& positions, const vector<float>& texture_coords);
+
 	int loadCubeMap(std::vector<std::string> texture_files);
 
 	int createInstancedVbo(int start_location, int blocks, int num_elements, int offset);

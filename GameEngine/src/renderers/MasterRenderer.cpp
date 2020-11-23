@@ -53,7 +53,9 @@ void MasterRenderer::renderAll(const shared_ptr<Scene>& scene)
 	water_fbos_.unbindCurrentFrameBuffer();
 
 	renderScene(scene, glm::vec4(0), true);
+
 	water_renderer_.render(scene->getEnvironment());
+
 	gui_renderer_.render(scene->getGuis());
 }
 

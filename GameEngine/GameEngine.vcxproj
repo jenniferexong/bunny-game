@@ -49,7 +49,6 @@
     <ClCompile Include="src\text\GuiText.cpp" />
     <ClCompile Include="src\text\Text.cpp" />
     <ClCompile Include="src\text\TextMaster.cpp" />
-    <ClCompile Include="src\text\TextMeshData.cpp" />
     <ClCompile Include="src\WavefrontData.cpp" />
     <ClCompile Include="src\shaders\EntityShader.cpp" />
     <ClCompile Include="src\shaders\GuiShader.cpp" />
@@ -94,7 +93,6 @@
     <ClInclude Include="src\text\GuiText.h" />
     <ClInclude Include="src\text\Text.h" />
     <ClInclude Include="src\text\TextMaster.h" />
-    <ClInclude Include="src\text\TextMeshData.h" />
     <ClInclude Include="src\WavefrontData.h" />
     <ClInclude Include="src\models\Texture.h" />
     <ClInclude Include="src\scene\Scene.h" />

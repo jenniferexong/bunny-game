@@ -24,7 +24,7 @@ using std::vector;
 class Camera;
 
 using entity_set = shared_ptr<set<shared_ptr<Entity>>>;
-using entity_map = unordered_map<shared_ptr<TexturedModel>, entity_set, TexturedModelHash, TexturedModelEquality>;
+using entity_map = unordered_map<shared_ptr<TexturedModel>, entity_set, TexturedModelHash, TexturedModelEquality>; //TODO
 
 class Environment {
 private:

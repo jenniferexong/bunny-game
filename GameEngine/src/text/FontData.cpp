@@ -24,8 +24,6 @@ const int FontData::desired_padding = 3;
  */
 FontData::FontData(const std::string& font_name)
 {
-	double space_width;
-
 	int ww, wh;
 	glfwGetFramebufferSize(*Application::window, &ww, &wh);
 	double aspect_ratio = (double)ww / (double)wh;
@@ -54,6 +52,7 @@ FontData::FontData(const std::string& font_name)
 	// process character data
 	for (int i = 0; i < char_count; i++) {
 		int char_id = stoi(getToken(&file, "id")); // ASCII
+
 		double x = stod(getToken(&file, "x"));
 		double y = stod(getToken(&file, "y"));
 		int w = stoi(getToken(&file, "width"));
@@ -61,6 +60,11 @@ FontData::FontData(const std::string& font_name)
 		double x_offset = stod(getToken(&file, "xoffset"));
 		double y_offset = stod(getToken(&file, "yoffset"));
 		double x_adv = stod(getToken(&file, "xadvance"));
+
+		if (char_id == TextLoader::space_ascii) { // space character
+			space_width_ = (x_adv - padding_width) * horizontal_per_pixel_size;
+			continue;
+		}
 
 		dvec2 texture_coords(0); 
 		dvec2 texture_size(0); 
@@ -81,10 +85,7 @@ FontData::FontData(const std::string& font_name)
 		offset.y = (y_offset + stod(padding_top) - desired_padding) * vertical_per_pixel_size;
 		x_advance = (x_adv - padding_width) * horizontal_per_pixel_size;
 
-		if (char_id == TextLoader::space_ascii) // space character
-			space_width = (x_adv - padding_width) * horizontal_per_pixel_size;
-		else
-			characters_.insert({ char_id, Character(char_id, texture_coords, texture_size, offset, quad_size, x_advance) });
+		characters_.insert({ char_id, Character(char_id, texture_coords, texture_size, offset, quad_size, x_advance) });
 	}
 	cout << "characters: " << characters_.size() << endl;
 

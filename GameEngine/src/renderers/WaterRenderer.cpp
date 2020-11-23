@@ -31,6 +31,9 @@ WaterRenderer::WaterRenderer(const WaterFrameBuffers& fbos)
 
 void WaterRenderer::render(const Environment& environment)
 {
+	if (environment.getWater().empty())
+		return;
+
 	prepare(environment);
 	for (const auto& water: environment.getWater()) {
 		shader_.loadModelMatrix(water);

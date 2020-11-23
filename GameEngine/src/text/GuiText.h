@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <memory>
 #include <string>
 
 #include <glm/glm.hpp>
@@ -23,7 +24,7 @@ private:
 	float max_line_width_;
 	int line_count_;
 
-	FontType font_;
+	std::shared_ptr<FontType> font_ = nullptr;
 
 	bool centered_ = false;
 
@@ -35,11 +36,28 @@ public:
 	 *		- top left (0, 0)
 	 *		- bottom right (1, 0)
 	 */
-	GuiText(const std::string& text, float font_size, const FontType& font, 
+	GuiText(const std::string& text, float font_size, std::shared_ptr<FontType> font, 
 			glm::vec2 position, float max_line_width, bool centered);
 
+	std::shared_ptr<FontType> getFont() const { return font_; }
+	float getFontSize() const { return font_size_; }
+	float getMaxLineWidth() const { return max_line_width_; }
+	std::string getText() const { return text_; }
+	glm::vec3 getColor() const { return color_; }
+	int getVao() const { return mesh_vao_; }
+	int getVertexCount() const { return vertex_count_; }
+	bool isCentered() const { return centered_; }
+
+	void setMeshDataInfo(int vao, int vertex_count);
+	void setColor(glm::vec3 color) { color_ = color; }
+	void setLineCount(int count) { line_count_ = count; }
+	
 	// equality
 	bool operator==(const GuiText& other) const {
 		return id_ == other.id_;
+	}
+
+	bool operator< (const GuiText& other) const {
+		return id_ < other.id_;
 	}
 };

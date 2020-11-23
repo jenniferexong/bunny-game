@@ -12,6 +12,7 @@ out VertexData {
 } v_out;
 
 void main() {
+    gl_ClipDistance[0] = 1;
     gl_Position = uProjectionMatrix * uViewMatrix * vec4(aPosition, 1.0);
     v_out.textureCoords = aPosition;
 }

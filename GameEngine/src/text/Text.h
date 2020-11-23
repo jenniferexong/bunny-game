@@ -28,7 +28,7 @@ public:
 
 	double getMaxWidth() const { return max_width_; }
 	double getCurrentWidth() const { return current_line_width_; }
-	const std::vector<Word>& getWords() { return words_; }
+	const std::vector<Word>& getWords() const { return words_; }
 };
 
 class Word {
@@ -43,7 +43,7 @@ public:
 
 	void addCharacter(const Character& character);
 
-	const std::vector<Character>& getCharacters() { return characters_; }
+	const std::vector<Character>& getCharacters() const { return characters_; }
 	double getWidth() const { return width_; }
 };
 

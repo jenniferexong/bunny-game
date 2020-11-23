@@ -4,30 +4,31 @@
 #include <set>
 
 #include "FontType.h"
+#include "TextLoader.h"
 
 class GuiText;
-
 
 namespace std
 {
 	template <>
-	struct hash<FontType>
+	struct hash<shared_ptr<FontType>>
 	{
-		size_t operator()(const FontType& font_type) const
+		size_t operator()(const shared_ptr<FontType>& font_type) const
 		{
-			return hash<int>()(font_type.getTexture());
+			return hash<int>()(font_type->getTexture());
 		}
 	};
 }
 
-/**
- * Stores all of the text.
- */
+using text_map = std::unordered_map<std::shared_ptr<FontType>, std::set<GuiText>>;
+
 class TextMaster {
 private:
-	std::unordered_map<FontType, std::set<GuiText>> texts_; // TODO: may have to provide hash and equality here?
+	TextLoader loader_;
+	text_map texts_; // TODO: may have to provide hash and equality here?
 	
 public:
-	void addText(const GuiText& text);
+	void addText(GuiText& text);
 	void removeText(const GuiText& text);
+	const text_map& getText() const { return texts_; }
 };
