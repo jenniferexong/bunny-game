@@ -2,7 +2,6 @@
 
 #include <memory>
 #include <ostream>
-
 #include <fstream>
 #include <iostream>
 
@@ -13,14 +12,40 @@
 using std::shared_ptr;
 using std::make_shared;
 
-GameScene::GameScene(shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader)
+GameScene::GameScene(shared_ptr<MasterRenderer> renderer, shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader)
 {
+	renderer_ = std::move(renderer);
 	window_ = std::move(window);
 	loader_ = std::move(loader);
 
 	setup();
 	//makeGame();
 	makeTest();
+}
+
+void GameScene::render()
+{
+	int width, height;
+	glfwGetFramebufferSize(*Application::window, &width, &height);
+	MasterRenderer::window_width = width;
+	MasterRenderer::window_height = height;
+
+	renderer_->renderWaterReflection(*this, &GameScene::renderScene);
+	renderer_->renderWaterRefraction(*this, &GameScene::renderScene);
+
+	renderScene(glm::vec4(0), true);
+
+	renderer_->renderWater(environment_);
+
+	renderer_->renderGui(guis_);
+}
+
+void GameScene::renderScene(glm::vec4 clipping_plane, bool progress_time)
+{
+	renderer_->prepare(getProjectionMatrix());
+	renderer_->renderEntities(environment_, clipping_plane, progress_time);
+	renderer_->renderTerrain(environment_, clipping_plane, progress_time);
+	renderer_->renderSkybox(environment_, progress_time);
 }
 
 void GameScene::update()

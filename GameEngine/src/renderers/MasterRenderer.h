@@ -7,7 +7,8 @@
 #include "WaterFrameBuffers.h"
 #include "WaterRenderer.h"
 
-#include "../scene/Scene.h"
+class Scene;
+class GameScene;
 
 class MasterRenderer {
 private:
@@ -19,7 +20,7 @@ private:
 	GuiRenderer gui_renderer_;
 	SkyboxRenderer skybox_renderer_;
 
-	WaterFrameBuffers water_fbos_ = WaterFrameBuffers();
+	WaterFrameBuffers water_fbos_;
 	WaterRenderer water_renderer_ = WaterRenderer(water_fbos_);
 
 public:
@@ -35,8 +36,15 @@ public:
 	MasterRenderer();
 	void prepare(glm::mat4 proj_matrix);
 
-	void renderAll(const shared_ptr<Scene>& scene);
-	void renderScene(const shared_ptr<Scene>& scene, glm::vec4 clipping_plane, bool progress_time);
+	void renderEntities(const Environment& environment, glm::vec4 clipping_plane, bool progress_time);
+	void renderTerrain(const Environment& environment, glm::vec4 clipping_plane, bool progress_time);
+	void renderSkybox(const Environment& environment, bool progress_time);
+
+	void renderWater(const Environment& environment);
+	void renderWaterReflection(GameScene& scene, void(GameScene::*render_scene)(glm::vec4, bool));
+	void renderWaterRefraction(GameScene& scene, void(GameScene::*render_scene)(glm::vec4, bool));
+
+	void renderGui(const vector<shared_ptr<GuiTexture>>& guis);
 
 	static void enableCulling();
 	static void disableCulling();

@@ -42,12 +42,15 @@ private:
 	void makeTest();
 	
 public:
-	GameScene(shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader);
+	GameScene(shared_ptr<MasterRenderer> renderer, shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader);
 
 	glm::mat4 getProjectionMatrix() override;
 
 	void update() override;
 	void postRenderUpdate() override;
+
+	void render() override;
+	void renderScene(glm::vec4 clipping_plane, bool progress_time);
 
 	void keyCallback(int key, int scan_code, int action, int mods) override;
 	void cursorPosCallback(double x, double y) override;

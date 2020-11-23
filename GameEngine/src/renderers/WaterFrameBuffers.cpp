@@ -2,6 +2,8 @@
 
 #include "WaterFrameBuffers.h"
 
+
+#include <iostream>
 #include <vector>
 
 #include "../Application.h"
@@ -25,6 +27,7 @@ WaterFrameBuffers::WaterFrameBuffers()
 	refraction_texture_ = createTextureAttachment(refraction_width, refraction_height);
 	refraction_depth_texture_ = createDepthTextureAttachment(refraction_width, refraction_height);
 	unbindCurrentFrameBuffer();
+	std::cout << "created fbo" << std::endl;
 }
 
 WaterFrameBuffers::~WaterFrameBuffers()

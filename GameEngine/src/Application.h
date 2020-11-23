@@ -21,7 +21,7 @@ using std::vector;
 
 class Application {
 private:
-	MasterRenderer renderer_;
+	shared_ptr<MasterRenderer> renderer_;
 	static shared_ptr<Scene> current_scene;
 
 public:

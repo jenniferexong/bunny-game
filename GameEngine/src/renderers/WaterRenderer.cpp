@@ -2,8 +2,13 @@
 
 #include "WaterRenderer.h"
 
+#include <iostream>
+
+
 #include "../Application.h"
 #include "../Location.h"
+
+const float WaterRenderer::wave_speed = 0.02f;
 
 WaterRenderer::WaterRenderer(const WaterFrameBuffers& fbos)
 {

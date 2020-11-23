@@ -30,9 +30,10 @@ float Application::frame_delta = 0;
 
 Application::Application(const shared_ptr<GLFWwindow*>& w)
 {
+	renderer_ = make_shared<MasterRenderer>();
 	window = w;
-	//current_scene = make_shared<GameScene>(window, loader);
-	current_scene = make_shared<TestScene>();
+	current_scene = make_shared<GameScene>(renderer_, window, loader);
+	//current_scene = make_shared<TestScene>(renderer_);
 }
 
 void Application::render() {
@@ -40,11 +41,7 @@ void Application::render() {
 	frame_delta = float(current_frame_time - previous_frame_time) / 1000.f; // in seconds
 
 	current_scene->update();
-
-	if (current_scene->isRenderable()) {
-		renderer_.renderAll(current_scene);
-	}
-
+	current_scene->render();
 	current_scene->postRenderUpdate();
 
 	previous_frame_time = current_frame_time;

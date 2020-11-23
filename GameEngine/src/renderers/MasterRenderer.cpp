@@ -3,8 +3,9 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../Application.h"
+#include <iostream>
 
+#include "../Application.h"
 #include "../scene/GameScene.h"
 
 glm::mat4 MasterRenderer::projection_matrix = glm::mat4(1);
@@ -32,56 +33,58 @@ MasterRenderer::MasterRenderer()
 	terrain_renderer_ = TerrainRenderer(terrain_shader_);
 }
 
-void MasterRenderer::renderAll(const shared_ptr<Scene>& scene)
+void MasterRenderer::renderWaterReflection(GameScene& scene, void(GameScene::*render_scene)(glm::vec4, bool))
 {
-	int width, height;
-	glfwGetFramebufferSize(*Application::window, &width, &height);
-	window_width = width;
-	window_height = height;
-
-	// render scene to fbos (not including water)
-	// reflection
-	scene->getEnvironment().getCamera()->positionForReflection(-15.f);
+	scene.getEnvironment().getCamera()->positionForReflection(-15.f);
 	water_fbos_.bindReflectionFrameBuffer();
-	renderScene(scene, Water::getReflectionPlane(), false);
+	(scene.*render_scene)(Water::getReflectionPlane(), false);
 	water_fbos_.unbindCurrentFrameBuffer();
-
-	// refraction
-	scene->getEnvironment().getCamera()->positionForRefraction(-15.f);
-	water_fbos_.bindRefractionFrameBuffer();
-	renderScene(scene, Water::getRefractionPlane(), false);
-	water_fbos_.unbindCurrentFrameBuffer();
-
-	renderScene(scene, glm::vec4(0), true);
-
-	water_renderer_.render(scene->getEnvironment());
-
-	gui_renderer_.render(scene->getGuis());
 }
 
-void MasterRenderer::renderScene(const shared_ptr<Scene>& scene, glm::vec4 clipping_plane, bool progress_time)
+void MasterRenderer::renderWaterRefraction(GameScene& scene, void(GameScene::*render_scene)(glm::vec4, bool))
 {
-	prepare(scene->getProjectionMatrix());
+	scene.getEnvironment().getCamera()->positionForRefraction(-15.f);
+	water_fbos_.bindRefractionFrameBuffer();
+	(scene.*render_scene)(Water::getRefractionPlane(), false);
+	water_fbos_.unbindCurrentFrameBuffer();
+}
 
-	// entities
-	if (!scene->getEnvironment().getEntities().empty()) {
-		entity_shader_->start();
-		// Loading some uniforms
-		entity_shader_->loadUniformPerFrame(scene->getEnvironment(), clipping_plane);
-		//entity_renderer_.render(entities);
-		entity_renderer_.renderInstanced(scene->getEnvironment());
-		entity_shader_->stop();
-	}
+void MasterRenderer::renderWater(const Environment& environment)
+{
+	water_renderer_.render(environment);
+}
 
-	// terrain 
-	if (!scene->getEnvironment().getTerrains().empty()) {
-		terrain_shader_->start();
-		terrain_shader_->loadUniformPerFrame(scene->getEnvironment(), clipping_plane);
-		terrain_renderer_.render(scene->getEnvironment().getTerrains());
-		terrain_shader_->stop();
-	}
+void MasterRenderer::renderEntities(const Environment& environment, glm::vec4 clipping_plane, bool progress_time)
+{
+	if (environment.getEntities().empty())
+		return;
 
-	skybox_renderer_.render(scene->getEnvironment(), progress_time);
+	entity_shader_->start();
+	entity_shader_->loadUniformPerFrame(environment, clipping_plane);
+	//entity_renderer_.render(entities);
+	entity_renderer_.renderInstanced(environment);
+	entity_shader_->stop();
+}
+
+void MasterRenderer::renderTerrain(const Environment& environment, glm::vec4 clipping_plane, bool progress_time)
+{
+	if (environment.getTerrains().empty())
+		return;
+
+	terrain_shader_->start();
+	terrain_shader_->loadUniformPerFrame(environment, clipping_plane);
+	terrain_renderer_.render(environment.getTerrains());
+	terrain_shader_->stop();
+}
+
+void MasterRenderer::renderSkybox(const Environment& environment, bool progress_time)
+{
+	skybox_renderer_.render(environment, progress_time);
+}
+
+void MasterRenderer::renderGui(const vector<shared_ptr<GuiTexture>>& guis)
+{
+	gui_renderer_.render(guis);
 }
 
 void MasterRenderer::enableCulling()

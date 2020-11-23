@@ -4,10 +4,11 @@
 
 class TestScene final : public Scene {
 public:
-	TestScene();
+	TestScene(shared_ptr<MasterRenderer> renderer);
 
 	void update() override {}
 	void postRenderUpdate() override {}
+	void render() override;
 
 	glm::mat4 getProjectionMatrix() override { return glm::mat4(1.f); }
 	void cursorPosCallback(double x, double y) override {}
