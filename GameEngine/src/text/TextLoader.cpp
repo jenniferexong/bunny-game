@@ -1,5 +1,7 @@
 #include "TextLoader.h"
 
+#include <iostream>
+
 const double TextLoader::line_height = 0.03;
 const int TextLoader::space_ascii = 32;
 
@@ -72,6 +74,11 @@ TextMeshData TextLoader::createQuadData(GuiText& text, const vector<Line>& lines
 		for (const auto& word: line.getWords()) {
 			for (const auto& letter: word.getCharacters()) {
 				addVertices(letter, font_size, cursor_x, cursor_y, positions);
+				std::cout << "c: " << letter.getId() << std::endl;
+				std::cout << "x: " << letter.getTextureCoords().x << std::endl;
+				std::cout << "y: " << letter.getTextureCoords().y << std::endl;
+				std::cout << "maxx: " << letter.getMaxTextureCoords().x << std::endl;
+				std::cout << "maxy: " << letter.getMaxTextureCoords().y << std::endl;
 				addTextureCoords(letter, texture_coords);
 				cursor_x += letter.getAdvance() * font_size;
 			}

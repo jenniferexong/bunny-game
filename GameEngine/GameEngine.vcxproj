@@ -22,6 +22,7 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\environment\Skybox.cpp" />
     <ClCompile Include="src\environment\Water.cpp" />
+    <ClCompile Include="src\renderers\TextRenderer.cpp" />
     <ClCompile Include="src\renderers\WaterFrameBuffers.cpp" />
     <ClCompile Include="src\renderers\WaterRenderer.cpp" />
     <ClCompile Include="src\scene\Environment.cpp" />
@@ -43,6 +44,7 @@
     <ClCompile Include="src\renderers\SkyboxRenderer.cpp" />
     <ClCompile Include="src\renderers\TerrainRenderer.cpp" />
     <ClCompile Include="src\scene\TestScene.cpp" />
+    <ClCompile Include="src\shaders\TextShader.cpp" />
     <ClCompile Include="src\shaders\WaterShader.cpp" />
     <ClCompile Include="src\text\FontData.cpp" />
     <ClCompile Include="src\text\FontType.cpp" />
@@ -63,6 +65,7 @@
     <ClInclude Include="src\environment\Skybox.h" />
     <ClInclude Include="src\environment\Water.h" />
     <ClInclude Include="src\renderers\GuiRenderer.h" />
+    <ClInclude Include="src\renderers\TextRenderer.h" />
     <ClInclude Include="src\renderers\WaterFrameBuffers.h" />
     <ClInclude Include="src\renderers\WaterRenderer.h" />
     <ClInclude Include="src\scene\Environment.h" />
@@ -87,6 +90,7 @@
     <ClInclude Include="src\models\Mesh.h" />
     <ClInclude Include="src\models\Model.h" />
     <ClInclude Include="src\scene\TestScene.h" />
+    <ClInclude Include="src\shaders\TextShader.h" />
     <ClInclude Include="src\shaders\WaterShader.h" />
     <ClInclude Include="src\text\FontData.h" />
     <ClInclude Include="src\text\FontType.h" />

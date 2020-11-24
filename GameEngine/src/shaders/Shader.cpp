@@ -98,6 +98,11 @@ void Shader::loadBoolean(int location, bool value) const
 	glUniform1i(location, b);
 }
 
+void Shader::loadVector(int location, glm::vec2 vector) const
+{
+	glUniform2f(location, vector.x, vector.y);
+}
+
 void Shader::loadVector(int location, vec3 vector) const
 {
 	glUniform3f(location, vector.x, vector.y, vector.z);

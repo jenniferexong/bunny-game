@@ -4,7 +4,6 @@
 
 #include <iostream>
 
-
 #include "../Application.h"
 #include "../Location.h"
 

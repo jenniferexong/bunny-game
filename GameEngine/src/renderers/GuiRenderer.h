@@ -11,7 +11,6 @@ class GuiTexture;
 class GuiRenderer {
 private:
 	Mesh quad_mesh_;
-
 	GuiShader shader_;
 
 public:

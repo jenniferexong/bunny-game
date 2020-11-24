@@ -44,6 +44,7 @@ public:
 	float getMaxLineWidth() const { return max_line_width_; }
 	std::string getText() const { return text_; }
 	glm::vec3 getColor() const { return color_; }
+	glm::vec2 getPosition() const { return position_; }
 	int getVao() const { return mesh_vao_; }
 	int getVertexCount() const { return vertex_count_; }
 	bool isCentered() const { return centered_; }

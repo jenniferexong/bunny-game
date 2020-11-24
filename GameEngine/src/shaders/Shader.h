@@ -26,6 +26,7 @@ protected:
 	void loadFloat(int location, float value) const;
 	void loadBoolean(int location, bool value) const;
 	void loadInt(int location, int value) const;
+	void loadVector(int location, glm::vec2 vector) const;
 	void loadVector(int location, vec3 vector) const;
 	void loadVector(int location, glm::vec4 vector) const;
 	void loadMatrix(int location, glm::mat4 matrix) const;

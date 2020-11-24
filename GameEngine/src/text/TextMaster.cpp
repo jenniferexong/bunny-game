@@ -5,7 +5,7 @@
 void TextMaster::addText(GuiText& text)
 {
 	TextMeshData mesh_data = loader_.createMesh(text);
-	int vao = Application::loader->loadToVao(mesh_data.positions, mesh_data.positions);
+	int vao = Application::loader->loadToVao(mesh_data.positions, mesh_data.texture_coords);
 	text.setMeshDataInfo(vao, mesh_data.getVertexCount());
 
 	// add to map

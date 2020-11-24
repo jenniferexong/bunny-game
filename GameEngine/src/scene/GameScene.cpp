@@ -25,10 +25,7 @@ GameScene::GameScene(shared_ptr<MasterRenderer> renderer, shared_ptr<GLFWwindow*
 
 void GameScene::render()
 {
-	int width, height;
-	glfwGetFramebufferSize(*Application::window, &width, &height);
-	MasterRenderer::window_width = width;
-	MasterRenderer::window_height = height;
+	renderer_->updateWindowSize();
 
 	renderer_->renderWaterReflection(*this, &GameScene::renderScene);
 	renderer_->renderWaterRefraction(*this, &GameScene::renderScene);
@@ -171,11 +168,8 @@ void GameScene::makeTest()
 
 glm::mat4 GameScene::getProjectionMatrix() // why is this in game scene
 {
-	int width, height;
-	glfwGetWindowSize(*window_, &width, &height);
-
 	// Setting the projection matrix
-	float aspect_ratio = (float)width / height;
+	float aspect_ratio = (float) MasterRenderer::window_width / (float) MasterRenderer::window_height;
 	return glm::perspective(MasterRenderer::fov, aspect_ratio, MasterRenderer::near_plane, MasterRenderer::far_plane);
 }
 

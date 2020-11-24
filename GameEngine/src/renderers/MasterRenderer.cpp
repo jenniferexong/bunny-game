@@ -82,6 +82,11 @@ void MasterRenderer::renderSkybox(const Environment& environment, bool progress_
 	skybox_renderer_.render(environment, progress_time);
 }
 
+void MasterRenderer::renderText(const TextMaster& text_master)
+{
+	text_renderer_.render(text_master);
+}
+
 void MasterRenderer::renderGui(const vector<shared_ptr<GuiTexture>>& guis)
 {
 	gui_renderer_.render(guis);
@@ -96,6 +101,14 @@ void MasterRenderer::enableCulling()
 void MasterRenderer::disableCulling()
 {
 	glDisable(GL_CULL_FACE);
+}
+
+void MasterRenderer::updateWindowSize()
+{
+	int width, height;
+	glfwGetFramebufferSize(*Application::window, &width, &height);
+	window_width = width;
+	window_height = height;
 }
 
 /* Clears the window */

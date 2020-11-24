@@ -31,13 +31,13 @@ protected:
 
 	Environment environment_;
 	vector<shared_ptr<GuiTexture>> guis_;
-	TextMaster text_;
+	TextMaster text_master_;
 	bool renderable_ = true;
 
 public:
 	virtual const vector<shared_ptr<GuiTexture>>& getGuis() const { return guis_; }
 	virtual const Environment& getEnvironment() { return environment_; }
-	virtual const TextMaster& getText() { return text_; }
+	virtual const TextMaster& getText() { return text_master_; }
 
 	virtual void render() = 0;
 	virtual void update() = 0;

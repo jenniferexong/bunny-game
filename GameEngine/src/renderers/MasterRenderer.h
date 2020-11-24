@@ -4,6 +4,7 @@
 #include "TerrainRenderer.h"
 #include "GuiRenderer.h"
 #include "SkyboxRenderer.h"
+#include "TextRenderer.h"
 #include "WaterFrameBuffers.h"
 #include "WaterRenderer.h"
 
@@ -17,11 +18,12 @@ private:
 
 	EntityRenderer entity_renderer_;
 	TerrainRenderer terrain_renderer_;
-	GuiRenderer gui_renderer_;
 	SkyboxRenderer skybox_renderer_;
-
 	WaterFrameBuffers water_fbos_;
 	WaterRenderer water_renderer_ = WaterRenderer(water_fbos_);
+
+	TextRenderer text_renderer_;
+	GuiRenderer gui_renderer_;
 
 public:
 	static glm::mat4 projection_matrix;
@@ -34,6 +36,7 @@ public:
 	static int window_height;
 
 	MasterRenderer();
+	void updateWindowSize();
 	void prepare(glm::mat4 proj_matrix);
 
 	void renderEntities(const Environment& environment, glm::vec4 clipping_plane, bool progress_time);
@@ -45,6 +48,7 @@ public:
 	void renderWaterRefraction(GameScene& scene, void(GameScene::*render_scene)(glm::vec4, bool));
 
 	void renderGui(const vector<shared_ptr<GuiTexture>>& guis);
+	void renderText(const TextMaster& text_master);
 
 	static void enableCulling();
 	static void disableCulling();

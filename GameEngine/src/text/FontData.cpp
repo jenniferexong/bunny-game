@@ -73,8 +73,8 @@ FontData::FontData(const std::string& font_name)
 		double x_advance;
 
 		// convert to screen space, and remove padding
-		texture_coords.x = (x + stod(padding_left) - desired_padding) / (double) image_size;
-		texture_coords.y = (y + stod(padding_top) - desired_padding) / (double) image_size;
+		texture_coords.x = (x + (stod(padding_left) - desired_padding)) / (double) image_size;
+		texture_coords.y = (y + (stod(padding_top) - desired_padding)) / (double)image_size;
 		int width = w - (padding_width - (2 * desired_padding));
 		int height = h - (padding_height - (2 * desired_padding));
 		texture_size.x = (double)width / image_size;
