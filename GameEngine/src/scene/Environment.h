@@ -6,9 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "../CompareTexturedModel.h"
 #include "../models/Model.h"
-
 #include "../environment/Entity.h"
 #include "../environment/Light.h"
 #include "../environment/Skybox.h"
@@ -24,7 +22,18 @@ using std::vector;
 class Camera;
 
 using entity_set = shared_ptr<set<shared_ptr<Entity>>>;
-using entity_map = unordered_map<shared_ptr<TexturedModel>, entity_set, TexturedModelHash, TexturedModelEquality>; //TODO
+using entity_map = unordered_map<shared_ptr<TexturedModel>, entity_set>;
+
+namespace std {
+	template <>
+	struct hash<shared_ptr<TexturedModel>>
+	{
+		size_t operator()(const shared_ptr<TexturedModel>& model) const
+		{
+			return hash<int>()(model->getTexture().getTextureId());
+		}
+	};
+}
 
 class Environment {
 private:

@@ -11,7 +11,6 @@
 
 #include "Location.h"
 
-
 #include "models/Texture.h"
 #include "scene/GameScene.h"
 #include "scene/TestScene.h"
@@ -23,22 +22,39 @@ using namespace std;
 shared_ptr<Loader> Application::loader = make_shared<Loader>();
 shared_ptr<Scene> Application::current_scene = nullptr;
 shared_ptr<GLFWwindow*> Application::window = nullptr;
+int Application::frame_count_ = 0;
+float Application::delta_time_ = 0.f;
+float Application::update_rate_ = 4.f;
+float Application::fps = 0.f;
+
 
 // Time keeping
 long long Application::previous_frame_time = Application::getCurrentTime();
 float Application::frame_delta = 0;
 
+void Application::updateFps()
+{
+	frame_count_++;
+	delta_time_ += frame_delta;
+	if (delta_time_ > 1.f / update_rate_) {
+		fps = (float) frame_count_ / delta_time_;
+		frame_count_ = 0;
+		delta_time_ -= 1.f / update_rate_;
+	}
+}
+
 Application::Application(const shared_ptr<GLFWwindow*>& w)
 {
 	renderer_ = make_shared<MasterRenderer>();
 	window = w;
-	//current_scene = make_shared<GameScene>(renderer_, window, loader);
-	current_scene = make_shared<TestScene>(renderer_);
+	current_scene = make_shared<GameScene>(renderer_, window, loader);
+	//current_scene = make_shared<TestScene>(renderer_);
 }
 
 void Application::render() {
 	long long current_frame_time = getCurrentTime();
 	frame_delta = float(current_frame_time - previous_frame_time) / 1000.f; // in seconds
+	updateFps();
 
 	current_scene->update();
 	current_scene->render();

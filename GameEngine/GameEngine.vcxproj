@@ -61,7 +61,6 @@
     <ClCompile Include="src\text\TextLoader.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\CompareTexturedModel.h" />
     <ClInclude Include="src\environment\Skybox.h" />
     <ClInclude Include="src\environment\Water.h" />
     <ClInclude Include="src\renderers\GuiRenderer.h" />

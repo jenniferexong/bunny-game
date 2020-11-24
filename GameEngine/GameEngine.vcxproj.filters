@@ -176,9 +176,6 @@
     <ClInclude Include="src\shaders\EntityShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\CompareTexturedModel.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\shaders\SkyboxShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>

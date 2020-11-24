@@ -10,15 +10,22 @@
 #include "../Application.h"
 #include "../Location.h"
 
-using std::string;
 using std::cout;
 using std::endl;
 using std::stoi;
 using std::stod;
+using std::string;
 using std::stringstream;
 
 const int FontData::desired_padding = 3;
 
+Character FontData::getCharacter(int ascii) const
+{
+	if (characters_.find(ascii) == characters_.end())
+		return characters_.at(45);
+
+	return characters_.at(ascii);
+}
 /**
  * Reads a font file, loading characters into map
  */
@@ -74,7 +81,7 @@ FontData::FontData(const std::string& font_name)
 
 		// convert to screen space, and remove padding
 		texture_coords.x = (x + (stod(padding_left) - desired_padding)) / (double) image_size;
-		texture_coords.y = (y + (stod(padding_top) - desired_padding)) / (double)image_size;
+		texture_coords.y = 1.0 - (y + (stod(padding_top) - desired_padding)) / (double)image_size;
 		int width = w - (padding_width - (2 * desired_padding));
 		int height = h - (padding_height - (2 * desired_padding));
 		texture_size.x = (double)width / image_size;

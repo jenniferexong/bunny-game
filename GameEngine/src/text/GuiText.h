@@ -7,8 +7,11 @@
 
 #include "FontType.h"
 
+class TextLoader;
+
 class GuiText {
 private:
+	static TextLoader loader_;
 	static int next_id;
 
 	int id_ = 0;
@@ -38,6 +41,8 @@ public:
 	 */
 	GuiText(const std::string& text, float font_size, std::shared_ptr<FontType> font, 
 			glm::vec2 position, float max_line_width, bool centered);
+
+	void updateText(const std::string& text);
 
 	std::shared_ptr<FontType> getFont() const { return font_; }
 	float getFontSize() const { return font_size_; }

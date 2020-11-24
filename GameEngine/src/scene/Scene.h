@@ -32,7 +32,6 @@ protected:
 	Environment environment_;
 	vector<shared_ptr<GuiTexture>> guis_;
 	TextMaster text_master_;
-	bool renderable_ = true;
 
 public:
 	virtual const vector<shared_ptr<GuiTexture>>& getGuis() const { return guis_; }
@@ -48,7 +47,5 @@ public:
 	virtual void mouseButtonCallback(int button, int action, int mods) = 0;
 	virtual void cursorPosCallback(double x, double y) = 0;
 	virtual void scrollCallBack(double x_offset, double y_offset) = 0;
-
-	bool isRenderable() const { return renderable_; }
 };
 

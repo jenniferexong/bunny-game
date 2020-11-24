@@ -31,12 +31,14 @@ std::vector<Line> TextLoader::structureText(GuiText& gui_text)
 		int ascii = (int)c;
 		if (ascii == space_ascii) {
 			// add the current word to the line, if it fits
-			bool added = current_line.addWord(current_word);
-			if (!added) { // make new line and add word to it
-				lines.push_back(current_line);
-				current_line = Line(space_width, font_size, max_line_width);
-				current_line.addWord(current_word);
-			}
+			addWord(&current_line, current_word, lines, space_width, font_size, max_line_width);
+			current_word = Word(font_size);
+			continue;
+		}
+		else if (c == '\n') {
+			addWord(&current_line, current_word, lines, space_width, font_size, max_line_width);
+			lines.push_back(current_line);
+			current_line = Line(space_width, font_size, max_line_width);
 			current_word = Word(font_size);
 			continue;
 		}
@@ -45,15 +47,21 @@ std::vector<Line> TextLoader::structureText(GuiText& gui_text)
 	}
 
 	// finishing
-	bool added = current_line.addWord(current_word);
-	if (!added) { // make new line and add word to it
-		lines.push_back(current_line);
-		current_line = Line(space_width, font_size, max_line_width);
-		current_line.addWord(current_word);
-	}
+	addWord(&current_line, current_word, lines, space_width, font_size, max_line_width);
 	lines.push_back(current_line);
 
 	return lines;
+}
+
+void TextLoader::addWord(Line* current_line, const Word& current_word, std::vector<Line>& lines, 
+	double space_width, double font_size, double max_line_width)
+{
+	bool added = current_line->addWord(current_word);
+	if (!added) { // make new line and add word to it
+		lines.push_back(*current_line);
+		*current_line = Line(space_width, font_size, max_line_width);
+		current_line->addWord(current_word);
+	}
 }
 
 using std::vector;
@@ -74,11 +82,6 @@ TextMeshData TextLoader::createQuadData(GuiText& text, const vector<Line>& lines
 		for (const auto& word: line.getWords()) {
 			for (const auto& letter: word.getCharacters()) {
 				addVertices(letter, font_size, cursor_x, cursor_y, positions);
-				std::cout << "c: " << letter.getId() << std::endl;
-				std::cout << "x: " << letter.getTextureCoords().x << std::endl;
-				std::cout << "y: " << letter.getTextureCoords().y << std::endl;
-				std::cout << "maxx: " << letter.getMaxTextureCoords().x << std::endl;
-				std::cout << "maxy: " << letter.getMaxTextureCoords().y << std::endl;
 				addTextureCoords(letter, texture_coords);
 				cursor_x += letter.getAdvance() * font_size;
 			}

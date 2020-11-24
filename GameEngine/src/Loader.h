@@ -11,9 +11,9 @@ using std::vector;
 
 class Loader {
 private:
-	vector<GLuint *> vaos_;
-	vector<GLuint *> vbos_;
-	vector<GLuint *> textures_;
+	vector<GLuint> vaos_;
+	vector<GLuint> vbos_;
+	vector<GLuint> textures_;
 
 	int createVao(); // returns an id
 	void storeInAttributeList(int attrib_num, int coord_size, const vector<float>& data);
@@ -40,6 +40,8 @@ public:
 	Mesh loadToVao(const std::string& obj_name);
 	InstancedMesh loadToVaoInstanced(const std::string& obj_name);
 	int loadTexture(const std::string& texture_name);
+
+	void deleteVao(GLuint vao);
 };
 
 struct SkyboxTextureData {

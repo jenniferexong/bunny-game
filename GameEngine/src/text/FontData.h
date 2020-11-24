@@ -17,5 +17,5 @@ public:
 	FontData(const std::string& font_name);
 
 	double getSpaceWidth() const { return space_width_; }
-	Character getCharacter(int ascii) const { return characters_.at(ascii); }
+	Character getCharacter(int ascii) const;
 };

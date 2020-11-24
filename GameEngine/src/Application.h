@@ -24,15 +24,19 @@ private:
 	shared_ptr<MasterRenderer> renderer_;
 	static shared_ptr<Scene> current_scene;
 
+	static int frame_count_;
+	static float delta_time_;
+	static float update_rate_;
+	void updateFps();
+
 public:
 	static shared_ptr<Loader> loader;
 	static shared_ptr<GLFWwindow*> window;
 	Application(const shared_ptr<GLFWwindow*>& w);
 
-	// Time keeping for frames
-	static int fps_cap;
 	static long long previous_frame_time;
 	static float frame_delta;
+	static float fps;
 	static long long getCurrentTime();
 
 	void render();

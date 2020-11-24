@@ -23,5 +23,10 @@ public:
 	TexturedModel(InstancedMesh mesh, ModelTexture texture) : Model(mesh), texture_(texture) {}
 
 	ModelTexture getTexture() const { return texture_; }
+
+	// equality
+	bool operator==(const TexturedModel& other) const {
+		return texture_.getTextureId() == other.texture_.getTextureId();
+	}
 };
 

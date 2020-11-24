@@ -115,7 +115,7 @@ int Loader::loadCubeMap(std::vector<std::string> texture_names)
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
-	textures_.push_back(&texture_id);
+	textures_.push_back(texture_id);
 	return texture_id;
 }
 
@@ -149,7 +149,7 @@ int Loader::loadTexture(const string& texture_name)
 	}
 
 	printf("Loaded texture: %s, %d\n", texture_name.c_str(), texture_id);
-	textures_.push_back(&texture_id);
+	textures_.push_back(texture_id);
 	return texture_id;
 }
 
@@ -159,7 +159,7 @@ int Loader::createVao()
 {
 	GLuint vao_id;
 	glGenVertexArrays(1, &vao_id);
-	vaos_.push_back(&vao_id); // add to vector of vaos
+	vaos_.push_back(vao_id); // add to vector of vaos
 
 	glBindVertexArray(vao_id);
 	return vao_id;
@@ -169,7 +169,7 @@ void Loader::storeInAttributeList(int attrib_num, int coord_size, const vector<f
 {
 	GLuint vbo_id;
 	glGenBuffers(1, &vbo_id);
-	vbos_.push_back(&vbo_id); // add to vector of vaos
+	vbos_.push_back(vbo_id); // add to vector of vaos
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * data.size(), data.data(), GL_STATIC_DRAW);
@@ -186,7 +186,7 @@ int Loader::createInstancedVbo(int start_location, int blocks, int num_elements,
 {
 	GLuint vbo_id;
 	glGenBuffers(1, &vbo_id);
-	vbos_.push_back(&vbo_id);
+	vbos_.push_back(vbo_id);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
 	for (int i = 0; i < blocks; i++) {
@@ -203,7 +203,7 @@ void Loader::bindIbo(const vector<int>& indices)
 {
 	GLuint ibo_id;
 	glGenBuffers(1, &ibo_id);
-	vbos_.push_back(&ibo_id); // add to vector of vaos
+	vbos_.push_back(ibo_id); // add to vector of vaos
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(int) * indices.size(), indices.data(), GL_STATIC_DRAW);
 }
@@ -213,16 +213,28 @@ void Loader::unbindVao()
 	glBindVertexArray(0);
 }
 
+void Loader::deleteVao(GLuint vao)
+{
+	glDeleteVertexArrays(1, &vao);
+}
+
 /* Clean up VAOs and VBOs and Textures */
 Loader::~Loader()
 {
-	for (GLuint *vao : vaos_) {
-		glDeleteVertexArrays(1, vao);
+	glDeleteVertexArrays(vaos_.size(), vaos_.data());
+	glDeleteBuffers(vbos_.size(), vbos_.data());
+	glDeleteTextures(textures_.size(), textures_.data());
+	/*
+	for (GLuint vao : vaos_) {
+		glDeleteVertexArrays(1, &vao);
 	}
-	for (GLuint *vbo : vbos_) {
-		glDeleteBuffers(1, vbo);
+	for (GLuint vbo : vbos_) {
+		glDeleteBuffers(1, &vbo);
 	}
-	for (GLuint* texture : textures_) {
-		glDeleteTextures(1, texture);
+	for (GLuint texture : textures_) {
+		glDeleteTextures(1, &texture);
 	}
+	*/
 }
+
+

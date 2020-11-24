@@ -16,14 +16,16 @@ class GameScene: public Scene {
 private:
 	MousePicker mouse_picker;
 
-	shared_ptr<Player> player = nullptr;
-	shared_ptr<GuiTexture> compass = nullptr;
-	shared_ptr<Entity> selected = nullptr;
+	shared_ptr<Player> player_ = nullptr;
+	shared_ptr<GuiTexture> compass_ = nullptr;
+	shared_ptr<GuiText> frame_rate_ = nullptr;
+	shared_ptr<Entity> selected_ = nullptr;
 	Terrain terrain_1_;
 	shared_ptr<Light> sun_ = std::make_shared<Light>(vec3(0.f, 700, -1000), vec3(0.1f));
 	shared_ptr<Camera> camera_;
 	vector<shared_ptr<Light>> lights_;
 	vector<shared_ptr<Light>> close_lights_;
+
 
 	map<Key, bool> move_keys_ = {
 		{Key::W, false}, {Key::A, false}, {Key::S, false}, {Key::D, false}, {Key::Space, false}

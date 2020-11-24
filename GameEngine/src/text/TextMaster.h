@@ -20,15 +20,14 @@ namespace std
 	};
 }
 
-using text_map = std::unordered_map<std::shared_ptr<FontType>, std::set<GuiText>>;
+using text_map = std::unordered_map<std::shared_ptr<FontType>, std::set<std::shared_ptr<GuiText>>>;
 
 class TextMaster {
 private:
-	TextLoader loader_;
-	text_map texts_; // TODO: may have to provide hash and equality here?
+	text_map texts_;
 	
 public:
-	void addText(GuiText& text);
-	void removeText(const GuiText& text);
+	void addText(std::shared_ptr<GuiText> text);
+	void removeText(std::shared_ptr<GuiText> text);
 	const text_map& getText() const { return texts_; }
 };

@@ -35,6 +35,7 @@ void GameScene::render()
 	renderer_->renderWater(environment_);
 
 	renderer_->renderGui(guis_);
+	renderer_->renderText(text_master_);
 }
 
 void GameScene::renderScene(glm::vec4 clipping_plane, bool progress_time)
@@ -51,25 +52,27 @@ void GameScene::update()
 	close_lights_.clear();
 	close_lights_.push_back(sun_);
 	for (const auto& l : lights_) {
-		if (glm::distance(player->getPosition(), l->getPosition()) <= 250.f)
+		if (glm::distance(player_->getPosition(), l->getPosition()) <= 250.f)
 			close_lights_.push_back(l);
 	}
 	environment_.setLights(close_lights_);
 
-	player->updatePosition(environment_, compass, move_keys_);
+	player_->updatePosition(environment_, compass_, move_keys_);
 	camera_->updateView(terrain_1_, environment_.getWater());
 	mouse_picker.update(getProjectionMatrix(), *camera_); // must update after camera is moved
 
-	selected = mouse_picker.selectEntity(environment_);
-	if (selected != nullptr) 
-		selected->highlight();
+	selected_ = mouse_picker.selectEntity(environment_);
+	if (selected_ != nullptr) 
+		selected_->highlight();
+
+	frame_rate_->updateText("FPS: " + std::to_string((int)Application::fps));
 }
 
 void GameScene::postRenderUpdate()
 {
-	if (selected != nullptr)
-		selected->unhighlight();
-	selected = nullptr;
+	if (selected_ != nullptr)
+		selected_->unhighlight();
+	selected_ = nullptr;
 }
 
 using glm::vec2;
@@ -83,14 +86,14 @@ void GameScene::setup()
 	// GUI
 	const float padding = 100;
 	const float size = 150;
-	compass = std::make_shared<GuiTexture>(loader_->loadTexture("compass"), vec2(padding, height - padding), vec2(size));
+	compass_ = std::make_shared<GuiTexture>(loader_->loadTexture("compass"), vec2(padding, height - padding), vec2(size));
 
 	const float cross_hair_size = 60;
 	const vec2 center = vec2((float)width / 2, (float)height / 2);
 	auto cross_hair = make_shared<GuiTexture>(loader_->loadTexture("cross-hair"), center, vec2(cross_hair_size));
 
 	guis_.push_back(cross_hair);
-	guis_.push_back(compass);
+	guis_.push_back(compass_);
 
 	// Terrains
 	auto texture_pack = Application::makeTexturePack("green", "green", "light-green", "rocks");
@@ -108,17 +111,22 @@ void GameScene::setup()
 	float player_x = 328.411f;
 	float player_z = -19.45f;
 	float player_y = terrain_1_.getHeightOfTerrain(player_x, player_z);
-	player = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(0.f, 0, 0), 0.7f);
-	player->setRotationOffset(180.f, 0, 0);
-	environment_.addEntity(player);
+	player_ = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(0.f, 0, 0), 0.7f);
+	player_->setRotationOffset(180.f, 0, 0);
+	environment_.addEntity(player_);
 
-	camera_ = make_shared<Camera>(player);
+	camera_ = make_shared<Camera>(player_);
 	environment_.setCamera(camera_);
 	environment_.setSun(sun_);
 
 	// skybox
 	Skybox sky = Skybox("skybox-textures-day", "skybox-textures-night");
 	environment_.setSkybox(sky);
+
+	auto font = std::make_shared<FontType>("font");
+	frame_rate_ = std::make_shared<GuiText>("", 1.f, font, glm::vec2(0.94f, 0.025), 1.f, false);
+	frame_rate_->setColor(vec3(1));
+	text_master_.addText(frame_rate_);
 }
 
 void GameScene::makeGame()
@@ -152,7 +160,7 @@ void GameScene::makeTest()
 
 	float x = 283.491f;
 	float z = -195.017f;
-	player->setPosition(x, terrain_1_.getHeightOfTerrain(x, z), z);
+	player_->setPosition(x, terrain_1_.getHeightOfTerrain(x, z), z);
 
 	auto test = make_shared<Entity>(model);
 	test->setPosition(100, terrain_1_.getHeightOfTerrain(100, -120) + 10, -120);
@@ -211,7 +219,7 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 			// Create and open a text file
 			std::ofstream positions(FilePath::data_path + entity + "-positions.txt", std::ios::app);
 
-			vec3 position = player->getPosition();
+			vec3 position = player_->getPosition();
 			// Write to the file
 			positions << position.x << " " << position.z << std::endl;
 		}
@@ -242,7 +250,7 @@ void GameScene::cursorPosCallback(double x, double y)
 	const float sensitivity = 0.07f;
 	float x_offset = float(x - previous_mouse_x_) * sensitivity;
 	float y_offset = float(y - previous_mouse_y_) * sensitivity;
-	player->changeDirection(x_offset);
+	player_->changeDirection(x_offset);
 	camera_->changePitch(y_offset);
 	previous_mouse_x_ = x;
 	previous_mouse_y_ = y;

@@ -28,7 +28,7 @@ void TextRenderer::render(const TextMaster& text_master)
 		glBindTexture(GL_TEXTURE_2D, font_type->getTexture());
 
 		for (const auto& text : texts.at(font_type))
-			renderText(text);
+			renderText(*text);
 	}
 	finish();
 }

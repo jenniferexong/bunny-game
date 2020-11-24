@@ -109,6 +109,7 @@ void MasterRenderer::updateWindowSize()
 	glfwGetFramebufferSize(*Application::window, &width, &height);
 	window_width = width;
 	window_height = height;
+	glViewport(0, 0, window_width, window_height);
 }
 
 /* Clears the window */
@@ -116,8 +117,6 @@ void MasterRenderer::prepare(glm::mat4 proj_matrix)
 {
 	glClearColor(1, 1, 1, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-	//glViewport(0, 0, window_width, window_height);
 
 	projection_matrix = proj_matrix;
 }
