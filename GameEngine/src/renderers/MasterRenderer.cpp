@@ -35,7 +35,7 @@ MasterRenderer::MasterRenderer()
 
 void MasterRenderer::renderWaterReflection(GameScene& scene, void(GameScene::*render_scene)(glm::vec4, bool))
 {
-	scene.getEnvironment().getCamera()->positionForReflection(-15.f);
+	scene.getEnvironment().getCamera()->positionForReflection(Water::height);
 	water_fbos_.bindReflectionFrameBuffer();
 	(scene.*render_scene)(Water::getReflectionPlane(), false);
 	water_fbos_.unbindCurrentFrameBuffer();
@@ -43,7 +43,7 @@ void MasterRenderer::renderWaterReflection(GameScene& scene, void(GameScene::*re
 
 void MasterRenderer::renderWaterRefraction(GameScene& scene, void(GameScene::*render_scene)(glm::vec4, bool))
 {
-	scene.getEnvironment().getCamera()->positionForRefraction(-15.f);
+	scene.getEnvironment().getCamera()->positionForRefraction(Water::height);
 	water_fbos_.bindRefractionFrameBuffer();
 	(scene.*render_scene)(Water::getRefractionPlane(), false);
 	water_fbos_.unbindCurrentFrameBuffer();

@@ -14,7 +14,7 @@ using namespace glm;
 /* Positive amount = zoom in */
 void Camera::zoom(float amount, const vector<Water>& water)
 {
-	if (player_->isInWater(water) && position_.y <= -14.f && amount > 0)
+	if (player_->isInWater(water) && position_.y <= Water::height + 1.f && amount > 0)
 		return;
 
 	distance_from_player -= amount;
@@ -50,7 +50,7 @@ void Camera::updateView(const Terrain& terrain, const vector<Water>& water) {
 
 	// stop camera from going under the water
 	if (player_->isInWater(water)) {
-		position_.y = max(position_.y, -14.f);
+		position_.y = max(position_.y, Water::height + 1.f);
 	}
 
 	rotation_.x = -player_rotation.x;

@@ -74,7 +74,7 @@ void Player::updatePosition(const Environment& environment, const shared_ptr<Gui
 
 	// swim in water
 	if (isInWater(environment.getWater())) {
-		float min_height = -16.75f;
+		float min_height = Water::height -1.75f;
 		position_.y = max(min_height, position_.y);
 
 		// floating in water

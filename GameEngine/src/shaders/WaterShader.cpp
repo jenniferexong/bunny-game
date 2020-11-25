@@ -69,7 +69,7 @@ void WaterShader::loadUniformPerFrame(const Environment& environment, float move
 
 void WaterShader::loadModelMatrix(const Water& water)
 {
-	glm::vec3 position = vec3(water.getX(), water.getHeight(), water.getZ());
+	glm::vec3 position = vec3(water.getX(), Water::height, water.getZ());
 	glm::mat4 t_matrix = Maths::createTransformationMatrix(position, vec3(0), Water::tile_size, glm::mat4(1.f));
 	loadMatrix(locations_.at(UniformVariable::TransformationMatrix), t_matrix);
 }

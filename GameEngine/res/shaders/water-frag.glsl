@@ -21,7 +21,7 @@ in VertexData {
     vec3 toCamera;
 } f_in;
 
-const float distortionStrength = 0.03;
+const float distortionStrength = 0.02;
 const float shineDamper = 100.0;
 const float reflectivity = 0.6;
 

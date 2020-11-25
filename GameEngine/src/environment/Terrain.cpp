@@ -125,12 +125,12 @@ Mesh Terrain::generate(const string& height_map)
 	// calculate normals and tangents for each point on the grid
 	for (int row = 0; row < vertex_count_; row++) {
 		for (int col = 0; col < vertex_count_; col++) {
-			vec3 normal = calculateNormal(row, col);
+			vec3 normal = calculateAverageValue(row, col, &Terrain::calculateNormal);
 			normals_.emplace_back(normal.x);
 			normals_.emplace_back(normal.y);
 			normals_.emplace_back(normal.z);
 
-			vec3 tangent = calculateAverageTangent(row, col);
+			vec3 tangent = calculateAverageValue(row, col, &Terrain::calculateTangent);
 			tangents_.emplace_back(tangent.x);
 			tangents_.emplace_back(tangent.y);
 			tangents_.emplace_back(tangent.z);
@@ -182,35 +182,10 @@ float Terrain::calculateHeight(int row, int col, const unsigned char* buffer)
 
 	return height;
 }
-
-/* Calculates the normal of the vertex based on the normal of the 4 neighbouring faces */
-vec3 Terrain::calculateNormal(int row, int col) const 
+glm::vec3 Terrain::calculateAverageValue(int row, int col,
+		void(Terrain::* calculate_function)(glm::ivec2 v0, glm::ivec2 v1, glm::ivec2 v2, std::vector<glm::vec3>& values))
 {
-	vec3 x_offset = vec3(1, 0, 0);
-	vec3 z_offset = vec3(0, 0, 1);
-	vec3 position = getPosition(row, col);
-	vec3 north_position = row - 1 < 0 ? position - z_offset : getPosition(row - 1, col);
-	vec3 east_position = col + 1 >= vertex_count_ ? position + x_offset : getPosition(row, col + 1);
-	vec3 south_position = row + 1 >= vertex_count_ ? position + z_offset : getPosition(row + 1, col);
-	vec3 west_position = col - 1 < 0 ? position - x_offset : getPosition(row, col - 1);
-
-	vec3 north_direction = north_position - position;
-	vec3 east_direction = east_position - position;
-	vec3 south_direction = south_position - position;
-	vec3 west_direction = west_position - position;
-
-	vec3 ne_normal = normalize(cross(east_direction, north_direction));
-	vec3 se_normal = normalize(cross(south_direction, east_direction));
-	vec3 sw_normal = normalize(cross(west_direction, south_direction));
-	vec3 nw_normal = normalize(cross(north_direction, west_direction));
-
-	vec3 normal = ne_normal + se_normal + sw_normal + nw_normal;
-	return normalize(normal);
-}
-
-vec3 Terrain::calculateAverageTangent(int row, int col)
-{
-	vector<vec3> neighbouring_tangents;
+	vector<vec3> neighbouring;
 
 	ivec2 origin = ivec2(row, col);
 	ivec2 north = ivec2(row - 1, col);
@@ -222,25 +197,41 @@ vec3 Terrain::calculateAverageTangent(int row, int col)
 
 	// each vertex has a maximum of 6 neighbouring triangles
 	// NNE triangle
-	calculateTangent(north, origin, north_east, neighbouring_tangents);
+	(this->*calculate_function)(north, origin, north_east, neighbouring);
 	// ENE triangle
-	calculateTangent(east, north_east, origin, neighbouring_tangents);
+	(this->*calculate_function)(east, north_east, origin, neighbouring);
 	// SE triangle
-	calculateTangent(origin, south, east, neighbouring_tangents);
+	(this->*calculate_function)(origin, south, east, neighbouring);
 	// SSW triangle
-	calculateTangent(south, origin, south_west, neighbouring_tangents);
+	(this->*calculate_function)(south, origin, south_west, neighbouring);
 	// WSW triangle
-	calculateTangent(west, south_west, origin, neighbouring_tangents);
+	(this->*calculate_function)(west, south_west, origin, neighbouring);
 	// NW triangle
-	calculateTangent(origin, north, west, neighbouring_tangents);
+	(this->*calculate_function)(origin, north, west, neighbouring);
 
 	vec3 total(0.f);
-	for (auto t: neighbouring_tangents)
+	for (auto t : neighbouring)
 		total += t;
 
 	// average
-	vec3 tangent = total / (float) neighbouring_tangents.size();
-	return normalize(tangent);
+	vec3 value = total / (float)neighbouring.size();
+	return normalize(value);
+}
+
+/* Calculates the normal of the triangle where each vertex is given in row and col of the grid */
+void Terrain::calculateNormal(ivec2 v0 , ivec2 v1, ivec2 v2, vector<vec3>& normals)
+{
+	if (invalidVertex(v0.x, v0.y) || invalidVertex(v1.x, v1.y) || invalidVertex(v2.x, v2.y))
+		return;
+
+	vec3 p0 = getPosition(v0.x, v0.y);
+	vec3 p1 = getPosition(v1.x, v1.y);
+	vec3 p2 = getPosition(v2.x, v2.y);
+
+	vec3 d1 = p1 - p0;
+	vec3 d2 = p2 - p0;
+	vec3 normal = cross(d1, d2);
+	normals.push_back(normalize(normal));
 }
 
 /* Calculates the tangent of the triangle where each vertex is given in row and col of the grid */

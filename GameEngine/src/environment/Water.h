@@ -5,17 +5,16 @@
 // a square tile of water
 class Water {
 private:
-	float height_; // height in the world
 	float centre_x, centre_z;
 
 public:
+	static const float height; // height in the world
 	static const float tile_size;
 
-	Water(float x, float z, float height) : centre_x(x), centre_z(z), height_(height) {}
+	Water(float x, float z) : centre_x(x), centre_z(z) {}
 
 	float getX() const { return centre_x; }
 	float getZ() const { return centre_z; }
-	float getHeight() const { return height_; }
 
 	bool containsPoint(glm::vec3 point) const;
 

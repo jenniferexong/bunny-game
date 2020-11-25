@@ -32,8 +32,10 @@ private:
 	Value barycentric(glm::vec3 point, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, Value v1, Value v2, Value v3) const;
 
 	float calculateHeight(int row, int col, const unsigned char* buffer);
-	glm::vec3 calculateNormal(int row, int col) const;
-	glm::vec3 calculateAverageTangent(int row, int col);
+
+	glm::vec3 calculateAverageValue(int row, int col,
+		void(Terrain::* calculate_function)(glm::ivec2 v0, glm::ivec2 v1, glm::ivec2 v2, std::vector<glm::vec3>& values));
+	void calculateNormal(glm::ivec2 v0, glm::ivec2 v1, glm::ivec2 v2, std::vector<glm::vec3>& normals);
 	void calculateTangent(glm::ivec2 v0, glm::ivec2 v1, glm::ivec2 v2, std::vector<glm::vec3>& tangents);
 
 	glm::vec3 getPosition(int row, int col) const;

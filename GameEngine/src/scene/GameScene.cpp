@@ -171,7 +171,16 @@ void GameScene::makeTest()
 	auto flower_model = Application::makeModel("flower", "flower", Material());
 	Application::loadPositionsFromFile(terrain_1_, environment_, flower_model, "test-flowers", vec3(0, -90.f, 0), 0.15f);
 
-	Application::loadWaterFromFile(environment_, -15.f);
+	Application::loadWaterFromFile(environment_, Water::height);
+	/*
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 6; j++) {
+			float x = (2 * Water::tile_size) * i + Water::tile_size;
+			float z = -(2 * Water::tile_size) * j - Water::tile_size;
+			environment_.addWater(Water(x, z));
+		}
+	}
+	*/
 }
 
 glm::mat4 GameScene::getProjectionMatrix() // why is this in game scene
