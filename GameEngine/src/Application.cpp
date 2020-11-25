@@ -47,8 +47,8 @@ Application::Application(const shared_ptr<GLFWwindow*>& w)
 {
 	renderer_ = make_shared<MasterRenderer>();
 	window = w;
-	current_scene = make_shared<GameScene>(renderer_, window, loader);
-	//current_scene = make_shared<TestScene>(renderer_);
+	//current_scene = make_shared<GameScene>(renderer_, window, loader);
+	current_scene = make_shared<TestScene>(renderer_);
 }
 
 void Application::render() {

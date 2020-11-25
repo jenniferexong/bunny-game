@@ -5,7 +5,7 @@
 class TextShader final: public Shader {
 public:
 	enum class UniformVariable {
-		Translation, Color, CharacterWidth, EdgeTransition
+		Translation, Color, CharacterWidth, BorderColor, EdgeTransition, BorderWidth, BorderEdgeTransition
 	};
 
 	static const std::string vertex_file;
