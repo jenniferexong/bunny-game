@@ -11,7 +11,7 @@ FontType::FontType(int texture_atlas, const std::string& font_name) : texture_at
 FontType::FontType(const std::string& font_name)
 {
 	// load texture
-	texture_atlas_ = Application::loader->loadTexture(font_name);
+	texture_atlas_ = Application::loader->loadFontTexture(font_name);
 	font_data_ = FontData(font_name);
 }
 

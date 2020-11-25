@@ -17,7 +17,7 @@ using std::stod;
 using std::string;
 using std::stringstream;
 
-const int FontData::desired_padding = 3;
+const int FontData::desired_padding = 8;
 
 Character FontData::getCharacter(int ascii) const
 {

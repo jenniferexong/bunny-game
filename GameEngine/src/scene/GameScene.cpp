@@ -123,8 +123,8 @@ void GameScene::setup()
 	Skybox sky = Skybox("skybox-textures-day", "skybox-textures-night");
 	environment_.setSkybox(sky);
 
-	auto font = std::make_shared<FontType>("font");
-	frame_rate_ = std::make_shared<GuiText>("", 1.f, font, glm::vec2(0.94f, 0.025), 1.f, false);
+	auto font = std::make_shared<FontType>("maiandra");
+	frame_rate_ = std::make_shared<GuiText>("", 1.5f, font, glm::vec2(0.94f, 0.025), 1.f, false);
 	frame_rate_->setColor(vec3(1));
 	text_master_.addText(frame_rate_);
 }

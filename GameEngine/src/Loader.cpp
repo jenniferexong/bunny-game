@@ -153,6 +153,38 @@ int Loader::loadTexture(const string& texture_name)
 	return texture_id;
 }
 
+int Loader::loadFontTexture(const string& texture_name)
+{
+	const string file_path = FilePath::font_path + texture_name + ".png";
+	// Loading the image
+	stbi_set_flip_vertically_on_load(1); // IF UPSIDE DOWN TEXTURE, CHANGE THIS
+	int width, height, bpp; // bits per pixel
+	unsigned char* buffer = stbi_load(file_path.c_str(), &width, &height, &bpp, 4);
+
+	GLuint texture_id;
+	glGenTextures(1, &texture_id);
+	glBindTexture(GL_TEXTURE_2D, texture_id);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_LOD_BIAS, 0.f);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+	if (buffer) { 
+		stbi_image_free(buffer);
+	}
+
+	printf("Loaded texture: %s, %d\n", texture_name.c_str(), texture_id);
+	textures_.push_back(texture_id);
+	return texture_id;
+}
 
 /* Returns the id of a vao */
 int Loader::createVao()
@@ -224,17 +256,6 @@ Loader::~Loader()
 	glDeleteVertexArrays(vaos_.size(), vaos_.data());
 	glDeleteBuffers(vbos_.size(), vbos_.data());
 	glDeleteTextures(textures_.size(), textures_.data());
-	/*
-	for (GLuint vao : vaos_) {
-		glDeleteVertexArrays(1, &vao);
-	}
-	for (GLuint vbo : vbos_) {
-		glDeleteBuffers(1, &vbo);
-	}
-	for (GLuint texture : textures_) {
-		glDeleteTextures(1, &texture);
-	}
-	*/
 }
 
 

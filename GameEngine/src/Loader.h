@@ -40,6 +40,7 @@ public:
 	Mesh loadToVao(const std::string& obj_name);
 	InstancedMesh loadToVaoInstanced(const std::string& obj_name);
 	int loadTexture(const std::string& texture_name);
+	int loadFontTexture(const std::string& texture_name);
 
 	void deleteVao(GLuint vao);
 };

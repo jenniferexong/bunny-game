@@ -9,6 +9,8 @@ void TextShader::getAllUniformLocations()
 {
 	locations_.insert({ UniformVariable::Translation, getUniformLocation("uTranslation") });
 	locations_.insert({ UniformVariable::Color, getUniformLocation("uColor") });
+	locations_.insert({ UniformVariable::CharacterWidth, getUniformLocation("uCharacterWidth") });
+	locations_.insert({ UniformVariable::EdgeTransition, getUniformLocation("uEdgeTransition") });
 }
 
 void TextShader::bindAttributes()
@@ -30,6 +32,12 @@ void TextShader::loadUniforms(const GuiText& text)
 
 	// colour
 	loadVector(locations_.at(UniformVariable::Color), text.getColor());
+
+	float character_width = (1.f / 50.f) * glm::log(text.getFontSize() + 0.1f) + 0.47f;
+	float edge_transition = (1.f / 13.f) * glm::pow(1.45f, -text.getFontSize() + 2.8f) + 0.045f;	
+
+	loadFloat(locations_.at(UniformVariable::CharacterWidth), character_width);
+	loadFloat(locations_.at(UniformVariable::EdgeTransition), edge_transition);
 }
 
 
