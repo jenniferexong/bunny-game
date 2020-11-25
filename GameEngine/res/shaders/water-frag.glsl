@@ -49,9 +49,9 @@ void main() {
 	vec2 totalDistortion = (texture(uDistortionMap, distortedTexCoords).rg * 3.0 - 1.0) * distortionStrength;
     totalDistortion *= clamp(waterDepth/20.0, 0.0, 1.0); // less distortion if water depth is < 20
 
-    refractionCoords = clamp(refractionCoords, 0.001, 0.999);
     reflectionCoords += totalDistortion;
     refractionCoords += totalDistortion;
+    refractionCoords = clamp(refractionCoords, 0.001, 0.999);
     reflectionCoords.x = clamp(reflectionCoords.x, 0.001, 0.999);
     reflectionCoords.y = clamp(reflectionCoords.y, -0.999, -0.001);
 
