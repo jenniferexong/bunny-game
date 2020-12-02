@@ -51,9 +51,9 @@ void main() {
 
     reflectionCoords += totalDistortion;
     refractionCoords += totalDistortion;
-    refractionCoords = clamp(refractionCoords, 0.0001, 0.9999);
-    reflectionCoords.x = clamp(reflectionCoords.x, 0.0001, 0.9999);
-    reflectionCoords.y = clamp(reflectionCoords.y, -0.9999, -0.0001);
+    refractionCoords = clamp(refractionCoords, 0.001, 0.999);
+    reflectionCoords.x = clamp(reflectionCoords.x, 0.001, 0.999);
+    reflectionCoords.y = clamp(reflectionCoords.y, -0.999, -0.001);
 
     vec4 reflectionColor = texture(uReflection, reflectionCoords);
     vec4 refractionColor = texture(uRefraction, refractionCoords);

@@ -16,9 +16,7 @@ vec4 FrustumBox::up = vec4(0, 1.f, 0, 0);
 FrustumBox::FrustumBox()
 {
 	far_width_ = 1 * tan(radians(MasterRenderer::fov)) * far_plane;
-	Print::val("far width", far_width_);
 	near_width_ = 1 * tan(radians(MasterRenderer::fov)) * MasterRenderer::near_plane;
-	Print::val("near width", near_width_);
 }
 
 void FrustumBox::update(const Camera& camera)
