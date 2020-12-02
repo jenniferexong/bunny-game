@@ -20,6 +20,7 @@ using std::set;
 using std::vector;
 
 class Camera;
+class Player;
 
 using entity_set = shared_ptr<set<shared_ptr<Entity>>>;
 using entity_map = unordered_map<shared_ptr<TexturedModel>, entity_set>;
@@ -63,4 +64,5 @@ public:
 	const shared_ptr<Light>& getSun() const { return sun_; }
 	const shared_ptr<Camera>& getCamera() const { return camera_; }
 	const Skybox& getSkybox() const { return skybox_; }
+	const Terrain& getTerrain(shared_ptr<Player> player);
 };

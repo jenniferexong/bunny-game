@@ -1,5 +1,11 @@
 ﻿#include "Environment.h"
 
+const Terrain& Environment::getTerrain(shared_ptr<Player> player)
+{
+	return terrains_.at(0);
+}
+
+
 void Environment::addEntity(const shared_ptr<Entity>& entity)
 {
 	const auto& model = entity->getModel();

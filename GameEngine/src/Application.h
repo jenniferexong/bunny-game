@@ -49,6 +49,7 @@ public:
 	static void loadPositionsFromFileToSet(const Terrain& terrain, shared_ptr<set<shared_ptr<Entity>>> set, shared_ptr<TexturedModel> model, 
 		const std::string& name, vec3 rotation, float scale);
 	static void loadWaterFromFile(Environment& environment, float water_height);
+	static void spawnEntity(shared_ptr<Player> player, Environment& environment, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale);
 
     static void keyCallback(int key, int scan_code, int action, int mods);
     static void mouseButtonCallback(int button, int action, int mods);

@@ -12,7 +12,7 @@ using std::vector;
 using namespace glm;
 
 const float Terrain::size = 510.f;
-const float Terrain::max_height = 45.f;
+const float Terrain::max_height = 25.f;
 const float Terrain::max_pixel_color = 255 * 3;
 
 Terrain::Terrain(int grid_x, int grid_z, TerrainTexture texture, const string& height_map)

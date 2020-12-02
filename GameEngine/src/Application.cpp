@@ -63,6 +63,27 @@ void Application::render() {
 	previous_frame_time = current_frame_time;
 }
 
+void Application::spawnEntity(shared_ptr<Player> player, Environment& environment, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale)
+{
+	// write position to file
+	std::ofstream positions(FilePath::data_path + name + "-positions.txt", std::ios::app);
+	vec3 position = player->getPosition();
+	auto entity = make_shared<Entity>(model);
+
+	positions << position.x << " " << position.z << std::endl;
+	positions.close();
+
+	Terrain terrain = environment.getTerrain(player);
+	float y = terrain.getHeightOfTerrain(position.x, position.z);
+	vec3 terrain_normal = terrain.getNormalOfTerrain(position.x, position.z);
+	entity->setPosition(position.x, y, position.z);
+	entity->setRotation(linearRand(0.f, 90.f), 0, 0);
+	entity->rotate(rotation.x, rotation.y, rotation.z);
+	entity->setAlignmentRotation(terrain_normal);
+	entity->setScale(scale);
+	environment.addEntity(entity);
+}
+
 void Application::loadPositionsFromFile(const Terrain& terrain, Environment& environment, shared_ptr<TexturedModel> model, const std::string& name, vec3 rotation, float scale)
 {
 	float x, y, z;

@@ -96,11 +96,11 @@ void GameScene::setup()
 	guis_.push_back(compass_);
 
 	// Terrains
-	auto texture_pack = Application::makeTexturePack("green", "green", "light-green", "rocks");
-	Texture blend_map = Texture(loader_->loadTexture("terrain1"));
+	auto texture_pack = Application::makeTexturePack("green", "light-green", "green", "rocks");
+	Texture blend_map = Texture(loader_->loadTexture("river-blendmap"));
 	Texture normal_map = Texture(loader_->loadTexture("rocks-normal"));
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map, normal_map);
-	terrain_1_ = Terrain(0, -1, ground_texture, "heightmap");
+	terrain_1_ = Terrain(0, -1, ground_texture, "river-heightmap");
 	environment_.addTerrain(terrain_1_);
 
 	// Player
@@ -108,10 +108,10 @@ void GameScene::setup()
 	auto player_model = Application::makeModel("nibbles", "nibbles", player_material);
 
 	// Bunny player
-	float player_x = 328.411f;
-	float player_z = -19.45f;
+	float player_x = 489.295f;
+	float player_z = -221.175f;
 	float player_y = terrain_1_.getHeightOfTerrain(player_x, player_z);
-	player_ = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(0.f, 0, 0), 0.7f);
+	player_ = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(45.f, 0, 0), 0.7f);
 	player_->setRotationOffset(180.f, 0, 0);
 	environment_.addEntity(player_);
 
@@ -127,6 +127,15 @@ void GameScene::setup()
 	frame_rate_ = std::make_shared<GuiText>("", 1.5f, font, glm::vec2(0.94f, 0.025), 1.f, false);
 	frame_rate_->setColor(vec3(1));
 	text_master_.addText(frame_rate_);
+
+	// water
+	for (int i = 0; i < 6; i++) {
+		for (int j = 0; j < 6; j++) {
+			float x = (2 * (Water::tile_size)) * i + Water::tile_size;
+			float z = -(2 * (Water::tile_size)) * j - Water::tile_size;
+			environment_.addWater(Water(x, z));
+		}
+	}
 }
 
 void GameScene::makeGame()
@@ -158,29 +167,8 @@ void GameScene::makeTest()
 	Material material = Material();
 	auto model = Application::makeModel("flower", "flower", material);
 
-	float x = 283.491f;
-	float z = -195.017f;
-	player_->setPosition(x, terrain_1_.getHeightOfTerrain(x, z), z);
-
-	auto test = make_shared<Entity>(model);
-	test->setPosition(100, terrain_1_.getHeightOfTerrain(100, -120) + 10, -120);
-	test->setRotation(0, -90.f, 0);
-	test->setScale(0.2f);
-	environment_.addEntity(test);
-
 	auto flower_model = Application::makeModel("flower", "flower", Material());
 	Application::loadPositionsFromFile(terrain_1_, environment_, flower_model, "test-flowers", vec3(0, -90.f, 0), 0.15f);
-
-	Application::loadWaterFromFile(environment_, Water::height);
-	/*
-	for (int i = 0; i < 6; i++) {
-		for (int j = 0; j < 6; j++) {
-			float x = (2 * Water::tile_size) * i + Water::tile_size;
-			float z = -(2 * Water::tile_size) * j - Water::tile_size;
-			environment_.addWater(Water(x, z));
-		}
-	}
-	*/
 }
 
 glm::mat4 GameScene::getProjectionMatrix() // why is this in game scene
@@ -189,7 +177,6 @@ glm::mat4 GameScene::getProjectionMatrix() // why is this in game scene
 	float aspect_ratio = (float) MasterRenderer::window_width / (float) MasterRenderer::window_height;
 	return glm::perspective(MasterRenderer::fov, aspect_ratio, MasterRenderer::near_plane, MasterRenderer::far_plane);
 }
-
 
 void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 {
@@ -224,13 +211,11 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 		break;
 	case GLFW_KEY_L: 
 		if (action == GLFW_RELEASE) {
-			string entity = "water";
+			string file_name = "test-flowers";
 			// Create and open a text file
-			std::ofstream positions(FilePath::data_path + entity + "-positions.txt", std::ios::app);
-
-			vec3 position = player_->getPosition();
-			// Write to the file
-			positions << position.x << " " << position.z << std::endl;
+			std::ofstream positions(FilePath::data_path + file_name + "-positions.txt", std::ios::app);
+			auto flower_model = Application::makeModel("flower", "flower", Material());
+			Application::spawnEntity(player_, environment_, flower_model, file_name, vec3(0, -90.f, 0), 0.15f);
 		}
 		break;
 	case GLFW_KEY_SPACE: 
