@@ -24,7 +24,7 @@ std::shared_ptr<Entity> MousePicker::selectEntity(Environment& environment)
 	float min_distance = std::numeric_limits<float>::max();
 
 	// iterate through all the entities and check for ray intersection with its bounding sphere
-	for (const auto& element: environment.getEntities()) {
+	for (const auto& element: environment.getEntitiesInView()) {
 		for (const auto& e: *element.second) {
 			RayIntersection intersect = getIntersection(e);
 

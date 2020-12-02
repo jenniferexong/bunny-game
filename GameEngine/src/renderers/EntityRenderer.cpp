@@ -13,7 +13,7 @@ using std::endl;
 
 void EntityRenderer::render(const Environment& environment)
 {
-	for (const auto& element : environment.getEntities()) {
+	for (const auto& element : environment.getEntitiesInView()) {
 		const auto& model = element.first;
 		prepareTexturedModel(*model);
 		const auto& batch = element.second;
@@ -35,7 +35,7 @@ void EntityRenderer::renderInstanced(const Environment& environment)
 	auto model_matrix_data = std::make_shared<vector<float>>();
 	auto model_brightness_data = std::make_shared<vector<float>>();
 
-	for (const auto& element : environment.getEntities()) {
+	for (const auto& element : environment.getEntitiesInView()) {
 		const auto& model = element.first;
 		prepareTexturedModel(*model);
 		const auto& batch = element.second;

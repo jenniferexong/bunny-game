@@ -4,6 +4,7 @@
 
 #include <memory>
 
+#include "FrustumBox.h"
 #include "../environment/Player.h"
 
 using glm::vec3;
@@ -16,6 +17,7 @@ private:
 	static const float max_distance;
 
 	std::shared_ptr<Player> player_;
+	FrustumBox view_frustum_box_;
 
 	vec3 position_ = vec3(0);
 	vec3 rotation_ = vec3(0, 0.1f, 0); // yaw, pitch, roll
@@ -37,5 +39,6 @@ public:
 
 	vec3 getPosition() const { return position_; }
 	vec3 getRotation() const { return rotation_; }
+	bool canSeePoint(vec3 point);
 };
 

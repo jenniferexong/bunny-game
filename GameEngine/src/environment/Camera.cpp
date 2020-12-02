@@ -54,6 +54,9 @@ void Camera::updateView(const Terrain& terrain, const vector<Water>& water) {
 	}
 
 	rotation_.x = -player_rotation.x;
+
+	// update the view frustum
+	view_frustum_box_.update(*this);
 }
 
 /* Moves camera under water, then inverts the pitch */
@@ -72,6 +75,10 @@ void Camera::positionForRefraction(float water_height)
 	rotation_.y *= -1; // invert
 }
 
+bool Camera::canSeePoint(vec3 point)
+{
+	return view_frustum_box_.containsPoint(point);
+}
 
 void Camera::print()
 {

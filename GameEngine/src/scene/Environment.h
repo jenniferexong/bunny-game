@@ -38,18 +38,21 @@ namespace std {
 
 class Environment {
 private:
-	entity_map entities_;
+	vector<shared_ptr<Entity>> entities_;
+	entity_map entities_in_view_;
 
 	vector<Terrain> terrains_;
 	vector<Water> water_;
 	vector<shared_ptr<Light>> lights_;
 	shared_ptr<Light> sun_;
-	shared_ptr<Camera> camera_;
 	Skybox skybox_;
+
+	shared_ptr<Camera> camera_;
 
 public:
 	void addTerrain(const Terrain& terrain);
 	void addEntity(const shared_ptr<Entity>& entity);
+	void addEntityToMap(entity_map& map, shared_ptr<Entity> entity);
 	void addWater(const Water& water);
 	void addEntitySet(const entity_set& set);
 	void setLights(const vector<shared_ptr<Light>>& lights);
@@ -57,7 +60,9 @@ public:
 	void setSun(const shared_ptr<Light>& sun);
 	void setSkybox(const Skybox& skybox);
 
-	const entity_map& getEntities() const { return entities_; }
+	void updateInView();
+
+	const vector<shared_ptr<Entity>> getEntities() const { return entities_; }
 	const vector<Terrain>& getTerrains() const { return terrains_; }
 	const vector<Water>& getWater() const { return water_; }
 	const vector<shared_ptr<Light>>& getLights() const { return lights_; }
@@ -65,4 +70,6 @@ public:
 	const shared_ptr<Camera>& getCamera() const { return camera_; }
 	const Skybox& getSkybox() const { return skybox_; }
 	const Terrain& getTerrain(shared_ptr<Player> player);
+
+	const entity_map& getEntitiesInView() const { return entities_in_view_; }
 };

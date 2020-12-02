@@ -1,20 +1,28 @@
 ﻿#include "Environment.h"
 
+#include "../Helper.h"
+
+#include "../environment/Camera.h"
+
 const Terrain& Environment::getTerrain(shared_ptr<Player> player)
 {
 	return terrains_.at(0);
 }
 
+void Environment::addEntityToMap(entity_map& map, shared_ptr<Entity> entity)
+{
+	const auto& model = entity->getModel();
+	if (map.find(model) == map.end()) {
+		auto entity_set = std::make_shared<set<shared_ptr<Entity>>>();
+		map.insert({ model, entity_set });
+	}
+	auto entity_set = map.at(model);
+	entity_set->insert(entity);
+}
 
 void Environment::addEntity(const shared_ptr<Entity>& entity)
 {
-	const auto& model = entity->getModel();
-	if (entities_.find(model) == entities_.end()) {
-		auto entity_set = std::make_shared<set<shared_ptr<Entity>>>();
-		entities_.insert({ model, entity_set });
-	}
-	auto entity_set = entities_.at(model);
-	entity_set->insert(entity);
+	entities_.push_back(entity);
 }
 
 void Environment::addEntitySet(const entity_set& set)
@@ -53,6 +61,20 @@ void Environment::setSkybox(const Skybox& skybox)
 {
 	skybox_ = skybox;
 }
+
+void Environment::updateInView()
+{
+	int count = 0;
+	entities_in_view_.clear();
+	for (const auto& entity: entities_) {
+		if (camera_->canSeePoint(entity->getPosition())) {
+			addEntityToMap(entities_in_view_, entity);
+			count++;
+		}
+	}
+	//Print::val("Entities in view", count);
+}
+
 
 
 

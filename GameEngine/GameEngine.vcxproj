@@ -22,6 +22,7 @@
     <ClCompile Include="src\Application.cpp" />
     <ClCompile Include="src\environment\Skybox.cpp" />
     <ClCompile Include="src\environment\Water.cpp" />
+    <ClCompile Include="src\environment\FrustumBox.cpp" />
     <ClCompile Include="src\Helper.cpp" />
     <ClCompile Include="src\renderers\TextRenderer.cpp" />
     <ClCompile Include="src\renderers\WaterFrameBuffers.cpp" />
@@ -64,6 +65,7 @@
   <ItemGroup>
     <ClInclude Include="src\environment\Skybox.h" />
     <ClInclude Include="src\environment\Water.h" />
+    <ClInclude Include="src\environment\FrustumBox.h" />
     <ClInclude Include="src\Helper.h" />
     <ClInclude Include="src\renderers\GuiRenderer.h" />
     <ClInclude Include="src\renderers\TextRenderer.h" />

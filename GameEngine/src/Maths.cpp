@@ -67,6 +67,20 @@ mat4 Maths::createTransformationMatrix(vec3 t, vec3 r, float s, mat4 alignment_m
 	return matrix;
 }
 
+glm::mat4 Maths::createRotationMatrix(const Camera& camera)
+{
+	mat4 matrix = mat4(1);
+
+	// Rotate pitch, then yaw
+	float yaw = camera.getRotation().x;
+	float pitch = camera.getRotation().y;
+
+	matrix = rotate(matrix, radians(-yaw), vec3(0, 1, 0));
+	matrix = rotate(matrix, radians(-pitch), vec3(1, 0, 0));
+	return matrix;
+}
+
+
 mat4 Maths::createViewMatrix(const Camera& camera)
 {
 	mat4 matrix = mat4(1);

@@ -61,7 +61,7 @@ void MasterRenderer::renderEntities(const Environment& environment, glm::vec4 cl
 
 	entity_shader_->start();
 	entity_shader_->loadUniformPerFrame(environment, clipping_plane);
-	//entity_renderer_.render(entities);
+	//entity_renderer_.render(environment);
 	entity_renderer_.renderInstanced(environment);
 	entity_shader_->stop();
 }

@@ -26,7 +26,6 @@ private:
 	vector<shared_ptr<Light>> lights_;
 	vector<shared_ptr<Light>> close_lights_;
 
-
 	map<Key, bool> move_keys_ = {
 		{Key::W, false}, {Key::A, false}, {Key::S, false}, {Key::D, false}, {Key::Space, false}
 	};

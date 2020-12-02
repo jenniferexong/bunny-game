@@ -7,6 +7,8 @@
 
 #include <glm/gtc/random.hpp>
 
+
+#include "../Helper.h"
 #include "../Location.h"
 
 using std::shared_ptr;
@@ -60,6 +62,7 @@ void GameScene::update()
 	player_->updatePosition(environment_, compass_, move_keys_);
 	camera_->updateView(terrain_1_, environment_.getWater());
 	mouse_picker.update(getProjectionMatrix(), *camera_); // must update after camera is moved
+	environment_.updateInView();
 
 	selected_ = mouse_picker.selectEntity(environment_);
 	if (selected_ != nullptr) 
@@ -211,7 +214,7 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 		break;
 	case GLFW_KEY_L: 
 		if (action == GLFW_RELEASE) {
-			string file_name = "test-flowers";
+			string file_name = "culling-flower";
 			// Create and open a text file
 			std::ofstream positions(FilePath::data_path + file_name + "-positions.txt", std::ios::app);
 			auto flower_model = Application::makeModel("flower", "flower", Material());
