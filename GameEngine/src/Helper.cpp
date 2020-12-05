@@ -30,12 +30,19 @@ void Print::s(const std::string& str)
 	cout << str << endl;
 }
 
-
 void Print::texture(std::string texture_name, int id)
 {
 	if (!Print::print)
 		return;
-	printf("Loaded texture: %s, %d\n", texture_name.c_str(), id);
+	printf("loaded texture: %s, %d\n", texture_name.c_str(), id);
+}
+
+void Print::fbo(std::string attachment, int id)
+{
+	if (!Print::print)
+		return;
+
+	printf("created fbo (%s): %d\n", attachment.c_str(), id);
 }
 
 void Print::matrix(std::string title, glm::mat4 matrix)

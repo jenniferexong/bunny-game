@@ -5,7 +5,6 @@
 #include "GuiRenderer.h"
 #include "SkyboxRenderer.h"
 #include "TextRenderer.h"
-#include "WaterFrameBuffers.h"
 #include "WaterRenderer.h"
 
 class Scene;
@@ -19,8 +18,7 @@ private:
 	EntityRenderer entity_renderer_;
 	TerrainRenderer terrain_renderer_;
 	SkyboxRenderer skybox_renderer_;
-	WaterFrameBuffers water_fbos_;
-	WaterRenderer water_renderer_ = WaterRenderer(water_fbos_);
+	WaterRenderer water_renderer_;
 
 	TextRenderer text_renderer_;
 	GuiRenderer gui_renderer_;

@@ -14,5 +14,6 @@ namespace Print {
 	void val(std::string title, float value);
 	void val(std::string title, int value);
 	void texture(std::string texture_name, int id);
+	void fbo(std::string attachment, int id);
 	void s(const std::string& str);
 }

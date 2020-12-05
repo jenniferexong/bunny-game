@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+
+#include "Helper.h"
 #include "WavefrontData.h"
 #include "Location.h"
 
@@ -116,6 +118,7 @@ int Loader::loadCubeMap(std::vector<std::string> texture_names)
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	textures_.push_back(texture_id);
+	Print::texture("cube map (" + texture_names.at(0) + ")", texture_id);
 	return texture_id;
 }
 
@@ -144,11 +147,10 @@ int Loader::loadTexture(const string& texture_name)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	if (buffer) { 
+	if (buffer)
 		stbi_image_free(buffer);
-	}
 
-	printf("Loaded texture: %s, %d\n", texture_name.c_str(), texture_id);
+	Print::texture(texture_name, texture_id);
 	textures_.push_back(texture_id);
 	return texture_id;
 }
@@ -177,11 +179,10 @@ int Loader::loadFontTexture(const string& texture_name)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	if (buffer) { 
+	if (buffer)
 		stbi_image_free(buffer);
-	}
 
-	printf("Loaded texture: %s, %d\n", texture_name.c_str(), texture_id);
+	Print::texture(texture_name, texture_id);
 	textures_.push_back(texture_id);
 	return texture_id;
 }
