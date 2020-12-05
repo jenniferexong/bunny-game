@@ -32,9 +32,10 @@ void GameScene::render()
 	renderer_->renderWaterReflection(*this, &GameScene::renderScene);
 	renderer_->renderWaterRefraction(*this, &GameScene::renderScene);
 
+	renderer_->startPostProcessing();
 	renderScene(glm::vec4(0), true);
-
 	renderer_->renderWater(environment_);
+	renderer_->renderPostProcessing();
 
 	renderer_->renderGui(guis_);
 	renderer_->renderText(text_master_);

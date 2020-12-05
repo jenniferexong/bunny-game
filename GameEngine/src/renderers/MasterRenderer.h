@@ -6,6 +6,7 @@
 #include "SkyboxRenderer.h"
 #include "TextRenderer.h"
 #include "WaterRenderer.h"
+#include "../post-processing/PostProcessor.h"
 
 class Scene;
 class GameScene;
@@ -22,6 +23,8 @@ private:
 
 	TextRenderer text_renderer_;
 	GuiRenderer gui_renderer_;
+
+	PostProcessor post_processor_;
 
 public:
 	static glm::mat4 projection_matrix;
@@ -47,6 +50,9 @@ public:
 
 	void renderGui(const vector<shared_ptr<GuiTexture>>& guis);
 	void renderText(const TextMaster& text_master);
+
+	void startPostProcessing() { post_processor_.getFbo().bind(); }
+	void renderPostProcessing() { post_processor_.process(); }
 
 	static void enableCulling();
 	static void disableCulling();

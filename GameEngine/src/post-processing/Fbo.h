@@ -1,11 +1,13 @@
 ﻿#pragma once
 
 enum class DepthBufferAttachment {
-	None, DepthTexture, DepthBuffer
+	Uninitialised, None, DepthTexture, DepthBuffer
 };
 
 class Fbo {
 private:
+	DepthBufferAttachment type_ = DepthBufferAttachment::Uninitialised;
+
 	int width_, height_;
 
 	GLuint fbo_id_ = -1;
@@ -26,8 +28,15 @@ private:
 	void createDepthBufferAttachment();
 
 public:
+	Fbo() = default;
 	Fbo(int width, int height, DepthBufferAttachment type);
+
+	void cleanUp();
 	~Fbo();
+
+	void initialise();
+
+	void resize(int width, int height);
 
 	/* Sets fbo to be the current render target */
 	void bind() const;
@@ -36,6 +45,7 @@ public:
 	/* Sets default frame buffer (screen) as the current render target */
 	void unbind() const;
 
+	bool intialised() { return type_ != DepthBufferAttachment::Uninitialised; }
 	int getColorTexture() const;
 	int getDepthTexture() const;
 };

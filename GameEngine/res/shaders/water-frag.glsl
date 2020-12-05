@@ -47,13 +47,13 @@ void main() {
 	vec2 distortedTexCoords = texture(uDistortionMap, vec2(f_in.textureCoords.x + uMoveFactor, f_in.textureCoords.y)).rg * distortionStrength * 2;
 	distortedTexCoords = f_in.textureCoords + vec2(distortedTexCoords.x, distortedTexCoords.y + uMoveFactor);
 	vec2 totalDistortion = (texture(uDistortionMap, distortedTexCoords).rg * 3.0 - 1.0) * distortionStrength;
-    totalDistortion *= clamp(waterDepth/20.0, 0.0, 1.0); // less distortion if water depth is < 20
+    totalDistortion *= clamp(waterDepth/25.0, 0.0, 1.0); // less distortion if water depth is < 20
 
     reflectionCoords += totalDistortion;
     refractionCoords += totalDistortion;
-    refractionCoords = clamp(refractionCoords, 0.001, 0.999);
-    reflectionCoords.x = clamp(reflectionCoords.x, 0.001, 0.999);
-    reflectionCoords.y = clamp(reflectionCoords.y, -0.999, -0.001);
+    refractionCoords = clamp(refractionCoords, 0.01, 0.99);
+    reflectionCoords.x = clamp(reflectionCoords.x, 0.01, 0.99);
+    reflectionCoords.y = clamp(reflectionCoords.y, -0.99, -0.01);
 
     vec4 reflectionColor = texture(uReflection, reflectionCoords);
     vec4 refractionColor = texture(uRefraction, refractionCoords);
@@ -78,7 +78,7 @@ void main() {
     specular *= clamp(waterDepth/15.0, 0.0, 1.0); // dampen specular highlights when water less deep
 
     // tint slightly
-    finalColor = mix(finalColor, vec4(0.341, 0.270, 0.196, 1), 0.1) + vec4(specular, 0.0);
-    finalColor.a = clamp(waterDepth/2.0, 0.0, 1.0);
+    finalColor = mix(finalColor, vec4(0.0, 0.1, 0.1, 1), 0.1) + vec4(specular, 0.0);
+    finalColor.a = clamp(waterDepth/2.0, 0.1, 1.0);
     outColor = finalColor;
 }

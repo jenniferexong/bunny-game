@@ -25,6 +25,9 @@
     <ClCompile Include="src\environment\FrustumBox.cpp" />
     <ClCompile Include="src\post-processing\Fbo.cpp" />
     <ClCompile Include="src\Helper.cpp" />
+    <ClCompile Include="src\post-processing\ImageProcessor.cpp" />
+    <ClCompile Include="src\post-processing\PostProcessor.cpp" />
+    <ClCompile Include="src\post-processing\ImageRenderer.cpp" />
     <ClCompile Include="src\renderers\TextRenderer.cpp" />
     <ClCompile Include="src\renderers\WaterRenderer.cpp" />
     <ClCompile Include="src\scene\Environment.cpp" />
@@ -46,6 +49,7 @@
     <ClCompile Include="src\renderers\SkyboxRenderer.cpp" />
     <ClCompile Include="src\renderers\TerrainRenderer.cpp" />
     <ClCompile Include="src\scene\TestScene.cpp" />
+    <ClCompile Include="src\post-processing\ContrastShader.cpp" />
     <ClCompile Include="src\shaders\TextShader.cpp" />
     <ClCompile Include="src\shaders\WaterShader.cpp" />
     <ClCompile Include="src\text\FontData.cpp" />
@@ -68,7 +72,10 @@
     <ClInclude Include="src\environment\FrustumBox.h" />
     <ClInclude Include="src\post-processing\Fbo.h" />
     <ClInclude Include="src\Helper.h" />
+    <ClInclude Include="src\post-processing\ImageProcessor.h" />
+    <ClInclude Include="src\post-processing\PostProcessor.h" />
     <ClInclude Include="src\renderers\GuiRenderer.h" />
+    <ClInclude Include="src\post-processing\ImageRenderer.h" />
     <ClInclude Include="src\renderers\TextRenderer.h" />
     <ClInclude Include="src\renderers\WaterRenderer.h" />
     <ClInclude Include="src\scene\Environment.h" />
@@ -93,6 +100,7 @@
     <ClInclude Include="src\models\Mesh.h" />
     <ClInclude Include="src\models\Model.h" />
     <ClInclude Include="src\scene\TestScene.h" />
+    <ClInclude Include="src\post-processing\ContrastShader.h" />
     <ClInclude Include="src\shaders\TextShader.h" />
     <ClInclude Include="src\shaders\WaterShader.h" />
     <ClInclude Include="src\text\FontData.h" />

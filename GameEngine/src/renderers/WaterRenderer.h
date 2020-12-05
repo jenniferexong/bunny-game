@@ -22,8 +22,8 @@ private:
 
 public:
 	WaterRenderer();
-	const Fbo& getReflectionFbo() const { return reflection_fbo_; }
-	const Fbo& getRefractionFbo() const { return refraction_fbo_; }
+	Fbo& getReflectionFbo() { return reflection_fbo_; }
+	Fbo& getRefractionFbo() { return refraction_fbo_; }
 
 	void render(const Environment& environment);
 	void prepare(const Environment& environment);

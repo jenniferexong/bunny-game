@@ -5,21 +5,34 @@
 #include "../Helper.h"
 #include "../renderers/MasterRenderer.h"
 
-Fbo::Fbo(int width, int height, DepthBufferAttachment type) : width_(width), height_(height)
+Fbo::Fbo(int width, int height, DepthBufferAttachment type) : width_(width), height_(height), type_(type)
+{
+	initialise();
+}
+
+void Fbo::initialise()
 {
 	createFrameBuffer();
 	createTextureAttachment();
 	string attachment = "color texture";
-	if (type == DepthBufferAttachment::DepthTexture) {
+	if (type_ == DepthBufferAttachment::DepthTexture) {
 		attachment.append(", depth texture");
 		createDepthTextureAttachment();
 	}
-	else if (type == DepthBufferAttachment::DepthBuffer) {
+	else if (type_ == DepthBufferAttachment::DepthBuffer) {
 		attachment.append(", depth buffer");
 		createDepthBufferAttachment();
 	}
 	unbind();
 	Print::fbo(attachment, fbo_id_);
+}
+
+void Fbo::resize(int width, int height)
+{
+	cleanUp();
+	width_ = width;
+	height_ = height;
+	initialise();
 }
 
 int Fbo::getColorTexture() const
@@ -38,13 +51,28 @@ int Fbo::getDepthTexture() const
 	return depth_texture_;
 }
 
-Fbo::~Fbo()
+void Fbo::cleanUp()
 {
 	glDeleteFramebuffers(1, &fbo_id_);
 	glDeleteTextures(1, &color_texture_);
-	glDeleteTextures(1, &depth_texture_);
-	glDeleteRenderbuffers(1, &depth_buffer_);
-	glDeleteRenderbuffers(1, &color_buffer_);
+
+	if (depth_texture_ > -1)
+		glDeleteTextures(1, &depth_texture_);
+	if (depth_buffer_ > -1)
+		glDeleteRenderbuffers(1, &depth_buffer_);
+	if (color_buffer_ > -1) 
+		glDeleteRenderbuffers(1, &color_buffer_);
+
+	fbo_id_ = -1;
+	color_texture_ = -1;
+	depth_texture_ = -1;
+	depth_buffer_ = -1;
+	color_buffer_ = -1;
+}
+
+Fbo::~Fbo()
+{
+	cleanUp();
 }
 
 void Fbo::bind() const

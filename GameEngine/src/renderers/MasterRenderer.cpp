@@ -107,6 +107,11 @@ void MasterRenderer::updateWindowSize()
 {
 	int width, height;
 	glfwGetFramebufferSize(*Application::window, &width, &height);
+	if (width != window_width || height != window_height) {
+		post_processor_.getFbo().resize(width, height);
+		//water_renderer_.getReflectionFbo().resize(width, height);
+		water_renderer_.getRefractionFbo().resize(width, height);
+	}
 	window_width = width;
 	window_height = height;
 	glViewport(0, 0, window_width, window_height);
