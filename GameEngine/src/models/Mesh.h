@@ -22,8 +22,8 @@ public:
 class InstancedMesh final: public Mesh {
 private:
 	BoundingSphere bounding_sphere_;
-	int model_matrix_vbo_;
-	int model_brightness_vbo_;
+	int model_matrix_vbo_ = -1;
+	int model_brightness_vbo_ = -1;
 
 public:
 	InstancedMesh(int vao_id, int vertex_count, int face) : Mesh(vao_id, vertex_count, face) {}	

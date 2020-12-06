@@ -15,22 +15,22 @@ private:
 	static int next_id;
 
 	int id_ = 0;
-	int mesh_vao_;
-	int vertex_count_;
+	int mesh_vao_ = -1;
+	int vertex_count_ = 0;
 	
-	std::string text_;
+	std::string text_ = "";
 	float font_size_ = 1;
 	glm::vec3 color_ = glm::vec3(0.f); // default black
 	glm::vec3 border_color_ = glm::vec3(1.0);
 
-	float character_width_;
-	float edge_transition_;
-	float border_width_ = 0.f;
-	float border_edge_transition_;
+	float character_width_ = 0;
+	float edge_transition_ = 0;
+	float border_width_ = 0;
+	float border_edge_transition_ = 0;
 
-	glm::vec2 position_;
-	float max_line_width_;
-	int line_count_;
+	glm::vec2 position_ = glm::vec2(0);
+	float max_line_width_ = 0;
+	int line_count_ = 0;
 
 	std::shared_ptr<FontType> font_ = nullptr;
 

@@ -6,7 +6,7 @@
 
 class FontType {
 private:
-	int texture_atlas_;
+	int texture_atlas_ = -1;
 	FontData font_data_;
 
 public:

@@ -46,7 +46,7 @@ private:
 	bool invalidVertex(int row, int col);
 
 public:
-	Terrain() = default;
+	Terrain() : vertex_count_(0), x_(0), z_(0) {}
 	Terrain(int grid_x, int grid_z, TerrainTexture texture, const std::string& height_map);
 
 	float getX() const { return x_; }

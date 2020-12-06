@@ -8,7 +8,7 @@ class FontData {
 private:
 	static const int desired_padding;
 	std::unordered_map<int, Character> characters_;
-	double space_width_;
+	double space_width_ = 0;
 
 	std::string getToken(std::ifstream* file, const std::string& token_name);
 	

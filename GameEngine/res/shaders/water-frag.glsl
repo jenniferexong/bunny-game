@@ -21,7 +21,7 @@ in VertexData {
     vec3 toCamera;
 } f_in;
 
-const float distortionStrength = 0.017;
+const float distortionStrength = 0.03;//0.017;
 const float shineDamper = 100.0;
 const float reflectivity = 0.6;
 
@@ -47,7 +47,7 @@ void main() {
 	vec2 distortedTexCoords = texture(uDistortionMap, vec2(f_in.textureCoords.x + uMoveFactor, f_in.textureCoords.y)).rg * distortionStrength * 2;
 	distortedTexCoords = f_in.textureCoords + vec2(distortedTexCoords.x, distortedTexCoords.y + uMoveFactor);
 	vec2 totalDistortion = (texture(uDistortionMap, distortedTexCoords).rg * 3.0 - 1.0) * distortionStrength;
-    totalDistortion *= clamp(waterDepth/25.0, 0.0, 1.0); // less distortion if water depth is < 20
+    totalDistortion *= clamp(waterDepth/28.0, 0.0, 1.0); // less distortion if water depth is < 20
 
     reflectionCoords += totalDistortion;
     refractionCoords += totalDistortion;

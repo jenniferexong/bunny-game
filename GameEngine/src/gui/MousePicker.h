@@ -21,7 +21,7 @@ private:
 	RayIntersection getIntersection(const std::shared_ptr<Entity>& entity);
 	
 public:
-	MousePicker() : current_ray_direction_(glm::vec3(0.f)), projection_matrix_(glm::mat4(1.f)), view_matrix_(glm::mat4(1.f)) {}
+	MousePicker() : current_ray_direction_(glm::vec3(0)), current_ray_origin_(glm::vec3(0)), projection_matrix_(glm::mat4(1)), view_matrix_(glm::mat4(1)) {}
 
 	void update(glm::mat4 projection_matrix, const Camera& camera); // update the projection and view matrix
 	std::shared_ptr<Entity> selectEntity(Environment& environment);

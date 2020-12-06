@@ -13,11 +13,12 @@ using glm::vec3;
 class Entity {
 protected:
 	std::shared_ptr<TexturedModel> model_; // pointer for run time polymorphism
-	vec3 position_, rotation_; // yaw, pitch, roll
+	vec3 position_ = vec3(0);
+	vec3 rotation_ = vec3(0); // yaw, pitch, roll
 	vec3 default_rotation_offset_ = vec3(0);
-	vec3 rotation_offset_;
+	vec3 rotation_offset_ = vec3(0);
 	glm::mat4 alignment_rotation_ = glm::mat4(1);
-	float scale_;
+	float scale_ = 1.f;
 
 	bool selectable_ = true;
 	float brightness_ = 0.8f;
