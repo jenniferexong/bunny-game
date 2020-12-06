@@ -108,7 +108,7 @@ void MasterRenderer::updateWindowSize()
 	int width, height;
 	glfwGetFramebufferSize(*Application::window, &width, &height);
 	if (width != window_width || height != window_height) {
-		post_processor_.getFbo().resize(width, height);
+		post_processor_.resizeFbos(width, height);
 		//water_renderer_.getReflectionFbo().resize(width, height);
 		water_renderer_.getRefractionFbo().resize(width, height);
 	}

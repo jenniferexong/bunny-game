@@ -14,7 +14,9 @@
 
 class GameScene: public Scene {
 private:
-	MousePicker mouse_picker;
+	MousePicker mouse_picker_;
+
+	bool pause_ = false;
 
 	shared_ptr<Player> player_ = nullptr;
 	shared_ptr<GuiTexture> compass_ = nullptr;

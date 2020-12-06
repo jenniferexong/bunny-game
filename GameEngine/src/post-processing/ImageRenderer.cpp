@@ -1,6 +1,7 @@
 ﻿#include <GL/glew.h>
 
 #include "ImageRenderer.h"
+#include "../Helper.h"
 
 void ImageRenderer::renderQuad()
 {

@@ -12,8 +12,8 @@ private:
 	Mesh quad_;
 	WaterShader shader_;
 
-	Fbo reflection_fbo_ = Fbo(1280, 720, DepthBufferAttachment::DepthBuffer);
-	Fbo refraction_fbo_ = Fbo(1280, 720, DepthBufferAttachment::DepthTexture);
+	Fbo reflection_fbo_ = Fbo(1280, 720, DepthBufferAttachment::DepthBuffer, false);
+	Fbo refraction_fbo_ = Fbo(1280, 720, DepthBufferAttachment::DepthTexture, false);
 
 	int dudv_id_, normal_id_;
 

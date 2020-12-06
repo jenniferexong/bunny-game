@@ -2,7 +2,7 @@
 
 #include "Shader.h"
 
-#include <map>
+#include <unordered_map>
 
 #include "../environment/Entity.h"
 #include "../models/Material.h"
@@ -20,7 +20,7 @@ private:
 	static const std::string vertex_file;
 	static const std::string fragment_file;
 
-	std::map<UniformVariable, int> locations_;
+	std::unordered_map<UniformVariable, int> locations_;
 
 protected:
 	void bindAttributes() override;

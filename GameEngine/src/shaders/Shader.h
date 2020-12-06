@@ -9,9 +9,9 @@
 class Shader {
 
 private:
-	int program_id_;
-	int vert_id_;
-	int frag_id_;
+	int program_id_ = -1;
+	int vert_id_ = -1;
+	int frag_id_ = -1;
 
 	static int loadShader(const std::string& file_name, int type);
 
@@ -34,8 +34,8 @@ protected:
 	void loadMatrices(int location, const std::vector<glm::mat4>& matrices) const;
 
 public:
-	//Shader(const std::string& vert_file, const std::string& frag_file); // constructor
 	Shader() : program_id_(0), vert_id_(0), frag_id_(0) {}
+	Shader(const Shader& other) = default;
 	virtual ~Shader();
 
 	void setUp(const std::string& vert_file, const std::string& frag_file);
@@ -43,4 +43,5 @@ public:
 
 	void start() const;
 	void stop() const;
+	void print() const;
 };

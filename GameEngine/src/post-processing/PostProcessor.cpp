@@ -5,6 +5,7 @@
 #include "../Location.h"
 #include "../Application.h"
 
+const int PostProcessor::blur_strength = 8; // {1, 2, 4, 8, 16}
 const std::vector<float> PostProcessor::positions = { -1, 1, -1, -1, 1, 1, 1, -1 };
 Mesh PostProcessor::quad = Mesh();
 
@@ -20,11 +21,22 @@ void PostProcessor::process()
 	glEnableVertexAttribArray(AttributeLocation::Position);
 	glDisable(GL_DEPTH_TEST);
 
-	contrast_.render(fbo_.getColorTexture());
+	horizontal_blur_.render(fbo_.getColorTexture());
+	vertical_blur_.render(horizontal_blur_.getOutputTexture());
+	contrast_.render(vertical_blur_.getOutputTexture());
 
 	glEnable(GL_DEPTH_TEST);	
 	glDisableVertexAttribArray(AttributeLocation::Position);
 	glBindVertexArray(0);
 }
+
+void PostProcessor::resizeFbos(int width, int height)
+{
+	fbo_.resize(width, height);
+	contrast_.resize(width, height);
+	horizontal_blur_.resize(width, height);
+	vertical_blur_.resize(width, height);
+}
+
 
 

@@ -66,7 +66,7 @@ int main(void)
         // Draw everything
         application.render();
 
-        // Swap front and back buffers 
+		glfwSwapInterval(1);
         glfwSwapBuffers(window);
 
         // Poll for and process events 

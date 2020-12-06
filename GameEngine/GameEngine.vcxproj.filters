@@ -153,6 +153,12 @@
     <ClCompile Include="src\post-processing\ContrastShader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\post-processing\HorizontalBlurShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\post-processing\VerticalBlurShader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Vendor\stb_image\stb_image.h">
@@ -312,6 +318,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\post-processing\ContrastShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\post-processing\HorizontalBlurShader.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\post-processing\VerticalBlurShader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

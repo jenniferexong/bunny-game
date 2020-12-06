@@ -5,6 +5,12 @@
 #include "../Helper.h"
 #include "../renderers/MasterRenderer.h"
 
+Fbo::Fbo(int width, int height, DepthBufferAttachment type, bool clamp_to_edge)
+	: width_(width), height_(height), type_(type), clamp_to_edge_(clamp_to_edge)
+{
+	initialise();
+}
+
 Fbo::Fbo(int width, int height, DepthBufferAttachment type) : width_(width), height_(height), type_(type)
 {
 	initialise();
@@ -29,6 +35,10 @@ void Fbo::initialise()
 
 void Fbo::resize(int width, int height)
 {
+	if (type_ == DepthBufferAttachment::Uninitialised) {
+		Print::s("TRYING TO RESIZE UNINITIALISED FBO");
+		return;
+	}
 	cleanUp();
 	width_ = width;
 	height_ = height;
@@ -72,12 +82,12 @@ void Fbo::cleanUp()
 
 Fbo::~Fbo()
 {
+	Print::s("fbo destroyed: " + std::to_string(fbo_id_));
 	cleanUp();
 }
 
 void Fbo::bind() const
 {
-	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, fbo_id_);
 	glViewport(0, 0, width_, height_);
 }
@@ -109,8 +119,10 @@ void Fbo::createTextureAttachment()
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width_, height_, 0, GL_RGBA, GL_UNSIGNED_BYTE, nullptr);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	//glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	if (clamp_to_edge_) {
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	}
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_texture_, 0);
 
 	Print::texture("color texture attachment", color_texture_);

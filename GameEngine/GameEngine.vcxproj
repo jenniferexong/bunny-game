@@ -65,6 +65,8 @@
     <ClCompile Include="src\shaders\TerrainShader.cpp" />
     <ClCompile Include="src\stb_image.cpp" />
     <ClCompile Include="src\text\TextLoader.cpp" />
+    <ClCompile Include="src\post-processing\HorizontalBlurShader.cpp" />
+    <ClCompile Include="src\post-processing\VerticalBlurShader.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\environment\Skybox.h" />
@@ -118,8 +120,9 @@
     <ClInclude Include="src\shaders\SkyboxShader.h" />
     <ClInclude Include="src\shaders\TerrainShader.h" />
     <ClInclude Include="src\UserInput.h" />
-    <ClInclude Include="src\vendor\stb_image\stb_image.h" />
     <ClInclude Include="src\text\TextLoader.h" />
+    <ClInclude Include="src\post-processing\HorizontalBlurShader.h" />
+    <ClInclude Include="src\post-processing\VerticalBlurShader.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

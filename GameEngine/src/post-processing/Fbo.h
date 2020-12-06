@@ -8,7 +8,10 @@ class Fbo {
 private:
 	DepthBufferAttachment type_ = DepthBufferAttachment::Uninitialised;
 
-	int width_, height_;
+	bool clamp_to_edge_ = true;
+
+	int width_ = 0;
+	int height_ = 0;
 
 	GLuint fbo_id_ = -1;
 
@@ -30,6 +33,7 @@ private:
 public:
 	Fbo() = default;
 	Fbo(int width, int height, DepthBufferAttachment type);
+	Fbo(int width, int height, DepthBufferAttachment type, bool clamp_to_edge);
 
 	void cleanUp();
 	~Fbo();

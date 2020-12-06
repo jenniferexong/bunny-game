@@ -32,13 +32,19 @@ void GameScene::render()
 	renderer_->renderWaterReflection(*this, &GameScene::renderScene);
 	renderer_->renderWaterRefraction(*this, &GameScene::renderScene);
 
-	renderer_->startPostProcessing();
-	renderScene(glm::vec4(0), true);
-	renderer_->renderWater(environment_);
-	renderer_->renderPostProcessing();
+	if (pause_)
+		renderer_->startPostProcessing();
 
-	renderer_->renderGui(guis_);
-	renderer_->renderText(text_master_);
+	renderScene(glm::vec4(0), !pause_);
+	renderer_->renderWater(environment_);
+
+	if (pause_)
+		renderer_->renderPostProcessing();
+
+	if (!pause_) {
+		renderer_->renderGui(guis_);
+		renderer_->renderText(text_master_);
+	}
 }
 
 void GameScene::renderScene(glm::vec4 clipping_plane, bool progress_time)
@@ -51,6 +57,9 @@ void GameScene::renderScene(glm::vec4 clipping_plane, bool progress_time)
 
 void GameScene::update()
 {
+	if (pause_) {
+		return;
+	}
 	// only render lights that are within a distance from the player
 	close_lights_.clear();
 	close_lights_.push_back(sun_);
@@ -62,10 +71,10 @@ void GameScene::update()
 
 	player_->updatePosition(environment_, compass_, move_keys_);
 	camera_->updateView(terrain_1_, environment_.getWater());
-	mouse_picker.update(getProjectionMatrix(), *camera_); // must update after camera is moved
+	mouse_picker_.update(getProjectionMatrix(), *camera_); // must update after camera is moved
 	environment_.updateInView();
 
-	selected_ = mouse_picker.selectEntity(environment_);
+	selected_ = mouse_picker_.selectEntity(environment_);
 	if (selected_ != nullptr) 
 		selected_->highlight();
 
@@ -185,6 +194,15 @@ glm::mat4 GameScene::getProjectionMatrix() // why is this in game scene
 void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 {
 	switch (key) {
+	case GLFW_KEY_TAB:
+		if (action == GLFW_RELEASE) {
+			pause_ = !pause_;
+			if (pause_) {
+				//for (auto& element: move_keys_)
+					//element.second = false;
+			}
+		}
+		break;
 	case GLFW_KEY_W: 
 		if (action == GLFW_PRESS) {
 			move_keys_[Key::W] = true;
@@ -213,15 +231,6 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 			move_keys_[Key::D] = false;
 		}
 		break;
-	case GLFW_KEY_L: 
-		if (action == GLFW_RELEASE) {
-			string file_name = "culling-flower";
-			// Create and open a text file
-			std::ofstream positions(FilePath::data_path + file_name + "-positions.txt", std::ios::app);
-			auto flower_model = Application::makeModel("flower", "flower", Material());
-			Application::spawnEntity(player_, environment_, flower_model, file_name, vec3(0, -90.f, 0), 0.15f);
-		}
-		break;
 	case GLFW_KEY_SPACE: 
 		if (action == GLFW_PRESS) {
 			move_keys_[Key::Space] = true;
@@ -234,10 +243,32 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 	default:
 		break;
 	}
+
+	if (pause_)
+		return;
+
+	switch (key) {
+	case GLFW_KEY_L: 
+		if (action == GLFW_RELEASE) {
+			string file_name = "culling-flower";
+			// Create and open a text file
+			std::ofstream positions(FilePath::data_path + file_name + "-positions.txt", std::ios::app);
+			auto flower_model = Application::makeModel("flower", "flower", Material());
+			Application::spawnEntity(player_, environment_, flower_model, file_name, vec3(0, -90.f, 0), 0.15f);
+		}
+		break;
+	default:
+		break;
+	}
 }
 
 void GameScene::cursorPosCallback(double x, double y)
 {
+	if (pause_) {
+		first_mouse_movement_ = true;
+		return;
+	}
+
 	if (first_mouse_movement_) {
 		first_mouse_movement_ = false;
 		previous_mouse_x_ = x;

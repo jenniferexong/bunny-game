@@ -10,6 +10,8 @@
 #include <fstream>
 #include <sstream>
 
+#include "../Helper.h"
+
 using std::string;
 
 /* Must call this after constructing the shader */
@@ -147,4 +149,11 @@ Shader::~Shader()
 	glDeleteShader(vert_id_);
 	glDeleteShader(frag_id_);
 	glDeleteProgram(program_id_);
+
+	Print::s("destructed shader: " + std::to_string(program_id_));
+}
+
+void Shader::print() const
+{
+	printf("program: %d, vertex: %d, fragment: %d\n", program_id_, vert_id_, frag_id_);
 }
