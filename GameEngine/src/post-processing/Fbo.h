@@ -9,6 +9,7 @@ private:
 	DepthBufferAttachment type_ = DepthBufferAttachment::Uninitialised;
 
 	bool clamp_to_edge_ = true;
+	bool multi_sample_ = false;
 
 	int width_ = 0;
 	int height_ = 0;
@@ -29,9 +30,13 @@ private:
 	void createDepthTextureAttachment();
 	/* Depth buffer in the form of a render buffer, can't be sampled from */
 	void createDepthBufferAttachment();
+	/* Color buffer in the form of a render buffer, can't be sampled from, mulitsampling */
+	void createColorBufferAttachment();
 
 public:
 	Fbo() = default;
+	// Fbos with multisampling - always render buffer
+	Fbo(int width, int height);
 	Fbo(int width, int height, DepthBufferAttachment type);
 	Fbo(int width, int height, DepthBufferAttachment type, bool clamp_to_edge);
 
@@ -39,6 +44,10 @@ public:
 	~Fbo();
 
 	void initialise();
+
+	/* Copies fbo data into another fbo so it can be sampled from, applies anti-aliasing*/
+	void resolveToFbo(Fbo& output);
+	void resolveToScreen();
 
 	void resize(int width, int height);
 

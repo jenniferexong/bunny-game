@@ -5,6 +5,14 @@
 #include "../Helper.h"
 #include "../renderers/MasterRenderer.h"
 
+Fbo::Fbo(int width, int height) : width_(width), height_(height)
+{
+	type_ = DepthBufferAttachment::DepthBuffer;
+	multi_sample_ = true;
+	initialise();
+}
+
+
 Fbo::Fbo(int width, int height, DepthBufferAttachment type, bool clamp_to_edge)
 	: width_(width), height_(height), type_(type), clamp_to_edge_(clamp_to_edge)
 {
@@ -19,8 +27,16 @@ Fbo::Fbo(int width, int height, DepthBufferAttachment type) : width_(width), hei
 void Fbo::initialise()
 {
 	createFrameBuffer();
-	createTextureAttachment();
-	string attachment = "color texture";
+	string attachment = "";
+	if (multi_sample_) {
+		attachment.append("color buffer (ms)");
+		createColorBufferAttachment();
+	}
+	else {
+		attachment.append("color texture");
+		createTextureAttachment();
+	}
+
 	if (type_ == DepthBufferAttachment::DepthTexture) {
 		attachment.append(", depth texture");
 		createDepthTextureAttachment();
@@ -31,6 +47,28 @@ void Fbo::initialise()
 	}
 	unbind();
 	Print::fbo(attachment, fbo_id_);
+}
+
+/**
+ * Copies fbo data into another fbo so it can be sampled from, applies anti-aliasing
+ */
+void Fbo::resolveToFbo(Fbo& output)
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, output.fbo_id_);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo_id_);
+	glBlitFramebuffer(0, 0, width_, height_, 0, 0, output.width_, output.height_,
+		GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT, GL_NEAREST);
+	unbind();
+}
+
+void Fbo::resolveToScreen()
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+	glBindFramebuffer(GL_READ_FRAMEBUFFER, fbo_id_);
+	glDrawBuffer(GL_BACK);
+	glBlitFramebuffer(0, 0, width_, height_, 0, 0, MasterRenderer::window_width,
+		MasterRenderer::window_height, GL_COLOR_BUFFER_BIT, GL_NEAREST);
+	unbind();
 }
 
 void Fbo::resize(int width, int height)
@@ -140,11 +178,27 @@ void Fbo::createDepthTextureAttachment()
 	Print::texture("depth texture attachment", depth_texture_);
 }
 
+/* Mulisampled */
+void Fbo::createColorBufferAttachment()
+{
+	glGenRenderbuffers(1, &color_buffer_);
+	glBindRenderbuffer(GL_RENDERBUFFER, color_buffer_);
+	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGBA8, width_, height_);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, color_buffer_);
+
+	Print::s("created color buffer attachment: " + std::to_string(color_buffer_));
+}
+
+
 void Fbo::createDepthBufferAttachment()
 {
 	glGenRenderbuffers(1, &depth_buffer_);
 	glBindRenderbuffer(GL_RENDERBUFFER, depth_buffer_);
-	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width_, height_);
+	if (multi_sample_) {
+		glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_DEPTH_COMPONENT24, width_, height_);
+	} else {
+		glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width_, height_);
+	}
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_buffer_);
 
 	Print::s("created depth buffer attachment: " + std::to_string(depth_buffer_));

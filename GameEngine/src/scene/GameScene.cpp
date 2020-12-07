@@ -32,14 +32,15 @@ void GameScene::render()
 	renderer_->renderWaterReflection(*this, &GameScene::renderScene);
 	renderer_->renderWaterRefraction(*this, &GameScene::renderScene);
 
-	if (pause_)
-		renderer_->startPostProcessing();
+	renderer_->startPostProcessing();
 
 	renderScene(glm::vec4(0), !pause_);
 	renderer_->renderWater(environment_);
 
 	if (pause_)
-		renderer_->renderPostProcessing();
+		renderer_->renderBlurred();
+	else
+		renderer_->render();
 
 	renderer_->renderGui(guis_);
 	renderer_->renderText(text_master_);
@@ -180,9 +181,8 @@ void GameScene::makeGame()
 void GameScene::makeTest()
 {
 	Material material = Material();
-	auto model = Application::makeModel("flower", "flower", material);
+	auto flower_model = Application::makeModel("flower", "flower", material);
 
-	auto flower_model = Application::makeModel("flower", "flower", Material());
 	Application::loadPositionsFromFile(terrain_1_, environment_, flower_model, "test-flowers", vec3(0, -90.f, 0), 0.15f);
 }
 

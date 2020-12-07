@@ -9,7 +9,8 @@ class PostProcessor {
 private:
 	static const std::vector<float> positions;
 	static Mesh quad;
-	Fbo fbo_ = Fbo(1280, 720, DepthBufferAttachment::DepthBuffer);
+	Fbo multisample_fbo_= Fbo(1280, 720);
+	Fbo output_fbo_ = Fbo(1280, 720, DepthBufferAttachment::DepthTexture);
 
 	Contrast contrast_ = Contrast();
 	HorizontalBlur horizontal_blur_ = HorizontalBlur(1280, 720);
@@ -22,6 +23,7 @@ public:
 
 	void resizeFbos(int width, int height);
 
-	Fbo& getFbo() { return fbo_; }
+	Fbo& getFbo() { return multisample_fbo_; }
 	void process();
+	void blur();
 };

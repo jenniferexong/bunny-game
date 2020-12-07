@@ -1,4 +1,6 @@
 
+#include <GL/glew.h>
+
 #include "MasterRenderer.h"
 
 #include <glm/gtc/matrix_transform.hpp>
@@ -18,6 +20,7 @@ int MasterRenderer::window_height = 720;
 
 MasterRenderer::MasterRenderer()
 {
+	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_CLIP_PLANE0);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);

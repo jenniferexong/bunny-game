@@ -52,7 +52,8 @@ public:
 	void renderText(const TextMaster& text_master);
 
 	void startPostProcessing() { post_processor_.getFbo().bind(); }
-	void renderPostProcessing() { post_processor_.process(); }
+	void renderBlurred() { post_processor_.blur(); }
+	void render() { post_processor_.process(); }
 
 	static void enableCulling();
 	static void disableCulling();
