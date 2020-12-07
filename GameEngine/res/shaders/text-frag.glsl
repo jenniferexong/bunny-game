@@ -24,7 +24,8 @@ void main() {
 
     if (uEdgeTransition < uBorderEdgeTransition) { // add glow effect
         float amount = (distance - uBorderWidth) / uBorderEdgeTransition;
-        outlineAlpha = pow(2000, -amount);
+        outlineAlpha = pow(10000, -amount);
+        outlineAlpha = max(outlineAlpha - 0.01, 0);
     }
 
     float finalAlpha = alpha + (1.0 - alpha) * outlineAlpha;

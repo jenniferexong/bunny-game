@@ -2,12 +2,14 @@
 // External Libraries
 #include <GL/glew.h>
 #include <GLFW/glfw3.h> BOOST_PYTHON_OPAQUE_SPECIALIZED_TYPE_ID(GLFWwindow)
+#include <stb_image/stb_image.h>
 
 // std
 #include <iostream>
 #include <memory>
 
 #include "Application.h"
+#include "Location.h"
 
 using namespace std;
 using namespace glm;
@@ -29,7 +31,15 @@ int main(void)
         return -1;
 
     GLFWwindow* window = glfwCreateWindow(1280, 720, "", NULL, NULL);
-    //GLFWwindow* window = Application::window;
+    /*
+    std::string file_path = FilePath::texture_path + "cursor.png";
+    int width, height, bpp; // bits per pixel
+    unsigned char* buffer = stbi_load(file_path.c_str(), &width, &height, &bpp, 4);
+    GLFWimage cursor_image{ width, height, buffer };
+    GLFWcursor* cursor = glfwCreateCursor(&cursor_image, 5, 5);
+    glfwSetCursor(window, cursor);
+    */
+
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
     if (!window) {

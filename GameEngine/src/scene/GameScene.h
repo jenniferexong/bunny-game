@@ -18,9 +18,13 @@ private:
 
 	bool pause_ = false;
 
-	shared_ptr<Player> player_ = nullptr;
 	shared_ptr<GuiTexture> compass_ = nullptr;
+	shared_ptr<GuiTexture> cross_hair_ = nullptr;
+
 	shared_ptr<GuiText> frame_rate_ = nullptr;
+	shared_ptr<GuiText> pause_menu_ = nullptr;
+
+	shared_ptr<Player> player_ = nullptr;
 	shared_ptr<Entity> selected_ = nullptr;
 	Terrain terrain_1_;
 	shared_ptr<Light> sun_ = std::make_shared<Light>(vec3(0.f, 700, -1000), vec3(0.1f));
@@ -43,6 +47,8 @@ private:
 	void setup();
 	void makeGame();
 	void makeTest();
+	void pause();
+	void unpause();
 	
 public:
 	GameScene(shared_ptr<MasterRenderer> renderer, shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader);

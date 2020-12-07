@@ -6,8 +6,8 @@
 
 #include <map>
 #include <memory>
-#include <set>
 #include <string>
+#include <unordered_set>
 #include <vector>
 
 #include "../gui/GuiTexture.h"
@@ -18,10 +18,21 @@
 using std::string;
 using std::map;
 using std::shared_ptr;
-using std::set;
+using std::unordered_set;
 using std::vector;
 
 class MasterRenderer;
+
+namespace std {
+	template <>
+	struct hash<shared_ptr<GuiTexture>>
+	{
+		size_t operator()(const shared_ptr<GuiTexture>& gui) const
+		{
+			return hash<int>()(gui->getTexture());
+		}
+	};
+}
 
 class Scene {
 protected:
@@ -30,11 +41,11 @@ protected:
 	shared_ptr<MasterRenderer> renderer_;
 
 	Environment environment_;
-	vector<shared_ptr<GuiTexture>> guis_;
+	unordered_set<shared_ptr<GuiTexture>> guis_;
 	TextMaster text_master_;
 
 public:
-	virtual const vector<shared_ptr<GuiTexture>>& getGuis() const { return guis_; }
+	virtual const unordered_set<shared_ptr<GuiTexture>>& getGuis() const { return guis_; }
 	virtual const Environment& getEnvironment() { return environment_; }
 	virtual const TextMaster& getText() { return text_master_; }
 

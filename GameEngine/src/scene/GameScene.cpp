@@ -41,10 +41,8 @@ void GameScene::render()
 	if (pause_)
 		renderer_->renderPostProcessing();
 
-	if (!pause_) {
-		renderer_->renderGui(guis_);
-		renderer_->renderText(text_master_);
-	}
+	renderer_->renderGui(guis_);
+	renderer_->renderText(text_master_);
 }
 
 void GameScene::renderScene(glm::vec4 clipping_plane, bool progress_time)
@@ -103,10 +101,19 @@ void GameScene::setup()
 
 	const float cross_hair_size = 60;
 	const vec2 center = vec2((float)width / 2, (float)height / 2);
-	auto cross_hair = make_shared<GuiTexture>(loader_->loadTexture("cross-hair"), center, vec2(cross_hair_size));
+	cross_hair_ = make_shared<GuiTexture>(loader_->loadTexture("cross-hair"), center, vec2(cross_hair_size));
 
-	guis_.push_back(cross_hair);
-	guis_.push_back(compass_);
+	// text
+	auto font = std::make_shared<FontType>("maiandra");
+	frame_rate_ = std::make_shared<GuiText>("", 1.5f, font, glm::vec2(0.94f, 0.025), 1.f, false);
+	frame_rate_->setColor(vec3(1));
+	text_master_.addText(frame_rate_);
+	pause_menu_ = std::make_shared<GuiText>("Resume\n\n\nQuit", 5.f, font, glm::vec2(0.f, 0.3), 1.f, true);
+	pause_menu_->setColor(vec3(0));
+	pause_menu_->setGlow(vec3(0.901f, 0.886, 0.517));
+
+	guis_.insert(cross_hair_);
+	guis_.insert(compass_);
 
 	// Terrains
 	auto texture_pack = Application::makeTexturePack("green", "light-green", "green", "rocks");
@@ -135,11 +142,6 @@ void GameScene::setup()
 	// skybox
 	Skybox sky = Skybox("skybox-textures-day", "skybox-textures-night");
 	environment_.setSkybox(sky);
-
-	auto font = std::make_shared<FontType>("maiandra");
-	frame_rate_ = std::make_shared<GuiText>("", 1.5f, font, glm::vec2(0.94f, 0.025), 1.f, false);
-	frame_rate_->setColor(vec3(1));
-	text_master_.addText(frame_rate_);
 
 	// water
 	for (int i = 0; i < 6; i++) {
@@ -184,6 +186,27 @@ void GameScene::makeTest()
 	Application::loadPositionsFromFile(terrain_1_, environment_, flower_model, "test-flowers", vec3(0, -90.f, 0), 0.15f);
 }
 
+void GameScene::pause()
+{
+	first_mouse_movement_ = true;
+	guis_.clear();
+	text_master_.removeText(frame_rate_);
+	text_master_.addText(pause_menu_);
+    glfwSetInputMode(*window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwSetCursorPos(*window_, MasterRenderer::window_width/2.0, MasterRenderer::window_height/2.0);
+}
+
+void GameScene::unpause()
+{
+	first_mouse_movement_ = true;
+	guis_.clear();
+	guis_.insert(cross_hair_);
+	guis_.insert(compass_);
+	text_master_.addText(frame_rate_);
+	text_master_.removeText(pause_menu_);
+    glfwSetInputMode(*window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
 glm::mat4 GameScene::getProjectionMatrix() // why is this in game scene
 {
 	// Setting the projection matrix
@@ -197,10 +220,7 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 	case GLFW_KEY_TAB:
 		if (action == GLFW_RELEASE) {
 			pause_ = !pause_;
-			if (pause_) {
-				//for (auto& element: move_keys_)
-					//element.second = false;
-			}
+			pause_ ? pause() : unpause();
 		}
 		break;
 	case GLFW_KEY_W: 
@@ -264,11 +284,6 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 
 void GameScene::cursorPosCallback(double x, double y)
 {
-	if (pause_) {
-		first_mouse_movement_ = true;
-		return;
-	}
-
 	if (first_mouse_movement_) {
 		first_mouse_movement_ = false;
 		previous_mouse_x_ = x;
@@ -276,11 +291,16 @@ void GameScene::cursorPosCallback(double x, double y)
 		return;
 	}
 
-	const float sensitivity = 0.07f;
-	float x_offset = float(x - previous_mouse_x_) * sensitivity;
-	float y_offset = float(y - previous_mouse_y_) * sensitivity;
-	player_->changeDirection(x_offset);
-	camera_->changePitch(y_offset);
+	if (!pause_) {
+		const float sensitivity = 0.07f;
+		float x_offset = float(x - previous_mouse_x_) * sensitivity;
+		float y_offset = float(y - previous_mouse_y_) * sensitivity;
+		player_->changeDirection(x_offset);
+		camera_->changePitch(y_offset);
+	} else {
+		
+	}
+
 	previous_mouse_x_ = x;
 	previous_mouse_y_ = y;
 }

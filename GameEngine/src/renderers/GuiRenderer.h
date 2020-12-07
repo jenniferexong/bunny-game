@@ -1,6 +1,5 @@
 ﻿#pragma once
 
-#include <vector>
 #include <memory>
 
 #include "../models/Mesh.h"
@@ -15,5 +14,5 @@ private:
 
 public:
 	GuiRenderer();
-	void render(const std::vector<std::shared_ptr<GuiTexture>>& gui_textures);
+	void render(const std::unordered_set<std::shared_ptr<GuiTexture>>& gui_textures);
 };

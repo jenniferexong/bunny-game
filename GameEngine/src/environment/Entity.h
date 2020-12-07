@@ -12,7 +12,7 @@ using glm::vec3;
 
 class Entity {
 protected:
-	std::shared_ptr<TexturedModel> model_; // pointer for run time polymorphism
+	std::shared_ptr<TexturedModel> model_; 
 	vec3 position_ = vec3(0);
 	vec3 rotation_ = vec3(0); // yaw, pitch, roll
 	vec3 default_rotation_offset_ = vec3(0);

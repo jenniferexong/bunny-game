@@ -48,7 +48,7 @@ public:
 	void renderWaterReflection(GameScene& scene, void(GameScene::*render_scene)(glm::vec4, bool));
 	void renderWaterRefraction(GameScene& scene, void(GameScene::*render_scene)(glm::vec4, bool));
 
-	void renderGui(const vector<shared_ptr<GuiTexture>>& guis);
+	void renderGui(const unordered_set<shared_ptr<GuiTexture>>& guis);
 	void renderText(const TextMaster& text_master);
 
 	void startPostProcessing() { post_processor_.getFbo().bind(); }

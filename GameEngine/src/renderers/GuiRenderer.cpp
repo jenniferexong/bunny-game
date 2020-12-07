@@ -18,7 +18,7 @@ GuiRenderer::GuiRenderer()
 	shader_.setUp();
 }
 
-void GuiRenderer::render(const std::vector<std::shared_ptr<GuiTexture>>& gui_textures)
+void GuiRenderer::render(const std::unordered_set<std::shared_ptr<GuiTexture>>& gui_textures)
 {
 	shader_.start();
 	glBindVertexArray(quad_mesh_.getId());
