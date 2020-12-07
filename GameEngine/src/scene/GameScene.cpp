@@ -7,7 +7,6 @@
 
 #include <glm/gtc/random.hpp>
 
-
 #include "../Helper.h"
 #include "../Location.h"
 
