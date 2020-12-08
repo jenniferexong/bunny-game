@@ -1,7 +1,5 @@
 #pragma once
 
-#include "Environment.h"
-
 #include <GLFW/glfw3.h>
 
 #include <map>
@@ -10,14 +8,14 @@
 #include <unordered_set>
 #include <vector>
 
+#include "Environment.h"
 #include "../gui/GuiTexture.h"
-#include "../Loader.h"
 
 #include "../text/TextMaster.h"
 
 using std::string;
 using std::map;
-using std::shared_ptr;
+using std::weak_ptr;
 using std::unordered_set;
 using std::vector;
 
@@ -25,27 +23,31 @@ class MasterRenderer;
 
 namespace std {
 	template <>
-	struct hash<shared_ptr<GuiTexture>>
+	struct hash<weak_ptr<GuiTexture>>
 	{
-		size_t operator()(const shared_ptr<GuiTexture>& gui) const
+		size_t operator()(const weak_ptr<GuiTexture>& gui_texture) const
 		{
-			return hash<int>()(gui->getTexture());
+			return hash<int>()(gui_texture.lock()->getTexture());
+		}
+	};
+	template <>
+	struct equal_to<weak_ptr<GuiTexture>>
+	{
+		bool operator()(const weak_ptr<GuiTexture>& a, const weak_ptr<GuiTexture>& b) const
+		{
+			return a.lock() == b.lock();
 		}
 	};
 }
 
 class Scene {
 protected:
-	shared_ptr<GLFWwindow*> window_;
-	shared_ptr<Loader> loader_;
-	shared_ptr<MasterRenderer> renderer_;
-
 	Environment environment_;
-	unordered_set<shared_ptr<GuiTexture>> guis_;
+	unordered_set<weak_ptr<GuiTexture>> guis_;
 	TextMaster text_master_;
 
 public:
-	virtual const unordered_set<shared_ptr<GuiTexture>>& getGuis() const { return guis_; }
+	virtual const unordered_set<weak_ptr<GuiTexture>>& getGuis() const { return guis_; }
 	virtual const Environment& getEnvironment() { return environment_; }
 	virtual const TextMaster& getText() { return text_master_; }
 

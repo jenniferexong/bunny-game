@@ -3,9 +3,6 @@
 #include "../Location.h"
 #include "../Maths.h"
 
-const std::string HorizontalBlurShader::vertex_file = "res/shaders/post-processing/horizontal-blur-vert.glsl";
-const std::string HorizontalBlurShader::fragment_file = "res/shaders/post-processing/blur-frag.glsl";
-
 void HorizontalBlurShader::bindAttributes()
 {
 	bindAttribute(AttributeLocation::Position, "aPosition");

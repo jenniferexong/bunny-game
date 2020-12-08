@@ -3,10 +3,11 @@
 #include <glm/glm.hpp>
 
 #include "Entity.h"
-#include "Terrain.h"
 #include "../UserInput.h"
-#include "../gui/GuiTexture.h"
 #include "../scene/Scene.h"
+
+class Water;
+class Environment;
 
 using glm::vec3;
 
@@ -16,9 +17,9 @@ private:
 		N, E, S, W, NE, SE, SW, NW
 	};
 
-	static const float run_speed;
-	static const float gravity;
-	static const float jump_power;
+	static constexpr float run_speed = 30.f;
+	static constexpr float gravity = -70.f;
+	static constexpr float jump_power = 30.f;
 
 	DirectionState state_ = DirectionState::N;
 	float forward_speed_ = 0;
@@ -33,13 +34,14 @@ private:
 
 public:
 	Player() = default;
-	Player(std::shared_ptr<TexturedModel> model, vec3 position, vec3 rotation, float scale);
+	~Player() = default;
+	Player(TexturedModel model, vec3 position, vec3 rotation, float scale);
 
 	bool isMoving() const { return (forward_speed_ != 0 || side_speed_ != 0); }
 	bool isInAir() const { return is_in_air_; }
 	bool isInWater(const vector<Water>& water) const;
 
 	void changeDirection(float amount);
-	void updatePosition(const Environment& environment, const std::shared_ptr<GuiTexture>& compass, const std::map<Key, bool>& move_keys);
+	void updatePosition(const Environment& environment, const std::map<Key, bool>& move_keys);
 	void updateSpeed(const std::map<Key, bool>& move_keys);
 };

@@ -1,9 +1,7 @@
 ﻿#include "TextShader.h"
 
+#include "../text/GuiText.h"
 #include "../Location.h"
-
-const std::string TextShader::vertex_file = "res/shaders/text-vert.glsl";
-const std::string TextShader::fragment_file = "res/shaders/text-frag.glsl";
 
 void TextShader::getAllUniformLocations()
 {

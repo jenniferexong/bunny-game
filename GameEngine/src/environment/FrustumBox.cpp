@@ -1,9 +1,8 @@
 ﻿#include "FrustumBox.h"
 
-#include "../Helper.h"
-
-
 #include "../renderers/MasterRenderer.h"
+#include "../environment/Camera.h"
+#include "../Helper.h"
 #include "../Maths.h"
 
 using namespace glm;

@@ -10,9 +10,9 @@
 
 class Terrain {
 private:
-	static const float size;
-	static const float max_height;
-	static const float max_pixel_color;
+	static constexpr float size = 510.f;
+	static constexpr float max_height = 25.f;
+	static constexpr float max_pixel_color = 255 * 3;
 	
 	int vertex_count_; // number of vertices on a side of the square
 	float x_, z_;
@@ -48,6 +48,7 @@ private:
 public:
 	Terrain() : vertex_count_(0), x_(0), z_(0) {}
 	Terrain(int grid_x, int grid_z, TerrainTexture texture, const std::string& height_map);
+	~Terrain() = default;
 
 	float getX() const { return x_; }
 	float getZ() const { return z_; }

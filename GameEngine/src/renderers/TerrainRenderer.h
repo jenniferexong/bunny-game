@@ -18,6 +18,7 @@ private:
 public:
 	TerrainRenderer(): shader_(nullptr) {}
 	TerrainRenderer(std::shared_ptr<TerrainShader> shader);
+	~TerrainRenderer() = default;
 
 	void render(const std::vector<Terrain>& terrains);
 };

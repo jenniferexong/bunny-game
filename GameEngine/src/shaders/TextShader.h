@@ -1,15 +1,19 @@
 ﻿#pragma once
 
+#include <unordered_map>
+
 #include "Shader.h"
 
+class GuiText;
+
 class TextShader final: public Shader {
-public:
+private:
 	enum class UniformVariable {
 		Translation, Color, CharacterWidth, BorderColor, EdgeTransition, BorderWidth, BorderEdgeTransition
 	};
 
-	static const std::string vertex_file;
-	static const std::string fragment_file;
+	static constexpr char vertex_file[] = "text-vert";
+	static constexpr char fragment_file[] = "text-frag";
 
 	std::unordered_map<UniformVariable, int> locations_;
 

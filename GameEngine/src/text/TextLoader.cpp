@@ -2,8 +2,10 @@
 
 #include <iostream>
 
-const double TextLoader::line_height = 0.02;
-const int TextLoader::space_ascii = 32;
+#include "Text.h"
+#include "GuiText.h"
+#include "FontData.h"
+#include "FontType.h"
 
 using std::string;
 
@@ -17,7 +19,7 @@ TextMeshData TextLoader::createMesh(GuiText& text)
 std::vector<Line> TextLoader::structureText(GuiText& gui_text)
 {
 	std::vector<Line> lines;
-	const FontData& font_data = gui_text.getFont()->getData();
+	const FontData& font_data = gui_text.getFont().lock()->getData();
 
 	string text = gui_text.getText();
 	double font_size = (double) gui_text.getFontSize();
@@ -86,7 +88,7 @@ TextMeshData TextLoader::createQuadData(GuiText& text, const vector<Line>& lines
 				cursor_x += letter.getAdvance() * font_size;
 			}
 			// space
-			cursor_x += text.getFont()->getData().getSpaceWidth() * font_size; 
+			cursor_x += text.getFont().lock()->getData().getSpaceWidth() * font_size; 
 		}
 		cursor_x = 0;
 		cursor_y += line_height * font_size;

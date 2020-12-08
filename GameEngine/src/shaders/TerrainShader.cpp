@@ -1,12 +1,9 @@
 
 #include "TerrainShader.h"
 
+#include "../renderers/MasterRenderer.h"
 #include "../Maths.h"
-#include "../Application.h"
 #include "../Location.h"
-
-const std::string TerrainShader::vertex_file = "res/shaders/terrain-vert.glsl";
-const std::string TerrainShader::fragment_file = "res/shaders/terrain-frag.glsl";
 
 void TerrainShader::setUp()
 {
@@ -51,7 +48,7 @@ void TerrainShader::getAllUniformLocations()
 
 void TerrainShader::loadUniformPerFrame(const Environment& environment, glm::vec4 clipping_plane) const
 {
-	glm::mat4 v_matrix = Maths::createViewMatrix(*environment.getCamera());
+	glm::mat4 v_matrix = Maths::createViewMatrix(*environment.getCamera().lock());
 	// View matrix
 	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
 	loadMatrix(locations_.at(UniformVariable::InverseViewMatrix), inverse(v_matrix));
@@ -65,16 +62,16 @@ void TerrainShader::loadUniformPerFrame(const Environment& environment, glm::vec
 	colors.reserve(num_lights);
 	attenuations.reserve(num_lights);
 	for (const auto& l : environment.getLights()) {
-		positions.emplace_back(vec3(v_matrix * glm::vec4(l->getPosition(), 1.f)));  // in eye space
-		colors.emplace_back(l->getColor());
-		attenuations.emplace_back(l->getAttenuation());
+		positions.emplace_back(vec3(v_matrix * glm::vec4(l.lock()->getPosition(), 1.f)));  // in eye space
+		colors.emplace_back(l.lock()->getColor());
+		attenuations.emplace_back(l.lock()->getAttenuation());
 	}
 
 	loadVectors(locations_.at(UniformVariable::LightPosition), positions);
 	loadVectors(locations_.at(UniformVariable::LightColor), colors);
 	loadVectors(locations_.at(UniformVariable::Attenuation), attenuations);
 
-	loadVector(locations_.at(UniformVariable::SunStrength), environment.getSun()->getColor());
+	loadVector(locations_.at(UniformVariable::SunStrength), environment.getSun().lock()->getColor());
 
 	loadInt(locations_.at(UniformVariable::LightCount), num_lights);
 	loadInt(locations_.at(UniformVariable::MaxLights), Light::max_lights);

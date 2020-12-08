@@ -1,18 +1,21 @@
-﻿
-#include <gl/glew.h>
+﻿#include <gl/glew.h>
 
 #include "SkyboxRenderer.h"
 
 #include "../Application.h"
-#include "../Location.h"
-
+#include "../Helper.h"
+#include "../Loader.h"
+#include "../scene/Environment.h"
 #include "../environment/Skybox.h"
+#include "../Location.h"
 
 const float SkyboxRenderer::cube_size = 500.f;
 
 SkyboxRenderer::SkyboxRenderer()
 {
-	cube_ = Application::loader->loadToVao(vertex_positions, 3);
+	Print::s("SKYBOX RENDERER");
+	cube_ = app->loader->loadToVao(vertex_positions, 3);
+	Print::s("1");
 	shader_.setUp();
 
 	shader_.start();
@@ -29,7 +32,7 @@ void SkyboxRenderer::render(const Environment& environment, bool progress_time)
 
 	bindTextures(environment, progress_time);
 
-	shader_.loadUniforms(*environment.getCamera());
+	shader_.loadUniforms(*environment.getCamera().lock());
 
 	glDrawArrays(GL_TRIANGLES, 0, cube_.getVertexCount());
 
@@ -46,7 +49,7 @@ void SkyboxRenderer::bindTextures(const Environment& environment, bool progress_
 	float sunlight = 0.f;
 
 	if (progress_time)
-		time += Application::frame_delta * 1000;
+		time += app->frame_delta * 1000;
 
 	time = fmod(time, 24000.f);
 	int texture_1;
@@ -82,7 +85,7 @@ void SkyboxRenderer::bindTextures(const Environment& environment, bool progress_
 		blend_factor = (time - 21000) / (24000 - 21000);
 		sunlight = max_sunlight - (blend_factor * (max_sunlight - min_sunlight));
 	}
-	environment.getSun()->setColor(vec3(sunlight));
+	environment.getSun().lock()->setColor(vec3(sunlight));
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, texture_1);

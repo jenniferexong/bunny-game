@@ -3,6 +3,7 @@
 #include "TextRenderer.h"
 
 #include "../Location.h"
+#include "../text/TextMaster.h"
 
 TextRenderer::TextRenderer()
 {
@@ -25,10 +26,10 @@ void TextRenderer::render(const TextMaster& text_master)
 	for (const auto& element: texts) {
 		auto font_type = element.first;
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, font_type->getTexture());
+		glBindTexture(GL_TEXTURE_2D, font_type.lock()->getTexture());
 
 		for (const auto& text : texts.at(font_type))
-			renderText(*text);
+			renderText(*text.lock());
 	}
 	finish();
 }

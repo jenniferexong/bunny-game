@@ -1,10 +1,8 @@
 ﻿#include "WaterShader.h"
 
 #include "../renderers/MasterRenderer.h"
+#include "../environment/Camera.h"
 #include "../Location.h"
-
-const std::string WaterShader::vertex_file = "res/shaders/water-vert.glsl";
-const std::string WaterShader::fragment_file = "res/shaders/water-frag.glsl";
 
 void WaterShader::bindAttributes()
 {
@@ -56,15 +54,15 @@ void WaterShader::loadUniformPerFrame(const Environment& environment, float move
 	loadFloat(locations_.at(UniformVariable::FarPlane), MasterRenderer::far_plane);
 
 	// View matrix
-	Camera camera = *environment.getCamera();
+	Camera camera = *environment.getCamera().lock();
 	glm::mat4 v_matrix = Maths::createViewMatrix(camera);
 	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
 	loadVector(locations_.at(UniformVariable::CameraPosition), camera.getPosition());
 
 	loadFloat(locations_.at(UniformVariable::MoveFactor), move_factor);
 
-	loadVector(locations_.at(UniformVariable::LightColor), environment.getSun()->getColor());
-	loadVector(locations_.at(UniformVariable::LightPosition), environment.getSun()->getPosition());
+	loadVector(locations_.at(UniformVariable::LightColor), environment.getSun().lock()->getColor());
+	loadVector(locations_.at(UniformVariable::LightPosition), environment.getSun().lock()->getPosition());
 }
 
 void WaterShader::loadModelMatrix(const Water& water)

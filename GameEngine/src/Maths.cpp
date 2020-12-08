@@ -1,9 +1,11 @@
 
 #include "Maths.h"
+#include "environment/Camera.h"
 
 using namespace glm;
 
-/* Calculates the directional vector based on yaw pitch and roll
+/**
+ * Calculates the directional vector based on yaw pitch and roll
  * Note: in the case of the player, this is the direction the player moves in if W is pressed
  */
 vec3 Maths::getLookDirection(vec3 initial_direction, vec3 rotation, mat4 alignment_matrix)
@@ -98,7 +100,7 @@ mat4 Maths::createViewMatrix(const Camera& camera)
 	return matrix;
 }
 
-/* View matrix but without translation component*/
+/* View matrix but without translation component */
 mat4 Maths::createSkyViewMatrix(const Camera& camera)
 {
 	mat4 matrix = mat4(1);

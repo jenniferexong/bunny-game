@@ -11,10 +11,12 @@
 class Scene;
 class GameScene;
 
+using std::shared_ptr;
+
 class MasterRenderer {
 private:
-	std::shared_ptr<EntityShader> entity_shader_;
-	std::shared_ptr<TerrainShader> terrain_shader_;
+	shared_ptr<EntityShader> entity_shader_;
+	shared_ptr<TerrainShader> terrain_shader_;
 
 	EntityRenderer entity_renderer_;
 	TerrainRenderer terrain_renderer_;
@@ -39,6 +41,7 @@ public:
 	MasterRenderer();
 	void updateWindowSize();
 	void prepare(glm::mat4 proj_matrix);
+	~MasterRenderer() = default;
 
 	void renderEntities(const Environment& environment, glm::vec4 clipping_plane, bool progress_time);
 	void renderTerrain(const Environment& environment, glm::vec4 clipping_plane, bool progress_time);
@@ -48,7 +51,7 @@ public:
 	void renderWaterReflection(GameScene& scene, void(GameScene::*render_scene)(glm::vec4, bool));
 	void renderWaterRefraction(GameScene& scene, void(GameScene::*render_scene)(glm::vec4, bool));
 
-	void renderGui(const unordered_set<shared_ptr<GuiTexture>>& guis);
+	void renderGui(const unordered_set<weak_ptr<GuiTexture>>& guis);
 	void renderText(const TextMaster& text_master);
 
 	void startPostProcessing() { post_processor_.getFbo().bind(); }

@@ -3,9 +3,7 @@
 #include <fstream>
 
 #include "../Application.h"
-//"side", "side", "top", "bottom", "side", "side"
-
-	//"stars-right", "stars-left", "stars-top", "stars-bottom", "stars-back", "stars-front"
+#include "../Loader.h"
 
 /**
  * Reads a data file containing the names of the textures for the cubemap/s
@@ -30,7 +28,7 @@ Skybox::Skybox(const std::string& day_textures, const std::string& night_texture
 	file.close();
 
 	// load the textures
-	day_texture_id_ = Application::loader->loadCubeMap(day_texture_names);
-	night_texture_id_ = Application::loader->loadCubeMap(night_texture_names);
+	day_texture_id_ = app->loader->loadCubeMap(day_texture_names);
+	night_texture_id_ = app->loader->loadCubeMap(night_texture_names);
 }
 

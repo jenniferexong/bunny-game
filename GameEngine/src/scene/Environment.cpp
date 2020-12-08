@@ -13,11 +13,11 @@ void Environment::addEntityToMap(entity_map& map, shared_ptr<Entity> entity)
 {
 	const auto& model = entity->getModel();
 	if (map.find(model) == map.end()) {
-		auto entity_set = std::make_shared<set<shared_ptr<Entity>>>();
+		unordered_set<weak_ptr<Entity>> entity_set;
 		map.insert({ model, entity_set });
 	}
 	auto entity_set = map.at(model);
-	entity_set->insert(entity);
+	entity_set.insert(entity);
 }
 
 void Environment::addEntity(const shared_ptr<Entity>& entity)
@@ -25,9 +25,9 @@ void Environment::addEntity(const shared_ptr<Entity>& entity)
 	entities_.push_back(entity);
 }
 
-void Environment::addEntitySet(const entity_set& set)
+void Environment::addEntitySet(const std::set<shared_ptr<Entity>>& entities)
 {
-	for (const auto& e: *set)
+	for (const auto& e : entities)
 		addEntity(e);
 }
 
@@ -41,7 +41,7 @@ void Environment::addWater(const Water& water)
 	water_.push_back(water);
 }
 
-void Environment::setLights(const vector<shared_ptr<Light>>& lights)
+void Environment::setLights(const vector<weak_ptr<Light>>& lights)
 {
 	lights_ = lights;
 }
@@ -66,8 +66,10 @@ void Environment::updateInView()
 {
 	int count = 0;
 	entities_in_view_.clear();
+	Print::val("num entities", (int)entities_.size());
 	for (const auto& entity: entities_) {
-		if (camera_->canSeePoint(entity->getPosition())) {
+		if (camera_.lock()->canSeePoint(entity->getPosition())) {
+			Print::s("adding to view");
 			addEntityToMap(entities_in_view_, entity);
 			count++;
 		}

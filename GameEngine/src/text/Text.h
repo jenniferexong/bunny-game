@@ -17,6 +17,8 @@ private:
 	double current_line_width_ = 0;
 
 public:
+	Line() = default;
+	~Line() = default;
 
 	/**
 	 * @param space_size width of space character in screen space
@@ -40,6 +42,7 @@ private:
 public:
 	Word() = default;
 	Word(double font_size) : font_size_(font_size) {}
+	~Word() = default;
 
 	void addCharacter(const Character& character);
 
@@ -54,17 +57,21 @@ class Character
 private:
 	int id_ = -1; // ASCII value of character
 
-	// For font size 1
-	dvec2 texture_coords_ = dvec2(0); // texture coordinate of top left of character in texture atlas
+	// For font size 1:
+	// texture coordinate of top left of character in texture atlas
+	dvec2 texture_coords_ = dvec2(0);
 	dvec2 max_texture_coords_ = dvec2(0);
-	dvec2 offset_ = dvec2(0); // cursor's distance from the top and left edges of the character's quad
-	dvec2 quad_size_ = dvec2(0); // size of character's quad in screen space
-	double x_advance_ = 0; // how far the cursor should advance after adding this character
+	// cursor's distance from the top and left edges of the character's quad
+	dvec2 offset_ = dvec2(0);
+	// size of character's quad in screen space
+	dvec2 quad_size_ = dvec2(0);
+	// how far the cursor should advance after adding this character
+	double x_advance_ = 0;
 
 public:
 	Character() = default;
-
 	Character(int id, dvec2 texture_coords, dvec2 texture_size, dvec2 offset, dvec2 quad_size, double x_advance);
+	~Character() = default;
 
 	int getId() const { return id_; }
 	dvec2 getTextureCoords() const { return texture_coords_; }

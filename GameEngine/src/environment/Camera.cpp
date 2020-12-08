@@ -2,6 +2,7 @@
 
 #include <glm/gtx/projection.hpp>
 
+#include "Player.h"
 #include "../Application.h"
 
 const float Camera::min_distance = 5;

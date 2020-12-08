@@ -6,10 +6,6 @@
 #include "../renderers/MasterRenderer.h"
 #include "../Application.h"
 
-const std::string SkyboxShader::vertex_file = "res/shaders/skybox-vert.glsl";
-const std::string SkyboxShader::fragment_file = "res/shaders/skybox-frag.glsl";
-const float SkyboxShader::rotate_speed = 0.1f;
-
 void SkyboxShader::bindAttributes()
 {
 	bindAttribute(AttributeLocation::Position, "aPosition");
@@ -48,7 +44,7 @@ void SkyboxShader::loadUniforms(const Camera& camera)
 
 	// View matrix
 	glm::mat4 v_matrix = Maths::createSkyViewMatrix(camera);
-	current_rotation_ += rotate_speed * Application::frame_delta;
+	current_rotation_ += rotate_speed * app->frame_delta;
 
 	//v_matrix = glm::rotate(v_matrix, current_rotation_, vec3(0, 1.f, 0));
 	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);

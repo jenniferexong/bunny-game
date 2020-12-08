@@ -4,14 +4,16 @@
 
 #include "../Location.h"
 #include "../Application.h"
+#include "../Helper.h"
+#include "../Loader.h"
 
-const int PostProcessor::blur_strength = 8; // {1, 2, 4, 8, 16}
 const std::vector<float> PostProcessor::positions = { -1, 1, -1, -1, 1, 1, 1, -1 };
 Mesh PostProcessor::quad = Mesh();
 
 PostProcessor::PostProcessor()
 {
-	quad = Application::loader->loadToVao(positions, 2);
+	Print::s("POSTPROCESSOR");
+	quad = app->loader->loadToVao(positions, 2);
 }
 
 void PostProcessor::process()
@@ -31,7 +33,6 @@ void PostProcessor::blur()
 	horizontal_blur_.render(output_fbo_.getColorTexture());
 	vertical_blur_.render(horizontal_blur_.getOutputTexture());
 	contrast_.render(vertical_blur_.getOutputTexture());
-	//contrast_.render(output_fbo_.getColorTexture());
 
 	glEnable(GL_DEPTH_TEST);	
 	glDisableVertexAttribArray(AttributeLocation::Position);

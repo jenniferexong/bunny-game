@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include "Fbo.h"
 
 /**
@@ -11,6 +12,7 @@ private:
 public:
 	/* For rendering to screen */
 	ImageRenderer() = default;
+	~ImageRenderer() = default;
 
 	/* For rendering to another fbo */
 	ImageRenderer(int width, int height) : fbo_(Fbo(width, height, DepthBufferAttachment::None)) {}

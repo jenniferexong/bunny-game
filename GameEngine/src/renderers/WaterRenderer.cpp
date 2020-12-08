@@ -2,9 +2,10 @@
 
 #include "WaterRenderer.h"
 
-#include <iostream>
-
 #include "../Application.h"
+#include "../Helper.h"
+#include "../Loader.h"
+#include "../scene/Environment.h"
 #include "../Location.h"
 
 const float WaterRenderer::wave_speed = 0.02f;
@@ -18,11 +19,11 @@ WaterRenderer::WaterRenderer()
 		-1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1
 	};
 
-	quad_ = Application::loader->loadToVao(positions, 2);
+	quad_ = app->loader->loadToVao(positions, 2);
 
 	// load the dudv map
-	dudv_id_ = Application::loader->loadTexture("water-dudv");
-	normal_id_ = Application::loader->loadTexture("water-normal");
+	dudv_id_ = app->loader->loadTexture("water-dudv");
+	normal_id_ = app->loader->loadTexture("water-normal");
 
 	shader_.start();
 	shader_.connectTextureUnits();
@@ -47,7 +48,7 @@ void WaterRenderer::prepare(const Environment& environment)
 	shader_.start();
 
 	// move the water ripples
-	move_factor_ += wave_speed * Application::frame_delta;
+	move_factor_ += wave_speed * app->frame_delta;
 	move_factor_ = fmod(move_factor_, 1.f);
 	shader_.loadUniformPerFrame(environment, move_factor_);
 

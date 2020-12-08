@@ -5,6 +5,8 @@
 
 #include "../Maths.h"
 
+using std::string;
+
 // Abstract class for generic shaders
 class Shader {
 
@@ -13,7 +15,7 @@ private:
 	int vert_id_ = -1;
 	int frag_id_ = -1;
 
-	static int loadShader(const std::string& file_name, int type);
+	static int loadShader(const string& file_name, int type);
 
 protected:
 	virtual void bindAttributes() = 0; // need to override
@@ -38,7 +40,7 @@ public:
 	Shader(const Shader& other) = default;
 	virtual ~Shader();
 
-	void setUp(const std::string& vert_file, const std::string& frag_file);
+	void setUp(const string& vert_file, const string& frag_file);
 	virtual void setUp() = 0;
 
 	void start() const;

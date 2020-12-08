@@ -5,9 +5,11 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include <iostream>
-
 #include "../Application.h"
+#include "../Helper.h"
+
+#include "../shaders/EntityShader.h"
+#include "../shaders/TerrainShader.h"
 #include "../scene/GameScene.h"
 
 glm::mat4 MasterRenderer::projection_matrix = glm::mat4(1);
@@ -17,6 +19,8 @@ float MasterRenderer::far_plane = 1000.f;
 
 int MasterRenderer::window_width = 1280;
 int MasterRenderer::window_height = 720;
+
+using std::make_shared;
 
 MasterRenderer::MasterRenderer()
 {
@@ -31,14 +35,13 @@ MasterRenderer::MasterRenderer()
 	terrain_shader_ = std::make_shared<TerrainShader>();
 	entity_shader_->setUp();
 	terrain_shader_->setUp();
-
 	entity_renderer_ = EntityRenderer(entity_shader_);
 	terrain_renderer_ = TerrainRenderer(terrain_shader_);
 }
 
 void MasterRenderer::renderWaterReflection(GameScene& scene, void(GameScene::*render_scene)(glm::vec4, bool))
 {
-	scene.getEnvironment().getCamera()->positionForReflection(Water::height);
+	scene.getEnvironment().getCamera().lock()->positionForReflection(Water::height);
 	water_renderer_.getReflectionFbo().bind();
 	(scene.*render_scene)(Water::getReflectionPlane(), false);
 	water_renderer_.getReflectionFbo().unbind();
@@ -46,7 +49,7 @@ void MasterRenderer::renderWaterReflection(GameScene& scene, void(GameScene::*re
 
 void MasterRenderer::renderWaterRefraction(GameScene& scene, void(GameScene::*render_scene)(glm::vec4, bool))
 {
-	scene.getEnvironment().getCamera()->positionForRefraction(Water::height);
+	scene.getEnvironment().getCamera().lock()->positionForRefraction(Water::height);
 	water_renderer_.getRefractionFbo().bind();
 	(scene.*render_scene)(Water::getRefractionPlane(), false);
 	water_renderer_.getRefractionFbo().unbind();
@@ -90,7 +93,7 @@ void MasterRenderer::renderText(const TextMaster& text_master)
 	text_renderer_.render(text_master);
 }
 
-void MasterRenderer::renderGui(const unordered_set<shared_ptr<GuiTexture>>& guis)
+void MasterRenderer::renderGui(const unordered_set<weak_ptr<GuiTexture>>& guis)
 {
 	gui_renderer_.render(guis);
 }
@@ -109,7 +112,7 @@ void MasterRenderer::disableCulling()
 void MasterRenderer::updateWindowSize()
 {
 	int width, height;
-	glfwGetFramebufferSize(*Application::window, &width, &height);
+	glfwGetFramebufferSize(app->window, &width, &height);
 	if (width != window_width || height != window_height) {
 		post_processor_.resizeFbos(width, height);
 		//water_renderer_.getReflectionFbo().resize(width, height);

@@ -1,4 +1,5 @@
 ﻿#pragma once
+
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
@@ -8,10 +9,11 @@ private:
 	float centre_x, centre_z;
 
 public:
-	static const float height; // height in the world
-	static const float tile_size;
+	static constexpr float height = -18.f; // height in the world
+	static constexpr float tile_size = 42.5f;
 
 	Water(float x, float z) : centre_x(x), centre_z(z) {}
+	~Water() = default;
 
 	float getX() const { return centre_x; }
 	float getZ() const { return centre_z; }

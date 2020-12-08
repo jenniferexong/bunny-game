@@ -1,6 +1,8 @@
 ﻿#pragma once
 #include "../shaders/TextShader.h"
 
+class TextMaster;
+
 class TextRenderer {
 private:
 	TextShader shader_;
@@ -11,5 +13,6 @@ private:
 
 public:
 	TextRenderer();
+	~TextRenderer() = default;
 	void render(const TextMaster& text_master);
 };

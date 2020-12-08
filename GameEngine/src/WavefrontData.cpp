@@ -7,7 +7,7 @@
 
 using std::string;
 
-WavefrontData::WavefrontData(const std::string& file_name)
+WavefrontData::WavefrontData(const std::string& file_name) : model_center(vec4(0)), model_radius(0)
 {
 	loadData(file_name);
 }
@@ -15,7 +15,6 @@ WavefrontData::WavefrontData(const std::string& file_name)
 void WavefrontData::loadData(const std::string& file_name)
 {
 	// temporary variables to store raw vertices and index data
-	//vector<int> in_pos_indices, in_texture_indices, in_norm_indices;
 	vector<vec3> in_positions, in_normals;
 	vector<vec2> in_textures;
 
@@ -34,10 +33,10 @@ void WavefrontData::loadData(const std::string& file_name)
 				str_stream >> v1 >> v2 >> v3;
 
 				if (type == "v") // vertex positions
-					in_positions.push_back(vec3(stof(v1), stof(v2), stof(v3)));
+					in_positions.emplace_back(vec3(stof(v1), stof(v2), stof(v3)));
 
 				else if (type == "vn") // vertex normals
-					in_normals.push_back(vec3(stof(v1), stof(v2), stof(v3)));
+					in_normals.emplace_back(vec3(stof(v1), stof(v2), stof(v3)));
 
 				else if (type == "f") { // faces: reading indices
 					processIndices(v1, in_positions, in_textures, in_normals);
@@ -53,7 +52,7 @@ void WavefrontData::loadData(const std::string& file_name)
 
 			else if (type == "vt") { // reading texture data
 				str_stream >> v1 >> v2;
-				in_textures.push_back(vec2(stof(v1), stof(v2)));
+				in_textures.emplace_back(vec2(stof(v1), stof(v2)));
 			}
 		}
 		obj_file.close();

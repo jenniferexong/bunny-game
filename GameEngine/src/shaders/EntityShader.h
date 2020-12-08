@@ -17,8 +17,8 @@ private:
 		ClippingPlane
 	};
 
-	static const std::string vertex_file;
-	static const std::string fragment_file;
+	static constexpr char vertex_file[] = "entity-vert";
+	static constexpr char fragment_file[] = "entity-frag";
 
 	std::unordered_map<UniformVariable, int> locations_;
 

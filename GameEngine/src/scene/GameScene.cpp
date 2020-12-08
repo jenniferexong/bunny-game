@@ -3,22 +3,22 @@
 #include <memory>
 #include <ostream>
 #include <fstream>
-#include <iostream>
 
 #include <glm/gtc/random.hpp>
 
+#include "../Application.h"
+#include "../Loader.h"
+#include "../renderers/MasterRenderer.h"
+#include "../environment/Player.h"
 #include "../Helper.h"
 #include "../Location.h"
 
 using std::shared_ptr;
 using std::make_shared;
 
-GameScene::GameScene(shared_ptr<MasterRenderer> renderer, shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader)
+GameScene::GameScene()
 {
-	renderer_ = std::move(renderer);
-	window_ = std::move(window);
-	loader_ = std::move(loader);
-
+	Print::s("3");
 	setup();
 	//makeGame();
 	makeTest();
@@ -26,31 +26,31 @@ GameScene::GameScene(shared_ptr<MasterRenderer> renderer, shared_ptr<GLFWwindow*
 
 void GameScene::render()
 {
-	renderer_->updateWindowSize();
+	app->renderer->updateWindowSize();
 
-	renderer_->renderWaterReflection(*this, &GameScene::renderScene);
-	renderer_->renderWaterRefraction(*this, &GameScene::renderScene);
+	app->renderer->renderWaterReflection(*this, &GameScene::renderScene);
+	app->renderer->renderWaterRefraction(*this, &GameScene::renderScene);
 
-	renderer_->startPostProcessing();
+	app->renderer->startPostProcessing();
 
 	renderScene(glm::vec4(0), !pause_);
-	renderer_->renderWater(environment_);
+	app->renderer->renderWater(environment_);
 
 	if (pause_)
-		renderer_->renderBlurred();
+		app->renderer->renderBlurred();
 	else
-		renderer_->render();
+		app->renderer->render();
 
-	renderer_->renderGui(guis_);
-	renderer_->renderText(text_master_);
+	app->renderer->renderGui(guis_);
+	app->renderer->renderText(text_master_);
 }
 
 void GameScene::renderScene(glm::vec4 clipping_plane, bool progress_time)
 {
-	renderer_->prepare(getProjectionMatrix());
-	renderer_->renderEntities(environment_, clipping_plane, progress_time);
-	renderer_->renderTerrain(environment_, clipping_plane, progress_time);
-	renderer_->renderSkybox(environment_, progress_time);
+	app->renderer->prepare(getProjectionMatrix());
+	app->renderer->renderEntities(environment_, clipping_plane, progress_time);
+	app->renderer->renderTerrain(environment_, clipping_plane, progress_time);
+	app->renderer->renderSkybox(environment_, progress_time);
 }
 
 void GameScene::update()
@@ -67,23 +67,24 @@ void GameScene::update()
 	}
 	environment_.setLights(close_lights_);
 
-	player_->updatePosition(environment_, compass_, move_keys_);
+	player_->updatePosition(environment_, move_keys_);
+	compass_->setRotation(player_->getRotation().x);
 	camera_->updateView(terrain_1_, environment_.getWater());
 	mouse_picker_.update(getProjectionMatrix(), *camera_); // must update after camera is moved
 	environment_.updateInView();
 
 	selected_ = mouse_picker_.selectEntity(environment_);
-	if (selected_ != nullptr) 
-		selected_->highlight();
+	if (selected_.lock() != nullptr) 
+		selected_.lock()->highlight();
 
-	frame_rate_->updateText("FPS: " + std::to_string((int)Application::fps));
+	frame_rate_->updateText("FPS: " + std::to_string((int)app->fps));
 }
 
 void GameScene::postRenderUpdate()
 {
-	if (selected_ != nullptr)
-		selected_->unhighlight();
-	selected_ = nullptr;
+	if (selected_.lock() != nullptr)
+		selected_.lock()->unhighlight();
+	selected_.reset();
 }
 
 using glm::vec2;
@@ -92,16 +93,18 @@ void GameScene::setup()
 {
 	//TODO: Make files that you can read material properties from, and position, scale, rotation...
 	int width, height;
-	glfwGetWindowSize(*window_, &width, &height);
+	glfwGetWindowSize(app->window, &width, &height);
 
 	// GUI
 	const float padding = 100;
 	const float size = 150;
-	compass_ = std::make_shared<GuiTexture>(loader_->loadTexture("compass"), vec2(padding, height - padding), vec2(size));
+	Print::s("3");
+	compass_ = std::make_unique<GuiTexture>(app->loader->loadTexture("compass"), vec2(padding, height - padding), vec2(size));
 
 	const float cross_hair_size = 60;
 	const vec2 center = vec2((float)width / 2, (float)height / 2);
-	cross_hair_ = make_shared<GuiTexture>(loader_->loadTexture("cross-hair"), center, vec2(cross_hair_size));
+	Print::s("4");
+	cross_hair_ = std::make_unique<GuiTexture>(app->loader->loadTexture("cross-hair"), center, vec2(cross_hair_size));
 
 	// text
 	auto font = std::make_shared<FontType>("maiandra");
@@ -111,21 +114,22 @@ void GameScene::setup()
 	pause_menu_ = std::make_shared<GuiText>("Resume\n\n\nQuit", 5.f, font, glm::vec2(0.f, 0.3), 1.f, true);
 	pause_menu_->setColor(vec3(0));
 	pause_menu_->setGlow(vec3(0.901f, 0.886, 0.517));
+	Print::s("5");
 
 	guis_.insert(cross_hair_);
 	guis_.insert(compass_);
 
 	// Terrains
-	auto texture_pack = Application::makeTexturePack("green", "light-green", "green", "rocks");
-	Texture blend_map = Texture(loader_->loadTexture("river-blendmap"));
-	Texture normal_map = Texture(loader_->loadTexture("rocks-normal"));
+	auto texture_pack = app->makeTexturePack("green", "light-green", "green", "rocks");
+	Texture blend_map = Texture(app->loader->loadTexture("river-blendmap"));
+	Texture normal_map = Texture(app->loader->loadTexture("rocks-normal"));
 	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map, normal_map);
 	terrain_1_ = Terrain(0, -1, ground_texture, "river-heightmap");
 	environment_.addTerrain(terrain_1_);
 
 	// Player
 	Material player_material = Material();
-	auto player_model = Application::makeModel("nibbles", "nibbles", player_material);
+	auto player_model = app->makeModel("nibbles", "nibbles", player_material);
 
 	// Bunny player
 	float player_x = 489.295f;
@@ -158,18 +162,18 @@ void GameScene::makeGame()
 	Material flower_material = Material(false, false);
 	Material carrot_material = Material(10.f, 20.f);
 
-	auto flower_model = Application::makeModel("flower", "flower", flower_material);
-	auto carrot_model = Application::makeModel("carrot", "carrot", carrot_material);
+	auto flower_model = app->makeModel("flower", "flower", flower_material);
+	auto carrot_model = app->makeModel("carrot", "carrot", carrot_material);
 
-	auto flower_set = make_shared<set<shared_ptr<Entity>>>();
+	set<shared_ptr<Entity>> flower_set;
 
-	Application::loadPositionsFromFile(terrain_1_, environment_, carrot_model, "carrot", vec3(0), 0.02f);
-	Application::loadPositionsFromFileToSet(terrain_1_, flower_set, flower_model, "flower", vec3(0, -90.f, 0), 0.15f);
+	app->loadPositionsFromFile(terrain_1_, environment_, carrot_model, "carrot", vec3(0), 0.02f);
+	app->loadPositionsFromFileToSet(terrain_1_, flower_set, flower_model, "flower", vec3(0, -90.f, 0), 0.15f);
 	environment_.addEntitySet(flower_set);
 
 	// Position the lights above flowers
 	vec3 color = vec3(1.f, 1, 1);
-	for (const auto& flower: *flower_set) {
+	for (const auto& flower: flower_set) {
 		vec3 flower_pos = flower->getPosition();
 		vec3 terrain_normal = terrain_1_.getNormalOfTerrain(flower_pos.x, flower_pos.z);
 		vec3 light_pos = flower_pos + (15.f * terrain_normal);
@@ -180,9 +184,9 @@ void GameScene::makeGame()
 void GameScene::makeTest()
 {
 	Material material = Material();
-	auto flower_model = Application::makeModel("flower", "flower", material);
+	auto flower_model = app->makeModel("flower", "flower", material);
 
-	Application::loadPositionsFromFile(terrain_1_, environment_, flower_model, "test-flowers", vec3(0, -90.f, 0), 0.15f);
+	app->loadPositionsFromFile(terrain_1_, environment_, flower_model, "test-flowers", vec3(0, -90.f, 0), 0.15f);
 }
 
 void GameScene::pause()
@@ -191,8 +195,8 @@ void GameScene::pause()
 	guis_.clear();
 	text_master_.removeText(frame_rate_);
 	text_master_.addText(pause_menu_);
-    glfwSetInputMode(*window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	glfwSetCursorPos(*window_, MasterRenderer::window_width/2.0, MasterRenderer::window_height/2.0);
+    glfwSetInputMode(app->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+	glfwSetCursorPos(app->window, MasterRenderer::window_width/2.0, MasterRenderer::window_height/2.0);
 }
 
 void GameScene::unpause()
@@ -203,7 +207,7 @@ void GameScene::unpause()
 	guis_.insert(compass_);
 	text_master_.addText(frame_rate_);
 	text_master_.removeText(pause_menu_);
-    glfwSetInputMode(*window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    glfwSetInputMode(app->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
 glm::mat4 GameScene::getProjectionMatrix() // why is this in game scene
@@ -272,8 +276,8 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 			string file_name = "culling-flower";
 			// Create and open a text file
 			std::ofstream positions(FilePath::data_path + file_name + "-positions.txt", std::ios::app);
-			auto flower_model = Application::makeModel("flower", "flower", Material());
-			Application::spawnEntity(player_, environment_, flower_model, file_name, vec3(0, -90.f, 0), 0.15f);
+			auto flower_model = app->makeModel("flower", "flower", Material());
+			app->spawnEntity(player_, environment_, flower_model, file_name, vec3(0, -90.f, 0), 0.15f);
 		}
 		break;
 	default:

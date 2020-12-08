@@ -6,14 +6,11 @@
 #include <stb_image/stb_image.h>
 
 #include "../Application.h"
+#include "../Loader.h"
 #include "../Location.h"
 
 using std::vector;
 using namespace glm;
-
-const float Terrain::size = 510.f;
-const float Terrain::max_height = 25.f;
-const float Terrain::max_pixel_color = 255 * 3;
 
 Terrain::Terrain(int grid_x, int grid_z, TerrainTexture texture, const string& height_map)
 	: x_(float(grid_x) * size), z_(float(grid_z) * size), texture_(std::move(texture))
@@ -155,7 +152,7 @@ Mesh Terrain::generate(const string& height_map)
 	if (buffer)
 		stbi_image_free(buffer);
 
-	return Application::loader->loadToVao(positions_, normals_, texture_coords_, tangents_, indices);
+	return app->loader->loadToVao(positions_, normals_, texture_coords_, tangents_, indices);
 }
 
 float Terrain::calculateHeight(int row, int col, const unsigned char* buffer)

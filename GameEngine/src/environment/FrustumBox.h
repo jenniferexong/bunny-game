@@ -23,4 +23,5 @@ private:
 
 public:
 	FrustumBox();
+	~FrustumBox() = default;
 };

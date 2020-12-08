@@ -5,18 +5,13 @@
 
 #include "../Application.h"
 
-const float Player::run_speed = 30.f; // per second
-const float Player::gravity = -70.f;
-const float Player::jump_power = 30.f;
-
 using namespace glm;
 
-Player::Player(std::shared_ptr<TexturedModel> model, vec3 position, vec3 rotation, float scale)
-		: Entity(std::move(model), position, rotation, scale)
+Player::Player(TexturedModel model, vec3 position, vec3 rotation, float scale)
+		: Entity(model, position, rotation, scale)
 {
 	selectable_ = false;
 }
-	
 
 vec3 Player::getRotationOffset()
 {
@@ -42,7 +37,7 @@ vec3 Player::getRotationOffset()
 	}
 }
 
-void Player::updatePosition(const Environment& environment, const shared_ptr<GuiTexture>& compass, const std::map<Key, bool>& move_keys)
+void Player::updatePosition(const Environment& environment, const std::map<Key, bool>& move_keys)
 {
 	Terrain terrain = environment.getTerrains().at(0);
 	updateSpeed(move_keys);
@@ -52,10 +47,8 @@ void Player::updatePosition(const Environment& environment, const shared_ptr<Gui
 		side_speed_ /= 3.f;
 	}
 
-	compass->setRotation(-rotation_.x);
-
-	float forward_distance = forward_speed_ * Application::frame_delta;
-	float side_distance = side_speed_ * Application::frame_delta;
+	float forward_distance = forward_speed_ * app->frame_delta;
+	float side_distance = side_speed_ * app->frame_delta;
 
 	// calculating new position (forward movement)
 	float fx = forward_distance * glm::sin(glm::radians(rotation_.x));
@@ -65,7 +58,7 @@ void Player::updatePosition(const Environment& environment, const shared_ptr<Gui
 	float sz = side_distance * glm::sin(glm::radians(-rotation_.x));
 
 	// calculating new y position
-	float y = up_velocity_ * Application::frame_delta;
+	float y = up_velocity_ * app->frame_delta;
 
 	move(fx + sx, y, fz + sz);
 
@@ -116,7 +109,7 @@ void Player::jump()
 
 void Player::fall()
 {
-	up_velocity_ += gravity * Application::frame_delta;
+	up_velocity_ += gravity * app->frame_delta;
 }
 
 void Player::changeDirection(float amount)

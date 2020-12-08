@@ -1,11 +1,11 @@
 ﻿#pragma once
 
-#include <string>
 #include <vector>
 
 #include "../models/Mesh.h"
-#include "../scene/Scene.h"
 #include "../shaders/SkyboxShader.h"
+
+class Environment;
 
 class SkyboxRenderer {
 private:
@@ -21,5 +21,6 @@ private:
 
 public:
 	SkyboxRenderer();
+	~SkyboxRenderer() = default;
 	void render(const Environment& environment, bool progress_time);
 };

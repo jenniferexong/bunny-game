@@ -4,6 +4,9 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "../Application.h"
+#include "../Maths.h"
+
+int Entity::next_id_ = 0;
 
 void Entity::move(float dx, float dy, float dz)
 {

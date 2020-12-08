@@ -2,17 +2,17 @@
 
 #include <glm/glm.hpp>
 
-#include <memory>
-
 #include "../models/Model.h"
-
-class Shader;
 
 using glm::vec3;
 
 class Entity {
+private:
+	static int next_id_;
+	int id_ = -1;
+
 protected:
-	std::shared_ptr<TexturedModel> model_; 
+	TexturedModel model_;
 	vec3 position_ = vec3(0);
 	vec3 rotation_ = vec3(0); // yaw, pitch, roll
 	vec3 default_rotation_offset_ = vec3(0);
@@ -24,13 +24,15 @@ protected:
 	float brightness_ = 0.8f;
 
 public:
+	Entity(): position_(vec3(0)), rotation_(vec3(0)), scale_(1), id_(next_id_++) {}
 
-	Entity() : model_(nullptr), position_(vec3(0)), rotation_(vec3(0)), scale_(1) {}
+	Entity(const TexturedModel& model) : model_(model), position_(vec3(0)),
+		rotation_(vec3(0)), scale_(1), id_(next_id_++) {}
 
-	Entity(std::shared_ptr<TexturedModel> model) : model_(std::move(model)), position_(vec3(0)), rotation_(vec3(0)), scale_(1) {}
+	Entity(const TexturedModel& model, vec3 position, vec3 rotation, float scale) 
+		: model_(model), position_(position), rotation_(rotation), scale_(scale), id_(next_id_++) {}
 
-	Entity(std::shared_ptr<TexturedModel> model, vec3 position, vec3 rotation, float scale) 
-		: model_(std::move(model)), position_(position), rotation_(rotation), scale_(scale) {}
+	~Entity() = default;
 
 	void move(float dx, float dy, float dz);
 	void rotate(float yaw, float pitch, float roll);
@@ -43,7 +45,7 @@ public:
 	void setScale(float scale) { scale_ = scale; }
 
 	// Getters
-	std::shared_ptr<TexturedModel> getModel() const { return model_; }
+	const TexturedModel& getModel() const { return model_; }
 	vec3 getPosition() const { return position_; }
 	vec3 getRotation() const { return rotation_; }
 	vec3 getActualRotation() const { return rotation_ + rotation_offset_; }
@@ -51,7 +53,13 @@ public:
 	float getScale() const { return scale_; }
 	bool isSelectable() const { return selectable_; }
 	float getBrightness() const { return brightness_; }
+	int getEntityId() const { return id_; }
 
 	void highlight();
 	void unhighlight();
+
+	bool operator== (const Entity& other)
+	{
+		return id_ == other.id_;
+	}
 };

@@ -3,15 +3,17 @@
 #include <memory>
 #include <map>
 #include <vector>
-#include <set>
+#include <unordered_set>
 
-#include "../shaders/EntityShader.h"
-#include "../environment/Entity.h"
-#include "../models/Model.h"
+class Environment;
+class EntityShader;
+class Entity;
+class TexturedModel;
 
 using std::map;
-using std::set;
+using std::unordered_set;
 using std::shared_ptr;
+using std::weak_ptr;
 
 class EntityRenderer {
 private:
@@ -20,15 +22,15 @@ private:
 	void prepareTexturedModel(const TexturedModel& model);
 	void unbindTexturedModel();
 	void loadTransformation(const Entity& entity);
-	void loadTransformations(const set<shared_ptr<Entity>>& entities, shared_ptr<std::vector<float>> float_data);
-	void loadColors(const std::set<shared_ptr<Entity>>& entities, std::shared_ptr<std::vector<float>> float_data);
+	void loadTransformations(const unordered_set<weak_ptr<Entity>>& entities, std::vector<float>& float_data);
+	void loadColors(const unordered_set<weak_ptr<Entity>>& entities, std::vector<float>& float_data);
 
 public:
 	EntityRenderer(): shader_(nullptr) {}
 	EntityRenderer(std::shared_ptr<EntityShader> shader) : shader_(std::move(shader)) {}
+	~EntityRenderer() = default;
 
 	void render(const Environment& environment);
-
 	void renderInstanced(const Environment& environment);
 };
 

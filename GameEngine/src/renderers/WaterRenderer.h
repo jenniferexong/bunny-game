@@ -22,6 +22,7 @@ private:
 
 public:
 	WaterRenderer();
+	~WaterRenderer() = default;
 	Fbo& getReflectionFbo() { return reflection_fbo_; }
 	Fbo& getRefractionFbo() { return refraction_fbo_; }
 

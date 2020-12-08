@@ -10,8 +10,8 @@ class VerticalBlurShader final : public Shader {
 		TargetHeight
 	};
 
-	static const std::string vertex_file;
-	static const std::string fragment_file;
+	static constexpr char vertex_file[] = "post-processing/vertical-blur-vert";
+	static constexpr char fragment_file[] = "post-processing/vertical-blur-frag";
 
 	std::unordered_map<UniformVariable, int> locations_;
 

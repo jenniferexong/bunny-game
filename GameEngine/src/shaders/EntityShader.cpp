@@ -3,10 +3,8 @@
 
 #include "../renderers/MasterRenderer.h"
 #include "../Application.h"
+#include "../Helper.h"
 #include "../Location.h"
-
-const std::string EntityShader::vertex_file = "res/shaders/entity-vert.glsl";
-const std::string EntityShader::fragment_file = "res/shaders/entity-frag.glsl";
 
 void EntityShader::setUp()
 {
@@ -55,16 +53,16 @@ void EntityShader::loadUniformPerFrame(const Environment& environment, glm::vec4
 	colors.reserve(num_lights);
 	attenuations.reserve(num_lights);
 	for (const auto& l: environment.getLights()) {
-		positions.emplace_back(l->getPosition());
-		colors.emplace_back(l->getColor());
-		attenuations.emplace_back(l->getAttenuation());
+		positions.emplace_back(l.lock()->getPosition());
+		colors.emplace_back(l.lock()->getColor());
+		attenuations.emplace_back(l.lock()->getAttenuation());
 	}
 
 	loadVectors(locations_.at(UniformVariable::LightPosition), positions);
 	loadVectors(locations_.at(UniformVariable::LightColor), colors);
 	loadVectors(locations_.at(UniformVariable::Attenuation), attenuations);
 
-	loadVector(locations_.at(UniformVariable::SunStrength), environment.getSun()->getColor());
+	loadVector(locations_.at(UniformVariable::SunStrength), environment.getSun().lock()->getColor());
 
 	loadInt(locations_.at(UniformVariable::LightCount), num_lights);
 	loadInt(locations_.at(UniformVariable::MaxLights), Light::max_lights);
@@ -73,7 +71,7 @@ void EntityShader::loadUniformPerFrame(const Environment& environment, glm::vec4
 	loadMatrix(locations_.at(UniformVariable::ProjectionMatrix), MasterRenderer::projection_matrix);
 
 	// View matrix
-	glm::mat4 v_matrix = Maths::createViewMatrix(*environment.getCamera());
+	glm::mat4 v_matrix = Maths::createViewMatrix(*environment.getCamera().lock());
 	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
 	loadMatrix(locations_.at(UniformVariable::InverseViewMatrix), inverse(v_matrix));
 
@@ -95,7 +93,10 @@ void EntityShader::loadModelMatrix(const Entity& entity) const
 void EntityShader::loadMaterial(const Material& material) const
 {
 	// Loading shine values
+	Print::s("a");
+	Print::val("locations", (int)locations_.size());
 	loadFloat(locations_.at(UniformVariable::Reflectivity), material.reflectivity);
+	Print::s("b");
 	loadFloat(locations_.at(UniformVariable::ShineDamper), material.shine_damper);
 	loadBoolean(locations_.at(UniformVariable::FakeLighting), material.uses_fake_lighting);
 }

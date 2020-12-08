@@ -5,7 +5,8 @@
 #include <vector>
 #include <string>
 
-#include "models/Mesh.h"
+class Mesh;
+class InstancedMesh;
 
 using std::vector;
 
@@ -21,7 +22,13 @@ private:
 	void unbindVao();
 
 public:
+	Loader();
+	Loader(const Loader& other) = default;
+	Loader& operator=(const Loader& other) = default;
+	Loader& operator=(Loader&& other) = default;
+	Loader(Loader&& other) noexcept = default;
 	~Loader();
+
 	Mesh loadToVao(const vector<float>& positions, const vector<float>& normals, 
 		const vector<float>& texture_coords, const vector<int>& indices);
 

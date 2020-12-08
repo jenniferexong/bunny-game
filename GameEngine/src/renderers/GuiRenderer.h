@@ -1,6 +1,7 @@
 ﻿#pragma once
 
 #include <memory>
+#include <unordered_set>
 
 #include "../models/Mesh.h"
 #include "../shaders/GuiShader.h"
@@ -14,5 +15,6 @@ private:
 
 public:
 	GuiRenderer();
-	void render(const std::unordered_set<std::shared_ptr<GuiTexture>>& gui_textures);
+	~GuiRenderer() = default;
+	void render(const std::unordered_set<std::weak_ptr<GuiTexture>>& gui_textures);
 };

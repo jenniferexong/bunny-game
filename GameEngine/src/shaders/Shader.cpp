@@ -11,11 +11,12 @@
 #include <sstream>
 
 #include "../Helper.h"
+#include "../Location.h"
 
 using std::string;
 
 /* Must call this after constructing the shader */
-void Shader::setUp(const string& vert_file, const std::string& frag_file)
+void Shader::setUp(const string& vert_file, const string& frag_file)
 {
 	vert_id_ = loadShader(vert_file, GL_VERTEX_SHADER);
 	frag_id_ = loadShader(frag_file, GL_FRAGMENT_SHADER);
@@ -31,7 +32,10 @@ void Shader::setUp(const string& vert_file, const std::string& frag_file)
 int Shader::loadShader(const string& file_name, int type)
 {
 	using namespace std;
-	ifstream shader_file(file_name);
+	std::string file_path = FilePath::shader_path;
+	file_path.append(file_name).append(FilePath::shader_suffix);
+	Print::s("loading shader:" + file_path);
+	ifstream shader_file(file_path);
 
 	ostringstream lines("");
 	// Read all the lines in the file
@@ -129,7 +133,6 @@ void Shader::loadMatrices(int location, const std::vector<glm::mat4>& matrices) 
 {
 	glUniformMatrix4fv(location, matrices.size(), GL_FALSE, value_ptr(matrices[0]));
 }
-
 
 void Shader::start() const
 {

@@ -1,8 +1,12 @@
 #pragma once
-#include <string>
+
+#include <vector>
 
 #include "GuiText.h"
-#include "Text.h"
+
+class Line;
+class Word;
+class Character;
 
 struct TextMeshData {
 	std::vector<float> positions;
@@ -23,10 +27,10 @@ private:
 	void addData(std::vector<float>& data, float x, float y, float max_x, float max_y);
 		
 public:
-	static const double line_height;
-	static const int space_ascii;
-
-	//TextLoader(const std::string& font_name);
+	TextLoader() = default;
+	~TextLoader() = default;
+	static constexpr double line_height = 0.02;
+	static constexpr int space_ascii = 32;
 
 /*
  * Takes in an unloaded text and calculates all of the vertices

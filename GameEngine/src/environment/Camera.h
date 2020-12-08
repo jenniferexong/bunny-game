@@ -3,10 +3,15 @@
 #include <glm/glm.hpp>
 
 #include <memory>
+#include <vector>
 
 #include "FrustumBox.h"
-#include "../environment/Player.h"
 
+class Terrain;
+class Player;
+class Water;
+
+using std::vector;
 using glm::vec3;
 
 class Camera {
@@ -26,10 +31,11 @@ public:
 	static const float turn_speed;
 
 	Camera() = default;
+	~Camera() = default;
 
 	Camera(std::shared_ptr<Player> player): player_(std::move(player)) {}
 
-	void updateView(const Terrain& terrain, const vector<Water>& water);
+	void updateView(const Terrain& terrain, const std::vector<Water>& water);
 	void zoom(float amount, const vector<Water>& water);
 	void print();
 	void changePitch(float amount);

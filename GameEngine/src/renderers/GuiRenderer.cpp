@@ -7,6 +7,8 @@
 
 #include "../Location.h"
 #include "../Application.h"
+#include "../Helper.h"
+#include "../Loader.h"
 #include "../gui/GuiTexture.h"
 
 GuiRenderer::GuiRenderer()
@@ -14,11 +16,12 @@ GuiRenderer::GuiRenderer()
 	std::vector<float> positions = {
 		-1, 1, -1, -1, 1, 1, 1, -1
 	};
-	quad_mesh_ = Mesh(Application::loader->loadToVao(positions, 2));
+	Print::s("GUIRENDERER");
+	quad_mesh_ = Mesh(app->loader->loadToVao(positions, 2));
 	shader_.setUp();
 }
 
-void GuiRenderer::render(const std::unordered_set<std::shared_ptr<GuiTexture>>& gui_textures)
+void GuiRenderer::render(const std::unordered_set<std::weak_ptr<GuiTexture>>& gui_textures)
 {
 	shader_.start();
 	glBindVertexArray(quad_mesh_.getId());
@@ -31,8 +34,8 @@ void GuiRenderer::render(const std::unordered_set<std::shared_ptr<GuiTexture>>& 
 
 	for (const auto& gui: gui_textures) { // render
 		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, gui->getTexture());
-		shader_.loadModelMatrix(*gui);
+		glBindTexture(GL_TEXTURE_2D, gui.lock()->getTexture());
+		shader_.loadModelMatrix(*gui.lock());
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, quad_mesh_.getVertexCount());
 	}
 

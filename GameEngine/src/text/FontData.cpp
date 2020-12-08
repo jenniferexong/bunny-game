@@ -2,22 +2,18 @@
 
 #include <GLFW/glfw3.h>
 
-#include <iostream>
 #include <fstream>
 #include <sstream>
 
+#include "Text.h"
 #include "TextLoader.h"
 #include "../Application.h"
 #include "../Location.h"
 
-using std::cout;
-using std::endl;
 using std::stoi;
 using std::stod;
 using std::string;
 using std::stringstream;
-
-const int FontData::desired_padding = 8;
 
 Character FontData::getCharacter(int ascii) const
 {
@@ -26,13 +22,14 @@ Character FontData::getCharacter(int ascii) const
 
 	return characters_.at(ascii);
 }
+
 /**
  * Reads a font file, loading characters into map
  */
 FontData::FontData(const std::string& font_name)
 {
 	int ww, wh;
-	glfwGetFramebufferSize(*Application::window, &ww, &wh);
+	glfwGetFramebufferSize(app->window, &ww, &wh);
 	double aspect_ratio = (double)ww / (double)wh;
 	
 	std::ifstream file = std::ifstream(FilePath::font_path + font_name + ".fnt");
@@ -94,7 +91,6 @@ FontData::FontData(const std::string& font_name)
 
 		characters_.insert({ char_id, Character(char_id, texture_coords, texture_size, offset, quad_size, x_advance) });
 	}
-	cout << "characters: " << characters_.size() << endl;
 
 	file.close();
 }

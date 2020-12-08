@@ -1,12 +1,10 @@
 #pragma once
 
-#include <map>
+#include <unordered_map>
 
 #include "Shader.h"
-
 #include "../environment/Terrain.h"
 #include "../models/Material.h"
-
 #include "../scene/Scene.h"
 
 class TerrainShader final : public Shader {
@@ -19,10 +17,10 @@ private:
 		ClippingPlane
 	};
 
-	static const std::string vertex_file;
-	static const std::string fragment_file;
+	static constexpr char vertex_file[] = "terrain-vert";
+	static constexpr char fragment_file[] = "terrain-frag";
 
-	std::map<UniformVariable, int> locations_;
+	std::unordered_map<UniformVariable, int> locations_;
 
 protected:
 	void bindAttributes() override;

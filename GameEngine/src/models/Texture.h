@@ -14,11 +14,11 @@ private:
 	int texture_id_;
 
 public:
+	Texture() : texture_id_(-1) {}
 	Texture(int id) : texture_id_(id) {}
+	~Texture() = default;
 
 	int getId() const { return texture_id_; }
-
-	Texture() : texture_id_(0) {}
 };
 
 /* A texture for a model */
@@ -28,7 +28,9 @@ private:
 	Material material_ = Material();
 
 public:
+	ModelTexture() = default;
 	ModelTexture(Texture texture, Material material) : texture_(texture), material_(material) {}
+	~ModelTexture() = default;
 
 	int getTextureId() const { return texture_.getId(); }
 	Material getMaterial() const { return material_; }
@@ -43,6 +45,7 @@ private:
 
 public:
 	TerrainTexture() : texture_pack_(nullptr) {}
+	~TerrainTexture() = default;
 
 	TerrainTexture(std::shared_ptr<TerrainTexturePack> texture_pack, Texture blend_map, Texture normal_map)
 		: texture_pack_(std::move(texture_pack)), blend_map_(blend_map), normal_map_(normal_map) {}
@@ -59,6 +62,7 @@ private:
 	Texture base_, red_, green_, blue_;
 
 public:
+	TerrainTexturePack(): base_(-1), red_(-1), green_(-1), blue_(-1) {}
 	TerrainTexturePack(Texture base, Texture red, Texture green, Texture blue)
 		: base_(base), red_(red), green_(green), blue_(blue) {}
 

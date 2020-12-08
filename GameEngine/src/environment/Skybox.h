@@ -13,6 +13,7 @@ private:
 
 public:
 	Skybox() = default;
+	~Skybox() = default;
 	Skybox(const std::string& day_textures, const std::string& night_textures);
 
 	int getDayTexture() const { return day_texture_id_; }

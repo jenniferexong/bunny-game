@@ -6,13 +6,13 @@
 #include "../gui/GuiTexture.h"
 
 class GuiShader final : public Shader {
-
+private:
 	enum class UniformVariable {
 		TransformationMatrix
 	};
 
-	static const std::string vertex_file;
-	static const std::string fragment_file;
+	static constexpr char vertex_file[] = "gui-vert";
+	static constexpr char fragment_file[] = "gui-frag";
 
 	std::unordered_map<UniformVariable, int> locations_;
 

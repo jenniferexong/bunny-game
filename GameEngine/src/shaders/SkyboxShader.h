@@ -14,10 +14,10 @@ private:
 		DayTexture, NightTexture, BlendFactor
 	};
 
-	static const std::string vertex_file;
-	static const std::string fragment_file;
-	static const float rotate_speed;
+	static constexpr char vertex_file[] = "skybox-vert";
+	static constexpr char fragment_file[] = "skybox-frag";
 
+	static constexpr float rotate_speed = 0.1f;
 	float current_rotation_ = 0.f;
 
 	std::unordered_map<UniformVariable, int> locations_;

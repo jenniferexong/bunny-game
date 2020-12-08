@@ -35,11 +35,9 @@
     <ClCompile Include="src\gui\GuiTexture.cpp" />
     <ClCompile Include="src\gui\MousePicker.cpp" />
     <ClCompile Include="src\Maths.cpp" />
-    <ClCompile Include="src\models\Mesh.cpp" />
     <ClCompile Include="src\environment\Camera.cpp" />
     <ClCompile Include="src\renderers\EntityRenderer.cpp" />
     <ClCompile Include="src\environment\Entity.cpp" />
-    <ClCompile Include="src\environment\Light.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\environment\Player.cpp" />
     <ClCompile Include="src\environment\Terrain.cpp" />
@@ -48,7 +46,6 @@
     <ClCompile Include="src\renderers\MasterRenderer.cpp" />
     <ClCompile Include="src\renderers\SkyboxRenderer.cpp" />
     <ClCompile Include="src\renderers\TerrainRenderer.cpp" />
-    <ClCompile Include="src\scene\TestScene.cpp" />
     <ClCompile Include="src\post-processing\ContrastShader.cpp" />
     <ClCompile Include="src\shaders\TextShader.cpp" />
     <ClCompile Include="src\shaders\WaterShader.cpp" />
@@ -101,7 +98,6 @@
     <ClInclude Include="src\renderers\TerrainRenderer.h" />
     <ClInclude Include="src\models\Mesh.h" />
     <ClInclude Include="src\models\Model.h" />
-    <ClInclude Include="src\scene\TestScene.h" />
     <ClInclude Include="src\post-processing\ContrastShader.h" />
     <ClInclude Include="src\shaders\TextShader.h" />
     <ClInclude Include="src\shaders\WaterShader.h" />

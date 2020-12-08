@@ -1,8 +1,5 @@
 ﻿#include "Water.h"
 
-const float Water::tile_size = 42.5f;
-const float Water::height = -18.f;
-
 glm::vec4 Water::getReflectionPlane()
 {
 	return { 0, 1.f, 0, -height };

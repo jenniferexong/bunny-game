@@ -1,5 +1,10 @@
 ﻿#pragma once
+#include <unordered_map>
+
 #include "Shader.h"
+
+class Water;
+class Environment;
 
 class WaterShader final: public Shader {
 private:
@@ -12,8 +17,8 @@ private:
 
 	std::unordered_map<UniformVariable, int> locations_;
 
-	static const std::string vertex_file;
-	static const std::string fragment_file;
+	static constexpr char vertex_file[] = "water-vert";
+	static constexpr char fragment_file[] = "water-frag";
 
 	void bindAttributes() override;
 	void getAllUniformLocations() override;

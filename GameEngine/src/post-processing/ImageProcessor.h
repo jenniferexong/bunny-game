@@ -1,24 +1,30 @@
 ﻿#pragma once
 
 #include <memory>
-
 #include "ImageRenderer.h"
-#include "../shaders/Shader.h"
-#include "HorizontalBlurShader.h"
-#include "VerticalBlurShader.h"
+
+class Shader;
+class HorizontalBlurShader;
+class VerticalBlurShader;
+class ContrastShader;
 
 class ImageProcessor {
 protected:
-	std::unique_ptr<Shader> shader_ = nullptr;
+	std::weak_ptr<Shader> shader_;
 	std::unique_ptr<ImageRenderer> renderer_ = nullptr;
 
 public:
+	ImageProcessor() = default;
+	virtual ~ImageProcessor() = default;
+	
 	virtual void resize(int width, int height) = 0;
 	void render(int texture);
-	int getOutputTexture() const { return renderer_->getOutputColorTexture(); }
+	int getOutputTexture() const;
 };
 
 class Contrast: public ImageProcessor {
+private:
+	std::shared_ptr<ContrastShader> c_shader_ = nullptr;
 public:
 	Contrast();
 	void resize(int width, int height) override {}
@@ -26,7 +32,7 @@ public:
 
 class HorizontalBlur: public ImageProcessor {
 private:
-	HorizontalBlurShader h_shader_;
+	std::shared_ptr<HorizontalBlurShader> h_shader_ = nullptr;
 public:
 	HorizontalBlur() = default;
 	HorizontalBlur(int target_width, int target_height);
@@ -34,7 +40,7 @@ public:
 };
 
 class VerticalBlur: public ImageProcessor {
-	VerticalBlurShader v_shader_;
+	std::shared_ptr<VerticalBlurShader> v_shader_ = nullptr;
 public:
 	VerticalBlur() = default;
 	VerticalBlur(int target_width, int target_height);

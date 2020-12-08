@@ -2,15 +2,11 @@
 
 #include <memory>
 
-#include <GLFW/glfw3.h>
-
 #include "Scene.h"
 
-#include "../Application.h"
 #include "../UserInput.h"
 #include "../environment/Camera.h"
 #include "../gui/MousePicker.h"
-#include "../Loader.h"
 
 class GameScene: public Scene {
 private:
@@ -25,12 +21,13 @@ private:
 	shared_ptr<GuiText> pause_menu_ = nullptr;
 
 	shared_ptr<Player> player_ = nullptr;
-	shared_ptr<Entity> selected_ = nullptr;
+	weak_ptr<Entity> selected_;
+
 	Terrain terrain_1_;
 	shared_ptr<Light> sun_ = std::make_shared<Light>(vec3(0.f, 700, -1000), vec3(0.1f));
 	shared_ptr<Camera> camera_;
 	vector<shared_ptr<Light>> lights_;
-	vector<shared_ptr<Light>> close_lights_;
+	vector<weak_ptr<Light>> close_lights_;
 
 	map<Key, bool> move_keys_ = {
 		{Key::W, false}, {Key::A, false}, {Key::S, false}, {Key::D, false}, {Key::Space, false}
@@ -51,7 +48,8 @@ private:
 	void unpause();
 	
 public:
-	GameScene(shared_ptr<MasterRenderer> renderer, shared_ptr<GLFWwindow*> window, shared_ptr<Loader> loader);
+	GameScene();
+	~GameScene() = default;
 
 	glm::mat4 getProjectionMatrix() override;
 

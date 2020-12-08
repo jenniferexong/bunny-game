@@ -5,13 +5,18 @@
 
 #include <iostream>
 
-
+#include "models/Mesh.h"
 #include "Helper.h"
 #include "WavefrontData.h"
 #include "Location.h"
 
 using namespace std;
 using namespace glm;
+
+Loader::Loader()
+{
+	Print::s("LOADER INITIALIZED");
+}
 
 Mesh Loader::loadToVao(const vector<float>& positions, const vector<float> & normals,
 	const vector<float>& texture_coords, const vector<int>& indices)
@@ -192,6 +197,7 @@ int Loader::createVao()
 {
 	GLuint vao_id;
 	glGenVertexArrays(1, &vao_id);
+	Print::val("VAO ID", (int)vao_id);
 	vaos_.push_back(vao_id); // add to vector of vaos
 
 	glBindVertexArray(vao_id);
@@ -210,10 +216,10 @@ void Loader::storeInAttributeList(int attrib_num, int coord_size, const vector<f
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-/*
- * num_elements: number of float in one block of data (eg. 16 in a 4x4 matrix)
- * blocks: 4 blocks (of vec4) in a 4x4 matrix
- * offset_size: offset in floats (eg. offset of 4 floats in a 4x4 matrix)
+/**
+ * @param num_elements number of float in one block of data (eg. 16 in a 4x4 matrix)
+ * @param blocks 4 blocks (of vec4) in a 4x4 matrix
+ * @param offset offset in floats (eg. offset of 4 floats in a 4x4 matrix)
  */
 int Loader::createInstancedVbo(int start_location, int blocks, int num_elements, int offset)
 {
@@ -248,6 +254,8 @@ void Loader::unbindVao()
 
 void Loader::deleteVao(GLuint vao)
 {
+	auto it = std::find(vaos_.begin(), vaos_.end(), vao);
+	vaos_.erase(it);
 	glDeleteVertexArrays(1, &vao);
 }
 

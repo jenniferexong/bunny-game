@@ -6,9 +6,7 @@
 
 #include "RayIntersection.h"
 
-#include "../models/Model.h"
-#include "../environment/Entity.h"
-
+class Entity;
 class Environment;
 class Camera;
 
@@ -18,13 +16,14 @@ private:
 	glm::mat4 projection_matrix_, view_matrix_;
 
 	void calculateMouseRay();
-	RayIntersection getIntersection(const std::shared_ptr<Entity>& entity);
+	RayIntersection getIntersection(std::weak_ptr<Entity> entity);
 	
 public:
-	MousePicker() : current_ray_direction_(glm::vec3(0)), current_ray_origin_(glm::vec3(0)), projection_matrix_(glm::mat4(1)), view_matrix_(glm::mat4(1)) {}
+	MousePicker(): current_ray_origin_(glm::vec3(0)), current_ray_direction_(glm::vec3(0)), projection_matrix_(glm::mat4(1)), view_matrix_(glm::mat4(1)) {}
+	~MousePicker() = default;
 
 	void update(glm::mat4 projection_matrix, const Camera& camera); // update the projection and view matrix
-	std::shared_ptr<Entity> selectEntity(Environment& environment);
+	std::weak_ptr<Entity> selectEntity(Environment& environment);
 
 	glm::vec3 getCurrentRay() { return current_ray_direction_; }
 };
