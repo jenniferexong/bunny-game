@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "../models/Mesh.h"
-#include "../models/Texture.h"
+#include "../engine/models/Mesh.h"
+#include "../engine/models/Texture.h"
 
 class Terrain {
 private:

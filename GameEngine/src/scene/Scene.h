@@ -1,17 +1,13 @@
 #pragma once
 
-#include <GLFW/glfw3.h>
-
 #include <map>
 #include <memory>
 #include <string>
 #include <unordered_set>
 #include <vector>
 
-#include "Environment.h"
-#include "../gui/GuiTexture.h"
-
-#include "../text/TextMaster.h"
+#include "../ui/GuiTexture.h"
+#include "../ui/TextMaster.h"
 
 using std::string;
 using std::map;
@@ -42,18 +38,15 @@ namespace std {
 
 class Scene {
 protected:
-	Environment environment_;
 	unordered_set<weak_ptr<GuiTexture>> guis_;
 	TextMaster text_master_;
 
 public:
 	virtual const unordered_set<weak_ptr<GuiTexture>>& getGuis() const { return guis_; }
-	virtual const Environment& getEnvironment() { return environment_; }
 	virtual const TextMaster& getText() { return text_master_; }
 
-	virtual void render() = 0;
-	virtual void update() = 0;
-	virtual void postRenderUpdate() = 0;
+	virtual bool update() = 0;
+	virtual void init() = 0;
 	virtual glm::mat4 getProjectionMatrix() = 0;
 
 	virtual void keyCallback(int key, int scan_code, int action, int mods) = 0;

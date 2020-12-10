@@ -3,22 +3,22 @@
 #include <memory>
 
 #include "Scene.h"
+#include "../game-manager/UserInput.h"
+#include "../environment/Environment.h"
+#include "../ui/MousePicker.h"
 
-#include "../UserInput.h"
-#include "../environment/Camera.h"
-#include "../gui/MousePicker.h"
+class GuiTexture;
+class GuiText;
 
 class GameScene: public Scene {
 private:
+	Environment environment_;
 	MousePicker mouse_picker_;
-
-	bool pause_ = false;
 
 	shared_ptr<GuiTexture> compass_ = nullptr;
 	shared_ptr<GuiTexture> cross_hair_ = nullptr;
 
 	shared_ptr<GuiText> frame_rate_ = nullptr;
-	shared_ptr<GuiText> pause_menu_ = nullptr;
 
 	shared_ptr<Player> player_ = nullptr;
 	weak_ptr<Entity> selected_;
@@ -26,6 +26,7 @@ private:
 	Terrain terrain_1_;
 	shared_ptr<Light> sun_ = std::make_shared<Light>(vec3(0.f, 700, -1000), vec3(0.1f));
 	shared_ptr<Camera> camera_;
+	shared_ptr<Skybox> skybox_;
 	vector<shared_ptr<Light>> lights_;
 	vector<weak_ptr<Light>> close_lights_;
 
@@ -45,7 +46,6 @@ private:
 	void makeGame();
 	void makeTest();
 	void pause();
-	void unpause();
 	
 public:
 	GameScene();
@@ -53,11 +53,14 @@ public:
 
 	glm::mat4 getProjectionMatrix() override;
 
-	void update() override;
-	void postRenderUpdate() override;
+	void init() override;
+	bool update() override;
+	void gameLogic();
 
-	void render() override;
-	void renderScene(glm::vec4 clipping_plane, bool progress_time);
+	void render(bool pause);
+	void renderScene(glm::vec4 clipping_plane);
+
+	const Environment& getEnvironment() { return environment_; }
 
 	void keyCallback(int key, int scan_code, int action, int mods) override;
 	void cursorPosCallback(double x, double y) override;

@@ -2,7 +2,7 @@
 
 #include <glm/glm.hpp>
 
-#include "../models/Model.h"
+#include "../engine/models/Model.h"
 
 using glm::vec3;
 

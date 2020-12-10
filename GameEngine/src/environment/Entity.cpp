@@ -3,8 +3,7 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../Application.h"
-#include "../Maths.h"
+#include "../util/Maths.h"
 
 int Entity::next_id_ = 0;
 

@@ -9,6 +9,8 @@ private:
 	glm::vec3 attenuation_ = glm::vec3(1.f, 0, 0);
 
 public:
+	static constexpr float min_sunlight = 0.2f;
+	static constexpr float max_sunlight = 0.9f;
 	static constexpr int max_lights = 40;
 	static constexpr glm::vec3 point_light_attenuation = glm::vec3(1.f, 0.01, 0.002);
 	

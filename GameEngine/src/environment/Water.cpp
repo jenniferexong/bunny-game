@@ -1,5 +1,18 @@
 ﻿#include "Water.h"
 
+#include <cmath>
+
+#include "../game-manager/Application.h"
+
+float Water::move_factor = 0.f;
+
+void Water::updateRipples()
+{
+	// move the water ripples
+	move_factor += wave_speed * app->timer->frame_delta;
+	move_factor = fmod(move_factor, 1.f);
+}
+
 glm::vec4 Water::getReflectionPlane()
 {
 	return { 0, 1.f, 0, -height };
