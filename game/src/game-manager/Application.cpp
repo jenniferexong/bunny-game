@@ -24,7 +24,7 @@ int Application::run()
 {
     /* Initialize the library */
     if (!glfwInit()) {
-		Print::s("GLFW failed init");
+		Error::exit("GLFW failed init");
         return -1;
 	}
 
@@ -45,7 +45,7 @@ int Application::run()
 
     GLFWwindow* window = glfwCreateWindow(engine->window_width, engine->window_height, "", NULL, NULL);
     if (!window) {
-		Print::s("GLFW window failure");
+		Error::exit("GLFW window failure");
         glfwTerminate();
         return -1;
     }
@@ -56,7 +56,7 @@ int Application::run()
     glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 	if (GLEW_OK != err) {
-		Print::s("GLEW failed init");
+		Error::exit("GLEW failed init");
         abort();
 	}
     engine->init(window);
@@ -84,18 +84,19 @@ int Application::run()
         glfwPollEvents();
     }
 
+	printf("\n");
     glfwTerminate();
     return 0;
 }
 
 void Application::init()
 {
-	Print::init("Application", false);
+	Log::init("Application", false);
 	timer = make_unique<Timer>();
 	game_scene = make_shared<GameScene>();
 	pause_scene = make_shared<PauseScene>();
     changeScene(game_scene);
-	Print::init("Application", true);
+	Log::init("Application", true);
 }
 
 bool Application::update() {
@@ -125,7 +126,7 @@ void Application::appKeyCallback(int key, int scan_code, int action, int mods)
 
 void Callbacks::framebufferResize(GLFWwindow* window, int width, int height)
 {
-	Print::s("RESIZING WINDOW");
+	Log::s("RESIZING WINDOW");
     engine->resize(width, height);
 }
 

@@ -11,6 +11,7 @@
 #include "../scene/Player.h"
 #include "../pkg/Model.h"
 #include "../pkg/Environment.h"
+#include "../engine/Error.h"
 
 using namespace std;
 using namespace glm;

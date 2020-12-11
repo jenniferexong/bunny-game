@@ -14,23 +14,24 @@
 #include "../game-manager/Timer.h"
 #include "../game-manager/FilePath.h"
 #include "../game-manager/Helper.h"
+#include "../engine/Error.h"
 
 using namespace std;
 using glm::ivec2;
 
 GameScene::GameScene()
 {
-	Print::init("GameScene", false);
+	Log::init("GameScene", false);
 	setup();
 	//makeGame();
 	makeTest();
-	Print::init("GameScene", true);
+	Log::init("GameScene", true);
 }
 
 void GameScene::init()
 {
-	Print::s("changed to gamescene");
-    glfwSetInputMode(engine->window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+	Log::s("changed to gamescene");
+	engine->enableCursor(false);
 	first_mouse_movement_ = true;
 }
 
@@ -205,12 +206,6 @@ void GameScene::makeTest()
 	auto flower_model = Helper::makeModel("flower", "flower", material);
 
 	Helper::loadPositionsFromFile(terrain_1_, environment_, flower_model, "test-flowers", vec3(0, -90.f, 0), 0.15f);
-	
-	Print::s("----------------");
-	for (const auto& e: environment_.getEntities()) {
-		e->print();
-	}
-	Print::s("----------------");
 }
 
 void GameScene::pause()
@@ -269,7 +264,7 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 		}
 		break;
 	case GLFW_KEY_ESCAPE:
-		exit(EXIT_SUCCESS);
+		engine->closeWindow();
 	case GLFW_KEY_L: 
 		if (action == GLFW_RELEASE) {
 			string file_name = "culling-flower";

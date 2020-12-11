@@ -6,6 +6,7 @@
 #include "../models/Mesh.h"
 #include "../models/Texture.h"
 #include "../../environment/Terrain.h"
+#include "../Utility.h"
 
 TerrainRenderer::TerrainRenderer(std::shared_ptr<TerrainShader> shader) : shader_(std::move(shader))
 {
@@ -22,6 +23,7 @@ void TerrainRenderer::render(const std::vector<Terrain>& terrains)
 		glDrawElements(GL_TRIANGLES, terrain.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
 		unbindTerrain();
 	}
+	Error::gl_check(name_);
 }
 
 void TerrainRenderer::prepareTerrain(const Terrain& terrain)

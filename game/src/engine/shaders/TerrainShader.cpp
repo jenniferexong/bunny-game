@@ -9,6 +9,7 @@
 void TerrainShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
+	Error::gl_check("TerrainShader setUp");
 }
 
 void TerrainShader::bindAttributes()
@@ -17,6 +18,8 @@ void TerrainShader::bindAttributes()
 	bindAttribute(TerrainAttributeLocation::Normal, "aNormal");
 	bindAttribute(TerrainAttributeLocation::Texture, "aTextureCoords");
 	bindAttribute(TerrainAttributeLocation::Tangent, "aTangent");
+
+	Error::gl_check("TerrainShader bindAttributes");
 }
 
 void TerrainShader::getAllUniformLocations()
@@ -45,6 +48,8 @@ void TerrainShader::getAllUniformLocations()
 	locations_.insert({ UniformVariable::NormalMap, getUniformLocation("uNormalMap") });
 
 	locations_.insert({ UniformVariable::ClippingPlane, getUniformLocation("uClippingPlane") });
+
+	Error::gl_check("TerrainShader getAllUniformLocations");
 }
 
 void TerrainShader::loadUniformPerFrame(const Environment& environment, glm::vec4 clipping_plane) const
@@ -85,6 +90,7 @@ void TerrainShader::loadUniformPerFrame(const Environment& environment, glm::vec
 
 	// sky colour
 	//loadVector(locations_.at(UniformVariable::FogColor), Application::fog_color);
+	Error::gl_check("TerrainShader loadUniformPerFrame");
 }
 
 void TerrainShader::loadModelMatrix(const Terrain& terrain) const
@@ -94,6 +100,7 @@ void TerrainShader::loadModelMatrix(const Terrain& terrain) const
 	glm::mat4 t_matrix = Maths::createTransformationMatrix(position, glm::vec3(0), 1, glm::mat4(1));
 
 	loadMatrix(locations_.at(UniformVariable::TransformationMatrix), t_matrix);
+	Error::gl_check("TerrainShader loadModelMatrix");
 }
 
 void TerrainShader::loadMaterial(const Material& material) const
@@ -101,6 +108,8 @@ void TerrainShader::loadMaterial(const Material& material) const
 	// Loading shine values
 	loadFloat(locations_.at(UniformVariable::Reflectivity), material.reflectivity);
 	loadFloat(locations_.at(UniformVariable::ShineDamper), material.shine_damper);
+
+	Error::gl_check("TerrainShader loadMaterial");
 }
 
 void TerrainShader::connectTextureUnits() const
@@ -111,4 +120,6 @@ void TerrainShader::connectTextureUnits() const
 	loadInt(locations_.at(UniformVariable::BlueTexture), TextureLocation::Blue);
 	loadInt(locations_.at(UniformVariable::BlendMap), TextureLocation::BlendMap);
 	loadInt(locations_.at(UniformVariable::NormalMap), TextureLocation::NormalMap);
+
+	Error::gl_check("TerrainShader connectTextureUnits");
 }

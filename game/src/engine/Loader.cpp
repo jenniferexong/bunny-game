@@ -25,6 +25,7 @@ Mesh Loader::loadToVao(const vector<float>& positions, const vector<float> & nor
 
 	bindIbo(indices);
 	unbindVao(); // unbinding
+	Error::gl_check("loadToVao 1");
 	return { vao_id, (int) indices.size(), 3 };
 }
 
@@ -39,6 +40,7 @@ Mesh Loader::loadToVao(const vector<float>& positions, const vector<float>& norm
 
 	bindIbo(indices);
 	unbindVao(); // unbinding
+	Error::gl_check("loadToVao 2");
 	return { vao_id, (int) indices.size(), 3 };
 }
 
@@ -49,6 +51,7 @@ int Loader::loadToVao(const vector<float>& positions, const vector<float>& textu
 	storeInAttributeList(TextAttributeLocation::Position, 2, positions);
 	storeInAttributeList(TextAttributeLocation::Texture, 2, texture_coords);
 	unbindVao(); // unbinding
+	Error::gl_check("loadToVao 3");
 	return vao_id;
 }
 
@@ -64,7 +67,17 @@ Mesh Loader::loadToVao(const string& obj_name)
 
 	bindIbo(data.indices);
 	unbindVao(); 
+	Error::gl_check("loadToVao 4");
 	return { vao_id, (int) data.indices.size(), data.face};
+}
+
+Mesh Loader::loadToVao(const vector<float>& positions, int dimensions)
+{
+	int vao_id = createVao();
+	storeInAttributeList(AttributeLocation::Position, dimensions, positions);
+	unbindVao();
+	return { vao_id, (int) positions.size() / dimensions, 3 };
+	Error::gl_check("loadToVao 5");
 }
 
 /* Also sets the bounding sphere information for the mesh */
@@ -87,16 +100,9 @@ InstancedMesh Loader::loadToVaoInstanced(const string& obj_name)
 	mesh.setVbos(model_matrix_vbo, brightness_vbo);
 
 	unbindVao(); 
+	Error::gl_check("loadToVaoInstanced");
 
 	return mesh;
-}
-
-Mesh Loader::loadToVao(const vector<float>& positions, int dimensions)
-{
-	int vao_id = createVao();
-	storeInAttributeList(AttributeLocation::Position, dimensions, positions);
-	unbindVao();
-	return { vao_id, (int) positions.size() / dimensions, 3 };
 }
 
 int Loader::loadCubeMap(std::vector<std::string> texture_names)
@@ -119,7 +125,9 @@ int Loader::loadCubeMap(std::vector<std::string> texture_names)
 
 	glBindTexture(GL_TEXTURE_CUBE_MAP, 0);
 	textures_.push_back(texture_id);
-	Print::texture("cube map (" + texture_names.at(0) + ")", texture_id);
+	Log::texture("cube map (" + texture_names.at(0) + ")", texture_id);
+
+	Error::gl_check("loadCubeMap");
 	return texture_id;
 }
 
@@ -128,15 +136,13 @@ int Loader::loadTexture(const string& texture_name)
 {
 	const string file_path = FilePath::texture_path + texture_name + ".png";
 
-	ifstream file(file_path);
-	if (!file.is_open())
-		Print::s("CAN'T OPEN TEXTURE FILE");
-	file.close();
-
 	// Loading the image
 	stbi_set_flip_vertically_on_load(1); // IF UPSIDE DOWN TEXTURE, CHANGE THIS
 	int width, height, bpp; // bits per pixel
 	unsigned char* buffer = stbi_load(file_path.c_str(), &width, &height, &bpp, 4);
+
+	if (!buffer)
+		Error::file("texture", file_path);
 
 	GLuint texture_id;
 	glGenTextures(1, &texture_id);
@@ -154,21 +160,26 @@ int Loader::loadTexture(const string& texture_name)
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	if (buffer)
-		stbi_image_free(buffer);
+	stbi_image_free(buffer);
 
-	Print::texture(texture_name, texture_id);
+	Log::texture(texture_name, texture_id);
 	textures_.push_back(texture_id);
+
+	Error::gl_check("loadTexture");
 	return texture_id;
 }
 
 int Loader::loadFontTexture(const string& texture_name)
 {
 	const string file_path = FilePath::font_path + texture_name + ".png";
+
 	// Loading the image
 	stbi_set_flip_vertically_on_load(1); // IF UPSIDE DOWN TEXTURE, CHANGE THIS
 	int width, height, bpp; // bits per pixel
 	unsigned char* buffer = stbi_load(file_path.c_str(), &width, &height, &bpp, 4);
+
+	if (!buffer)
+		Error::file("font texture", file_path);
 
 	GLuint texture_id;
 	glGenTextures(1, &texture_id);
@@ -189,7 +200,8 @@ int Loader::loadFontTexture(const string& texture_name)
 	if (buffer)
 		stbi_image_free(buffer);
 
-	Print::texture(texture_name, texture_id);
+	Log::texture(texture_name, texture_id);
+	Error::gl_check("loadFontTexture");
 	textures_.push_back(texture_id);
 	return texture_id;
 }

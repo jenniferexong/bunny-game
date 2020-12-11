@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 
+#include "FilePath.h"
 #include "../util/Log.h"
 
 class Mesh;
@@ -16,6 +17,7 @@ using std::vector;
 
 class Loader {
 private:
+	static constexpr char name[] = "Loader";
 	vector<GLuint> vaos_;
 	vector<GLuint> vbos_;
 	vector<GLuint> textures_;
@@ -26,7 +28,7 @@ private:
 	void unbindVao();
 
 public:
-	Loader() { Print::init("Loader", true); }
+	Loader() { Log::init("Loader", true); }
 	~Loader();
 
 	Mesh loadToVao(const vector<float>& positions, const vector<float>& normals, 
@@ -53,15 +55,21 @@ public:
 };
 
 struct SkyboxTextureData {
-	int width, height;
+	int width;
+	int height;
 	unsigned char* buffer;
 
 	SkyboxTextureData(const std::string& file_name)
 	{
-		std::string file_path = "res/textures/skybox/" + file_name + ".png";
+		std::string file_path = FilePath::texture_path;
+		file_path.append("skybox/").append(file_name).append(".png");
+
 		stbi_set_flip_vertically_on_load(0); // IF UPSIDE DOWN TEXTURE, CHANGE THIS
 		int bpp; // bits per pixel
 		buffer = stbi_load(file_path.c_str(), &width, &height, &bpp, 4);
+
+		if (!buffer)
+			Error::file("skybox texture", file_path);
 	}
 
 	void unload()

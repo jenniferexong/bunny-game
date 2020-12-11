@@ -9,7 +9,7 @@
 
 WaterRenderer::WaterRenderer()
 {
-	Print::init("WaterRenderer", false);
+	Log::init("WaterRenderer", false);
 	shader_.setUp();
 
 	// load the quad mesh
@@ -30,7 +30,7 @@ WaterRenderer::WaterRenderer()
 	shader_.connectTextureUnits();
 	shader_.stop();
 
-	Print::init("WaterRenderer", true);
+	Log::init("WaterRenderer", true);
 }
 
 void WaterRenderer::render(const Environment& environment)
@@ -44,6 +44,7 @@ void WaterRenderer::render(const Environment& environment)
 		glDrawArrays(GL_TRIANGLES, 0, quad_.getVertexCount());
 	}
 	unbind();
+	Error::gl_check(name_);
 }
 
 void WaterRenderer::prepare(const Environment& environment)

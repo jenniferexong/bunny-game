@@ -8,6 +8,8 @@ class Terrain;
 
 class TerrainRenderer {
 private:
+	static constexpr char name_[] = "TerrainRenderer";
+
 	std::shared_ptr<TerrainShader> shader_;
 
 	void prepareTerrain(const Terrain& terrain);

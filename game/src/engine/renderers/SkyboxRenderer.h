@@ -10,6 +10,7 @@ class Environment;
 
 class SkyboxRenderer {
 private:
+	static constexpr char name_[] = "SkyboxRenderer";
 	static const float cube_size;
 	static const std::vector<float> vertex_positions;
 

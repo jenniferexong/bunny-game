@@ -46,5 +46,3 @@ namespace Callbacks{
 	void key(GLFWwindow* window, int key, int scan_code, int action, int mods);
 	void framebufferResize(GLFWwindow* window, int width, int height);
 }
-
-

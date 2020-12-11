@@ -2,6 +2,7 @@
 
 #include "../../ui/GuiText.h"
 #include "../Location.h"
+#include "../Utility.h"
 
 void TextShader::getAllUniformLocations()
 {
@@ -23,6 +24,7 @@ void TextShader::bindAttributes()
 void TextShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
+	Error::gl_check(name);
 }
 
 void TextShader::loadUniforms(const GuiText& text)
@@ -38,6 +40,8 @@ void TextShader::loadUniforms(const GuiText& text)
 	loadFloat(locations_.at(UniformVariable::EdgeTransition), text.getEdgeTransition());
 	loadFloat(locations_.at(UniformVariable::BorderWidth), text.getBorderWidth());
 	loadFloat(locations_.at(UniformVariable::BorderEdgeTransition), text.getBorderEdgeTransition());
+
+	Error::gl_check("TextShader loadUniforms");
 }
 
 

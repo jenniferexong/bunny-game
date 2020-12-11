@@ -14,12 +14,12 @@ Fbo::Fbo(int width, int height) : width_(width), height_(height)
 }
 
 Fbo::Fbo(int width, int height, DepthBufferAttachment type, bool clamp_to_edge)
-	: width_(width), height_(height), type_(type), clamp_to_edge_(clamp_to_edge)
+	: type_(type), clamp_to_edge_(clamp_to_edge), width_(width), height_(height)
 {
 	initialise();
 }
 
-Fbo::Fbo(int width, int height, DepthBufferAttachment type) : width_(width), height_(height), type_(type)
+Fbo::Fbo(int width, int height, DepthBufferAttachment type) : type_(type), width_(width), height_(height)
 {
 	initialise();
 }
@@ -46,7 +46,8 @@ void Fbo::initialise()
 		createDepthBufferAttachment();
 	}
 	unbind();
-	Print::fbo(attachment, fbo_id_);
+	Log::fbo(attachment, fbo_id_);
+	Error::gl_check(name);
 }
 
 /**
@@ -73,10 +74,9 @@ void Fbo::resolveToScreen()
 
 void Fbo::resize(int width, int height)
 {
-	if (type_ == DepthBufferAttachment::Uninitialised) {
-		Print::s("TRYING TO RESIZE UNINITIALISED FBO");
-		return;
-	}
+	if (type_ == DepthBufferAttachment::Uninitialised)
+		Error::exit("tried to resize uninitialized fbo");
+
 	cleanUp();
 	width_ = width;
 	height_ = height;
@@ -86,7 +86,7 @@ void Fbo::resize(int width, int height)
 int Fbo::getColorTexture() const
 {
 	if (color_texture_ == -1)
-		Print::s("COLOR TEXTURE NOT INITIALIZED");
+		Error::exit("fbo id: " + std::to_string(fbo_id_) + ", color texture not initialized");
 
 	return color_texture_;
 }
@@ -94,7 +94,7 @@ int Fbo::getColorTexture() const
 int Fbo::getDepthTexture() const
 {
 	if (depth_texture_ == -1)
-		Print::s("DEPTH TEXTURE NOT INITIALIZED");
+		Error::exit("fbo id: " + std::to_string(fbo_id_) + ", depth texture not initialized");
 
 	return depth_texture_;
 }
@@ -120,7 +120,7 @@ void Fbo::cleanUp()
 
 Fbo::~Fbo()
 {
-	Print::s("fbo destroyed: " + std::to_string(fbo_id_));
+	Log::destroy("fbo", fbo_id_);
 	cleanUp();
 }
 
@@ -163,7 +163,7 @@ void Fbo::createTextureAttachment()
 	}
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, color_texture_, 0);
 
-	Print::texture("color texture attachment", color_texture_);
+	Log::texture("color texture attachment", color_texture_);
 }
 
 void Fbo::createDepthTextureAttachment()
@@ -175,7 +175,7 @@ void Fbo::createDepthTextureAttachment()
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, depth_texture_, 0);
 
-	Print::texture("depth texture attachment", depth_texture_);
+	Log::texture("depth texture attachment", depth_texture_);
 }
 
 /* Mulisampled */
@@ -186,7 +186,7 @@ void Fbo::createColorBufferAttachment()
 	glRenderbufferStorageMultisample(GL_RENDERBUFFER, 4, GL_RGBA8, width_, height_);
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, color_buffer_);
 
-	Print::s("created color buffer attachment: " + std::to_string(color_buffer_));
+	Log::s("created color buffer attachment: " + std::to_string(color_buffer_));
 }
 
 
@@ -201,7 +201,7 @@ void Fbo::createDepthBufferAttachment()
 	}
 	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, depth_buffer_);
 
-	Print::s("created depth buffer attachment: " + std::to_string(depth_buffer_));
+	Log::s("created depth buffer attachment: " + std::to_string(depth_buffer_));
 }
 
 

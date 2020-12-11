@@ -10,6 +10,7 @@ class VerticalBlurShader final : public Shader {
 		TargetHeight
 	};
 
+	static constexpr char name[] = "VerticalBlurShader";
 	static constexpr char vertex_file[] = "post-processing/vertical-blur-vert";
 	static constexpr char fragment_file[] = "post-processing/blur-frag";
 

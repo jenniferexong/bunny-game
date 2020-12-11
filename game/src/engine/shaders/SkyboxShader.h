@@ -14,6 +14,7 @@ private:
 		DayTexture, NightTexture, BlendFactor
 	};
 
+	static constexpr char name[] = "SkyboxShader";
 	static constexpr char vertex_file[] = "skybox-vert";
 	static constexpr char fragment_file[] = "skybox-frag";
 

@@ -23,45 +23,63 @@ void WavefrontData::loadData(const std::string& file_name)
 
 	std::ifstream obj_file(file_name);
 
-	if (obj_file.is_open()) {
-		std::string line, type;
-		std::string v1, v2, v3, v4; // values 
+	if (!obj_file.is_open())
+		Error::file("obj", file_name);
 
-		while (std::getline(obj_file, line)) {
-			std::istringstream str_stream(line);
-			str_stream >> type; // get characters until first whitespace
+	std::string line, type;
+	std::string v1, v2, v3, v4; // values 
 
-			// reading positional data, normal data, and face data
-			if (type == "v" || type == "vn" || type == "f") {
-				str_stream >> v1 >> v2 >> v3;
+	while (std::getline(obj_file, line)) {
+		std::istringstream str_stream(line);
+		str_stream >> type; // get characters until first whitespace
 
-				if (type == "v") // vertex positions
-					in_positions.emplace_back(vec3(stof(v1), stof(v2), stof(v3)));
+		// reading positional data, normal data, and face data
+		if (type == "v" || type == "vn" || type == "f") {
+			str_stream >> v1 >> v2 >> v3;
 
-				else if (type == "vn") // vertex normals
-					in_normals.emplace_back(vec3(stof(v1), stof(v2), stof(v3)));
+			if (type == "v") // vertex positions
+				in_positions.emplace_back(vec3(stof(v1), stof(v2), stof(v3)));
 
-				else if (type == "f") { // faces: reading indices
-					processIndices(v1, in_positions, in_textures, in_normals);
-					processIndices(v2, in_positions, in_textures, in_normals);
-					processIndices(v3, in_positions, in_textures, in_normals);
-					if (!str_stream.eof()) {
-						str_stream >> v4;
-						face = 4;
-						processIndices(v4, in_positions, in_textures, in_normals);
-					}
+			else if (type == "vn") // vertex normals
+				in_normals.emplace_back(vec3(stof(v1), stof(v2), stof(v3)));
+
+			else if (type == "f") { // faces: reading indices
+				processIndices(v1, in_positions, in_textures, in_normals);
+				processIndices(v2, in_positions, in_textures, in_normals);
+				processIndices(v3, in_positions, in_textures, in_normals);
+				if (!str_stream.eof()) {
+					str_stream >> v4;
+					face = 4;
+					processIndices(v4, in_positions, in_textures, in_normals);
 				}
 			}
-
-			else if (type == "vt") { // reading texture data
-				str_stream >> v1 >> v2;
-				in_textures.emplace_back(vec2(stof(v1), stof(v2)));
-			}
 		}
-		obj_file.close();
+
+		else if (type == "vt") { // reading texture data
+			str_stream >> v1 >> v2;
+			in_textures.emplace_back(vec2(stof(v1), stof(v2)));
+		}
 	}
-	else {
-		Print::s("Error reading obj file: " + file_name);
+	obj_file.close();
+
+	// reorder into triangles if needed
+	if (face == 4) {
+		vector<int> temp_indices;
+		temp_indices = indices;
+		indices.clear();
+
+		for (int i = 0; i < (temp_indices.size() / 4); i++) {
+			int v1 = temp_indices.at(i * 4 + 0);
+			int v2 = temp_indices.at(i * 4 + 1);
+			int v3 = temp_indices.at(i * 4 + 2);
+			int v4 = temp_indices.at(i * 4 + 3);
+			indices.push_back(v1);
+			indices.push_back(v2);
+			indices.push_back(v3);
+			indices.push_back(v1);
+			indices.push_back(v3);
+			indices.push_back(v4);
+		}
 	}
 
 	// set the bounding sphere variables

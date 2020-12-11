@@ -14,7 +14,7 @@
  */
 Skybox::Skybox(const std::string& day_textures, const std::string& night_textures)
 {
-	Print::init("Skybox", false);
+	Log::init("Skybox", false);
 
 	std::string line;
 
@@ -36,7 +36,7 @@ Skybox::Skybox(const std::string& day_textures, const std::string& night_texture
 	day_texture_id_ = engine->loader->loadCubeMap(day_texture_names);
 	night_texture_id_ = engine->loader->loadCubeMap(night_texture_names);
 
-	Print::init("Skybox", true);
+	Log::init("Skybox", true);
 }
 
 void Skybox::update(std::weak_ptr<Light> sun)

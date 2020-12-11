@@ -11,6 +11,8 @@ class Environment;
 
 class WaterRenderer {
 private:
+	static constexpr char name_[] = "WaterRenderer";
+
 	Mesh quad_;
 	WaterShader shader_;
 

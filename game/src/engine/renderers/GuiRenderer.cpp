@@ -8,18 +8,20 @@
 #include "../Application.h"
 #include "../Loader.h"
 #include "../../ui/GuiTexture.h"
+#include "../Utility.h"
 
 GuiRenderer::GuiRenderer()
 {
-	Print::init("GuiRenderer", false);
+	Log::init("GuiRenderer", false);
 
 	std::vector<float> positions = {
 		-1, 1, -1, -1, 1, 1, 1, -1
 	};
+
 	quad_mesh_ = Mesh(engine->loader->loadToVao(positions, 2));
 	shader_.setUp();
 
-	Print::init("GuiRenderer", true);
+	Log::init("GuiRenderer", true);
 }
 
 void GuiRenderer::render(const std::unordered_set<std::weak_ptr<GuiTexture>>& gui_textures)
@@ -52,4 +54,6 @@ void GuiRenderer::render(const std::unordered_set<std::weak_ptr<GuiTexture>>& gu
 	glBindVertexArray(0);
 
 	shader_.stop();
+
+	Error::gl_check(name_);
 }

@@ -6,8 +6,6 @@
 #include <iostream>
 
 #include "MasterRenderer.h"
-
-#include "../Utility.h"
 #include "../Environment.h"
 #include "../shaders/EntityShader.h"
 #include "../Location.h"
@@ -22,11 +20,7 @@ void EntityRenderer::render(const Environment& environment)
 		for (const auto &entity : batch) {
 			loadTransformation(*entity.lock());
 
-			if (model.getMesh().getFace() == 4)
-				glDrawElements(GL_QUADS, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
-
-			else if (model.getMesh().getFace() == 3)
-				glDrawElements(GL_TRIANGLES, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
+			glDrawElements(GL_TRIANGLES, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
 		}
 		unbindTexturedModel();
 	}
@@ -61,12 +55,7 @@ void EntityRenderer::renderInstanced(const Environment& environment)
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * model_brightness_data.size(), model_brightness_data.data(), GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		if (model.getMesh().getFace() == 4)
-			glDrawElementsInstanced(GL_QUADS, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0, batch.size());
-
-		else if (model.getMesh().getFace() == 3)
-			glDrawElementsInstanced(GL_TRIANGLES, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0, batch.size());
-
+		glDrawElementsInstanced(GL_TRIANGLES, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0, batch.size());
 		unbindTexturedModel();
 	}
 }
@@ -117,9 +106,9 @@ void EntityRenderer::prepareTexturedModel(const TexturedModel& model)
 	const InstancedMesh mesh = model.getMesh();
 	const ModelTexture texture = model.getTexture();
 
-	if (texture.getMaterial().has_transparency) {
+	if (texture.getMaterial().has_transparency)
 		MasterRenderer::disableCulling();
-	}
+
 
 	glBindVertexArray(mesh.getId());
 	glEnableVertexAttribArray(AttributeLocation::Position);

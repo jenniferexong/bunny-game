@@ -5,12 +5,13 @@
 #include "../Application.h"
 #include "../Environment.h"
 #include "../Location.h"
+#include "../Utility.h"
 
 const float SkyboxRenderer::cube_size = 500.f;
 
 SkyboxRenderer::SkyboxRenderer()
 {
-	Print::init("SkyboxRenderer", false);
+	Log::init("SkyboxRenderer", false);
 
 	cube_ = engine->loader->loadToVao(vertex_positions, 3);
 	shader_.setUp();
@@ -19,7 +20,7 @@ SkyboxRenderer::SkyboxRenderer()
 	shader_.connectTextureUnits();
 	shader_.stop();
 
-	Print::init("SkyboxRenderer", true);
+	Log::init("SkyboxRenderer", true);
 }
 
 void SkyboxRenderer::render(const Environment& environment)
@@ -39,6 +40,7 @@ void SkyboxRenderer::render(const Environment& environment)
 	glBindVertexArray(0);
 
 	shader_.stop();
+	Error::gl_check(name_);
 }
 
 void SkyboxRenderer::bindTextures(const Skybox& skybox)

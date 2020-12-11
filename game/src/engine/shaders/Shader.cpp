@@ -18,9 +18,9 @@ using std::string;
 /* Must call this after constructing the shader */
 void Shader::setUp(const string& vert_file, const string& frag_file)
 {
+	program_id_ = glCreateProgram();
 	vert_id_ = loadShader(vert_file, GL_VERTEX_SHADER);
 	frag_id_ = loadShader(frag_file, GL_FRAGMENT_SHADER);
-	program_id_ = glCreateProgram();
 	glAttachShader(program_id_, vert_id_);
 	glAttachShader(program_id_, frag_id_);
 	bindAttributes();
@@ -34,19 +34,16 @@ int Shader::loadShader(const string& file_name, int type)
 	using namespace std;
 	std::string file_path = FilePath::shader_path;
 	file_path.append(file_name).append(FilePath::shader_suffix);
-	Print::s("loading shader:" + file_path);
 	ifstream shader_file(file_path);
 
 	ostringstream lines("");
 	// Read all the lines in the file
-	if (shader_file.is_open()) {
-		string line;
-		while (getline(shader_file, line)) {
-			lines << line << endl;
-		}
-	}
-	else {
-		Print::s("SHADER FILE " + file_path + " COULD NOT BE OPENED");
+	if (!shader_file.is_open())
+		Error::exit("could not read shader: " + file_path);
+
+	string line;
+	while (getline(shader_file, line)) {
+		lines << line << endl;
 	}
 	shader_file.close(); // close the file
 	string text_str = lines.str(); // need this otherwise dangling pointer!
@@ -72,11 +69,16 @@ int Shader::loadShader(const string& file_name, int type)
 			glGetShaderInfoLog(shader_id, info_log_length, &chars_written, &info_log[0]);
 			cout << "Shader: " << &info_log[0] << endl;
 		}
-		cerr << "Could not compile shader" << endl;
-
-		//exit(EXIT_FAILURE); // failed
+		Error::exit("could not compile shader: " + file_path);
 	}
 
+	std::stringstream message;
+	message << "loadShader: " << file_path;
+	Error::gl_check(message.str());
+
+	message = stringstream("");
+	message << "loaded shader: " << program_id_ << ", " << file_path;
+	Log::s(message.str());
 	return shader_id;
 }
 
@@ -156,7 +158,7 @@ Shader::~Shader()
 	glDeleteShader(frag_id_);
 	glDeleteProgram(program_id_);
 
-	Print::s("destructed shader: " + std::to_string(program_id_));
+	Log::destroy("shader", program_id_);
 }
 
 void Shader::print() const

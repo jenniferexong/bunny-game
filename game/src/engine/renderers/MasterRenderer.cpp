@@ -21,7 +21,7 @@ using std::make_shared;
 
 MasterRenderer::MasterRenderer()
 {
-	Print::init("MasterRenderer", false);
+	Log::init("MasterRenderer", false);
 
 	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_CLIP_PLANE0);
@@ -37,7 +37,7 @@ MasterRenderer::MasterRenderer()
 	entity_renderer_ = EntityRenderer(entity_shader_);
 	terrain_renderer_ = TerrainRenderer(terrain_shader_);
 
-	Print::init("MasterRenderer", true);
+	Log::init("MasterRenderer", true);
 }
 
 void MasterRenderer::renderWaterReflection(GameScene& scene, void(GameScene::*render_scene)(glm::vec4))

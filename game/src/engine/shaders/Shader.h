@@ -22,11 +22,13 @@ struct EnumHash
 class Shader {
 
 private:
+	static constexpr char name[] = "Shader";
+
 	int program_id_ = -1;
 	int vert_id_ = -1;
 	int frag_id_ = -1;
 
-	static int loadShader(const string& file_name, int type);
+	int loadShader(const string& file_name, int type);
 
 protected:
 	virtual void bindAttributes() = 0; // need to override

@@ -1,10 +1,15 @@
 ﻿#pragma once
+
+#include <string>
+
 #include "../shaders/TextShader.h"
 
 class TextMaster;
 
 class TextRenderer {
 private:
+	static constexpr char name_[] = "TextRenderer";
+
 	TextShader shader_;
 
 	void prepare();

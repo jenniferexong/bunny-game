@@ -10,6 +10,7 @@ using fbo_pipeline = std::vector<std::weak_ptr<Fbo>>;
 
 class PostProcessor {
 private:
+	static constexpr char name_[] = "PostProcessor";
 	static Mesh quad;
 	static const std::vector<float> positions;
 

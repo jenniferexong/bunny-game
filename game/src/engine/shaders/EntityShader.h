@@ -17,6 +17,7 @@ private:
 		ClippingPlane
 	};
 
+	static constexpr char name[] = "EntityShader";
 	static constexpr char vertex_file[] = "entity-vert";
 	static constexpr char fragment_file[] = "entity-frag";
 

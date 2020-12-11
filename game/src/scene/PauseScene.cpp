@@ -9,16 +9,15 @@ using glm::vec2;
 
 PauseScene::PauseScene()
 {
-	Print::init("PauseScene", false);
+	Log::init("PauseScene", false);
 	setUp();
-	Print::init("PauseScene", true);
+	Log::init("PauseScene", true);
 }
 
 void PauseScene::init()
 {
-	Print::s("changed to pausescene");
-    glfwSetInputMode(engine->window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-	glfwSetCursorPos(engine->window, engine->window_width/2.0, engine->window_height/2.0);
+	Log::s("changed to pausescene");
+	engine->enableCursor(true);
 	update_ = true;
 }
 
@@ -73,7 +72,7 @@ void PauseScene::keyCallback(int key, int scan_code, int action, int mods)
 		}
 		break;
 	case GLFW_KEY_ESCAPE:
-		exit(EXIT_SUCCESS);
+		engine->closeWindow();
 	default:
 		break;
 	}

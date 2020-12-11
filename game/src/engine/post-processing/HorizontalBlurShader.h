@@ -10,6 +10,7 @@ class HorizontalBlurShader final : public Shader {
 		TargetWidth
 	};
 
+	static constexpr char name[] = "HorizontalBlurShader";
 	static constexpr char vertex_file[] = "post-processing/horizontal-blur-vert";
 	static constexpr char fragment_file[] = "post-processing/blur-frag";
 

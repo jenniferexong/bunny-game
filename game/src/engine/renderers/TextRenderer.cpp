@@ -9,11 +9,11 @@
 
 TextRenderer::TextRenderer()
 {
-	Print::init("TextRenderer", false);
+	Log::init("TextRenderer", false);
 
 	shader_.setUp();
 
-	Print::init("TextRenderer", true);
+	Log::init("TextRenderer", true);
 }
 
 void TextRenderer::prepare()

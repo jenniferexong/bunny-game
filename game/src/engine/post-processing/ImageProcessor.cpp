@@ -83,35 +83,37 @@ void ImageProcessor::finish()
 
 Contrast::Contrast() : ImageProcessor()
 {
-	Print::init("ImageProcessor: Contrast", false);
+	Log::init("ImageProcessor: Contrast", false);
+
 
 	c_shader_ = std::make_shared<ContrastShader>();
 	c_shader_->setUp();
 	shader_ = c_shader_;
 
-	Print::init("ImageProcessor: Contrast", true);
+	Log::init("ImageProcessor: Contrast", true);
+
 }
 
 HorizontalBlur::HorizontalBlur()
 {
-	Print::init("ImageProcessor: HorizontalBlur", false);
+	Log::init("ImageProcessor: HorizontalBlur", false);
 
 	h_shader_ = std::make_shared<HorizontalBlurShader>();
 	h_shader_->setUp();
 	shader_ = h_shader_;
 
-	Print::init("ImageProcessor: HorizontalBlur", true);
+	Log::init("ImageProcessor: HorizontalBlur", true);
 }
 
 VerticalBlur::VerticalBlur()
 {
-	Print::init("ImageProcessor: VerticalBlur", false);
+	Log::init("ImageProcessor: VerticalBlur", false);
 
 	v_shader_ = std::make_shared<VerticalBlurShader>();
 	v_shader_->setUp();
 	shader_ = v_shader_;
 
-	Print::init("ImageProcessor: VerticalBlur", true);
+	Log::init("ImageProcessor: VerticalBlur", true);
 }
 
 

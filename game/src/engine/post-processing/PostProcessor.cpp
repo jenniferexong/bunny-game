@@ -4,8 +4,8 @@
 
 #include <memory>
 
-
 #include "../Application.h"
+#include "../Utility.h"
 #include "../Location.h"
 
 using namespace std;
@@ -15,7 +15,7 @@ Mesh PostProcessor::quad = Mesh();
 
 PostProcessor::PostProcessor()
 {
-	Print::init("PostProcessor", false);
+	Log::init("PostProcessor", false);
 
 	quad = engine->loader->loadToVao(positions, 2);
 
@@ -36,7 +36,7 @@ PostProcessor::PostProcessor()
 	vertical_blur_ = make_shared<VerticalBlur>();
 	contrast_ = make_shared<Contrast>();
 
-	Print::init("PostProcessor", true);
+	Log::init("PostProcessor", true);
 }
 
 void PostProcessor::antiAliasToScreen()
@@ -94,6 +94,7 @@ void PostProcessor::finish()
 	MasterRenderer::enableDepthTest();
 	glDisableVertexAttribArray(AttributeLocation::Position);
 	glBindVertexArray(0);
+	Error::gl_check(name_);
 }
 
 

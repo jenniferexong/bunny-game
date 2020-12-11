@@ -2,6 +2,7 @@
 
 #ifdef __APPLE__
 	#define MAC_OS 1
+	#define GL_SILENCE_DEPRECATION
 #else
 	#define MAC_OS 0 
 #endif
@@ -12,7 +13,6 @@
 #include "renderers/MasterRenderer.h"
 
 #include <memory>
-
 
 class Engine {
 public:
@@ -29,13 +29,12 @@ public:
 
 	void init(GLFWwindow* w)
 	{
-		Print::init("Engine", false);
+		Log::init("Engine", false);
 
 		window = w;
 
 		// number of pixels is x2 on mac
 		if (MAC_OS) {
-			Print::s("MAC OS");
 			window_width *= 2;
 			window_height *= 2;
 		}
@@ -44,7 +43,7 @@ public:
 		renderer = std::make_unique<MasterRenderer>();
 		post_processor = std::make_unique<PostProcessor>();
 
-		Print::init("Engine", true);
+		Log::init("Engine", true);
 	}
 
 	void resize(int width, int height)
@@ -55,5 +54,20 @@ public:
 		renderer->resize(width, height);
 		post_processor->resizeFbos(width, height);
 		glViewport(0, 0, window_width, window_height);
+	}
+
+	void closeWindow() 
+	{
+		glfwSetWindowShouldClose(window, GLFW_TRUE);
+	}
+
+	void enableCursor(bool enable)
+	{
+		if (enable)
+    		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+		else
+    		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
+
+		glfwSetCursorPos(window, window_width/2.0, window_height/2.0);
 	}
 };

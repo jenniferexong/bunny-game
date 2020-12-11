@@ -12,6 +12,7 @@ private:
 		Translation, Color, CharacterWidth, BorderColor, EdgeTransition, BorderWidth, BorderEdgeTransition
 	};
 
+	static constexpr char name[] = "TextShader";
 	static constexpr char vertex_file[] = "text-vert";
 	static constexpr char fragment_file[] = "text-frag";
 

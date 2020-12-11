@@ -23,6 +23,7 @@ void SkyboxShader::getAllUniformLocations()
 void SkyboxShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
+	Error::gl_check(name);
 }
 
 void SkyboxShader::loadBlendFactor(float blend)

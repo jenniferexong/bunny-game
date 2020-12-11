@@ -30,7 +30,12 @@ FontData::FontData(const std::string& font_name)
 {
 	double aspect_ratio = (double)engine->aspect_ratio;
 	
-	std::ifstream file = std::ifstream(FilePath::font_path + font_name + ".fnt");
+	string font_path = FilePath::font_path;
+	font_path.append(font_name).append(".fnt");
+	std::ifstream file = std::ifstream(font_path);
+
+	if (!file.is_open())
+		Error::exit("could not read font file: " + font_path);
 
 	// read padding information (top, left, bottom, right) padding=3,3,3,3
 	auto padding_data = stringstream(getToken(&file, "padding"));

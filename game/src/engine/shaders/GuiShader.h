@@ -12,6 +12,7 @@ private:
 		TransformationMatrix, FlipVertically
 	};
 
+	static constexpr char name[] = "GuiShader";
 	static constexpr char vertex_file[] = "gui-vert";
 	static constexpr char fragment_file[] = "gui-frag";
 

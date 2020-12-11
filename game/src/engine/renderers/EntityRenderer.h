@@ -4,6 +4,7 @@
 #include <map>
 #include <vector>
 #include <unordered_set>
+#include <string>
 
 class Environment;
 class EntityShader;
@@ -16,6 +17,8 @@ using std::weak_ptr;
 
 class EntityRenderer {
 private:
+	static constexpr char name_[] = "EntityRenderer";
+
 	std::shared_ptr<EntityShader> shader_;
 
 	void prepareTexturedModel(const TexturedModel& model);

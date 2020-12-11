@@ -31,7 +31,7 @@ private:
 public:
 	static const float turn_speed;
 
-	Camera() { Print::init("Camera", true); }
+	Camera() { Log::init("Camera", true); }
 	~Camera() = default;
 
 	Camera(std::shared_ptr<Player> player): player_(std::move(player)) {}

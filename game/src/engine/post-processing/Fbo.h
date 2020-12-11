@@ -6,6 +6,7 @@ enum class DepthBufferAttachment {
 
 class Fbo {
 private:
+	static constexpr char name[] = "Fbo";
 	DepthBufferAttachment type_ = DepthBufferAttachment::Uninitialised;
 
 	bool clamp_to_edge_ = true;

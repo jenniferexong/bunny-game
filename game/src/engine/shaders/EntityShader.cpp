@@ -9,6 +9,7 @@
 void EntityShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
+	Error::gl_check(name);
 }
 
 void EntityShader::bindAttributes()
