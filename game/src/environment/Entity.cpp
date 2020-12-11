@@ -4,6 +4,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 #include "../util/Maths.h"
+#include "../util/Log.h"
 
 int Entity::next_id_ = 0;
 
@@ -36,4 +37,9 @@ void Entity::highlight()
 void Entity::unhighlight()
 {
 	brightness_ = 0.8f;
+}
+
+void Entity::print() {
+	printf("entity: %d, texture: %d, vertex count: %d\n",
+			id_, model_.getTexture().getTextureId(), model_.getMesh().getVertexCount());
 }

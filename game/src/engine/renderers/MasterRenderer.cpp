@@ -1,4 +1,3 @@
-
 #include <GL/glew.h>
 
 #include "MasterRenderer.h"
@@ -22,6 +21,8 @@ using std::make_shared;
 
 MasterRenderer::MasterRenderer()
 {
+	Print::init("MasterRenderer", false);
+
 	glEnable(GL_MULTISAMPLE);
 	glEnable(GL_CLIP_PLANE0);
 	glEnable(GL_DEPTH_TEST);
@@ -35,6 +36,8 @@ MasterRenderer::MasterRenderer()
 	terrain_shader_->setUp();
 	entity_renderer_ = EntityRenderer(entity_shader_);
 	terrain_renderer_ = TerrainRenderer(terrain_shader_);
+
+	Print::init("MasterRenderer", true);
 }
 
 void MasterRenderer::renderWaterReflection(GameScene& scene, void(GameScene::*render_scene)(glm::vec4))

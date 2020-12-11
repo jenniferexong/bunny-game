@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "../engine/FrustumBox.h"
+#include "../util/Log.h"
 
 class Terrain;
 class Player;
@@ -30,7 +31,7 @@ private:
 public:
 	static const float turn_speed;
 
-	Camera() = default;
+	Camera() { Print::init("Camera", true); }
 	~Camera() = default;
 
 	Camera(std::shared_ptr<Player> player): player_(std::move(player)) {}

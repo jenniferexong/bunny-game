@@ -5,10 +5,15 @@
 #include "MasterRenderer.h"
 #include "../Location.h"
 #include "../../ui/TextMaster.h"
+#include "../Utility.h"
 
 TextRenderer::TextRenderer()
 {
+	Print::init("TextRenderer", false);
+
 	shader_.setUp();
+
+	Print::init("TextRenderer", true);
 }
 
 void TextRenderer::prepare()

@@ -1,4 +1,3 @@
-
 #include <gl/glew.h>
 
 #include "GuiRenderer.h"
@@ -12,11 +11,15 @@
 
 GuiRenderer::GuiRenderer()
 {
+	Print::init("GuiRenderer", false);
+
 	std::vector<float> positions = {
 		-1, 1, -1, -1, 1, 1, 1, -1
 	};
 	quad_mesh_ = Mesh(engine->loader->loadToVao(positions, 2));
 	shader_.setUp();
+
+	Print::init("GuiRenderer", true);
 }
 
 void GuiRenderer::render(const std::unordered_set<std::weak_ptr<GuiTexture>>& gui_textures)

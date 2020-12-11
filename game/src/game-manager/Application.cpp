@@ -23,8 +23,10 @@ void Application::changeScene(std::weak_ptr<Scene> scene)
 int Application::run()
 {
     /* Initialize the library */
-    if (!glfwInit())
+    if (!glfwInit()) {
+		Print::s("GLFW failed init");
         return -1;
+	}
 
     // force OpenGL to create a 3.3 core context
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -33,6 +35,7 @@ int Application::run()
 
 	// disallow legacy functionality (helps OS X work)
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+	glfwWindowHint(GLFW_FOCUSED, GLFW_TRUE);
 
 	// get the version for GLFW for later
 	int glfwMajor, glfwMinor, glfwRevision;
@@ -42,6 +45,7 @@ int Application::run()
 
     GLFWwindow* window = glfwCreateWindow(engine->window_width, engine->window_height, "", NULL, NULL);
     if (!window) {
+		Print::s("GLFW window failure");
         glfwTerminate();
         return -1;
     }
@@ -52,6 +56,7 @@ int Application::run()
     glewExperimental = GL_TRUE;
 	GLenum err = glewInit();
 	if (GLEW_OK != err) {
+		Print::s("GLEW failed init");
         abort();
 	}
     engine->init(window);
@@ -85,10 +90,12 @@ int Application::run()
 
 void Application::init()
 {
+	Print::init("Application", false);
 	timer = make_unique<Timer>();
 	game_scene = make_shared<GameScene>();
 	pause_scene = make_shared<PauseScene>();
     changeScene(game_scene);
+	Print::init("Application", true);
 }
 
 bool Application::update() {
@@ -118,27 +125,32 @@ void Application::appKeyCallback(int key, int scan_code, int action, int mods)
 
 void Callbacks::framebufferResize(GLFWwindow* window, int width, int height)
 {
+	Print::s("RESIZING WINDOW");
     engine->resize(width, height);
 }
 
 void Callbacks::cursorPos(GLFWwindow* window, double x, double y)
 {
-	app->appCursorPosCallback(x, y);
+	if(glfwGetWindowAttrib(window, GLFW_FOCUSED))
+		app->appCursorPosCallback(x, y);
 }
 
 void Callbacks::mouseButton(GLFWwindow* window, int button, int action, int mods)
 {
-	app->appMouseButtonCallback(button, action, mods);
+	if(glfwGetWindowAttrib(window, GLFW_FOCUSED))
+		app->appMouseButtonCallback(button, action, mods);
 }
 
 void Callbacks::scroll(GLFWwindow* window, double x_offset, double y_offset)
 {
-	app->appScrollCallBack(x_offset, y_offset);
+	if(glfwGetWindowAttrib(window, GLFW_FOCUSED))
+		app->appScrollCallBack(x_offset, y_offset);
 }
 
 void Callbacks::key(GLFWwindow* window, int key, int scan_code, int action, int mods)
 {
-	app->appKeyCallback(key, scan_code, action, mods);
+	if(glfwGetWindowAttrib(window, GLFW_FOCUSED))
+		app->appKeyCallback(key, scan_code, action, mods);
 }
 
 

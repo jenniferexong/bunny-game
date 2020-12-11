@@ -11,10 +11,8 @@
 void Contrast::renderToFbo(int texture, std::weak_ptr<Fbo> fbo)
 {
 	prepare(texture);
-	if (!fbo.expired()) {
+	if (!fbo.expired())
 		fbo.lock()->bind();
-		Print::s("rendering to blur output fbo");
-	}
 
 	glClear(GL_COLOR_BUFFER_BIT);
 	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); // quad
@@ -85,23 +83,35 @@ void ImageProcessor::finish()
 
 Contrast::Contrast() : ImageProcessor()
 {
+	Print::init("ImageProcessor: Contrast", false);
+
 	c_shader_ = std::make_shared<ContrastShader>();
 	c_shader_->setUp();
 	shader_ = c_shader_;
+
+	Print::init("ImageProcessor: Contrast", true);
 }
 
 HorizontalBlur::HorizontalBlur()
 {
+	Print::init("ImageProcessor: HorizontalBlur", false);
+
 	h_shader_ = std::make_shared<HorizontalBlurShader>();
 	h_shader_->setUp();
 	shader_ = h_shader_;
+
+	Print::init("ImageProcessor: HorizontalBlur", true);
 }
 
 VerticalBlur::VerticalBlur()
 {
+	Print::init("ImageProcessor: VerticalBlur", false);
+
 	v_shader_ = std::make_shared<VerticalBlurShader>();
 	v_shader_->setUp();
 	shader_ = v_shader_;
+
+	Print::init("ImageProcessor: VerticalBlur", true);
 }
 
 

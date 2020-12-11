@@ -10,6 +10,8 @@
 class Mesh;
 class InstancedMesh;
 
+using GLuint = unsigned int;
+
 using std::vector;
 
 class Loader {
@@ -24,7 +26,7 @@ private:
 	void unbindVao();
 
 public:
-	Loader() = default;
+	Loader() { Print::init("Loader", true); }
 	~Loader();
 
 	Mesh loadToVao(const vector<float>& positions, const vector<float>& normals, 

@@ -52,7 +52,6 @@ namespace std {
 			return a.lock() == b.lock();
 		}
 	};
-	
 }
 
 class Environment {

@@ -9,7 +9,9 @@ using glm::vec2;
 
 PauseScene::PauseScene()
 {
+	Print::init("PauseScene", false);
 	setUp();
+	Print::init("PauseScene", true);
 }
 
 void PauseScene::init()

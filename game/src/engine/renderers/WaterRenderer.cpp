@@ -7,9 +7,9 @@
 #include "../Environment.h"
 #include "../Location.h"
 
-
 WaterRenderer::WaterRenderer()
 {
+	Print::init("WaterRenderer", false);
 	shader_.setUp();
 
 	// load the quad mesh
@@ -19,6 +19,9 @@ WaterRenderer::WaterRenderer()
 
 	quad_ = engine->loader->loadToVao(positions, 2);
 
+	reflection_fbo_ = std::make_unique<Fbo>(1280, 720, DepthBufferAttachment::DepthBuffer, false);
+	refraction_fbo_ = std::make_unique<Fbo>(1280, 720, DepthBufferAttachment::DepthTexture, false);
+
 	// load the dudv map
 	dudv_id_ = engine->loader->loadTexture("water-dudv");
 	normal_id_ = engine->loader->loadTexture("water-normal");
@@ -26,6 +29,8 @@ WaterRenderer::WaterRenderer()
 	shader_.start();
 	shader_.connectTextureUnits();
 	shader_.stop();
+
+	Print::init("WaterRenderer", true);
 }
 
 void WaterRenderer::render(const Environment& environment)
@@ -51,15 +56,15 @@ void WaterRenderer::prepare(const Environment& environment)
 	glEnableVertexAttribArray(AttributeLocation::Position);
 
 	glActiveTexture(GL_TEXTURE0 + WaterTextureLocation::Reflection);
-	glBindTexture(GL_TEXTURE_2D, reflection_fbo_.getColorTexture());
+	glBindTexture(GL_TEXTURE_2D, reflection_fbo_->getColorTexture());
 	glActiveTexture(GL_TEXTURE0 + WaterTextureLocation::Refraction);
-	glBindTexture(GL_TEXTURE_2D, refraction_fbo_.getColorTexture());
+	glBindTexture(GL_TEXTURE_2D, refraction_fbo_->getColorTexture());
 	glActiveTexture(GL_TEXTURE0 + WaterTextureLocation::DistortionMap);
 	glBindTexture(GL_TEXTURE_2D, dudv_id_);
 	glActiveTexture(GL_TEXTURE0 + WaterTextureLocation::NormalMap);
 	glBindTexture(GL_TEXTURE_2D, normal_id_);
 	glActiveTexture(GL_TEXTURE0 + WaterTextureLocation::DepthMap);
-	glBindTexture(GL_TEXTURE_2D, refraction_fbo_.getDepthTexture());
+	glBindTexture(GL_TEXTURE_2D, refraction_fbo_->getDepthTexture());
 
 	MasterRenderer::enableAlphaBlending();
 }

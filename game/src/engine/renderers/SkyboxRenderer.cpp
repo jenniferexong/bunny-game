@@ -10,12 +10,16 @@ const float SkyboxRenderer::cube_size = 500.f;
 
 SkyboxRenderer::SkyboxRenderer()
 {
+	Print::init("SkyboxRenderer", false);
+
 	cube_ = engine->loader->loadToVao(vertex_positions, 3);
 	shader_.setUp();
 
 	shader_.start();
 	shader_.connectTextureUnits();
 	shader_.stop();
+
+	Print::init("SkyboxRenderer", true);
 }
 
 void SkyboxRenderer::render(const Environment& environment)

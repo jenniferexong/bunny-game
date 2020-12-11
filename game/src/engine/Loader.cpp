@@ -52,7 +52,6 @@ int Loader::loadToVao(const vector<float>& positions, const vector<float>& textu
 	return vao_id;
 }
 
-
 /* Loads data from an obj file into a VAO */
 Mesh Loader::loadToVao(const string& obj_name)
 {
@@ -130,9 +129,7 @@ int Loader::loadTexture(const string& texture_name)
 	const string file_path = FilePath::texture_path + texture_name + ".png";
 
 	ifstream file(file_path);
-	if (file.is_open())
-		Print::s("texture file open");
-	else
+	if (!file.is_open())
 		Print::s("CAN'T OPEN TEXTURE FILE");
 	file.close();
 

@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include <memory>
+
 #include "../models/Mesh.h"
 #include "../post-processing/Fbo.h"
 #include "../shaders/WaterShader.h"
@@ -12,16 +14,16 @@ private:
 	Mesh quad_;
 	WaterShader shader_;
 
-	Fbo reflection_fbo_ = Fbo(1280, 720, DepthBufferAttachment::DepthBuffer, false);
-	Fbo refraction_fbo_ = Fbo(1280, 720, DepthBufferAttachment::DepthTexture, false);
+	std::unique_ptr<Fbo> reflection_fbo_;
+	std::unique_ptr<Fbo> refraction_fbo_;
 
 	int dudv_id_, normal_id_;
 
 public:
 	WaterRenderer();
 	~WaterRenderer() = default;
-	Fbo& getReflectionFbo() { return reflection_fbo_; }
-	Fbo& getRefractionFbo() { return refraction_fbo_; }
+	Fbo& getReflectionFbo() { return *reflection_fbo_; }
+	Fbo& getRefractionFbo() { return *refraction_fbo_; }
 
 	void render(const Environment& environment);
 	void prepare(const Environment& environment);

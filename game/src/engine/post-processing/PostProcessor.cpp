@@ -15,6 +15,8 @@ Mesh PostProcessor::quad = Mesh();
 
 PostProcessor::PostProcessor()
 {
+	Print::init("PostProcessor", false);
+
 	quad = engine->loader->loadToVao(positions, 2);
 
 	int width = engine->window_width;
@@ -33,6 +35,8 @@ PostProcessor::PostProcessor()
 	horizontal_blur_ = make_shared<HorizontalBlur>();
 	vertical_blur_ = make_shared<VerticalBlur>();
 	contrast_ = make_shared<Contrast>();
+
+	Print::init("PostProcessor", true);
 }
 
 void PostProcessor::antiAliasToScreen()

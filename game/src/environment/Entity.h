@@ -34,6 +34,8 @@ public:
 
 	~Entity() = default;
 
+	void print();
+
 	void move(float dx, float dy, float dz);
 	void rotate(float yaw, float pitch, float roll);
 

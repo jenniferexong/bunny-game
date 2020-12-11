@@ -20,9 +20,11 @@ using glm::ivec2;
 
 GameScene::GameScene()
 {
+	Print::init("GameScene", false);
 	setup();
 	//makeGame();
 	makeTest();
+	Print::init("GameScene", true);
 }
 
 void GameScene::init()
@@ -52,6 +54,7 @@ void GameScene::render(bool pause)
 		engine->post_processor->blurToFbo();
 		return;
 	}
+
 	engine->post_processor->antiAliasToScreen();
 
 	engine->renderer->renderGui(guis_);
@@ -108,11 +111,18 @@ void GameScene::setup()
 	int height = engine->window_height;
 
 	// GUI
-	const int padding = 100;
-	const int size = 150;
+	int padding = 100;
+	int size = 150;
+	int cross_hair_size = 60;
+
+	if (MAC_OS) {
+		padding *= 2;
+		size *= 2;
+		cross_hair_size *= 2;
+	}
+
 	compass_ = std::make_shared<GuiTexture>(engine->loader->loadTexture("compass"), ivec2(padding, height - padding), ivec2(size));
 
-	const int cross_hair_size = 60;
 	const ivec2 center = ivec2(width / 2, height / 2);
 	cross_hair_ = std::make_shared<GuiTexture>(engine->loader->loadTexture("cross-hair"), center, ivec2(cross_hair_size));
 
@@ -138,12 +148,14 @@ void GameScene::setup()
 	auto player_model = Helper::makeModel("nibbles", "nibbles", player_material);
 
 	// Bunny player
+	
 	float player_x = 489.295f;
 	float player_z = -221.175f;
 	float player_y = terrain_1_.getHeightOfTerrain(player_x, player_z);
 	player_ = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(45.f, 0, 0), 0.7f);
 	player_->setRotationOffset(180.f, 0, 0);
 	environment_.addEntity(player_);
+
 
 	camera_ = make_shared<Camera>(player_);
 	environment_.setCamera(camera_);
@@ -193,6 +205,12 @@ void GameScene::makeTest()
 	auto flower_model = Helper::makeModel("flower", "flower", material);
 
 	Helper::loadPositionsFromFile(terrain_1_, environment_, flower_model, "test-flowers", vec3(0, -90.f, 0), 0.15f);
+	
+	Print::s("----------------");
+	for (const auto& e: environment_.getEntities()) {
+		e->print();
+	}
+	Print::s("----------------");
 }
 
 void GameScene::pause()

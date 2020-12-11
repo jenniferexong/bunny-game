@@ -10,7 +10,6 @@ class EntityShader;
 class Entity;
 class TexturedModel;
 
-using std::map;
 using std::unordered_set;
 using std::shared_ptr;
 using std::weak_ptr;

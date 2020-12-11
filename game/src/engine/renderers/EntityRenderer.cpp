@@ -11,9 +11,7 @@
 #include "../Environment.h"
 #include "../shaders/EntityShader.h"
 #include "../Location.h"
-
-using std::cout;
-using std::endl;
+#include "../Utility.h"
 
 void EntityRenderer::render(const Environment& environment)
 {
@@ -63,13 +61,11 @@ void EntityRenderer::renderInstanced(const Environment& environment)
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * model_brightness_data.size(), model_brightness_data.data(), GL_STATIC_DRAW);
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-		if (model.getMesh().getFace() == 4) {
+		if (model.getMesh().getFace() == 4)
 			glDrawElementsInstanced(GL_QUADS, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0, batch.size());
-		}
 
-		else if (model.getMesh().getFace() == 3) {
+		else if (model.getMesh().getFace() == 3)
 			glDrawElementsInstanced(GL_TRIANGLES, model.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0, batch.size());
-		}
 
 		unbindTexturedModel();
 	}

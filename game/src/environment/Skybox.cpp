@@ -3,6 +3,7 @@
 #include <fstream>
 
 #include "Light.h"
+#include "../game-manager/FilePath.h"
 
 
 #include "../game-manager/Application.h"
@@ -13,17 +14,19 @@
  */
 Skybox::Skybox(const std::string& day_textures, const std::string& night_textures)
 {
+	Print::init("Skybox", false);
+
 	std::string line;
 
 	// day
-	std::ifstream file("res/data/" + day_textures + ".txt");
+	std::ifstream file(FilePath::data_path + day_textures + ".txt");
 	while (getline(file, line)) 
 		day_texture_names.push_back(line);
 
 	file.close();
 
 	// night
-	file = std::ifstream("res/data/" + night_textures + ".txt");
+	file = std::ifstream(FilePath::data_path + night_textures + ".txt");
 	while (getline(file, line)) 
 		night_texture_names.push_back(line);
 
@@ -32,6 +35,8 @@ Skybox::Skybox(const std::string& day_textures, const std::string& night_texture
 	// load the textures
 	day_texture_id_ = engine->loader->loadCubeMap(day_texture_names);
 	night_texture_id_ = engine->loader->loadCubeMap(night_texture_names);
+
+	Print::init("Skybox", true);
 }
 
 void Skybox::update(std::weak_ptr<Light> sun)
