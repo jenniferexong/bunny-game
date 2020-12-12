@@ -13,7 +13,7 @@ foreach dir : directories
     subdir(dir)
 endforeach
 
-src = ['main.cpp']
+src = ['Main.cpp']
 
 all_src = [
     src,

@@ -1,4 +1,4 @@
-#include <gl/glew.h>
+#include <GL/glew.h>
 
 #include "TerrainRenderer.h"
 #include "../Location.h"
