@@ -31,12 +31,26 @@ std::vector<Line> TextLoader::structureText(GuiText& gui_text)
 		int ascii = (int)c;
 		if (ascii == space_ascii) {
 			// add the current word to the line, if it fits
-			addWord(&current_line, current_word, lines, space_width, font_size, max_line_width);
+			addWord(
+				&current_line,
+				current_word,
+				lines,
+				space_width,
+				font_size,
+				max_line_width
+			);
 			current_word = Word(font_size);
 			continue;
 		}
 		else if (c == '\n') {
-			addWord(&current_line, current_word, lines, space_width, font_size, max_line_width);
+			addWord(
+				&current_line,
+				current_word,
+				lines,
+				space_width,
+				font_size,
+				max_line_width
+			);
 			lines.push_back(current_line);
 			current_line = Line(space_width, font_size, max_line_width);
 			current_word = Word(font_size);
@@ -47,17 +61,30 @@ std::vector<Line> TextLoader::structureText(GuiText& gui_text)
 	}
 
 	// finishing
-	addWord(&current_line, current_word, lines, space_width, font_size, max_line_width);
+	addWord(
+		&current_line,
+		current_word,
+		lines,
+		space_width,
+		font_size,
+		max_line_width
+	);
 	lines.push_back(current_line);
 
 	return lines;
 }
 
-void TextLoader::addWord(Line* current_line, const Word& current_word, std::vector<Line>& lines, 
-	double space_width, double font_size, double max_line_width)
+void TextLoader::addWord(
+	Line* current_line,
+	const Word& current_word,
+	std::vector<Line>& lines, 
+	double space_width,
+	double font_size,
+	double max_line_width)
 {
 	bool added = current_line->addWord(current_word);
-	if (!added) { // make new line and add word to it
+	// make new line and add word to it
+	if (!added) { 
 		lines.push_back(*current_line);
 		*current_line = Line(space_width, font_size, max_line_width);
 		current_line->addWord(current_word);
@@ -65,7 +92,9 @@ void TextLoader::addWord(Line* current_line, const Word& current_word, std::vect
 }
 
 using std::vector;
-TextMeshData TextLoader::createQuadData(GuiText& text, const vector<Line>& lines)
+TextMeshData TextLoader::createQuadData(
+	GuiText& text,
+	const vector<Line>& lines)
 {
 	text.setLineCount(lines.size());
 
@@ -86,7 +115,9 @@ TextMeshData TextLoader::createQuadData(GuiText& text, const vector<Line>& lines
 				cursor_x += letter.getAdvance() * font_size;
 			}
 			// space
-			cursor_x += text.getFont().lock()->getData().getSpaceWidth() * font_size; 
+			cursor_x += (
+				text.getFont().lock()->getData().getSpaceWidth() * font_size
+			); 
 		}
 		cursor_x = 0;
 		cursor_y += line_height * font_size;
@@ -94,7 +125,12 @@ TextMeshData TextLoader::createQuadData(GuiText& text, const vector<Line>& lines
 	return { positions, texture_coords };
 }
 
-void TextLoader::addVertices(const Character& character, double font_size, double cursor_x, double cursor_y, std::vector<float>& positions)
+void TextLoader::addVertices(
+	const Character& character,
+	double font_size,
+	double cursor_x,
+	double cursor_y,
+	std::vector<float>& positions)
 {
 	double x = cursor_x + (character.getOffset().x * font_size);
 	double y = cursor_y + (character.getOffset().y * font_size);
@@ -110,7 +146,9 @@ void TextLoader::addVertices(const Character& character, double font_size, doubl
 	addData(positions, (float) x, (float) y, (float) max_x, (float) max_y);
 }
 
-void TextLoader::addTextureCoords(const Character& character, std::vector<float>& texture_coords)
+void TextLoader::addTextureCoords(
+	const Character& character,
+	std::vector<float>& texture_coords)
 {
 	float x = (float) character.getTextureCoords().x;
 	float y = (float) character.getTextureCoords().y;
@@ -119,7 +157,12 @@ void TextLoader::addTextureCoords(const Character& character, std::vector<float>
 	addData(texture_coords, x, y, max_x, max_y);
 }
 
-void TextLoader::addData(vector<float>& data, float x, float y, float max_x, float max_y)
+void TextLoader::addData(
+	vector<float>& data,
+	float x,
+	float y,
+	float max_x,
+	float max_y)
 {
 	data.push_back(x);
 	data.push_back(y);

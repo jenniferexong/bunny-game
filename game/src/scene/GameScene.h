@@ -24,18 +24,25 @@ private:
 	weak_ptr<Entity> selected_;
 
 	Terrain terrain_1_;
-	shared_ptr<Light> sun_ = std::make_shared<Light>(vec3(0.f, 700, -1000), vec3(0.1f));
+	shared_ptr<Light> sun_ = std::make_shared<Light>(
+		vec3(0.f, 700, -1000), vec3(0.5f)
+	);
 	shared_ptr<Camera> camera_;
 	shared_ptr<Skybox> skybox_;
 	vector<shared_ptr<Light>> lights_;
 	vector<weak_ptr<Light>> close_lights_;
 
-	map<Key, bool> move_keys_ = {
-		{Key::W, false}, {Key::A, false}, {Key::S, false}, {Key::D, false}, {Key::Space, false}
+	std::map<Key, bool> move_keys_ = {
+		{Key::W, false}, 
+		{Key::A, false}, 
+		{Key::S, false}, 
+		{Key::D, false}, 
+		{Key::Space, false}
 	};
 
-	map<MouseButton, bool> mouse_buttons_ = {
-		{MouseButton::Left, false}, {MouseButton::Right, false}
+	std::map<MouseButton, bool> mouse_buttons_ = {
+		{MouseButton::Left, false},
+		{MouseButton::Right, false}
 	};
 
 	bool first_mouse_movement_ = true;

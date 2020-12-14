@@ -29,25 +29,24 @@ using entity_map = unordered_map<TexturedModel, entity_set>;
 
 namespace std {
 	template <>
-	struct hash<TexturedModel>
-	{
+	struct hash<TexturedModel> {
 		size_t operator()(const TexturedModel& model) const
 		{
 			return hash<int>()(model.getTexture().getTextureId());
 		}
 	};
 	template <>
-	struct hash<weak_ptr<Entity>>
-	{
+	struct hash<weak_ptr<Entity>> {
 		size_t operator()(const weak_ptr<Entity>& entity) const
 		{
 			return hash<int>()(entity.lock()->getEntityId());
 		}
 	};
 	template <>
-	struct equal_to<weak_ptr<Entity>>
-	{
-		bool operator() (const weak_ptr<Entity>& a, const weak_ptr<Entity>& b) const
+	struct equal_to<weak_ptr<Entity>> {
+		bool operator() (
+			const weak_ptr<Entity>& a, 
+			const weak_ptr<Entity>& b) const
 		{
 			return a.lock() == b.lock();
 		}

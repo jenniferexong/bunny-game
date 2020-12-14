@@ -8,7 +8,8 @@
 #include "../../environment/Terrain.h"
 #include "../Utility.h"
 
-TerrainRenderer::TerrainRenderer(std::shared_ptr<TerrainShader> shader) : shader_(std::move(shader))
+TerrainRenderer::TerrainRenderer(std::shared_ptr<TerrainShader> shader): 
+	shader_(std::move(shader))
 {
 	shader_->start();
 	shader_->connectTextureUnits();
@@ -20,7 +21,12 @@ void TerrainRenderer::render(const std::vector<Terrain>& terrains)
 	for (const Terrain& terrain : terrains) {
 		prepareTerrain(terrain);
 		loadTransformation(terrain);
-		glDrawElements(GL_TRIANGLES, terrain.getMesh().getVertexCount(), GL_UNSIGNED_INT, 0);
+		glDrawElements(
+			GL_TRIANGLES,
+			terrain.getMesh().getVertexCount(),
+			GL_UNSIGNED_INT,
+			0
+		);
 		unbindTerrain();
 	}
 	Error::gl_check(name_);
@@ -44,8 +50,9 @@ void TerrainRenderer::prepareTerrain(const Terrain& terrain)
 }
 
 void TerrainRenderer::bindTextures(const Terrain& terrain) {
-	std::shared_ptr<TerrainTexturePack> texture_pack = terrain.getTexture().getTexturePack();
-
+	std::shared_ptr<TerrainTexturePack> texture_pack = (
+		terrain.getTexture().getTexturePack()
+	);
 	glActiveTexture(GL_TEXTURE0 + TextureLocation::Base);
 	glBindTexture(GL_TEXTURE_2D, texture_pack->getBase().getId());
 	// red

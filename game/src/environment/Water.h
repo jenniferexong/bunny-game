@@ -9,7 +9,8 @@ private:
 	float centre_x, centre_z;
 
 public:
-	static constexpr float height = -18.f; // height in the world
+	// height in the world
+	static constexpr float height = -18.f; 
 	static constexpr float tile_size = 42.5f;
 	static constexpr float wave_speed = 0.02f;
 

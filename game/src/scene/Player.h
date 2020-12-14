@@ -45,6 +45,9 @@ public:
 	bool isInWater(const std::vector<Water>& water) const;
 
 	void changeDirection(float amount);
-	void updatePosition(const Environment& environment, const std::map<Key, bool>& move_keys);
 	void updateSpeed(const std::map<Key, bool>& move_keys);
+	void updatePosition(
+		const Environment& environment,
+		const std::map<Key, bool>& move_keys
+	);
 };

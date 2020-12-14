@@ -40,7 +40,9 @@ vec3 Player::getRotationOffset()
 	}
 }
 
-void Player::updatePosition(const Environment& environment, const std::map<Key, bool>& move_keys)
+void Player::updatePosition(
+	const Environment& environment, 
+	const std::map<Key, bool>& move_keys)
 {
 	Terrain terrain = environment.getTerrains().at(0);
 	updateSpeed(move_keys);
@@ -88,7 +90,8 @@ void Player::updatePosition(const Environment& environment, const std::map<Key, 
 		up_velocity_ = 0;
 
 		// Align with the normal of the terrain at current position
-		setAlignmentRotation(terrain.getNormalOfTerrain(position_.x, position_.z));
+		setAlignmentRotation(
+			terrain.getNormalOfTerrain(position_.x, position_.z));
 	}
 }
 

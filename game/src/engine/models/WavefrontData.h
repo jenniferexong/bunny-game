@@ -21,7 +21,8 @@ struct WavefrontData {
 	vec4 model_center;
 	float model_radius;
 
-	int face = 3; // 3 = triangles, 4 = quads
+	// 3 = triangles, 4 = quads
+	int face = 3; 
 
 	/* Loads in vertex data from an obj file */
 	WavefrontData(const std::string& file_name);
@@ -34,6 +35,11 @@ private:
 	vec3 max_ = vec3(std::numeric_limits<float>::min());
 
 	void loadData(const std::string& file_name);
-	void processIndices(const std::string& vertex, const vector<vec3>& in_positions, const vector<vec2>& in_textures, const vector<vec3>& in_normals);
 	void setMinMax(vec3 position);
+	void processIndices(
+		const std::string& vertex,
+		const vector<vec3>& in_positions,
+		const vector<vec2>& in_textures,
+		const vector<vec3>& in_normals
+	);
 };

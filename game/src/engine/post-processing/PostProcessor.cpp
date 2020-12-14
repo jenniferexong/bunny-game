@@ -23,14 +23,22 @@ PostProcessor::PostProcessor()
 	int height = engine->window_height;
 
 	multisample_fbo_ = make_shared<Fbo>(width, height);
-	antialias_fbo_ = make_shared<Fbo>(width, height, DepthBufferAttachment::DepthTexture);
+	antialias_fbo_ = make_shared<Fbo>(
+		width, height, DepthBufferAttachment::DepthTexture
+	);
 
 	int blur_width = width / PostProcessor::blur_strength;
 	int blur_height = height / PostProcessor::blur_strength;
 
-	blur_output_ = make_shared<Fbo>(width, height, DepthBufferAttachment::None);
-	blur_fbo_h_ = make_shared<Fbo>(blur_width, blur_height, DepthBufferAttachment::None);
-	blur_fbo_v_ = make_shared<Fbo>(blur_width, blur_height, DepthBufferAttachment::None);
+	blur_output_ = make_shared<Fbo>(
+		width, height, DepthBufferAttachment::None
+	);
+	blur_fbo_h_ = make_shared<Fbo>(
+		blur_width, blur_height, DepthBufferAttachment::None
+	);
+	blur_fbo_v_ = make_shared<Fbo>(
+		blur_width, blur_height, DepthBufferAttachment::None
+	);
 
 	horizontal_blur_ = make_shared<HorizontalBlur>();
 	vertical_blur_ = make_shared<VerticalBlur>();
@@ -45,11 +53,15 @@ void PostProcessor::antiAliasToScreen()
 	multisample_fbo_->resolveToScreen();
 }
 
-void PostProcessor::process(const processor_pipeline& processors, const fbo_pipeline& fbos)
+void PostProcessor::process(
+	const processor_pipeline& processors,
+	const fbo_pipeline& fbos)
 {
-	for (unsigned int i = 0; i < processors.size(); i++) {
-		processors.at(i).lock()->renderToFbo(fbos.at(i).lock()->getColorTexture(), fbos.at(i + 1).lock());
-	}
+	for (unsigned int i = 0; i < processors.size(); i++)
+		processors.at(i).lock()->renderToFbo(
+			fbos.at(i).lock()->getColorTexture(),
+			fbos.at(i + 1).lock()
+		);
 }
 
 void PostProcessor::blur()
@@ -58,7 +70,10 @@ void PostProcessor::blur()
 	multisample_fbo_->resolveToFbo(*antialias_fbo_);
 
 	prepare();
-	process({ horizontal_blur_, vertical_blur_, contrast_ }, { antialias_fbo_, blur_fbo_h_, blur_fbo_v_, empty_fbo_ });
+	process(
+		{ horizontal_blur_, vertical_blur_, contrast_ },
+		{ antialias_fbo_, blur_fbo_h_, blur_fbo_v_, empty_fbo_ }
+	);
 	finish();
 }
 
@@ -68,7 +83,10 @@ void PostProcessor::blurToFbo()
 	multisample_fbo_->resolveToFbo(*antialias_fbo_);
 
 	prepare();
-	process({ horizontal_blur_, vertical_blur_, contrast_ }, { antialias_fbo_, blur_fbo_h_, blur_fbo_v_, blur_output_ });
+	process(
+		{ horizontal_blur_, vertical_blur_, contrast_ },
+		{ antialias_fbo_, blur_fbo_h_, blur_fbo_v_, blur_output_ }
+	);
 	finish();
 }
 

@@ -24,8 +24,10 @@ std::weak_ptr<Entity> MousePicker::selectEntity(Environment& environment)
 
 			// check if it is the closest intersection
 			if (intersect.valid_intersection) {
-				float distance = glm::length(current_ray_origin_ - intersect.intersection_point);
-				if (e.lock()->isSelectable() && distance < min_distance && distance < max_distance) {
+				float distance = glm::length(current_ray_origin_ 
+						- intersect.intersection_point);
+				if (e.lock()->isSelectable() && distance < min_distance 
+						&& distance < max_distance) {
 					selected = e;
 				}
 			}	
@@ -37,17 +39,27 @@ std::weak_ptr<Entity> MousePicker::selectEntity(Environment& environment)
 using namespace glm;
 RayIntersection MousePicker::getIntersection(weak_ptr<Entity> entity)
 {
-	glm::mat4 model_matrix = Maths::createTransformationMatrix(entity.lock()->getPosition(), entity.lock()->getActualRotation(),
-		entity.lock()->getScale(), entity.lock()->getAlignmentRotation());
+	glm::mat4 model_matrix = Maths::createTransformationMatrix(
+		entity.lock()->getPosition(), 
+		entity.lock()->getActualRotation(),
+		entity.lock()->getScale(), 
+		entity.lock()->getAlignmentRotation()
+	);
 
-	const auto& bounding_sphere = entity.lock()->getModel().getMesh().getBoundingSphere();
+	const auto& bounding_sphere = 
+		entity.lock()->getModel().getMesh().getBoundingSphere();
 	vec3 sphere_center = vec3(model_matrix * bounding_sphere.getCenter());
-	float sphere_radius = entity.lock()->getScale() * bounding_sphere.getRadius();
+	float sphere_radius = 
+		entity.lock()->getScale() * bounding_sphere.getRadius();
 
 	// ray intersection with sphere
-	float a = dot(current_ray_direction_, current_ray_direction_);
-	float b = 2 * (dot(current_ray_origin_ - sphere_center, current_ray_direction_));
-	float c = dot(current_ray_origin_ - sphere_center, current_ray_origin_ - sphere_center) - (sphere_radius * sphere_radius);
+	float a, b, c;
+	a = dot(current_ray_direction_, current_ray_direction_);
+	b = 2 * (dot(current_ray_origin_ - sphere_center, current_ray_direction_));
+	c = dot(
+		current_ray_origin_ - sphere_center,
+		current_ray_origin_ - sphere_center) - (sphere_radius * sphere_radius
+	);
 
 	float min_t = std::numeric_limits<float>::max();
 	float discriminant = (b * b) - (4 * a * c);
@@ -74,7 +86,10 @@ RayIntersection MousePicker::getIntersection(weak_ptr<Entity> entity)
 
 using namespace glm;
 
-/* Calculates the projected mouse direction based on its 2d position on the screen */
+/**
+ * Calculates the projected mouse direction based on 
+ * its 2d position on the screen
+ */
 void MousePicker::calculateMouseRay()
 {
 	// viewport space coordinates

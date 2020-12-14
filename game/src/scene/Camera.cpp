@@ -13,11 +13,17 @@ using namespace glm;
 /* Positive amount = zoom in */
 void Camera::zoom(float amount, const vector<Water>& water)
 {
-	if (player_->isInWater(water) && position_.y <= Water::height + 1.f && amount > 0)
+	if (
+		player_->isInWater(water) 
+		&& position_.y <= Water::height + 1.f 
+		&& amount > 0
+	)
 		return;
 
 	distance_from_player -= amount;
-	distance_from_player = clamp(distance_from_player, min_distance, max_distance);
+	distance_from_player = clamp(
+		distance_from_player, min_distance, max_distance
+	);
 }
 
 void Camera::changePitch(float amount)
@@ -37,20 +43,28 @@ void Camera::updateView(const Terrain& terrain, const vector<Water>& water) {
 	float dz = 1.f * glm::cos(glm::radians(player_rotation.x));
 
 	float view_angle = rotation_.y;
-	float distance_behind_player = distance_from_player * cos(radians(view_angle));
-	float height_above_player = distance_from_player * sin(radians(view_angle)) + (0.4f * distance_from_player);
+	float distance_behind_player = (
+		distance_from_player * cos(radians(view_angle))
+	);
+	float height_above_player = (
+		distance_from_player 
+		* sin(radians(view_angle)) 
+		+ (0.4f * distance_from_player)
+	);
 
 	vec3 offset = distance_behind_player * vec3(dx, 0, dz);
 	position_ = player_position + offset;
-	position_.y = player_position.y + height_above_player; // set height of camera
+	// set height of camera
+	position_.y = player_position.y + height_above_player; 
 
-	float min_height = terrain.getHeightOfTerrain(position_.x, position_.z) + 3.f;
+	float min_height = (
+		terrain.getHeightOfTerrain(position_.x, position_.z) + 3.f
+	);
 	position_.y = max(position_.y, min_height);
 
 	// stop camera from going under the water
-	if (player_->isInWater(water)) {
+	if (player_->isInWater(water))
 		position_.y = max(position_.y, Water::height + 1.f);
-	}
 
 	rotation_.x = -player_rotation.x;
 
@@ -81,6 +95,9 @@ bool Camera::canSeePoint(vec3 point)
 
 void Camera::print()
 {
-	printf("Camera: x: %.1f, y: %.1f, z: %.1f, y: %.1f, p: %.1f, r: %.1f\n",
-		position_.x, position_.y, position_.z, rotation_.x, rotation_.y, rotation_.z);
+	printf(
+		"Camera: x: %.1f, y: %.1f, z: %.1f, y: %.1f, p: %.1f, r: %.1f\n",
+		position_.x, position_.y, position_.z, 
+		rotation_.x, rotation_.y, rotation_.z
+	);
 }

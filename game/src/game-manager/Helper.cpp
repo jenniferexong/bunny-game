@@ -11,12 +11,17 @@
 #include "../scene/Player.h"
 #include "../pkg/Model.h"
 #include "../pkg/Environment.h"
-#include "../engine/Error.h"
 
 using namespace std;
 using namespace glm;
 
-void Helper::spawnEntity(shared_ptr<Player> player, Environment& environment, TexturedModel& model, const std::string& name, vec3 rotation, float scale)
+void Helper::spawnEntity(
+	shared_ptr<Player> player, 
+	Environment& environment,
+	TexturedModel& model,
+	const std::string& name,
+	vec3 rotation,
+	float scale)
 {
 	// write position to file
 	ofstream positions(FilePath::data_path + name + "-positions.txt", ios::app);
@@ -37,7 +42,13 @@ void Helper::spawnEntity(shared_ptr<Player> player, Environment& environment, Te
 	environment.addEntity(entity);
 }
 
-void Helper::loadPositionsFromFile(const Terrain& terrain, Environment& environment, TexturedModel& model, const std::string& name, vec3 rotation, float scale)
+void Helper::loadPositionsFromFile(
+	const Terrain& terrain,
+	Environment& environment,
+	TexturedModel& model,
+	const std::string& name,
+	vec3 rotation,
+	float scale)
 {
 	float x, y, z;
 	string line;
@@ -61,8 +72,13 @@ void Helper::loadPositionsFromFile(const Terrain& terrain, Environment& environm
 	file.close();
 }
 
-void Helper::loadPositionsFromFileToSet(const Terrain& terrain, set<shared_ptr<Entity>>& set, TexturedModel& model,
-	const string& name, vec3 rotation, float scale)
+void Helper::loadPositionsFromFileToSet(
+	const Terrain& terrain,
+	set<shared_ptr<Entity>>& set,
+	TexturedModel& model,
+	const string& name,
+	vec3 rotation,
+	float scale)
 {
 	float x, y, z;
 	string line;
@@ -86,19 +102,26 @@ void Helper::loadPositionsFromFileToSet(const Terrain& terrain, set<shared_ptr<E
 	file.close();
 }
 
-shared_ptr<TerrainTexturePack> Helper::makeTexturePack(const string& base, const string& red,
-	const string &green, const string& blue) 
+shared_ptr<TerrainTexturePack> Helper::makeTexturePack(
+	const string& base, 
+	const string& red,
+	const string &green,
+	const string& blue) 
 {
 	Texture base_texture = Texture(engine->loader->loadTexture(base));
 	Texture red_texture = Texture(engine->loader->loadTexture(red));
 	Texture green_texture = Texture(engine->loader->loadTexture(green));
 	Texture blue_texture = Texture(engine->loader->loadTexture(blue));
 
-	return make_shared<TerrainTexturePack>(base_texture, red_texture, green_texture, blue_texture);
+	return make_shared<TerrainTexturePack> (
+		base_texture, red_texture, green_texture, blue_texture
+	);
 }
 
-TexturedModel Helper::makeModel(const string& obj_name,
-	const string& texture_name, const Material& material)
+TexturedModel Helper::makeModel(
+	const string& obj_name,
+	const string& texture_name,
+	const Material& material)
 {
 	InstancedMesh mesh = engine->loader->loadToVaoInstanced(obj_name);
 	ModelTexture texture(engine->loader->loadTexture(texture_name), material);

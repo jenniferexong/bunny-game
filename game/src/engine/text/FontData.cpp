@@ -37,7 +37,7 @@ FontData::FontData(const std::string& font_name)
 	if (!file.is_open())
 		Error::exit("could not read font file: " + font_path);
 
-	// read padding information (top, left, bottom, right) padding=3,3,3,3
+	// read padding information (top, left, bottom, right)
 	auto padding_data = stringstream(getToken(&file, "padding"));
 	string padding_top, padding_left, padding_bottom, padding_right;
 	getline(padding_data, padding_top, ',');
@@ -49,8 +49,12 @@ FontData::FontData(const std::string& font_name)
 	int padding_height = stoi(padding_top) + stoi(padding_bottom);
 
 	// line height
-	int line_height_pixels = stoi(getToken(&file, "lineHeight")) - padding_height;
-	double vertical_per_pixel_size = TextLoader::line_height / (double)line_height_pixels;
+	int line_height_pixels = (
+		stoi(getToken(&file, "lineHeight")) - padding_height
+	);
+	double vertical_per_pixel_size = (
+		TextLoader::line_height / (double)line_height_pixels
+	);
 	double horizontal_per_pixel_size = vertical_per_pixel_size / aspect_ratio;
 
 	int image_size = stoi(getToken(&file, "scaleW"));
@@ -58,7 +62,8 @@ FontData::FontData(const std::string& font_name)
 
 	// process character data
 	for (int i = 0; i < char_count; i++) {
-		int char_id = stoi(getToken(&file, "id")); // ASCII
+		// ASCII
+		int char_id = stoi(getToken(&file, "id"));
 
 		double x = stod(getToken(&file, "x"));
 		double y = stod(getToken(&file, "y"));
@@ -68,7 +73,8 @@ FontData::FontData(const std::string& font_name)
 		double y_offset = stod(getToken(&file, "yoffset"));
 		double x_adv = stod(getToken(&file, "xadvance"));
 
-		if (char_id == TextLoader::space_ascii) { // space character
+		// space character
+		if (char_id == TextLoader::space_ascii) { 
 			space_width_ = (x_adv - padding_width) * horizontal_per_pixel_size;
 			continue;
 		}
@@ -80,19 +86,38 @@ FontData::FontData(const std::string& font_name)
 		double x_advance;
 
 		// convert to screen space, and remove padding
-		texture_coords.x = (x + (stod(padding_left) - desired_padding)) / (double) image_size;
-		texture_coords.y = 1.0 - (y + (stod(padding_top) - desired_padding)) / (double)image_size;
+		texture_coords.x = (
+			(x + (stod(padding_left) - desired_padding)) / (double) image_size
+		);
+		texture_coords.y = (
+			1.0 - 
+			(y + (stod(padding_top) - desired_padding)) / (double)image_size
+		);
 		int width = w - (padding_width - (2 * desired_padding));
 		int height = h - (padding_height - (2 * desired_padding));
 		texture_size.x = (double)width / image_size;
 		texture_size.y = (double)height / image_size;
 		quad_size.x = width * horizontal_per_pixel_size;
 		quad_size.y = height * vertical_per_pixel_size;
-		offset.x = (x_offset + stod(padding_left) - desired_padding) * horizontal_per_pixel_size;
-		offset.y = (y_offset + stod(padding_top) - desired_padding) * vertical_per_pixel_size;
+		offset.x = (
+			(x_offset + stod(padding_left) - desired_padding) 
+			* horizontal_per_pixel_size
+		);
+		offset.y = (
+			(y_offset + stod(padding_top) - desired_padding) 
+			* vertical_per_pixel_size
+		);
 		x_advance = (x_adv - padding_width) * horizontal_per_pixel_size;
-
-		characters_.insert({ char_id, Character(char_id, texture_coords, texture_size, offset, quad_size, x_advance) });
+		characters_.insert({ 
+			char_id, 
+			Character(
+				char_id, 
+				texture_coords,
+				texture_size,
+				offset,
+				quad_size,
+				x_advance) 
+		});
 	}
 
 	file.close();

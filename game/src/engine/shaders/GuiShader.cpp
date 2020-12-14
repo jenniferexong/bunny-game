@@ -12,9 +12,8 @@ void GuiShader::bindAttributes()
 
 void GuiShader::getAllUniformLocations()
 {
-	locations_.insert({ UniformVariable::TransformationMatrix, getUniformLocation("uTransformationMatrix") });
-	locations_.insert({ UniformVariable::FlipVertically, getUniformLocation("uFlipVertically") });
-
+	INSERT_LOC(TransformationMatrix, "uTransformationMatrix");
+	INSERT_LOC(FlipVertically, "uFlipVertically");
 	Error::gl_check("GuiShader getAllUniformLocations");
 }
 
@@ -27,10 +26,14 @@ void GuiShader::setUp()
 
 void GuiShader::loadUniforms(const GuiTexture& gui) const
 {
-	glm::mat4 t_matrix = Maths::createTransformationMatrix(gui.getPosition(), gui.getRotation(), gui.getScale());
-	loadMatrix(locations_.at(UniformVariable::TransformationMatrix), t_matrix);
+	glm::mat4 t_matrix = Maths::createTransformationMatrix(
+		gui.getPosition(), gui.getRotation(), gui.getScale()
+	);
 
-	loadBoolean(locations_.at(UniformVariable::FlipVertically), gui.flipVertically());
+	loadMatrix(locations_.at(UniformVariable::TransformationMatrix), t_matrix);
+	loadBoolean(
+		locations_.at(UniformVariable::FlipVertically), gui.flipVertically()
+	);
 
 	Error::gl_check("GuiShader loadUniforms");
 }

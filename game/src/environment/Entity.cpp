@@ -40,8 +40,11 @@ void Entity::unhighlight()
 }
 
 void Entity::print() {
-	printf("entity: %d, texture: %d, vao: %d, vertex count: %d\n",
-			id_, model_.getTexture().getTextureId(), 
-			model_.getMesh().getId(), 
-			model_.getMesh().getVertexCount());
+	printf(
+		"entity: %d, texture: %d, vao: %d, vertex count: %d\n",
+		id_,
+		model_.getTexture().getTextureId(), 
+		model_.getMesh().getId(), 
+		model_.getMesh().getVertexCount()
+	);
 }

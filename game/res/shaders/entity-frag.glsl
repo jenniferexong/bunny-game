@@ -26,19 +26,21 @@ in VertexData {
 
 out vec4 outColor;
 
-void main() {
+void main() 
+{
     // Phong shading
     vec4 textureCol = texture(textureSampler, f_in.textureCoords);
-    if (textureCol.a < 0.5) {
+    if (textureCol.a < 0.5)
         discard;
-    }
 
     vec3 toCamera = normalize(f_in.cameraPosition - f_in.position);
     vec3 norm = normalize(f_in.normal);
 
     float ambientStrength = f_in.modelBrightness;
-    vec3 ambient = ambientStrength * uSunStrength;
+    //vec3 ambient = ambientStrength;/* uSunStrength;
     vec4 modelColor = texture(textureSampler, f_in.textureCoords);
+    //vec3 ambient = 0.5 * uSunStrength;
+    vec3 ambient = vec3(0);
 
     // Lighting calculations
     vec3 diffuse = vec3(0);
@@ -49,7 +51,11 @@ void main() {
         vec3 incidentLight = normalize(lightToPoint);
 
         float dist = length(lightToPoint);
-        float attenuationFactor = uAttenuation[i].x + (uAttenuation[i].y * dist) + (uAttenuation[i].z * dist * dist);
+        float attenuationFactor = (
+			uAttenuation[i].x 
+			+ (uAttenuation[i].y * dist) 
+			+ (uAttenuation[i].z * dist * dist)
+		);
         
         float diff = max(dot(norm, -incidentLight), 0.0);
         diffuse += (diff * uLightColor[i]) / attenuationFactor;
@@ -62,5 +68,6 @@ void main() {
     //vec3 fogColor = uSunStrength * uFogColor;
     vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * modelColor);
     outColor = vec4(result, 1.0);
-    //outColor = mix(vec4(fogColor, 1.0), vec4(result, 1.0), f_in.visibility);  // mix with sky colour depending on visibility
+    //outColor = mix(vec4(fogColor, 1.0), vec4(result, 1.0), f_in.visibility);  
+	// mix with sky colour depending on visibility
 }

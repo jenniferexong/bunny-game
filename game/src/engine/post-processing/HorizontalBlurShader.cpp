@@ -10,7 +10,7 @@ void HorizontalBlurShader::bindAttributes()
 
 void HorizontalBlurShader::getAllUniformLocations()
 {
-	locations_.insert({ UniformVariable::TargetWidth, getUniformLocation("uTargetWidth") });
+	INSERT_LOC(TargetWidth, "uTargetWidth");
 	Error::gl_check("HorizontalBlurShader getAllUniformLocations");
 }
 

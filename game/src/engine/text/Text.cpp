@@ -25,8 +25,19 @@ void Word::addCharacter(const Character& character)
 	width_ += character.getAdvance() * font_size_;
 }
 
-Character::Character(int id, dvec2 texture_coords, dvec2 texture_size, dvec2 offset, dvec2 quad_size, double x_advance) :
-	id_(id), texture_coords_(texture_coords), offset_(offset), quad_size_(quad_size), x_advance_(x_advance)
+Character::Character(
+	int id,
+	dvec2 texture_coords,
+	dvec2 texture_size,
+	dvec2 offset,
+	dvec2 quad_size,
+	double x_advance
+):
+	id_(id),
+	texture_coords_(texture_coords),
+	offset_(offset),
+	quad_size_(quad_size),
+	x_advance_(x_advance)
 {
 	max_texture_coords_.x = texture_coords_.x + texture_size.x;
 	max_texture_coords_.y = texture_coords.y - texture_size.y;

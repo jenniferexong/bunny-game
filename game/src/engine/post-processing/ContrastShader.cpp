@@ -11,6 +11,5 @@ void ContrastShader::bindAttributes()
 void ContrastShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
-
 	Error::gl_check("ContrastShader setup");
 }

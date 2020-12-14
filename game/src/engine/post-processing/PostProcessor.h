@@ -30,12 +30,15 @@ private:
 	std::shared_ptr<VerticalBlur> vertical_blur_;
 	std::shared_ptr<Contrast> contrast_;
 
-	void process(const processor_pipeline& processors, const fbo_pipeline& fbos);
+	void process(
+		const processor_pipeline& processors, const fbo_pipeline& fbos
+	);
 	void prepare();
 	void finish();
 
 public:
-	static constexpr int blur_strength = 8; // {1, 2, 4, 8, 16}
+	// {1, 2, 4, 8, 16}
+	static constexpr int blur_strength = 8; 
 
 	PostProcessor();
 	~PostProcessor() = default;

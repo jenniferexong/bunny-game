@@ -8,7 +8,10 @@ using namespace glm;
  * Calculates the directional vector based on yaw pitch and roll
  * Note: in the case of the player, this is the direction the player moves in if W is pressed
  */
-vec3 Maths::getLookDirection(vec3 initial_direction, vec3 rotation, mat4 alignment_matrix)
+vec3 Maths::getLookDirection(
+	vec3 initial_direction, 
+	vec3 rotation, 
+	mat4 alignment_matrix)
 {
 	vec4 direction = vec4(initial_direction, 0);
 	float yaw = rotation.x;
@@ -48,7 +51,9 @@ mat4 Maths::createTransformationMatrix(vec2 t, float r, vec2 s)
 }
 
 /* Helper function: uses Euler angles for rotation */
-mat4 Maths::createTransformationMatrix(vec3 t, vec3 r, float s, mat4 alignment_matrix)
+mat4 Maths::createTransformationMatrix(
+	vec3 t, vec3 r, float s, 
+	mat4 alignment_matrix)
 {
 	mat4 matrix = mat4(1);
 

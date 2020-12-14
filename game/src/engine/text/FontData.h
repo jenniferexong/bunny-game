@@ -15,9 +15,9 @@ private:
 	std::string getToken(std::ifstream* file, const std::string& token_name);
 	
 public:
+	FontData(const std::string& font_name);
 	FontData() = default;
 	~FontData() = default;
-	FontData(const std::string& font_name);
 
 	double getSpaceWidth() const { return space_width_; }
 	Character getCharacter(int ascii) const;

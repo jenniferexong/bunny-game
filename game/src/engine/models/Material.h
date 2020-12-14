@@ -10,10 +10,15 @@ struct Material {
 	Material() = default; 
 	~Material() = default; 
 
-	Material(float r, float s, bool transparency, bool fake_lighting) 
-		: reflectivity(r), shine_damper(s), has_transparency(transparency), uses_fake_lighting(fake_lighting) {}
+	Material(float r, float s, bool transparency, bool fake_lighting): 
+		reflectivity(r), 
+		shine_damper(s),
+		has_transparency(transparency),
+		uses_fake_lighting(fake_lighting) {}
 
 	Material(float r, float s) : reflectivity(r), shine_damper(s) {}
 
-	Material(bool transparency, bool fake_lighting) : has_transparency(transparency), uses_fake_lighting(fake_lighting) {}
+	Material(bool transparency, bool fake_lighting): 
+		has_transparency(transparency),
+		uses_fake_lighting(fake_lighting) {}
 };

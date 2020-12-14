@@ -10,9 +10,7 @@
 TextRenderer::TextRenderer()
 {
 	Log::init("TextRenderer", false);
-
 	shader_.setUp();
-
 	Log::init("TextRenderer", true);
 }
 

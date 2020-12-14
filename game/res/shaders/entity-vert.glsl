@@ -26,12 +26,15 @@ out VertexData {
 const float density = 0.005;
 const float fogGradient = 2.0;
 
-void main() {
-    // vertex position in world coordinates (only multiplied by model transformation)
+void main() 
+{
+    // vertex position in world coordinates 
+	// (only multiplied by model transformation)
     vec4 worldPosition = aModelMatrix * vec4(aPosition, 1); 
     vec4 positionRelativeToCamera = uViewMatrix * worldPosition;
 
-    // get the signed distance between the vertex position and the clipping plane
+    // get the signed distance between the 
+	// vertex position and the clipping plane
     gl_ClipDistance[0] = dot(worldPosition, uClippingPlane);
 
     v_out.position = vec3(worldPosition);
@@ -48,5 +51,6 @@ void main() {
 
     // fog calculations
     //float distance = length(positionRelativeToCamera.xyz);
-    //v_out.visibility = clamp(exp(-pow(distance * density, fogGradient)), 0.0, 1.0);
+    //v_out.visibility = 
+	//clamp(exp(-pow(distance * density, fogGradient)), 0.0, 1.0);
 }

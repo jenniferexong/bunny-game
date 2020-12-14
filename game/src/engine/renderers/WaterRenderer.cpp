@@ -14,14 +14,17 @@ WaterRenderer::WaterRenderer() {
     // load the quad mesh
     std::vector<float> positions = {
         // Just x and z vertex positions here, y is set to 0 in v.shader
-        -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1};
+        -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1
+	};
 
     quad_ = engine->loader->loadToVao(positions, 2);
 
     reflection_fbo_ = std::make_unique<Fbo>(
-        1280, 720, DepthBufferAttachment::DepthBuffer, false);
+        1280, 720, DepthBufferAttachment::DepthBuffer, false
+	);
     refraction_fbo_ = std::make_unique<Fbo>(
-        1280, 720, DepthBufferAttachment::DepthTexture, false);
+        1280, 720, DepthBufferAttachment::DepthTexture, false
+	);
 
     // load the dudv map
     dudv_id_ = engine->loader->loadTexture("water-dudv");

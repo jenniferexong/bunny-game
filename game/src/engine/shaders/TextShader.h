@@ -9,7 +9,8 @@ class GuiText;
 class TextShader final: public Shader {
 private:
 	enum class UniformVariable {
-		Translation, Color, CharacterWidth, BorderColor, EdgeTransition, BorderWidth, BorderEdgeTransition
+		Translation, Color, CharacterWidth, BorderColor, 
+		EdgeTransition, BorderWidth, BorderEdgeTransition
 	};
 
 	static constexpr char name[] = "TextShader";

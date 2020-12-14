@@ -5,10 +5,14 @@
 #include <string>
 #include <vector>
 
+#define INSERT_LOC(a, b) \
+	locations_.insert({ UniformVariable::a, \
+	getUniformLocation(b) \
+})
+
 using std::string;
 
-struct EnumHash
-{
+struct EnumHash {
     template <typename T>
     inline
     typename std::enable_if<std::is_enum<T>::value, std::size_t>::type
@@ -20,7 +24,6 @@ struct EnumHash
 
 // Abstract class for generic shaders
 class Shader {
-
 private:
 	static constexpr char name[] = "Shader";
 
@@ -31,7 +34,7 @@ private:
 	int loadShader(const string& file_name, int type);
 
 protected:
-	virtual void bindAttributes() = 0; // need to override
+	virtual void bindAttributes() = 0;
 	virtual void getAllUniformLocations() = 0;
 
 	void bindAttribute(int attribute, const std::string& variable);
@@ -45,8 +48,12 @@ protected:
 	void loadVector(int location, glm::vec3 vector) const;
 	void loadVector(int location, glm::vec4 vector) const;
 	void loadMatrix(int location, glm::mat4 matrix) const;
-	void loadVectors(int location, const std::vector<glm::vec3>& vectors) const;
-	void loadMatrices(int location, const std::vector<glm::mat4>& matrices) const;
+	void loadVectors(
+		int location, const std::vector<glm::vec3>& vectors
+	) const;
+	void loadMatrices(
+		int location, const std::vector<glm::mat4>& matrices
+	) const;
 
 public:
 	Shader() : program_id_(0), vert_id_(0), frag_id_(0) {}

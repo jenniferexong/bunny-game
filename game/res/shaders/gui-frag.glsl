@@ -8,6 +8,7 @@ in VertexData {
 
 out vec4 outColor;
 
-void main(void){
+void main(void)
+{
 	outColor = texture(textureSampler, f_in.textureCoords);
 }

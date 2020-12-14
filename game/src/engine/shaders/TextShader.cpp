@@ -6,13 +6,14 @@
 
 void TextShader::getAllUniformLocations()
 {
-	locations_.insert({ UniformVariable::Translation, getUniformLocation("uTranslation") });
-	locations_.insert({ UniformVariable::Color, getUniformLocation("uColor") });
-	locations_.insert({ UniformVariable::BorderColor, getUniformLocation("uBorderColor") });
-	locations_.insert({ UniformVariable::CharacterWidth, getUniformLocation("uCharacterWidth") });
-	locations_.insert({ UniformVariable::EdgeTransition, getUniformLocation("uEdgeTransition") });
-	locations_.insert({ UniformVariable::BorderWidth, getUniformLocation("uBorderWidth") });
-	locations_.insert({ UniformVariable::BorderEdgeTransition, getUniformLocation("uBorderEdgeTransition") });
+	INSERT_LOC(Translation, "uTranslation");
+	INSERT_LOC(Color, "uColor");
+	INSERT_LOC(BorderColor, "uBorderColor");
+	INSERT_LOC(CharacterWidth, "uCharacterWidth");
+	INSERT_LOC(EdgeTransition, "uEdgeTransition");
+	INSERT_LOC(BorderWidth, "uBorderWidth");
+	INSERT_LOC(BorderEdgeTransition, "uBorderEdgeTransition");
+	Error::gl_check("TextShader getAllUniformLocations");
 }
 
 void TextShader::bindAttributes()
@@ -30,16 +31,29 @@ void TextShader::setUp()
 void TextShader::loadUniforms(const GuiText& text)
 {
 	// translation
-	loadVector(locations_.at(UniformVariable::Translation), text.getPosition());
+	loadVector(
+		locations_.at(UniformVariable::Translation), text.getPosition()
+	);
 
 	// colour
 	loadVector(locations_.at(UniformVariable::Color), text.getColor());
-	loadVector(locations_.at(UniformVariable::BorderColor), text.getBorderColor());
+	loadVector(
+		locations_.at(UniformVariable::BorderColor), text.getBorderColor()
+	);
 
-	loadFloat(locations_.at(UniformVariable::CharacterWidth), text.getCharacterWidth());
-	loadFloat(locations_.at(UniformVariable::EdgeTransition), text.getEdgeTransition());
-	loadFloat(locations_.at(UniformVariable::BorderWidth), text.getBorderWidth());
-	loadFloat(locations_.at(UniformVariable::BorderEdgeTransition), text.getBorderEdgeTransition());
+	loadFloat(
+		locations_.at(UniformVariable::CharacterWidth), text.getCharacterWidth()
+	);
+	loadFloat(
+		locations_.at(UniformVariable::EdgeTransition), text.getEdgeTransition()
+	);
+	loadFloat(
+		locations_.at(UniformVariable::BorderWidth), text.getBorderWidth()
+	);
+	loadFloat(
+		locations_.at(UniformVariable::BorderEdgeTransition),
+		text.getBorderEdgeTransition()
+	);
 
 	Error::gl_check("TextShader loadUniforms");
 }

@@ -10,7 +10,7 @@ void VerticalBlurShader::bindAttributes()
 
 void VerticalBlurShader::getAllUniformLocations()
 {
-	locations_.insert({ UniformVariable::TargetHeight, getUniformLocation("uTargetHeight") });
+	INSERT_LOC(TargetHeight, "uTargetHeight");
 	Error::gl_check("VerticalBlurShader getAllUniformLocations");
 }
 

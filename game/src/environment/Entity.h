@@ -24,13 +24,29 @@ protected:
 	float brightness_ = 0.8f;
 
 public:
-	Entity(): id_(next_id_++), position_(vec3(0)), rotation_(vec3(0)), scale_(1) {}
+	Entity(): 
+		id_(next_id_++), 
+		position_(vec3(0)), 
+		rotation_(vec3(0)), 
+		scale_(1) {}
 
-	Entity(const TexturedModel& model) : id_(next_id_++), model_(model), position_(vec3(0)),
-		rotation_(vec3(0)), scale_(1) {}
+	Entity(const TexturedModel& model): 
+		id_(next_id_++), 
+		model_(model), 
+		position_(vec3(0)),
+		rotation_(vec3(0)), 
+		scale_(1) {}
 
-	Entity(const TexturedModel& model, vec3 position, vec3 rotation, float scale) 
-		: id_(next_id_++), model_(model), position_(position), rotation_(rotation), scale_(scale) {}
+	Entity(const TexturedModel& model, 
+		vec3 position, 
+		vec3 rotation, 
+		float scale
+	): 
+		id_(next_id_++), 
+		model_(model),
+		position_(position),
+		rotation_(rotation),
+		scale_(scale) {}
 
 	~Entity() = default;
 
@@ -41,10 +57,13 @@ public:
 
 	// Setters
 	void setPosition(float x, float y, float z) { position_ = vec3(x, y, z); }
-	void setRotation(float yaw, float pitch, float roll) { rotation_ = vec3(yaw, pitch, roll); }
-	void setRotationOffset(float yaw, float pitch, float roll);
-	void setAlignmentRotation(vec3 surface_normal);
 	void setScale(float scale) { scale_ = scale; }
+	void setAlignmentRotation(vec3 surface_normal);
+	void setRotationOffset(float yaw, float pitch, float roll);
+	void setRotation(float yaw, float pitch, float roll) 
+	{ 
+		rotation_ = vec3(yaw, pitch, roll); 
+	}
 
 	// Getters
 	const TexturedModel& getModel() const { return model_; }

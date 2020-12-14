@@ -45,8 +45,9 @@ int Shader::loadShader(const string& file_name, int type)
 	while (getline(shader_file, line)) {
 		lines << line << endl;
 	}
-	shader_file.close(); // close the file
-	string text_str = lines.str(); // need this otherwise dangling pointer!
+	shader_file.close();
+	// need this otherwise dangling pointer!
+	string text_str = lines.str();
 
 	const GLchar* text = text_str.c_str();
 	// Making the shader
@@ -66,7 +67,9 @@ int Shader::loadShader(const string& file_name, int type)
 		glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &info_log_length);
 		if (info_log_length > 1) {
 			vector<char> info_log(info_log_length);
-			glGetShaderInfoLog(shader_id, info_log_length, &chars_written, &info_log[0]);
+			glGetShaderInfoLog(
+				shader_id, info_log_length, &chars_written, &info_log[0]
+			);
 			cout << "Shader: " << &info_log[0] << endl;
 		}
 		Error::exit("could not compile shader: " + file_path);
@@ -134,9 +137,15 @@ void Shader::loadVectors(int location, const std::vector<vec3>& vectors) const
 	glUniform3fv(location, vectors.size(), value_ptr(vectors[0]));
 }
 
-void Shader::loadMatrices(int location, const std::vector<glm::mat4>& matrices) const
+void Shader::loadMatrices(
+	int location, const std::vector<glm::mat4>& matrices) const
 {
-	glUniformMatrix4fv(location, matrices.size(), GL_FALSE, value_ptr(matrices[0]));
+	glUniformMatrix4fv(
+		location,
+		matrices.size(),
+		GL_FALSE,
+		value_ptr(matrices[0])
+	);
 }
 
 void Shader::start() const
@@ -163,5 +172,8 @@ Shader::~Shader()
 
 void Shader::print() const
 {
-	printf("program: %d, vertex: %d, fragment: %d\n", program_id_, vert_id_, frag_id_);
+	printf(
+		"program: %d, vertex: %d, fragment: %d\n",
+		program_id_, vert_id_, frag_id_
+	);
 }

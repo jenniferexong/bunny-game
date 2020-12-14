@@ -40,17 +40,25 @@ MasterRenderer::MasterRenderer()
 	Log::init("MasterRenderer", true);
 }
 
-void MasterRenderer::renderWaterReflection(GameScene& scene, void(GameScene::*render_scene)(glm::vec4))
+void MasterRenderer::renderWaterReflection(
+	GameScene& scene,
+	void(GameScene::*render_scene)(glm::vec4))
 {
-	scene.getEnvironment().getCamera().lock()->positionForReflection(Water::height);
+	scene.getEnvironment().getCamera().lock()->positionForReflection(
+		Water::height
+	);
 	water_renderer_.getReflectionFbo().bind();
 	(scene.*render_scene)(Water::getReflectionPlane());
 	water_renderer_.getReflectionFbo().unbind();
 }
 
-void MasterRenderer::renderWaterRefraction(GameScene& scene, void(GameScene::*render_scene)(glm::vec4))
+void MasterRenderer::renderWaterRefraction(
+	GameScene& scene,
+	void(GameScene::*render_scene)(glm::vec4))
 {
-	scene.getEnvironment().getCamera().lock()->positionForRefraction(Water::height);
+	scene.getEnvironment().getCamera().lock()->positionForRefraction(
+		Water::height
+	);
 	water_renderer_.getRefractionFbo().bind();
 	(scene.*render_scene)(Water::getRefractionPlane());
 	water_renderer_.getRefractionFbo().unbind();
@@ -61,7 +69,9 @@ void MasterRenderer::renderWater(const Environment& environment)
 	water_renderer_.render(environment);
 }
 
-void MasterRenderer::renderEntities(const Environment& environment, glm::vec4 clipping_plane)
+void MasterRenderer::renderEntities(
+	const Environment& environment,
+	glm::vec4 clipping_plane)
 {
 	if (environment.getEntities().empty())
 		return;
@@ -73,7 +83,9 @@ void MasterRenderer::renderEntities(const Environment& environment, glm::vec4 cl
 	entity_shader_->stop();
 }
 
-void MasterRenderer::renderTerrain(const Environment& environment, glm::vec4 clipping_plane)
+void MasterRenderer::renderTerrain(
+	const Environment& environment,
+	glm::vec4 clipping_plane)
 {
 	if (environment.getTerrains().empty())
 		return;

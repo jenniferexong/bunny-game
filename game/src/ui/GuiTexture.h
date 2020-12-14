@@ -46,7 +46,10 @@ public:
 	void setScale(glm::vec2 scale) { scale_ = scale; }
 
 	void setFlipVertically() { flip_vertically_ = true; }
-	void setTransparency(bool transparency) { has_transparency_ = transparency; }
+
+	void setTransparency(bool transparency) {
+		has_transparency_ = transparency; 
+	}
 
 	bool operator==(const GuiTexture& other) const {
 		return texture_ == other.texture_;
@@ -66,7 +69,9 @@ namespace std {
 	template <>
 	struct equal_to<weak_ptr<GuiTexture>>
 	{
-		bool operator()(const weak_ptr<GuiTexture>& a, const weak_ptr<GuiTexture>& b) const
+		bool operator()(
+				const weak_ptr<GuiTexture>& a, 
+				const weak_ptr<GuiTexture>& b) const
 		{
 			return a.lock() == b.lock();
 		}

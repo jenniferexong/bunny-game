@@ -9,8 +9,10 @@ protected:
 
 public:
 	// Constructors
+	Mesh(int vao_id, int vertex_count, int face): 
+		vao_id_(vao_id), vertex_count_(vertex_count) {}
+
 	Mesh() : vao_id_(-1), vertex_count_(0) {}
-	Mesh(int vao_id, int vertex_count, int face) : vao_id_(vao_id), vertex_count_(vertex_count) {}
 	~Mesh() = default;
 
 	// Getters
@@ -25,8 +27,10 @@ private:
 	int model_brightness_vbo_ = -1;
 
 public:
+	InstancedMesh(int vao_id, int vertex_count, int face): 
+		Mesh(vao_id, vertex_count, face) {}	
+
 	InstancedMesh() = default;
-	InstancedMesh(int vao_id, int vertex_count, int face) : Mesh(vao_id, vertex_count, face) {}	
 	~InstancedMesh() = default;
 
 	int getModelMatrixVbo() const { return model_matrix_vbo_; }
@@ -37,5 +41,7 @@ public:
 		model_matrix_vbo_ = model_matrix;
 		model_brightness_vbo_ = model_brightness;
 	}
-	void setBoundingSphere(const BoundingSphere& sphere) { bounding_sphere_ = sphere; }
+	void setBoundingSphere(const BoundingSphere& sphere) {
+		bounding_sphere_ = sphere;
+	}
 };

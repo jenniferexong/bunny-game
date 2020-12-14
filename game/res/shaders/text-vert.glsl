@@ -9,8 +9,9 @@ out VertexData {
     vec2 textureCoords;
 } v_out;
 
-void main() {
-    vec2 translation = vec2(uTranslation.x * 2.0, uTranslation.y * -2.0);
+void main() 
+{
+    vec2 translation = vec2(uTranslation.x * 2.0, uTranslation.y * - 2.0);
     gl_Position = vec4(aPosition + translation, 0.0, 1.0);
     v_out.textureCoords = aTextureCoords;
 }

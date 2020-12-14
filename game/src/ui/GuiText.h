@@ -43,8 +43,9 @@ public:
 	 *		- top left (0, 0)
 	 *		- bottom right (1, 0)
 	 */
-	GuiText(const std::string& text, float font_size, std::shared_ptr<FontType> font, 
-			glm::vec2 position, float max_line_width, bool centered);
+	GuiText(const std::string& text, float font_size, 
+			std::shared_ptr<FontType> font, glm::vec2 position,
+			float max_line_width, bool centered);
 	~GuiText() = default;
 
 	void updateText(const std::string& text);

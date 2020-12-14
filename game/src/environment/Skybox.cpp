@@ -12,7 +12,9 @@
  * Reads a data file containing the names of the textures for the cubemap/s
  * order of textures for faces must be: right, left, top, bottom, back, front
  */
-Skybox::Skybox(const std::string& day_textures, const std::string& night_textures)
+Skybox::Skybox(
+	const std::string& day_textures,
+	const std::string& night_textures)
 {
 	Log::init("Skybox", false);
 
@@ -56,7 +58,10 @@ void Skybox::update(std::weak_ptr<Light> sun)
 		texture_1_ = night_texture_id_;
 		texture_2_ = day_texture_id_;
 		blend_factor_ = (time - 5000) / (8000 - 5000);
-		sunlight = Light::min_sunlight + (blend_factor_ * (Light::max_sunlight - Light::min_sunlight));
+		sunlight = (
+			Light::min_sunlight 
+			+ (blend_factor_ * (Light::max_sunlight - Light::min_sunlight))
+		);
 	}
 	// day
 	else if (time >= 8000 && time < 21000) {
@@ -70,9 +75,12 @@ void Skybox::update(std::weak_ptr<Light> sun)
 		texture_1_ = day_texture_id_;
 		texture_2_ = night_texture_id_;
 		blend_factor_ = (time - 21000) / (24000 - 21000);
-		sunlight = Light::max_sunlight - (blend_factor_ * (Light::max_sunlight - Light::min_sunlight));
+		sunlight = (
+			Light::max_sunlight 
+			- (blend_factor_ * (Light::max_sunlight - Light::min_sunlight))
+		);
 	}
-	sun.lock()->setColor(glm::vec3(sunlight));
+	//sun.lock()->setColor(glm::vec3(sunlight));
 }
 
 

@@ -9,7 +9,8 @@ in VertexData {
 out vec4 outColor;
 const float contrast = 0.05;
 
-void main() {
+void main() 
+{
     outColor = texture(uColorTexture, f_in.textureCoords);
     outColor.rgb = (outColor.rgb - 0.5) * (1.0 + contrast) + 0.5;
 }

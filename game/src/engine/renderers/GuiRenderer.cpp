@@ -24,7 +24,8 @@ GuiRenderer::GuiRenderer()
 	Log::init("GuiRenderer", true);
 }
 
-void GuiRenderer::render(const std::unordered_set<std::weak_ptr<GuiTexture>>& gui_textures)
+void GuiRenderer::render(
+	const std::unordered_set<std::weak_ptr<GuiTexture>>& gui_textures)
 {
 	shader_.start();
 	glBindVertexArray(quad_mesh_.getId());

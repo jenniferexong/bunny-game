@@ -37,13 +37,25 @@ public:
 	void prepare(glm::mat4 proj_matrix);
 	~MasterRenderer() = default;
 
-	void renderEntities(const Environment& environment, glm::vec4 clipping_plane);
-	void renderTerrain(const Environment& environment, glm::vec4 clipping_plane);
+	void renderEntities(
+		const Environment& environment,
+		glm::vec4 clipping_plane
+	);
+	void renderTerrain(
+		const Environment& environment,
+		glm::vec4 clipping_plane
+	);
 	void renderSkybox(const Environment& environment);
 
 	void renderWater(const Environment& environment);
-	void renderWaterReflection(GameScene& scene, void(GameScene::*render_scene)(glm::vec4));
-	void renderWaterRefraction(GameScene& scene, void(GameScene::*render_scene)(glm::vec4));
+	void renderWaterReflection(
+		GameScene& scene,
+		void(GameScene::*render_scene)(glm::vec4)
+	);
+	void renderWaterRefraction(
+		GameScene& scene,
+		void(GameScene::*render_scene)(glm::vec4)
+	);
 
 	void renderGui(const unordered_set<weak_ptr<GuiTexture>>& guis);
 	void renderText(const TextMaster& text_master);

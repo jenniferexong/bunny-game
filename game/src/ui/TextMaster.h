@@ -30,7 +30,8 @@ namespace std
 	template<>
 	struct equal_to<weak_ptr<FontType>>
 	{
-		bool operator() (const weak_ptr<FontType>& a, const weak_ptr<FontType>& b) const
+		bool operator() (
+			const weak_ptr<FontType>& a, const weak_ptr<FontType>& b) const
 		{
 			return a.lock() == b.lock();
 		}
@@ -38,14 +39,17 @@ namespace std
 	template<>
 	struct equal_to<weak_ptr<GuiText>>
 	{
-		bool operator() (const weak_ptr<GuiText>& a, const weak_ptr<GuiText>& b) const 
+		bool operator() (
+			const weak_ptr<GuiText>& a, const weak_ptr<GuiText>& b) const 
 		{
 			return a.lock() == b.lock();
 		}
 	};
 }
 
-using text_map = std::unordered_map<std::weak_ptr<FontType>, std::unordered_set<std::weak_ptr<GuiText>>>;
+using text_map = std::unordered_map<
+	std::weak_ptr<FontType>, 
+	std::unordered_set<std::weak_ptr<GuiText>>>;
 
 class TextMaster {
 private:

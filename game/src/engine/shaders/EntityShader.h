@@ -29,7 +29,10 @@ protected:
 
 public:
 	void setUp() override;
-	void loadUniformPerFrame(const Environment& environment, glm::vec4 clipping_plane) const;
+	void loadUniformPerFrame(
+		const Environment& environment,
+		glm::vec4 clipping_plane
+	) const;
 	void loadModelMatrix(const Entity& entity) const;
 	void loadMaterial(const Material& material) const;
 };

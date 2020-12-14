@@ -6,8 +6,7 @@
 
 class ContrastShader final : public Shader {
 
-	enum class UniformVariable {
-	};
+	enum class UniformVariable { };
 
 	static constexpr char name[] = "ContrastShader";
 	static constexpr char vertex_file[] = "post-processing/contrast-vert";

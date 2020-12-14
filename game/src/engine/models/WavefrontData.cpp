@@ -10,7 +10,9 @@
 using namespace glm;
 using namespace std;
 
-WavefrontData::WavefrontData(const std::string& file_name) : model_center(glm::vec4(0)), model_radius(0)
+WavefrontData::WavefrontData(const std::string& file_name): 
+	model_center(glm::vec4(0)),
+	model_radius(0)
 {
 	loadData(file_name);
 }
@@ -27,23 +29,28 @@ void WavefrontData::loadData(const std::string& file_name)
 		Error::file("obj", file_name);
 
 	std::string line, type;
-	std::string v1, v2, v3, v4; // values 
+	// values 
+	std::string v1, v2, v3, v4; 
 
 	while (std::getline(obj_file, line)) {
 		std::istringstream str_stream(line);
-		str_stream >> type; // get characters until first whitespace
+		// get characters until first whitespace
+		str_stream >> type;
 
 		// reading positional data, normal data, and face data
 		if (type == "v" || type == "vn" || type == "f") {
 			str_stream >> v1 >> v2 >> v3;
 
-			if (type == "v") // vertex positions
+			// vertex positions
+			if (type == "v") 
 				in_positions.emplace_back(vec3(stof(v1), stof(v2), stof(v3)));
 
-			else if (type == "vn") // vertex normals
+			// vertex normals
+			else if (type == "vn") 
 				in_normals.emplace_back(vec3(stof(v1), stof(v2), stof(v3)));
 
-			else if (type == "f") { // faces: reading indices
+			// faces: reading indices
+			else if (type == "f") { 
 				processIndices(v1, in_positions, in_textures, in_normals);
 				processIndices(v2, in_positions, in_textures, in_normals);
 				processIndices(v3, in_positions, in_textures, in_normals);
@@ -55,7 +62,8 @@ void WavefrontData::loadData(const std::string& file_name)
 			}
 		}
 
-		else if (type == "vt") { // reading texture data
+		// reading texture data
+		else if (type == "vt") { 
 			str_stream >> v1 >> v2;
 			in_textures.emplace_back(vec2(stof(v1), stof(v2)));
 		}
@@ -83,15 +91,23 @@ void WavefrontData::loadData(const std::string& file_name)
 	}
 
 	// set the bounding sphere variables
-	float diameter = glm::max(glm::max(max_.x - min_.x, max_.y - min_.y), max_.z - min_.z);
-	model_radius = diameter/2; // vector so we can apply model transformations
+	float diameter = glm::max(
+		glm::max(max_.x - min_.x, max_.y - min_.y),
+		max_.z - min_.z
+	);
+	model_radius = diameter/2; 
 	float centre_x = min_.x + ((max_.x - min_.x) / 2);
 	float centre_y = min_.y + ((max_.y - min_.y) / 2);
 	float centre_z = min_.z + ((max_.z - min_.z) / 2);
+	// vector so we can apply model transformations
 	model_center = vec4(centre_x, centre_y, centre_z, 1);
 }
 
-void WavefrontData::processIndices(const string& vertex, const vector<vec3>& in_positions, const vector<vec2>& in_textures, const vector<vec3>& in_normals)
+void WavefrontData::processIndices(
+	const string& vertex,
+	const vector<vec3>& in_positions,
+	const vector<vec2>& in_textures,
+	const vector<vec3>& in_normals)
 {
 	indices.push_back(current_index_);
 	std::istringstream str(vertex);

@@ -7,9 +7,11 @@ uniform sampler2D uGreenTexture;
 uniform sampler2D uBlueTexture;
 uniform sampler2D uBlendMap;
 
-uniform sampler2D uNormalMap; // normal map for path texture
+// normal map for path texture
+uniform sampler2D uNormalMap; 
 
-uniform vec3 uLightPosition[100]; // positions in eye space
+// positions in eye space
+uniform vec3 uLightPosition[100]; 
 uniform vec3 uLightColor[100];
 uniform vec3 uAttenuation[100];
 
@@ -29,7 +31,8 @@ in VertexData {
 
 out vec4 outColor;
 
-void main() {
+void main() 
+{
     // Get the blend map colour
     vec4 blackTexture = vec4(0);
     vec4 redTexture = vec4(0);
@@ -37,21 +40,29 @@ void main() {
     vec4 blueTexture = vec4(0);
     
     vec4 blendMapValue = texture(uBlendMap, f_in.textureCoords);
-    float blackAmount = 1 - (blendMapValue.r + blendMapValue.g + blendMapValue.b);
+    float blackAmount = 
+		1 - (blendMapValue.r + blendMapValue.g + blendMapValue.b);
     vec2 tiledCoords = f_in.textureCoords * 30.0;
     blackTexture = texture(uBaseTexture, tiledCoords) * blackAmount;
     redTexture = texture(uRedTexture, tiledCoords) * blendMapValue.r;
     greenTexture = texture(uGreenTexture, tiledCoords) * blendMapValue.g;
     blueTexture = texture(uBlueTexture, tiledCoords) * blendMapValue.b;
 
-    vec4 normalMapValue = texture(uNormalMap, tiledCoords) * 2.0 - vec4(1.0); // normal map for the path texture (blue)
+	// normal map for the path texture (blue)
+    vec4 normalMapValue = texture(uNormalMap, tiledCoords) * 2.0 - vec4(1.0); 
 
     vec4 totalColor = blackTexture + redTexture + greenTexture + blueTexture;
 
-    vec3 surfaceNormal = vec3(0, 0, 1.0); // default normal in tangent space
+	// default normal in tangent space
+    vec3 surfaceNormal = vec3(0, 0, 1.0); 
     vec3 normal = normalize(normalMapValue.xyz);
     // mixing the normals (mixing the bump maps)
-    vec3 norm = blackAmount * surfaceNormal + blendMapValue.r * surfaceNormal + blendMapValue.g * surfaceNormal + blendMapValue.b * normal;
+    vec3 norm = (
+		blackAmount * surfaceNormal 
+		+ blendMapValue.r * surfaceNormal 
+		+ blendMapValue.g * surfaceNormal 
+		+ blendMapValue.b * normal
+	);
     norm = normalize(norm);
 
     // convert to tangent space
@@ -59,18 +70,25 @@ void main() {
     toCamera = normalize(toCamera);
 
     // Light calculation
-    float ambientStrength = 0.8;
-    vec3 ambient = ambientStrength * uSunStrength;
+    float ambientStrength = 0.5;
+    //vec3 ambient = ambientStrength * uSunStrength;
+    //vec3 ambient = vec3(ambientStrength) * uSunStrength;
+    vec3 ambient = vec3(0);
 
     vec3 diffuse = vec3(0);
     vec3 specular = vec3(0);
 
     for (int i = 0; i < uLightCount && i < uMaxLights; i++) {
         // convert eyespace to tangent space
-        vec3 lightToPoint = f_in.toTangentSpace * (f_in.eyeSpacePosition - uLightPosition[i]);
+        vec3 lightToPoint = 
+			f_in.toTangentSpace * (f_in.eyeSpacePosition - uLightPosition[i]);
         vec3 incidentLight = normalize(lightToPoint);
         float dist = length(lightToPoint);
-        float attenuationFactor = uAttenuation[i].x + (uAttenuation[i].y * dist) + (uAttenuation[i].z * dist * dist);
+        float attenuationFactor = (
+			uAttenuation[i].x 
+			+ (uAttenuation[i].y * dist) 
+			+ (uAttenuation[i].z * dist * dist)
+		);
 
         float diff = max(dot(norm, -incidentLight), 0.0);
         diffuse += (diff * uLightColor[i]) / attenuationFactor;
@@ -84,5 +102,6 @@ void main() {
     outColor = vec4(result, 1.0);
 
     //vec3 fogColor = uSunStrength * uFogColor;
-    //outColor = mix(vec4(fogColor, 1.0), vec4(result, 1.0), f_in.visibility);  // mix with sky colour depending on visibility
+    //outColor = mix(vec4(fogColor, 1.0), vec4(result, 1.0), f_in.visibility);  
+	// mix with sky colour depending on visibility
 }

@@ -14,7 +14,6 @@
 #include "../game-manager/Timer.h"
 #include "../game-manager/FilePath.h"
 #include "../game-manager/Helper.h"
-#include "../engine/Error.h"
 
 using namespace std;
 using glm::ivec2;
@@ -93,7 +92,8 @@ void GameScene::gameLogic()
 	player_->updatePosition(environment_, move_keys_);
 	compass_->setRotation(-player_->getRotation().x);
 	camera_->updateView(terrain_1_, environment_.getWater());
-	mouse_picker_.update(getProjectionMatrix(), *camera_); // must update after camera is moved
+	// must update after camera is moved
+	mouse_picker_.update(getProjectionMatrix(), *camera_); 
 	environment_.updateInView();
 
 	selected_ = mouse_picker_.selectEntity(environment_);
@@ -107,7 +107,8 @@ using glm::vec2;
 
 void GameScene::setup()
 {
-	//TODO: Make files that you can read material properties from, and position, scale, rotation...
+	//TODO: Make files that you can read material properties from, 
+	// and position, scale, rotation...
 	int width = engine->window_width;
 	int height = engine->window_height;
 
@@ -122,14 +123,24 @@ void GameScene::setup()
 		cross_hair_size *= 2;
 	}
 
-	compass_ = std::make_shared<GuiTexture>(engine->loader->loadTexture("compass"), ivec2(padding, height - padding), ivec2(size));
+	compass_ = std::make_shared<GuiTexture>(
+		engine->loader->loadTexture("compass"),
+		ivec2(padding, height - padding),
+		ivec2(size)
+	);
 
 	const ivec2 center = ivec2(width / 2, height / 2);
-	cross_hair_ = std::make_shared<GuiTexture>(engine->loader->loadTexture("cross-hair"), center, ivec2(cross_hair_size));
+	cross_hair_ = std::make_shared<GuiTexture> (
+		engine->loader->loadTexture("cross-hair"),
+		center,
+		ivec2(cross_hair_size)
+	);
 
 	// text
-	auto font = std::make_shared<FontType>("maiandra");
-	frame_rate_ = std::make_shared<GuiText>("", 1.5f, font, glm::vec2(0.94f, 0.025), 1.f, false);
+	auto font = std::make_shared<FontType> ("maiandra");
+	frame_rate_ = std::make_shared<GuiText> (
+		"", 1.5f, font, glm::vec2(0.94f, 0.025), 1.f, false
+	);
 	frame_rate_->setColor(vec3(1));
 	text_master_.addText(frame_rate_);
 
@@ -137,23 +148,33 @@ void GameScene::setup()
 	guis_.insert(compass_);
 
 	// Terrains
-	auto texture_pack = Helper::makeTexturePack("green", "light-green", "green", "rocks");
-	Texture blend_map = Texture(engine->loader->loadTexture("river-blendmap"));
+	auto texture_pack = Helper::makeTexturePack (
+		"green", "light-green", "brown", "rocks"
+	);
+	Texture blend_map = Texture(engine->loader->loadTexture("river-blendmap2"));
 	Texture normal_map = Texture(engine->loader->loadTexture("rocks-normal"));
-	TerrainTexture ground_texture = TerrainTexture(texture_pack, blend_map, normal_map);
+	TerrainTexture ground_texture = TerrainTexture(
+		texture_pack, blend_map, normal_map
+	);
 	terrain_1_ = Terrain(0, -1, ground_texture, "river-heightmap");
 	environment_.addTerrain(terrain_1_);
 
 	// Player
 	Material player_material = Material();
-	auto player_model = Helper::makeModel("nibbles", "nibbles", player_material);
+	auto player_model = Helper::makeModel(
+		"nibbles", "nibbles", player_material
+	);
 
 	// Bunny player
 	
 	float player_x = 489.295f;
 	float player_z = -221.175f;
 	float player_y = terrain_1_.getHeightOfTerrain(player_x, player_z);
-	player_ = make_shared<Player>(player_model, vec3(player_x, player_y, player_z), vec3(45.f, 0, 0), 0.7f);
+	player_ = make_shared<Player>(
+		player_model,
+		vec3(player_x, player_y, player_z),
+		vec3(45.f, 0, 0), 0.7f
+	);
 	player_->setRotationOffset(180.f, 0, 0);
 	environment_.addEntity(player_);
 
@@ -163,7 +184,9 @@ void GameScene::setup()
 	environment_.setSun(sun_);
 
 	// skybox
-	skybox_ = make_shared<Skybox>("skybox-textures-day", "skybox-textures-night");
+	skybox_ = make_shared<Skybox>(
+		"skybox-textures-day", "skybox-textures-night"
+	);
 	environment_.setSkybox(skybox_);
 
 	// water
@@ -186,17 +209,26 @@ void GameScene::makeGame()
 
 	set<shared_ptr<Entity>> flower_set;
 
-	Helper::loadPositionsFromFile(terrain_1_, environment_, carrot_model, "carrot", vec3(0), 0.02f);
-	Helper::loadPositionsFromFileToSet(terrain_1_, flower_set, flower_model, "flower", vec3(0, -90.f, 0), 0.15f);
+	Helper::loadPositionsFromFile(
+		terrain_1_, environment_, carrot_model, "carrot", vec3(0), 0.02f
+	);
+	Helper::loadPositionsFromFileToSet(
+		terrain_1_, flower_set, flower_model, 
+		"flower", vec3(0, -90.f, 0), 0.15f
+	);
 	environment_.addEntitySet(flower_set);
 
 	// Position the lights above flowers
 	vec3 color = vec3(1.f, 1, 1);
 	for (const auto& flower: flower_set) {
 		vec3 flower_pos = flower->getPosition();
-		vec3 terrain_normal = terrain_1_.getNormalOfTerrain(flower_pos.x, flower_pos.z);
+		vec3 terrain_normal = terrain_1_.getNormalOfTerrain(
+			flower_pos.x, flower_pos.z
+		);
 		vec3 light_pos = flower_pos + (15.f * terrain_normal);
-		lights_.emplace_back(make_shared<Light>(light_pos, color, Light::point_light_attenuation)); // cyan
+		lights_.emplace_back(
+			make_shared<Light>(light_pos, color, Light::point_light_attenuation)
+		);
 	}
 }
 
@@ -205,7 +237,10 @@ void GameScene::makeTest()
 	Material material = Material();
 	auto flower_model = Helper::makeModel("flower", "flower", material);
 
-	Helper::loadPositionsFromFile(terrain_1_, environment_, flower_model, "test-flowers", vec3(0, -90.f, 0), 0.15f);
+	Helper::loadPositionsFromFile(
+		terrain_1_, environment_, flower_model, 
+		"test-flowers", vec3(0, -90.f, 0), 0.15f
+	);
 }
 
 void GameScene::pause()
@@ -217,61 +252,67 @@ void GameScene::pause()
 glm::mat4 GameScene::getProjectionMatrix() // TODO: why is this in game scene
 {
 	// Setting the projection matrix
-	return glm::perspective(MasterRenderer::fov, engine->aspect_ratio, MasterRenderer::near_plane, MasterRenderer::far_plane);
+	return glm::perspective(
+		MasterRenderer::fov, engine->aspect_ratio, 
+		MasterRenderer::near_plane, MasterRenderer::far_plane
+	);
 }
 
 void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 {
 	switch (key) {
 	case GLFW_KEY_TAB:
-		if (action == GLFW_RELEASE) {
+		if (action == GLFW_RELEASE)
 			pause();
-		}
 		break;
 	case GLFW_KEY_W: 
-		if (action == GLFW_PRESS) {
+		if (action == GLFW_PRESS)
 			move_keys_[Key::W] = true;
-		} else if(action == GLFW_RELEASE) {
+		else if(action == GLFW_RELEASE)
 			move_keys_[Key::W] = false;
-		}
 		break;
 	case GLFW_KEY_A: 
-		if (action == GLFW_PRESS) {
+		if (action == GLFW_PRESS)
 			move_keys_[Key::A] = true;
-		} else if(action == GLFW_RELEASE) {
+		else if(action == GLFW_RELEASE)
 			move_keys_[Key::A] = false;
-		}
 		break;
 	case GLFW_KEY_S: 
-		if (action == GLFW_PRESS) {
+		if (action == GLFW_PRESS)
 			move_keys_[Key::S] = true;
-		} else if(action == GLFW_RELEASE) {
+		else if(action == GLFW_RELEASE)
 			move_keys_[Key::S] = false;
-		}
 		break;
 	case GLFW_KEY_D: 
-		if (action == GLFW_PRESS) {
+		if (action == GLFW_PRESS)
 			move_keys_[Key::D] = true;
-		} else if(action == GLFW_RELEASE) {
+		else if(action == GLFW_RELEASE)
 			move_keys_[Key::D] = false;
-		}
 		break;
 	case GLFW_KEY_SPACE: 
-		if (action == GLFW_PRESS) {
+		if (action == GLFW_PRESS)
 			move_keys_[Key::Space] = true;
-		} else if(action == GLFW_RELEASE) {
+		else if(action == GLFW_RELEASE)
 			move_keys_[Key::Space] = false;
-		}
 		break;
 	case GLFW_KEY_ESCAPE:
 		engine->closeWindow();
 	case GLFW_KEY_L: 
 		if (action == GLFW_RELEASE) {
 			string file_name = "culling-flower";
+
 			// Create and open a text file
-			std::ofstream positions(FilePath::data_path + file_name + "-positions.txt", std::ios::app);
-			auto flower_model = Helper::makeModel("flower", "flower", Material());
-			Helper::spawnEntity(player_, environment_, flower_model, file_name, vec3(0, -90.f, 0), 0.15f);
+			std::ofstream positions(
+				FilePath::data_path + file_name + "-positions.txt",
+				std::ios::app
+			);
+			auto flower_model = Helper::makeModel(
+				"flower", "flower", Material()
+			);
+			Helper::spawnEntity(
+				player_, environment_, flower_model,
+				file_name, vec3(0, -90.f, 0), 0.15f
+			);
 		}
 		break;
 	default:

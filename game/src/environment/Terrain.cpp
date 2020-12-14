@@ -12,14 +12,28 @@ using std::vector;
 using namespace glm;
 using namespace std;
 
-Terrain::Terrain(int grid_x, int grid_z, TerrainTexture texture, const string& height_map)
-	: x_(float(grid_x) * size), z_(float(grid_z) * size), texture_(std::move(texture))
+Terrain::Terrain(
+	int grid_x,
+	int grid_z,
+	TerrainTexture texture,
+	const string& height_map
+): 
+	x_(float(grid_x) * size), 
+	z_(float(grid_z) * size),
+	texture_(std::move(texture))
 {
 	mesh_ = generate(height_map);
 }
 
 template <class Value>
-Value Terrain::barycentric(vec3 point, vec3 p1, vec3 p2, vec3 p3, Value v1, Value v2, Value v3) const
+Value Terrain::barycentric(
+	vec3 point, 
+	vec3 p1, 
+	vec3 p2,
+	vec3 p3,
+	Value v1,
+	Value v2,
+	Value v3) const
 {
 	const float area = 0.5f;
 	float u = glm::length(glm::cross(p1 - point, p2 - point)) / 2.f / area;
@@ -39,7 +53,12 @@ vec3 Terrain::getNormalOfTerrain(float world_x, float world_z) const
 	int grid_z = (int) floor(terrain_z / grid_size);
 
 	// check if actually a valid grid on the terrain
-	if (grid_x >= vertex_count_ - 1 || grid_z >= vertex_count_ - 1 || grid_x < 0 || grid_z < 0)
+	if (
+		grid_x >= vertex_count_ - 1 
+		|| grid_z >= vertex_count_ - 1 
+		|| grid_x < 0 
+		|| grid_z < 0
+	)
 		return vec3(0, 1.f, 0);
 
 	// get the x and z amount in its grid, in range [0, 1]
@@ -48,14 +67,28 @@ vec3 Terrain::getNormalOfTerrain(float world_x, float world_z) const
 
 	// check which triangle the point in is, then use barycentric interpolation to find the normal
 	vec3 answer(0.f);
-	if (x <= (1 - z)) { // left triangle
-		answer = barycentric<vec3>(vec3(x, 0, z), vec3(0, 0, 0), vec3(0, 0, 1), vec3(1, 0, 0),
-		getNormal(grid_z, grid_x), getNormal(grid_z + 1, grid_x), getNormal(grid_z, grid_x + 1));
-	}
-	else if (x > (1 - z)) { // right triangle
-		answer = barycentric<vec3>(vec3(x, 0, z), vec3(1, 0, 1), vec3(1, 0, 0), vec3(0, 0, 1),
-		getNormal(grid_z + 1, grid_x + 1), getNormal(grid_z, grid_x + 1), getNormal(grid_z + 1, grid_x));
-	}
+	// left triangle
+	if (x <= (1 - z)) 
+		answer = barycentric<vec3>(
+			vec3(x, 0, z),
+			vec3(0, 0, 0),
+			vec3(0, 0, 1),
+			vec3(1, 0, 0),
+			getNormal(grid_z, grid_x),
+			getNormal(grid_z + 1, grid_x),
+			getNormal(grid_z, grid_x + 1)
+		);
+	// right triangle
+	else if (x > (1 - z)) 
+		answer = barycentric<vec3>(
+			vec3(x, 0, z),
+			vec3(1, 0, 1),
+			vec3(1, 0, 0),
+			vec3(0, 0, 1),
+			getNormal(grid_z + 1, grid_x + 1), 
+			getNormal(grid_z, grid_x + 1), 
+			getNormal(grid_z + 1, grid_x)
+		);
 	return normalize(answer);
 }
 
@@ -70,7 +103,12 @@ float Terrain::getHeightOfTerrain(float world_x, float world_z) const
 	int grid_z = (int) floor(terrain_z / grid_size);
 
 	// check if actually a valid grid on the terrain
-	if (grid_x >= vertex_count_ - 1 || grid_z >= vertex_count_ - 1 || grid_x < 0 || grid_z < 0) 
+	if (
+		grid_x >= vertex_count_ - 1 
+		|| grid_z >= vertex_count_ - 1 
+		|| grid_x < 0 
+		|| grid_z < 0
+	) 
 		return 0;
 
 	// get the x and z amount in its grid, in range [0, 1]
@@ -79,14 +117,26 @@ float Terrain::getHeightOfTerrain(float world_x, float world_z) const
 
 	// check which triangle the point in is, then use barycentric interpolation to find the height
 	float answer = 0;
-	if (x <= (1 - z)) { // left triangle
-		answer = barycentric<float>(vec3(x, 0, z), vec3(0, 0, 0), vec3(0, 0, 1), vec3(1, 0, 0),
-			getHeight(grid_z, grid_x), getHeight(grid_z + 1, grid_x), getHeight(grid_z, grid_x + 1));
-	}
-	else { // right triangle
-		answer = barycentric<float>(vec3(x, 0, z), vec3(1, 0, 1), vec3(1, 0, 0), vec3(0, 0, 1),
-			getHeight(grid_z + 1, grid_x + 1), getHeight(grid_z, grid_x + 1), getHeight(grid_z + 1, grid_x));
-	}
+	if (x <= (1 - z)) // left triangle
+		answer = barycentric<float>(
+			vec3(x, 0, z), 
+			vec3(0, 0, 0),
+			vec3(0, 0, 1), 
+			vec3(1, 0, 0),
+			getHeight(grid_z, grid_x),
+			getHeight(grid_z + 1, grid_x),
+			getHeight(grid_z, grid_x + 1)
+		);
+	else  // right triangle
+		answer = barycentric<float>(
+			vec3(x, 0, z),
+			vec3(1, 0, 1),
+			vec3(1, 0, 0),
+			vec3(0, 0, 1),
+			getHeight(grid_z + 1, grid_x + 1),
+			getHeight(grid_z, grid_x + 1),
+			getHeight(grid_z + 1, grid_x)
+		);
 	return answer;
 }
 
@@ -95,7 +145,9 @@ Mesh Terrain::generate(const string& height_map)
 {
 	const string file_path = FilePath::texture_path + height_map + ".png";
 	int width, height, bpp; // bits per pixel
-	unsigned char* buffer = stbi_load(file_path.c_str(), &width, &height, &bpp, 3); // 3 channels, rgb
+	unsigned char* buffer = stbi_load(
+		file_path.c_str(), &width, &height, &bpp, 3
+	); 
 
 	vertex_count_ = height;
 	int count = vertex_count_ * vertex_count_;
@@ -108,26 +160,39 @@ Mesh Terrain::generate(const string& height_map)
 
 	for (int row = 0; row < vertex_count_; row++) { // row = z
 		for (int col = 0; col < vertex_count_; col++) { // col = x
-			positions_.emplace_back((float)col / ((float)vertex_count_ - 1) * size);
+			positions_.emplace_back(
+				(float)col / ((float)vertex_count_ - 1) * size
+			);
 			float ht = calculateHeight(row, col, buffer);
 			heights_.emplace_back(ht);
-			positions_.emplace_back(ht);
-			positions_.emplace_back((float)row / ((float)vertex_count_ - 1) * size);
 
-			texture_coords_.emplace_back((float)col / ((float)vertex_count_ - 1));
-			texture_coords_.emplace_back((float)row / ((float)vertex_count_ - 1));
+			positions_.emplace_back(ht);
+			positions_.emplace_back(
+				(float)row / ((float)vertex_count_ - 1) * size
+			);
+
+			texture_coords_.emplace_back(
+				(float)col / ((float)vertex_count_ - 1)
+			);
+			texture_coords_.emplace_back(
+				(float)row / ((float)vertex_count_ - 1)
+			);
 		}
 	}
 
 	// calculate normals and tangents for each point on the grid
 	for (int row = 0; row < vertex_count_; row++) {
 		for (int col = 0; col < vertex_count_; col++) {
-			vec3 normal = calculateAverageValue(row, col, &Terrain::calculateNormal);
+			vec3 normal = calculateAverageValue(
+				row, col, &Terrain::calculateNormal
+			);
 			normals_.emplace_back(normal.x);
 			normals_.emplace_back(normal.y);
 			normals_.emplace_back(normal.z);
 
-			vec3 tangent = calculateAverageValue(row, col, &Terrain::calculateTangent);
+			vec3 tangent = calculateAverageValue(
+				row, col, &Terrain::calculateTangent
+			);
 			tangents_.emplace_back(tangent.x);
 			tangents_.emplace_back(tangent.y);
 			tangents_.emplace_back(tangent.z);
@@ -152,7 +217,9 @@ Mesh Terrain::generate(const string& height_map)
 	if (buffer)
 		stbi_image_free(buffer);
 
-	return engine->loader->loadToVao(positions_, normals_, texture_coords_, tangents_, indices);
+	return engine->loader->loadToVao(
+		positions_, normals_, texture_coords_, tangents_, indices
+	);
 }
 
 float Terrain::calculateHeight(int row, int col, const unsigned char* buffer)
@@ -179,8 +246,15 @@ float Terrain::calculateHeight(int row, int col, const unsigned char* buffer)
 
 	return height;
 }
-glm::vec3 Terrain::calculateAverageValue(int row, int col,
-		void(Terrain::* calculate_function)(glm::ivec2 v0, glm::ivec2 v1, glm::ivec2 v2, std::vector<glm::vec3>& values))
+glm::vec3 Terrain::calculateAverageValue(
+	int row,
+	int col,
+	void(Terrain::* calculate_function)(
+		glm::ivec2 v0, 
+		glm::ivec2 v1,
+		glm::ivec2 v2, 
+		std::vector<glm::vec3>& values
+	)) 
 {
 	vector<vec3> neighbouring;
 
@@ -216,9 +290,17 @@ glm::vec3 Terrain::calculateAverageValue(int row, int col,
 }
 
 /* Calculates the normal of the triangle where each vertex is given in row and col of the grid */
-void Terrain::calculateNormal(ivec2 v0 , ivec2 v1, ivec2 v2, vector<vec3>& normals)
+void Terrain::calculateNormal(
+	ivec2 v0,
+	ivec2 v1,
+	ivec2 v2,
+	vector<vec3>& normals)
 {
-	if (invalidVertex(v0.x, v0.y) || invalidVertex(v1.x, v1.y) || invalidVertex(v2.x, v2.y))
+	if (
+		invalidVertex(v0.x, v0.y) 
+		|| invalidVertex(v1.x, v1.y) 
+		|| invalidVertex(v2.x, v2.y)
+	)
 		return;
 
 	vec3 p0 = getPosition(v0.x, v0.y);
@@ -232,9 +314,17 @@ void Terrain::calculateNormal(ivec2 v0 , ivec2 v1, ivec2 v2, vector<vec3>& norma
 }
 
 /* Calculates the tangent of the triangle where each vertex is given in row and col of the grid */
-void Terrain::calculateTangent(ivec2 v0 , ivec2 v1, ivec2 v2, vector<vec3>& tangents)
+void Terrain::calculateTangent(
+	ivec2 v0,
+	ivec2 v1,
+	ivec2 v2,
+	vector<vec3>& tangents)
 {
-	if (invalidVertex(v0.x, v0.y) || invalidVertex(v1.x, v1.y) || invalidVertex(v2.x, v2.y))
+	if (
+		invalidVertex(v0.x, v0.y)
+		|| invalidVertex(v1.x, v1.y)
+		|| invalidVertex(v2.x, v2.y)
+	)
 		return;
 
 	vec3 p0 = getPosition(v0.x, v0.y);
@@ -268,13 +358,21 @@ vec2 Terrain::getTextureCoordinate(int row, int col) const
 vec3 Terrain::getPosition(int row, int col) const
 {
 	int index = 3 * (row * vertex_count_ + col); // 3 channels
-	return vec3(positions_.at(index), positions_.at(index + 1), positions_.at(index + 2));
+	return vec3(
+		positions_.at(index),
+		positions_.at(index + 1),
+		positions_.at(index + 2)
+	);
 }
 
 vec3 Terrain::getNormal(int row, int col) const
 {
 	int index = 3 * (row * vertex_count_ + col); // 3 channels
-	return vec3(normals_.at(index), normals_.at(index + 1), normals_.at(index + 2));
+	return vec3(
+		normals_.at(index),
+		normals_.at(index + 1),
+		normals_.at(index + 2)
+	);
 }
 
 float Terrain::getHeight(int x, int z) const

@@ -17,12 +17,21 @@ in VertexData {
 
 out vec4 outColor;
 
-void main() {
-    float distance = 1.0 - texture(textureAtlas, f_in.textureCoords).a; // get distance information
-    float alpha = 1.0 - smoothstep(uCharacterWidth, uCharacterWidth + uEdgeTransition, distance);
-    float outlineAlpha = 1.0 - smoothstep(uBorderWidth, uBorderWidth + uBorderEdgeTransition, distance);
+void main() 
+{
+	// get distance information
+    float distance = 1.0 - texture(textureAtlas, f_in.textureCoords).a; 
+    float alpha = (
+		1.0 - 
+		smoothstep(uCharacterWidth, uCharacterWidth + uEdgeTransition, distance)
+	);
+    float outlineAlpha = (
+		1.0 - 
+		smoothstep(uBorderWidth, uBorderWidth + uBorderEdgeTransition, distance)
+	);
 
-    if (uEdgeTransition < uBorderEdgeTransition) { // add glow effect
+	// add glow effect
+    if (uEdgeTransition < uBorderEdgeTransition) { 
         float amount = (distance - uBorderWidth) / uBorderEdgeTransition;
         outlineAlpha = pow(10000, -amount);
         outlineAlpha = max(outlineAlpha - 0.01, 0);

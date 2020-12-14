@@ -12,7 +12,9 @@ Timer::Timer()
 using namespace std::chrono;
 long long Timer::getCurrentTime()
 {
-	milliseconds ms = duration_cast<milliseconds>(system_clock::now().time_since_epoch());
+	milliseconds ms = duration_cast<milliseconds> (
+		system_clock::now().time_since_epoch()
+	);
 	return ms.count();
 }
 
@@ -30,7 +32,8 @@ void Timer::updateTime()
 void Timer::calculateDelta()
 {
 	current_frame_time_ = getCurrentTime();
-	frame_delta = float(current_frame_time_ - previous_frame_time_) / 1000.f; // in seconds
+	// in seconds
+	frame_delta = float(current_frame_time_ - previous_frame_time_) / 1000.f; 
 }
 
 void Timer::updateFps()

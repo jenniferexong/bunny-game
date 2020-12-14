@@ -15,7 +15,7 @@ void Contrast::renderToFbo(int texture, std::weak_ptr<Fbo> fbo)
 		fbo.lock()->bind();
 
 	glClear(GL_COLOR_BUFFER_BIT);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); // quad
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); 
 
 	if (!fbo.expired())
 		fbo.lock()->unbind();
@@ -28,17 +28,22 @@ void HorizontalBlur::renderToFbo(int texture, std::weak_ptr<Fbo> fbo)
 	prepare(texture);
 
 	float target_width;
+	// rendering to fbo
 	if (!fbo.expired()) {
 		fbo.lock()->bind();
 		target_width = (float)fbo.lock()->getWidth();
-	} else { // rendering to screen
-		target_width = (float)engine->window_width / PostProcessor::blur_strength;
+	} 
+	// rendering to screen
+	else { 
+		target_width = (
+			(float)engine->window_width / PostProcessor::blur_strength
+		);
 	}
 
 	h_shader_->loadUniforms(target_width);
 
 	glClear(GL_COLOR_BUFFER_BIT);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); // single quad
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	if (!fbo.expired())
 		fbo.lock()->unbind();
@@ -51,17 +56,22 @@ void VerticalBlur::renderToFbo(int texture, std::weak_ptr<Fbo> fbo)
 	prepare(texture);
 
 	float target_height;
+	// rendering to fbo
 	if (!fbo.expired()) {
 		fbo.lock()->bind();
 		target_height = (float)fbo.lock()->getHeight();
-	} else { // rendering to screen
-		target_height = (float)engine->window_height / PostProcessor::blur_strength;
+	} 
+	// rendering to screen
+	else { 
+		target_height = (
+			(float)engine->window_height / PostProcessor::blur_strength
+		);
 	}
 
 	v_shader_->loadUniforms(target_height);
 
 	glClear(GL_COLOR_BUFFER_BIT);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); // single quad
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	if (!fbo.expired())
 		fbo.lock()->unbind();

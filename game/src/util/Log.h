@@ -35,7 +35,7 @@ namespace Log {
  * Prints a message before exiting program
  */
 namespace Error {
-	static constexpr char line[] = "#################################################";
+	static constexpr char line[] = "#########################################";
 
 	void file(const std::string& type, const std::string& path);
 

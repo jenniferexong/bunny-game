@@ -10,10 +10,8 @@
 #include "../ui/TextMaster.h"
 
 using std::string;
-using std::map;
 using std::weak_ptr;
 using std::unordered_set;
-using std::vector;
 
 class MasterRenderer;
 
@@ -23,9 +21,12 @@ protected:
 	TextMaster text_master_;
 
 public:
-	virtual const unordered_set<weak_ptr<GuiTexture>>& getGuis() const { return guis_; }
-	virtual const TextMaster& getText() { return text_master_; }
 	virtual ~Scene() = default;
+	virtual const TextMaster& getText() { return text_master_; }
+	virtual const unordered_set<weak_ptr<GuiTexture>>& getGuis() const 
+	{ 
+		return guis_; 
+	}
 
 	virtual bool update() = 0;
 	virtual void init() = 0;

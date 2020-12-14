@@ -43,7 +43,9 @@ int Application::run()
 
     engine = make_unique<Engine>();
 
-    GLFWwindow* window = glfwCreateWindow(engine->window_width, engine->window_height, "", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(
+		engine->window_width, engine->window_height, "", NULL, NULL
+	);
     if (!window) {
 		Error::exit("GLFW window failure");
         glfwTerminate();
@@ -136,19 +138,24 @@ void Callbacks::cursorPos(GLFWwindow* window, double x, double y)
 		app->appCursorPosCallback(x, y);
 }
 
-void Callbacks::mouseButton(GLFWwindow* window, int button, int action, int mods)
+void Callbacks::mouseButton(
+		GLFWwindow* window, 
+		int button, int action, int mods)
 {
 	if(glfwGetWindowAttrib(window, GLFW_FOCUSED))
 		app->appMouseButtonCallback(button, action, mods);
 }
 
-void Callbacks::scroll(GLFWwindow* window, double x_offset, double y_offset)
+void Callbacks::scroll(
+		GLFWwindow* window,
+		double x_offset, double y_offset)
 {
 	if(glfwGetWindowAttrib(window, GLFW_FOCUSED))
 		app->appScrollCallBack(x_offset, y_offset);
 }
 
-void Callbacks::key(GLFWwindow* window, int key, int scan_code, int action, int mods)
+void Callbacks::key(GLFWwindow* window, 
+		int key, int scan_code, int action, int mods)
 {
 	if(glfwGetWindowAttrib(window, GLFW_FOCUSED))
 		app->appKeyCallback(key, scan_code, action, mods);

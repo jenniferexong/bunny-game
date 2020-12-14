@@ -22,13 +22,17 @@ private:
 	std::vector<std::string> night_texture_names;
 
 public:
+	Skybox(const std::string& day_textures, const std::string& night_textures);
 	Skybox() = default;
 	~Skybox() = default;
-	Skybox(const std::string& day_textures, const std::string& night_textures);
 
 	void update(std::weak_ptr<Light> sun);
+
 	int getDayTexture() const { return day_texture_id_; }
 	int getNightTexture() const { return night_texture_id_; }
-	glm::ivec2 getTextures() const { return glm::ivec2(texture_1_, texture_2_); }
 	float getBlendFactor() const { return blend_factor_; }
+	glm::ivec2 getTextures() const 
+	{ 
+		return glm::ivec2(texture_1_, texture_2_);
+	}
 };

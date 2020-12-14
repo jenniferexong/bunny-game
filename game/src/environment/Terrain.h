@@ -29,14 +29,39 @@ private:
 	Mesh generate(const std::string& height_map);
 
 	template <class Value>
-	Value barycentric(glm::vec3 point, glm::vec3 p1, glm::vec3 p2, glm::vec3 p3, Value v1, Value v2, Value v3) const;
+	Value barycentric(
+		glm::vec3 point, 
+		glm::vec3 p1, 
+		glm::vec3 p2,
+		glm::vec3 p3, 
+		Value v1,
+		Value v2,
+		Value v3
+	) const;
 
 	float calculateHeight(int row, int col, const unsigned char* buffer);
 
-	glm::vec3 calculateAverageValue(int row, int col,
-		void(Terrain::* calculate_function)(glm::ivec2 v0, glm::ivec2 v1, glm::ivec2 v2, std::vector<glm::vec3>& values));
-	void calculateNormal(glm::ivec2 v0, glm::ivec2 v1, glm::ivec2 v2, std::vector<glm::vec3>& normals);
-	void calculateTangent(glm::ivec2 v0, glm::ivec2 v1, glm::ivec2 v2, std::vector<glm::vec3>& tangents);
+	glm::vec3 calculateAverageValue(
+		int row, int col,
+		void(Terrain::* calculate_function)(
+			glm::ivec2 v0,
+			glm::ivec2 v1,
+			glm::ivec2 v2,
+			std::vector<glm::vec3>& values
+		)
+	);
+	void calculateNormal(
+		glm::ivec2 v0,
+		glm::ivec2 v1,
+		glm::ivec2 v2,
+		std::vector<glm::vec3>& normals
+	);
+	void calculateTangent(
+		glm::ivec2 v0,
+		glm::ivec2 v1,
+		glm::ivec2 v2,
+		std::vector<glm::vec3>& tangents
+	);
 
 	glm::vec3 getPosition(int row, int col) const;
 	glm::vec3 getNormal(int row, int col) const;
@@ -46,8 +71,13 @@ private:
 	bool invalidVertex(int row, int col);
 
 public:
+	Terrain(
+		int grid_x,
+		int grid_z,
+		TerrainTexture texture,
+		const std::string& height_map
+	);
 	Terrain() : vertex_count_(0), x_(0), z_(0) {}
-	Terrain(int grid_x, int grid_z, TerrainTexture texture, const std::string& height_map);
 	~Terrain() = default;
 
 	float getX() const { return x_; }

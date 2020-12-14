@@ -69,8 +69,16 @@ private:
 	double x_advance_ = 0;
 
 public:
+	Character(
+		int id,
+		dvec2 texture_coords,
+		dvec2 texture_size,
+		dvec2 offset,
+		dvec2 quad_size,
+		double x_advance
+	);
+
 	Character() = default;
-	Character(int id, dvec2 texture_coords, dvec2 texture_size, dvec2 offset, dvec2 quad_size, double x_advance);
 	~Character() = default;
 
 	int getId() const { return id_; }
