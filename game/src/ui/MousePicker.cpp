@@ -17,7 +17,8 @@ std::weak_ptr<Entity> MousePicker::selectEntity(Environment& environment)
 	float max_distance = 1000.f;
 	float min_distance = std::numeric_limits<float>::max();
 
-	// iterate through all the entities and check for ray intersection with its bounding sphere
+	// iterate through all the entities and check for ray intersection 
+	// with its bounding sphere
 	for (const auto& element: environment.getEntitiesInView()) {
 		for (const auto& e: element.second) {
 			RayIntersection intersect = getIntersection(e);
@@ -26,10 +27,12 @@ std::weak_ptr<Entity> MousePicker::selectEntity(Environment& environment)
 			if (intersect.valid_intersection) {
 				float distance = glm::length(current_ray_origin_ 
 						- intersect.intersection_point);
-				if (e.lock()->isSelectable() && distance < min_distance 
-						&& distance < max_distance) {
+				if (
+					e.lock()->isSelectable() 
+					&& distance < min_distance 
+					&& distance < max_distance
+				) 
 					selected = e;
-				}
 			}	
 		}
 	}
@@ -76,7 +79,8 @@ RayIntersection MousePicker::getIntersection(weak_ptr<Entity> entity)
 	if (t < min_t && t > 0)
 		min_t = t;
 
-	if (min_t >= std::numeric_limits<float>::max()) // no valid intersection
+	// no valid intersection
+	if (min_t >= std::numeric_limits<float>::max()) 
 		return {};
 
 	// calculate point of intersection 

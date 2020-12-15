@@ -11,6 +11,14 @@
 #include "../Location.h"
 #include "../Utility.h"
 
+EntityRenderer::EntityRenderer(std::shared_ptr<EntityShader> shader): 
+	shader_(std::move(shader))
+{
+	shader_->start();
+	shader_->connectTextureUnits();
+	shader_->stop();
+}
+
 void EntityRenderer::render(const Environment& environment)
 {
 	for (const auto& element : environment.getEntitiesInView()) {
@@ -77,6 +85,7 @@ void EntityRenderer::renderInstanced(const Environment& environment)
 		);
 		unbindTexturedModel();
 	}
+	Error::gl_check("EntityRenderer renderInstanced");
 }
 
 void EntityRenderer::loadColors(
@@ -136,7 +145,6 @@ void EntityRenderer::prepareTexturedModel(const TexturedModel& model)
 	if (texture.getMaterial().has_transparency)
 		MasterRenderer::disableCulling();
 
-
 	glBindVertexArray(mesh.getId());
 	glEnableVertexAttribArray(AttributeLocation::Position);
 	glEnableVertexAttribArray(AttributeLocation::Normal);
@@ -151,8 +159,14 @@ void EntityRenderer::prepareTexturedModel(const TexturedModel& model)
 	
 	shader_->loadMaterial(texture.getMaterial());
 
-	glActiveTexture(GL_TEXTURE0);
+	glActiveTexture(GL_TEXTURE0 + EntityTextureLocation::DiffuseMap);
 	glBindTexture(GL_TEXTURE_2D, texture.getTextureId());
+
+	if (texture.getMaterial().hasGlowMap()) {
+		glActiveTexture(GL_TEXTURE0 + EntityTextureLocation::GlowMap);
+		glBindTexture(GL_TEXTURE_2D, texture.getMaterial().glow_map_);
+	}
+	Error::gl_check("EntityRenderer prepareTexturedModel");
 }
 
 void EntityRenderer::unbindTexturedModel()
@@ -166,6 +180,7 @@ void EntityRenderer::unbindTexturedModel()
 	glDisableVertexAttribArray(AttributeLocation::ModelMatrixColumn3);
 	glDisableVertexAttribArray(AttributeLocation::ModelMatrixColumn4);
 	glDisableVertexAttribArray(AttributeLocation::ModelBrightness);
+	glBindTexture(GL_TEXTURE_2D, 0);
 	glBindVertexArray(0);
 }
 

@@ -1,4 +1,3 @@
-
 #include "EntityShader.h"
 
 #include "../renderers/MasterRenderer.h"
@@ -10,6 +9,19 @@ void EntityShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
 	Error::gl_check(name);
+}
+
+void EntityShader::connectTextureUnits()
+{
+	loadInt(
+		locations_.at(UniformVariable::DiffuseMap),
+		EntityTextureLocation::DiffuseMap
+	);
+	loadInt(
+		locations_.at(UniformVariable::GlowMap),
+		EntityTextureLocation::GlowMap
+	);
+	Error::gl_check("EntityShader connectTextureUnits");
 }
 
 void EntityShader::bindAttributes()
@@ -39,6 +51,9 @@ void EntityShader::getAllUniformLocations()
 	INSERT_LOC(FogColor, "uFogColor");
 	INSERT_LOC(SunStrength, "uSunStrength");
 	INSERT_LOC(ClippingPlane, "uClippingPlane");
+	INSERT_LOC(DiffuseMap, "uDiffuseMap");
+	INSERT_LOC(GlowMap, "uGlowMap");
+	Error::gl_check("EntityShader getAllUniformLocations");
 }
 
 void EntityShader::loadUniformPerFrame(
@@ -92,6 +107,7 @@ void EntityShader::loadUniformPerFrame(
 	 
 	// Sky colour
 	//loadVector(locations_.at(UniformVariable::FogColor), Application::fog_color);
+	Error::gl_check("EntityShader loadUniformPerFrame");
 }
 
 void EntityShader::loadModelMatrix(const Entity& entity) const
@@ -104,6 +120,7 @@ void EntityShader::loadModelMatrix(const Entity& entity) const
 		entity.getAlignmentRotation()
 	);
 	loadMatrix(locations_.at(UniformVariable::TransformationMatrix), t_matrix);
+	Error::gl_check("EntityShader loadModelMatrix");
 }
 
 void EntityShader::loadMaterial(const Material& material) const
@@ -118,5 +135,6 @@ void EntityShader::loadMaterial(const Material& material) const
 	loadBoolean(
 		locations_.at(UniformVariable::FakeLighting), material.uses_fake_lighting
 	);
+	Error::gl_check("EntityShader loadMaterial");
 }
 

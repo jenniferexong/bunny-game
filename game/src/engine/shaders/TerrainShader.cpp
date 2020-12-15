@@ -37,7 +37,6 @@ void TerrainShader::getAllUniformLocations()
 	INSERT_LOC(ShineDamper, "uShineDamper");
 	INSERT_LOC(FogColor, "uFogColor");
 	INSERT_LOC(SunStrength, "uSunStrength");
-	INSERT_LOC(SunStrength, "uSunStrength");
 	INSERT_LOC(BaseTexture, "uBaseTexture");
 	INSERT_LOC(RedTexture, "uRedTexture");
 	INSERT_LOC(GreenTexture, "uGreenTexture");
@@ -53,13 +52,11 @@ void TerrainShader::loadUniformPerFrame(
 	glm::vec4 clipping_plane) const
 {
 	glm::mat4 v_matrix = Maths::createViewMatrix(
-		*environment.getCamera().lock()
-	);
+		*environment.getCamera().lock());
 	// View matrix
 	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
 	loadMatrix(
-		locations_.at(UniformVariable::InverseViewMatrix), inverse(v_matrix)
-	);
+		locations_.at(UniformVariable::InverseViewMatrix), inverse(v_matrix));
 
 	// Loading light variables
 	int num_lights = environment.getLights().size();
@@ -72,8 +69,7 @@ void TerrainShader::loadUniformPerFrame(
 	for (const auto& l : environment.getLights()) {
 		// in eye space
 		positions.emplace_back(
-			vec3(v_matrix * glm::vec4(l.lock()->getPosition(), 1.f))
-		);  
+			vec3(v_matrix * glm::vec4(l.lock()->getPosition(), 1.f)));  
 		colors.emplace_back(l.lock()->getColor());
 		attenuations.emplace_back(l.lock()->getAttenuation());
 	}
@@ -120,11 +116,9 @@ void TerrainShader::loadMaterial(const Material& material) const
 {
 	// Loading shine values
 	loadFloat(
-		locations_.at(UniformVariable::Reflectivity), material.reflectivity
-	);
+		locations_.at(UniformVariable::Reflectivity), material.reflectivity);
 	loadFloat(
-		locations_.at(UniformVariable::ShineDamper), material.shine_damper
-	);
+		locations_.at(UniformVariable::ShineDamper), material.shine_damper);
 
 	Error::gl_check("TerrainShader loadMaterial");
 }
@@ -132,23 +126,17 @@ void TerrainShader::loadMaterial(const Material& material) const
 void TerrainShader::connectTextureUnits() const
 {
 	loadInt(
-		locations_.at(UniformVariable::BaseTexture), TextureLocation::Base
-	);
+		locations_.at(UniformVariable::BaseTexture), TextureLocation::Base);
 	loadInt(
-		locations_.at(UniformVariable::RedTexture), TextureLocation::Red
-	);
+		locations_.at(UniformVariable::RedTexture), TextureLocation::Red);
 	loadInt(
-		locations_.at(UniformVariable::GreenTexture), TextureLocation::Green
-	);
+		locations_.at(UniformVariable::GreenTexture), TextureLocation::Green);
 	loadInt(
-		locations_.at(UniformVariable::BlueTexture), TextureLocation::Blue
-	);
+		locations_.at(UniformVariable::BlueTexture), TextureLocation::Blue);
 	loadInt(
-		locations_.at(UniformVariable::BlendMap), TextureLocation::BlendMap
-	);
+		locations_.at(UniformVariable::BlendMap), TextureLocation::BlendMap);
 	loadInt(
-		locations_.at(UniformVariable::NormalMap), TextureLocation::NormalMap
-	);
+		locations_.at(UniformVariable::NormalMap), TextureLocation::NormalMap);
 
 	Error::gl_check("TerrainShader connectTextureUnits");
 }

@@ -80,7 +80,7 @@ void Skybox::update(std::weak_ptr<Light> sun)
 			- (blend_factor_ * (Light::max_sunlight - Light::min_sunlight))
 		);
 	}
-	//sun.lock()->setColor(glm::vec3(sunlight));
+	sun.lock()->setColor(glm::vec3(sunlight));
 }
 
 

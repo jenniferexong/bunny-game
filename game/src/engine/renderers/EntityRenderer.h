@@ -34,8 +34,7 @@ private:
 	);
 
 public:
-	EntityRenderer(std::shared_ptr<EntityShader> shader): 
-		shader_(std::move(shader)) {}
+	EntityRenderer(std::shared_ptr<EntityShader> shader);
 
 	EntityRenderer(): shader_(nullptr) {}
 	~EntityRenderer() = default;

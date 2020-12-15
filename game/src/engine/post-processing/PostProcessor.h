@@ -31,7 +31,8 @@ private:
 	std::shared_ptr<Contrast> contrast_;
 
 	void process(
-		const processor_pipeline& processors, const fbo_pipeline& fbos
+		const processor_pipeline& processors,
+		const fbo_pipeline& fbos
 	);
 	void prepare();
 	void finish();

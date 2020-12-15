@@ -49,8 +49,8 @@ void main()
     v_out.textureCoords = aTextureCoords;
     v_out.modelBrightness = aModelBrightness;
 
-    // fog calculations
-    //float distance = length(positionRelativeToCamera.xyz);
+    // fog calculations 
+    // float distance = length(positionRelativeToCamera.xyz); 
     //v_out.visibility = 
 	//clamp(exp(-pow(distance * density, fogGradient)), 0.0, 1.0);
 }

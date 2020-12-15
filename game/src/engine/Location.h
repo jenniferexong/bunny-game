@@ -7,6 +7,12 @@ namespace AttributeLocation {
 	};
 }
 
+namespace EntityTextureLocation {
+	enum Location {
+		DiffuseMap = 0, GlowMap = 1
+	};
+}
+
 namespace TextAttributeLocation {
 	enum Location {
 		Position = 0, Texture = 1
@@ -24,7 +30,6 @@ namespace WaterTextureLocation {
 		Reflection = 0, Refraction = 1, DistortionMap = 2, NormalMap = 3, DepthMap = 4
 	};
 }
-
 
 namespace TextureLocation {
 	enum Location { Base = 0, Red = 1, Green = 2, Blue = 3, BlendMap = 4, NormalMap = 5 };

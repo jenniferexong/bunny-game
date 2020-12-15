@@ -14,7 +14,7 @@ private:
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
 		LightPosition, LightColor, LightCount, MaxLights, Attenuation,
 		Reflectivity, ShineDamper, FakeLighting, FogColor, SunStrength,
-		ClippingPlane
+		ClippingPlane, DiffuseMap, GlowMap
 	};
 
 	static constexpr char name[] = "EntityShader";
@@ -29,6 +29,7 @@ protected:
 
 public:
 	void setUp() override;
+	void connectTextureUnits();
 	void loadUniformPerFrame(
 		const Environment& environment,
 		glm::vec4 clipping_plane

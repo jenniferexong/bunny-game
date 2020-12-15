@@ -69,13 +69,13 @@ void main()
 		* distortionStrength
 	);
 	// less distortion if water depth is < 20
-    totalDistortion *= clamp(waterDepth/28.0, 0.0, 1.0); 
+    totalDistortion *= clamp(waterDepth/40.0, 0.0, 1.0); 
 
     reflectionCoords += totalDistortion;
     refractionCoords += totalDistortion;
-    refractionCoords = clamp(refractionCoords, 0.01, 0.99);
-    reflectionCoords.x = clamp(reflectionCoords.x, 0.01, 0.99);
-    reflectionCoords.y = clamp(reflectionCoords.y, -0.99, -0.01);
+	refractionCoords = clamp(refractionCoords, 0.001, 0.999);
+    reflectionCoords.x = clamp(reflectionCoords.x, 0.001, 0.999);
+    reflectionCoords.y = clamp(reflectionCoords.y, -0.999, -0.001);
 
     vec4 reflectionColor = texture(uReflection, reflectionCoords);
     vec4 refractionColor = texture(uRefraction, refractionCoords);
@@ -93,6 +93,7 @@ void main()
     // Fresnel effect
     vec3 toCamera = normalize(f_in.toCamera);
     float fresnel = dot(toCamera, normal);
+	fresnel = pow(fresnel, 0.5);
 
 	// blue
     vec4 finalColor = mix(reflectionColor, refractionColor, fresnel); 
@@ -111,6 +112,6 @@ void main()
 		mix(finalColor, vec4(0.0, 0.1, 0.1, 1), 0.1) 
 		+ vec4(specular, 0.0)
 	);
-    finalColor.a = clamp(waterDepth/2.0, 0.1, 1.0);
+    finalColor.a = clamp(waterDepth/4.0, 0.1, 1.0);
     outColor = finalColor;
 }

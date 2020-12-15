@@ -235,6 +235,7 @@ void GameScene::makeGame()
 void GameScene::makeTest()
 {
 	Material material = Material();
+	material.setGlowMap("flower-glow");
 	auto flower_model = Helper::makeModel("flower", "flower", material);
 
 	Helper::loadPositionsFromFile(

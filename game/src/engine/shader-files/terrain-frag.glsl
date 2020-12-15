@@ -70,10 +70,9 @@ void main()
     toCamera = normalize(toCamera);
 
     // Light calculation
-    float ambientStrength = 0.5;
-    //vec3 ambient = ambientStrength * uSunStrength;
-    //vec3 ambient = vec3(ambientStrength) * uSunStrength;
-    vec3 ambient = vec3(0);
+    float ambientStrength = 0.7;
+	vec3 ambient = ambientStrength * uSunStrength;
+	ambient = vec3(0);
 
     vec3 diffuse = vec3(0);
     vec3 specular = vec3(0);
@@ -97,6 +96,7 @@ void main()
         float spec = pow(max(dot(toCamera, reflectDir), 0.0), uShineDamper);
         specular += (uReflectivity * spec * uLightColor[i]) / attenuationFactor;
     }
+	diffuse = max(diffuse, 0.2);
 
     vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * totalColor);
     outColor = vec4(result, 1.0);

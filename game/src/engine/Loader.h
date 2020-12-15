@@ -31,11 +31,20 @@ public:
 	Loader() { Log::init("Loader", true); }
 	~Loader();
 
-	Mesh loadToVao(const vector<float>& positions, const vector<float>& normals, 
-		const vector<float>& texture_coords, const vector<int>& indices);
+	Mesh loadToVao(
+		const vector<float>& positions,
+		const vector<float>& normals,
+		const vector<float>& texture_coords,
+		const vector<int>& indices
+	);
 
-	Mesh loadToVao(const vector<float>& positions, const vector<float>& normals, 
-		const vector<float>& texture_coords, const vector<float>& tangents, const vector<int>& indices);
+	Mesh loadToVao(
+		const vector<float>& positions,
+		const vector<float>& normals, 
+		const vector<float>& texture_coords,
+		const vector<float>& tangents,
+		const vector<int>& indices
+	);
 
 	Mesh loadToVao(const vector<float>& positions, int dimensions);
 
