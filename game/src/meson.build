@@ -20,6 +20,7 @@ all_src = [
     engine,
         models,
         post_processing,
+			post_processing_shaders,
         renderers,
         shaders,
         text,

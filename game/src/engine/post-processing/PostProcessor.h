@@ -2,8 +2,14 @@
 #include <vector>
 
 #include "Fbo.h"
-#include "ImageProcessor.h"
 #include "../models/Mesh.h"
+
+class ImageProcessor;
+class HorizontalBlur;
+class VerticalBlur;
+class Contrast;
+class BrightFilter;
+class CombineFilter;
 
 using processor_pipeline = std::vector<std::weak_ptr<ImageProcessor>>;
 using fbo_pipeline = std::vector<std::weak_ptr<Fbo>>;
@@ -22,6 +28,8 @@ private:
 	std::shared_ptr<Fbo> blur_fbo_h_;
 	std::shared_ptr<Fbo> blur_fbo_v_;
 
+	std::shared_ptr<Fbo> bright_fbo_;
+
 	// used for background of pause screen (don't resize on window resize!)
 	std::shared_ptr<Fbo> blur_output_;
 
@@ -29,6 +37,8 @@ private:
 	std::shared_ptr<HorizontalBlur> horizontal_blur_;
 	std::shared_ptr<VerticalBlur> vertical_blur_;
 	std::shared_ptr<Contrast> contrast_;
+	std::shared_ptr<BrightFilter> bright_;
+	std::shared_ptr<CombineFilter> combine_;
 
 	void process(
 		const processor_pipeline& processors,
@@ -46,6 +56,7 @@ public:
 
 	void startProcessing() { multisample_fbo_->bind(); }
 	void antiAliasToScreen();
+	void bloomEffect();
 	void blur();
 	void blurToFbo();
 

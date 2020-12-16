@@ -2,14 +2,14 @@
 
 #include <unordered_map>
 
-#include "../shaders/Shader.h"
+#include "../../shaders/Shader.h"
 
 class ContrastShader final : public Shader {
 
 	enum class UniformVariable { };
 
 	static constexpr char name[] = "ContrastShader";
-	static constexpr char vertex_file[] = "post-processing/contrast-vert";
+	static constexpr char vertex_file[] = "post-processing/default-vert";
 	static constexpr char fragment_file[] = "post-processing/contrast-frag";
 
 	std::unordered_map<UniformVariable, int, EnumHash> locations_;

@@ -1,7 +1,7 @@
 ﻿#include "ContrastShader.h"
 
-#include "../Location.h"
-#include "../Utility.h"
+#include "../../Location.h"
+#include "../../Utility.h"
 
 void ContrastShader::bindAttributes()
 {

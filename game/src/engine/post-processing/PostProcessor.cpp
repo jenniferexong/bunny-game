@@ -4,6 +4,7 @@
 
 #include <memory>
 
+#include "ImageProcessor.h"
 #include "../Application.h"
 #include "../Utility.h"
 #include "../Location.h"
@@ -24,27 +25,44 @@ PostProcessor::PostProcessor()
 
 	multisample_fbo_ = make_shared<Fbo>(width, height);
 	antialias_fbo_ = make_shared<Fbo>(
-		width, height, DepthBufferAttachment::DepthTexture
-	);
+		width, height, DepthBufferAttachment::DepthTexture);
 
 	int blur_width = width / PostProcessor::blur_strength;
 	int blur_height = height / PostProcessor::blur_strength;
 
 	blur_output_ = make_shared<Fbo>(
-		width, height, DepthBufferAttachment::None
-	);
+		width, height, DepthBufferAttachment::None);
 	blur_fbo_h_ = make_shared<Fbo>(
-		blur_width, blur_height, DepthBufferAttachment::None
-	);
+		blur_width, blur_height, DepthBufferAttachment::None);
 	blur_fbo_v_ = make_shared<Fbo>(
-		blur_width, blur_height, DepthBufferAttachment::None
-	);
+		blur_width, blur_height, DepthBufferAttachment::None);
+
+	bright_fbo_ = make_shared<Fbo>(
+		width/2, height/2, DepthBufferAttachment::None);
 
 	horizontal_blur_ = make_shared<HorizontalBlur>();
 	vertical_blur_ = make_shared<VerticalBlur>();
 	contrast_ = make_shared<Contrast>();
+	bright_ = make_shared<BrightFilter>();
+	combine_ = make_shared<CombineFilter>(
+		antialias_fbo_->getColorTexture(),
+		blur_fbo_v_->getColorTexture()
+	);
 
 	Log::init("PostProcessor", true);
+}
+
+void PostProcessor::bloomEffect() 
+{
+	multisample_fbo_->unbind();
+	multisample_fbo_->resolveToFbo(*antialias_fbo_);
+
+	prepare();
+	process(
+		{ bright_, horizontal_blur_, vertical_blur_, combine_ },
+		{ antialias_fbo_, bright_fbo_, blur_fbo_h_, blur_fbo_v_, empty_fbo_ }
+	);
+	finish();
 }
 
 void PostProcessor::antiAliasToScreen()
@@ -98,6 +116,7 @@ void PostProcessor::resizeFbos(int width, int height)
 	int blur_height = height / PostProcessor::blur_strength;
 	blur_fbo_h_->resize(blur_width, blur_height);
 	blur_fbo_v_->resize(blur_width, blur_height);
+	bright_fbo_->resize(width/2, height/2);
 }
 
 void PostProcessor::prepare()

@@ -55,7 +55,8 @@ void GameScene::render(bool pause)
 		return;
 	}
 
-	engine->post_processor->antiAliasToScreen();
+	//engine->post_processor->antiAliasToScreen();
+	engine->post_processor->bloomEffect();
 
 	engine->renderer->renderGui(guis_);
 	engine->renderer->renderText(text_master_);
@@ -97,7 +98,7 @@ void GameScene::gameLogic()
 	environment_.updateInView();
 
 	selected_ = mouse_picker_.selectEntity(environment_);
-	if (selected_.lock() != nullptr) 
+	if (!selected_.expired())
 		selected_.lock()->highlight();
 
 	frame_rate_->updateText("FPS: " + std::to_string((int)app->timer->fps));
@@ -139,8 +140,7 @@ void GameScene::setup()
 	// text
 	auto font = std::make_shared<FontType> ("maiandra");
 	frame_rate_ = std::make_shared<GuiText> (
-		"", 1.5f, font, glm::vec2(0.94f, 0.025), 1.f, false
-	);
+		"", 1.5f, font, glm::vec2(0.94f, 0.025), 1.f, false);
 	frame_rate_->setColor(vec3(1));
 	text_master_.addText(frame_rate_);
 
@@ -149,21 +149,19 @@ void GameScene::setup()
 
 	// Terrains
 	auto texture_pack = Helper::makeTexturePack (
-		"green", "light-green", "brown", "rocks"
-	);
+		"green", "light-green", "brown", "rocks");
 	Texture blend_map = Texture(engine->loader->loadTexture("river-blendmap2"));
 	Texture normal_map = Texture(engine->loader->loadTexture("rocks-normal"));
 	TerrainTexture ground_texture = TerrainTexture(
-		texture_pack, blend_map, normal_map
-	);
+		texture_pack, blend_map, normal_map);
 	terrain_1_ = Terrain(0, -1, ground_texture, "river-heightmap");
 	environment_.addTerrain(terrain_1_);
 
 	// Player
 	Material player_material = Material();
+	player_material.setGlowMap("black");
 	auto player_model = Helper::makeModel(
-		"nibbles", "nibbles", player_material
-	);
+		"nibbles", "nibbles", player_material);
 
 	// Bunny player
 	
@@ -185,8 +183,7 @@ void GameScene::setup()
 
 	// skybox
 	skybox_ = make_shared<Skybox>(
-		"skybox-textures-day", "skybox-textures-night"
-	);
+		"skybox-textures-day", "skybox-textures-night");
 	environment_.setSkybox(skybox_);
 
 	// water
@@ -210,8 +207,7 @@ void GameScene::makeGame()
 	set<shared_ptr<Entity>> flower_set;
 
 	Helper::loadPositionsFromFile(
-		terrain_1_, environment_, carrot_model, "carrot", vec3(0), 0.02f
-	);
+		terrain_1_, environment_, carrot_model, "carrot", vec3(0), 0.02f);
 	Helper::loadPositionsFromFileToSet(
 		terrain_1_, flower_set, flower_model, 
 		"flower", vec3(0, -90.f, 0), 0.15f
@@ -223,12 +219,10 @@ void GameScene::makeGame()
 	for (const auto& flower: flower_set) {
 		vec3 flower_pos = flower->getPosition();
 		vec3 terrain_normal = terrain_1_.getNormalOfTerrain(
-			flower_pos.x, flower_pos.z
-		);
+			flower_pos.x, flower_pos.z);
 		vec3 light_pos = flower_pos + (15.f * terrain_normal);
 		lights_.emplace_back(
-			make_shared<Light>(light_pos, color, Light::point_light_attenuation)
-		);
+			make_shared<Light>(light_pos, color, Light::point_light_attenuation));
 	}
 }
 

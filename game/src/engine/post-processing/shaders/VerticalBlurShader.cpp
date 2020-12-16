@@ -1,7 +1,7 @@
 #include "VerticalBlurShader.h"
 
-#include "../Location.h"
-#include "../Utility.h"
+#include "../../Location.h"
+#include "../../Utility.h"
 
 void VerticalBlurShader::bindAttributes()
 {

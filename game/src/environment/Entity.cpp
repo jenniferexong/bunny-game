@@ -36,7 +36,7 @@ void Entity::highlight()
 
 void Entity::unhighlight()
 {
-	brightness_ = 0.8f;
+	brightness_ = 0.f;
 }
 
 void Entity::print() {

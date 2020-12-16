@@ -2,16 +2,16 @@
 
 #include <unordered_map>
 
-#include "../shaders/Shader.h"
+#include "../../shaders/Shader.h"
 
-class VerticalBlurShader final : public Shader {
+class HorizontalBlurShader final : public Shader {
 
 	enum class UniformVariable {
-		TargetHeight
+		TargetWidth
 	};
 
-	static constexpr char name[] = "VerticalBlurShader";
-	static constexpr char vertex_file[] = "post-processing/vertical-blur-vert";
+	static constexpr char name[] = "HorizontalBlurShader";
+	static constexpr char vertex_file[] = "post-processing/horizontal-blur-vert";
 	static constexpr char fragment_file[] = "post-processing/blur-frag";
 
 	std::unordered_map<UniformVariable, int, EnumHash> locations_;
@@ -22,5 +22,5 @@ protected:
 
 public:
 	void setUp() override;
-	void loadUniforms(float target_height);
+	void loadUniforms(float target_width);
 };
