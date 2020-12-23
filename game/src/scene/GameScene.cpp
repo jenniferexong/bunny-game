@@ -150,7 +150,7 @@ void GameScene::setup()
 	// Terrains
 	auto texture_pack = Helper::makeTexturePack (
 		"green", "light-green", "brown", "rocks");
-	Texture blend_map = Texture(engine->loader->loadTexture("river-blendmap2"));
+	Texture blend_map = Texture(engine->loader->loadTexture("river-blendmap"));
 	Texture normal_map = Texture(engine->loader->loadTexture("rocks-normal"));
 	TerrainTexture ground_texture = TerrainTexture(
 		texture_pack, blend_map, normal_map);

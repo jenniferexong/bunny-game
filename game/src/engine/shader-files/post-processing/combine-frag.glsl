@@ -13,5 +13,5 @@ void main()
 {
 	vec4 sceneColor = texture(uColorTexture, f_in.textureCoords);
 	vec4 highlightColor = texture(uHighlightTexture, f_in.textureCoords);
-	outColor = sceneColor + highlightColor * 2;
+	outColor = sceneColor + highlightColor;
 }

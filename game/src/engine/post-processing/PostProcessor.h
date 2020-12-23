@@ -24,11 +24,10 @@ private:
 
 	std::shared_ptr<Fbo> multisample_fbo_;
 	std::shared_ptr<Fbo> antialias_fbo_;
+	std::shared_ptr<Fbo> glow_output_;
 
 	std::shared_ptr<Fbo> blur_fbo_h_;
 	std::shared_ptr<Fbo> blur_fbo_v_;
-
-	std::shared_ptr<Fbo> bright_fbo_;
 
 	// used for background of pause screen (don't resize on window resize!)
 	std::shared_ptr<Fbo> blur_output_;
@@ -37,7 +36,7 @@ private:
 	std::shared_ptr<HorizontalBlur> horizontal_blur_;
 	std::shared_ptr<VerticalBlur> vertical_blur_;
 	std::shared_ptr<Contrast> contrast_;
-	std::shared_ptr<BrightFilter> bright_;
+	//std::shared_ptr<BrightFilter> bright_;
 	std::shared_ptr<CombineFilter> combine_;
 
 	void process(

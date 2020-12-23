@@ -29,7 +29,8 @@ in VertexData {
     float visibility;
 } f_in; 
 
-out vec4 outColor;
+layout (location = 0) out vec4 outColor;
+layout (location = 1) out vec4 outGlow;
 
 void main() 
 {
@@ -100,8 +101,5 @@ void main()
 
     vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * totalColor);
     outColor = vec4(result, 1.0);
-
-    //vec3 fogColor = uSunStrength * uFogColor;
-    //outColor = mix(vec4(fogColor, 1.0), vec4(result, 1.0), f_in.visibility);  
-	// mix with sky colour depending on visibility
+	outGlow = vec4(0.0);
 }

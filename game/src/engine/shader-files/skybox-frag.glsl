@@ -13,7 +13,8 @@ in VertexData {
 const float lowerLimit = 0.0;
 const float upperLimit = 50.0;
 
-out vec4 outColor;
+layout (location = 0) out vec4 outColor;
+layout (location = 1) out vec4 outGlow;
 
 void main() 
 {
@@ -32,6 +33,7 @@ void main()
     factor = clamp(factor, 0.0, 1.0);
 
     outColor = finalColor;
+	outGlow = vec4(0.0);
     //finalColor = 
 	//vec4(uSunStrength, 1.0) * mix(vec4(uFogColor, 1.0), finalColor, factor);
 }

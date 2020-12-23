@@ -4,6 +4,10 @@ enum class DepthBufferAttachment {
 	Uninitialised, None, DepthTexture, DepthBuffer
 };
 
+enum class Type {
+	MultiSample, MultiTarget
+};
+
 class Fbo {
 private:
 	static constexpr char name[] = "Fbo";
@@ -11,6 +15,7 @@ private:
 
 	bool clamp_to_edge_ = true;
 	bool multi_sample_ = false;
+	bool multi_target_ = false;
 
 	int width_ = 0;
 	int height_ = 0;
@@ -21,7 +26,9 @@ private:
 	int depth_texture_ = -1;
 
 	int depth_buffer_ = -1;
-	int color_buffer_ = -1;
+
+	int color_buffer_1_ = -1;
+	int color_buffer_2_ = -1;
 
 	void createFrameBuffer();
 
@@ -44,14 +51,17 @@ private:
 	 * Color buffer in the form of a render buffer,
 	 * can't be sampled from, mulitsampling 
 	 */
-	void createColorBufferAttachment();
+	int createColorBufferAttachment(int attachment);
+
+	void determineDrawBuffers();
 
 public:
 	Fbo() = default;
+	
 	/**
-	 * Fbos with multisampling - always render buffer
+	 * Fbos with multisampling and/or mutitarget - always render buffer
 	 */
-	Fbo(int width, int height);
+	Fbo(int width, int height, Type type);
 
 	Fbo(int width, int height, DepthBufferAttachment type);
 	Fbo(int width, int height, DepthBufferAttachment type, bool clamp_to_edge);
@@ -64,8 +74,9 @@ public:
 	/**
 	 * Copies fbo data into another fbo so it can be sampled from,
 	 * applies anti-aliasing
+	 * @param read_attachment color attachment to be read from
 	 */
-	void resolveToFbo(Fbo& output);
+	void resolveToFbo(int read_attachment, Fbo& output);
 	void resolveToScreen();
 
 	void resize(int width, int height);

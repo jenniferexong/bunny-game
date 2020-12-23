@@ -25,7 +25,8 @@ in VertexData {
     float visibility;
 } f_in; 
 
-out vec4 outColor;
+layout (location = 0) out vec4 outColor;
+layout (location = 1) out vec4 outGlow;
 
 void main() 
 {
@@ -64,14 +65,16 @@ void main()
         specular += (uReflectivity * spec * uLightColor[i]) / attenuationFactor;
     }
 	diffuse = max(diffuse, 0.2);
-	// check glow map
+
+	// calculating the glow colour
+	outGlow = vec4(0);
 	float glow = texture(uGlowMap, f_in.textureCoords).r;
-	if (glow > 0)
+	if (glow > 0) {
 		diffuse += vec3(glow);
+		outGlow = modelColor * vec4(diffuse, 1);
+	}
 
     //vec3 fogColor = uSunStrength * uFogColor;
     vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * modelColor);
     outColor = vec4(result, 1.0);
-    //outColor = mix(vec4(fogColor, 1.0), vec4(result, 1.0), f_in.visibility);  
-	// mix with sky colour depending on visibility
 }

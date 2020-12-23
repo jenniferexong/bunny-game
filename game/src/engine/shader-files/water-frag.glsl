@@ -26,7 +26,8 @@ const float distortionStrength = 0.03;
 const float shineDamper = 100.0;
 const float reflectivity = 0.6;
 
-out vec4 outColor;
+layout (location = 0) out vec4 outColor;
+layout (location = 1) out vec4 outGlow;
 
 void main() 
 {
@@ -114,4 +115,5 @@ void main()
 	);
     finalColor.a = clamp(waterDepth/4.0, 0.1, 1.0);
     outColor = finalColor;
+	outGlow = vec4(0.0);
 }
