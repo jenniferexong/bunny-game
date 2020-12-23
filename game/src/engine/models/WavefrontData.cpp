@@ -43,11 +43,11 @@ void WavefrontData::loadData(const std::string& file_name)
 
 			// vertex positions
 			if (type == "v") 
-				in_positions.emplace_back(vec3(stof(v1), stof(v2), stof(v3)));
+				in_positions.emplace_back(vec3(stod(v1), stod(v2), stod(v3)));
 
 			// vertex normals
 			else if (type == "vn") 
-				in_normals.emplace_back(vec3(stof(v1), stof(v2), stof(v3)));
+				in_normals.emplace_back(vec3(stod(v1), stod(v2), stod(v3)));
 
 			// faces: reading indices
 			else if (type == "f") { 
@@ -65,7 +65,7 @@ void WavefrontData::loadData(const std::string& file_name)
 		// reading texture data
 		else if (type == "vt") { 
 			str_stream >> v1 >> v2;
-			in_textures.emplace_back(vec2(stof(v1), stof(v2)));
+			in_textures.emplace_back(vec2(stod(v1), stod(v2)));
 		}
 	}
 	obj_file.close();

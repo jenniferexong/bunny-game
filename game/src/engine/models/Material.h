@@ -18,9 +18,15 @@ struct Material {
 		reflectivity(r), 
 		shine_damper(s),
 		has_transparency(transparency),
-		uses_fake_lighting(fake_lighting) {}
+		uses_fake_lighting(fake_lighting) 
+	{
+		setGlowMap("black");
+	}
 
-	Material(float r, float s) : reflectivity(r), shine_damper(s) {}
+	Material(float r, float s) : reflectivity(r), shine_damper(s) 
+	{
+		setGlowMap("black");
+	}
 
 	Material(bool transparency, bool fake_lighting): 
 		has_transparency(transparency),

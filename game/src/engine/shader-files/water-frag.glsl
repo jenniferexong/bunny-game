@@ -115,5 +115,12 @@ void main()
 	);
     finalColor.a = clamp(waterDepth/4.0, 0.1, 1.0);
     outColor = finalColor;
-	outGlow = vec4(0.0);
+
+	float brightness = (
+		(outColor.r * 0.2126)
+		+ (outColor.g * 0.7152)
+		+ (outColor.b * 0.0722)
+	);
+
+	outGlow = outColor * pow(brightness, 0.4);
 }

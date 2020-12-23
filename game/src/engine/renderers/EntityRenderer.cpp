@@ -142,6 +142,7 @@ void EntityRenderer::prepareTexturedModel(const TexturedModel& model)
 	const InstancedMesh mesh = model.getMesh();
 	const ModelTexture texture = model.getTexture();
 
+	MasterRenderer::disableCulling();
 	if (texture.getMaterial().has_transparency)
 		MasterRenderer::disableCulling();
 

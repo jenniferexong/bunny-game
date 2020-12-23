@@ -50,10 +50,15 @@ void Helper::loadPositionsFromFile(
 	vec3 rotation,
 	float scale)
 {
+	Log::s(1);
 	float x, y, z;
 	string line;
 
-	ifstream file(FilePath::data_path + name + "-positions.txt");
+	string file_path = FilePath::data_path + name + "-positions.txt";
+	ifstream file(file_path);
+	if (!file.is_open())
+		Error::file("object", file_path);
+
 	while (getline(file, line)) {
 		auto entity = make_shared<Entity>(model);
 

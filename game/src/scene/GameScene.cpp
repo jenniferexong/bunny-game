@@ -183,7 +183,7 @@ void GameScene::setup()
 
 	// skybox
 	skybox_ = make_shared<Skybox>(
-		"skybox-textures-day", "skybox-textures-night");
+		"skybox-textures-day", "skybox-textures-night", "skybox-textures-dawn");
 	environment_.setSkybox(skybox_);
 
 	// water
@@ -231,10 +231,15 @@ void GameScene::makeTest()
 	Material material = Material();
 	material.setGlowMap("flower-glow");
 	auto flower_model = Helper::makeModel("flower", "flower", material);
+	auto teapot_model = Helper::makeModel("teapot", "white", Material(10.f, 20.f));
 
 	Helper::loadPositionsFromFile(
 		terrain_1_, environment_, flower_model, 
 		"test-flowers", vec3(0, -90.f, 0), 0.15f
+	);
+	Helper::loadPositionsFromFile(
+		terrain_1_, environment_, teapot_model, 
+		"teapot", vec3(0, 0.f, 0), 1.f
 	);
 }
 
@@ -294,19 +299,18 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 		engine->closeWindow();
 	case GLFW_KEY_L: 
 		if (action == GLFW_RELEASE) {
-			string file_name = "culling-flower";
+			string file_name = "teapot";
 
 			// Create and open a text file
 			std::ofstream positions(
 				FilePath::data_path + file_name + "-positions.txt",
 				std::ios::app
 			);
-			auto flower_model = Helper::makeModel(
-				"flower", "flower", Material()
-			);
+			auto teapot_model = Helper::makeModel(
+				"teapot", "white", Material(10.f, 20.f));
 			Helper::spawnEntity(
-				player_, environment_, flower_model,
-				file_name, vec3(0, -90.f, 0), 0.15f
+				player_, environment_, teapot_model,
+				file_name, vec3(0, 0.f, 0), 1.f
 			);
 		}
 		break;

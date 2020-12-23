@@ -73,7 +73,7 @@ void main()
     // Light calculation
     float ambientStrength = 0.7;
 	vec3 ambient = ambientStrength * uSunStrength;
-	ambient = vec3(0);
+	ambient = vec3(0.0);
 
     vec3 diffuse = vec3(0);
     vec3 specular = vec3(0);

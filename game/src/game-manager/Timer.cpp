@@ -25,7 +25,7 @@ void Timer::update()
 
 void Timer::updateTime()
 {
-	time += frame_delta * 1000;
+	time += frame_delta * 500;
 	time = fmod(time, 24000.f);
 }
 

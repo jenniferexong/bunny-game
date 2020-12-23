@@ -118,3 +118,8 @@ mat4 Maths::createSkyViewMatrix(const Camera& camera)
 
 	return matrix;
 }
+
+vec3 Maths::interpolateColor(vec3 c1, vec3 c2, float fraction) 
+{
+	return (1.f - fraction) * c1 + (fraction * c2);
+}

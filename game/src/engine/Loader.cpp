@@ -110,15 +110,12 @@ InstancedMesh Loader::loadToVaoInstanced(const string& obj_name)
 
     InstancedMesh mesh(vao_id, (int)data.indices.size(), data.face);
     mesh.setBoundingSphere(
-        BoundingSphere(data.model_center, data.model_radius)
-	);
+        BoundingSphere(data.model_center, data.model_radius));
 
     int model_matrix_vbo = createInstancedVbo(
-		AttributeLocation::ModelMatrixColumn1, 4, 16, 4
-	);
+		AttributeLocation::ModelMatrixColumn1, 4, 16, 4);
     int brightness_vbo = createInstancedVbo(
-		AttributeLocation::ModelBrightness, 1, 1, 0
-	);
+		AttributeLocation::ModelBrightness, 1, 1, 0);
     mesh.setVbos(model_matrix_vbo, brightness_vbo);
 
     unbindVao();
@@ -127,8 +124,18 @@ InstancedMesh Loader::loadToVaoInstanced(const string& obj_name)
     return mesh;
 }
 
-int Loader::loadCubeMap(std::vector<std::string> texture_names) 
+int Loader::loadCubeMap(const std::string& textures_file) 
 {
+	std::vector<std::string> texture_names;
+	std::string file_path = FilePath::data_path + textures_file + ".txt";
+	std::ifstream file(file_path);
+	if (!file.is_open())
+		Error::file("texture files", file_path);
+	std::string line;
+	while (getline(file, line)) 
+		texture_names.push_back(line);
+
+	file.close();
     GLuint texture_id;
     glGenTextures(1, &texture_id);
     glBindTexture(GL_TEXTURE_CUBE_MAP, texture_id);

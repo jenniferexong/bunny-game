@@ -40,7 +40,7 @@ void main()
 
     float ambientStrength = f_in.modelBrightness;
 	vec3 ambient = ambientStrength * uSunStrength;
-	ambient = f_in.modelBrightness > 1 ? vec3(1) : vec3(0);
+	ambient = f_in.modelBrightness > 1 ? vec3(1) : vec3(0.2);
 
     // Lighting calculations
     vec3 diffuse = vec3(0);
@@ -64,7 +64,6 @@ void main()
         float spec = pow(max(dot(toCamera, reflectDir), 0.0), uShineDamper);
         specular += (uReflectivity * spec * uLightColor[i]) / attenuationFactor;
     }
-	diffuse = max(diffuse, 0.2);
 
 	// calculating the glow colour
 	outGlow = vec4(0);
