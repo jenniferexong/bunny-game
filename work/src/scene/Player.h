@@ -33,6 +33,10 @@ private:
 
 	void jump();
 	void fall();
+	void collide(
+		const std::vector<std::shared_ptr<Entity>>& entities,
+		vec3 offset
+	);
 	glm::vec3 getRotationOffset();
 
 public:

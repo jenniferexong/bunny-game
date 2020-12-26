@@ -71,10 +71,16 @@ public:
 	vec3 getRotation() const { return rotation_; }
 	vec3 getActualRotation() const { return rotation_ + rotation_offset_; }
 	glm::mat4 getAlignmentRotation() const { return alignment_rotation_; }
+	glm::mat4 getModelMatrix() const;
 	float getScale() const { return scale_; }
 	bool isSelectable() const { return selectable_; }
 	float getBrightness() const { return brightness_; }
 	int getEntityId() const { return id_; }
+
+	// bounding sphere
+	bool collides(const Entity& other);
+	glm::vec3 getCenterWorld() const;
+	float getRadius() const;
 
 	void highlight();
 	void unhighlight();

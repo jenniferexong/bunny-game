@@ -65,7 +65,11 @@ void Player::updatePosition(
 	// calculating new y position
 	float y = up_velocity_ * app->timer->frame_delta;
 
-	move(fx + sx, y, fz + sz);
+	vec3 offset = vec3(fx + sx, y, fz+ sz);
+	move(offset.x, offset.y, offset.z);
+	
+	// check for collision with other entities
+	collide(environment.getEntities(), offset);
 
 	float terrain_height = terrain.getHeightOfTerrain(position_.x, position_.z);
 	rotation_offset_ = getRotationOffset();
@@ -92,6 +96,26 @@ void Player::updatePosition(
 		// Align with the normal of the terrain at current position
 		setAlignmentRotation(
 			terrain.getNormalOfTerrain(position_.x, position_.z));
+	}
+}
+
+// TODO!!!!
+void Player::collide(
+	const std::vector<shared_ptr<Entity>>& entities, 
+	vec3 offset) 
+{
+	return;
+	for (const auto& e: entities) {
+		// if collides, push player away so that it doesn't anymore
+		if (collides(*e)) {
+			vec3 push_direction = normalize(
+				getCenterWorld() - e->getCenterWorld());
+			float distance = getRadius() + e->getRadius();
+			vec3 new_position = 
+				e->getCenterWorld() + (distance * push_direction);
+			setPosition(new_position.x, new_position.y, new_position.z);
+			break;
+		}
 	}
 }
 

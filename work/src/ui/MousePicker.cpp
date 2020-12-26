@@ -42,18 +42,8 @@ std::weak_ptr<Entity> MousePicker::selectEntity(Environment& environment)
 using namespace glm;
 RayIntersection MousePicker::getIntersection(weak_ptr<Entity> entity)
 {
-	glm::mat4 model_matrix = Maths::createTransformationMatrix(
-		entity.lock()->getPosition(), 
-		entity.lock()->getActualRotation(),
-		entity.lock()->getScale(), 
-		entity.lock()->getAlignmentRotation()
-	);
-
-	const auto& bounding_sphere = 
-		entity.lock()->getModel().getMesh().getBoundingSphere();
-	vec3 sphere_center = vec3(model_matrix * bounding_sphere.getCenter());
-	float sphere_radius = 
-		entity.lock()->getScale() * bounding_sphere.getRadius();
+	vec3 sphere_center = entity.lock()->getCenterWorld();
+	float sphere_radius = entity.lock()->getRadius();
 
 	// ray intersection with sphere
 	float a, b, c;

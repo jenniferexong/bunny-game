@@ -8,6 +8,8 @@ private:
 	long long previous_frame_time_;
 	long long current_frame_time_;
 
+	static constexpr float seconds_per_hour = 0.4;
+
 	long long getCurrentTime();
 
 public:

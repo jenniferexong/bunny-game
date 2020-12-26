@@ -39,6 +39,36 @@ void Entity::unhighlight()
 	brightness_ = 0.f;
 }
 
+bool Entity::collides(const Entity& other)
+{
+	if (id_ == other.id_)
+		return false;
+
+	float distance = glm::distance(getCenterWorld(), other.getCenterWorld());
+	return distance < getRadius() + other.getRadius();
+}
+
+glm::vec3 Entity::getCenterWorld() const 
+{
+	return vec3(
+		getModelMatrix() * model_.getMesh().getBoundingSphere().getCenter());
+}
+
+float Entity::getRadius() const
+{
+   return scale_ * model_.getMesh().getBoundingSphere().getRadius();
+}
+
+glm::mat4 Entity::getModelMatrix() const
+{
+	return Maths::createTransformationMatrix(
+		position_,
+		getActualRotation(),
+		scale_,
+		alignment_rotation_
+	);
+}
+
 void Entity::print() {
 	printf(
 		"entity: %d, texture: %d, vao: %d, vertex count: %d\n",

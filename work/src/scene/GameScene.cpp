@@ -164,7 +164,6 @@ void GameScene::setup()
 		"nibbles", "nibbles", player_material);
 
 	// Bunny player
-	
 	float player_x = 489.295f;
 	float player_z = -221.175f;
 	float player_y = terrain_1_.getHeightOfTerrain(player_x, player_z);
@@ -175,7 +174,6 @@ void GameScene::setup()
 	);
 	player_->setRotationOffset(180.f, 0, 0);
 	environment_.addEntity(player_);
-
 
 	camera_ = make_shared<Camera>(player_);
 	environment_.setCamera(camera_);

@@ -103,12 +103,7 @@ void EntityRenderer::loadTransformations(
 	vector<float>& float_data)
 {
 	for (const auto& e: entities) {
-		glm::mat4 t_matrix = Maths::createTransformationMatrix(
-			e.lock()->getPosition(), 
-			e.lock()->getActualRotation(),
-			e.lock()->getScale(),
-			e.lock()->getAlignmentRotation()
-		);
+		glm::mat4 t_matrix = e.lock()->getModelMatrix();
 
 		glm::vec4 col_1 = t_matrix[0];
 		glm::vec4 col_2 = t_matrix[1];

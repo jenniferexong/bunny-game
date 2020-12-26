@@ -1,5 +1,7 @@
 ﻿#pragma once
+
 #include <vector>
+#include <memory>
 
 #include "Fbo.h"
 #include "../models/Mesh.h"

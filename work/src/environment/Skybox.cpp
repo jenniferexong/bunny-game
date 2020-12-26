@@ -8,7 +8,7 @@
 #include "../game-manager/Application.h"
 
 using glm::vec3;
-const vec3 Skybox::night_col = vec3(0.188, 0.290, 0.568);
+const vec3 Skybox::night_col = vec3(0.149, 0.266, 0.592);
 const vec3 Skybox::dawn_col = vec3(0.756, 0.505, 0.545);
 const vec3 Skybox::day_col = vec3(0.8f);
 
