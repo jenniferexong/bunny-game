@@ -6,4 +6,5 @@ shaders = files(
     'TerrainShader.cpp',
     'TextShader.cpp',
     'WaterShader.cpp',
+    'ShadowShader.cpp',
 )

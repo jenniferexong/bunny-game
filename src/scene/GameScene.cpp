@@ -43,6 +43,7 @@ bool GameScene::update()
 
 void GameScene::render(bool pause)
 {
+	engine->renderer->renderShadowMap(environment_);
 	engine->renderer->renderWaterReflection(*this, &GameScene::renderScene);
 	engine->renderer->renderWaterRefraction(*this, &GameScene::renderScene);
 
@@ -93,6 +94,7 @@ void GameScene::gameLogic()
 	player_->updatePosition(environment_, move_keys_);
 	compass_->setRotation(-player_->getRotation().x);
 	camera_->updateView(terrain_1_, environment_.getWater());
+
 	// must update after camera is moved
 	mouse_picker_.update(getProjectionMatrix(), *camera_); 
 	environment_.updateInView();
@@ -136,6 +138,15 @@ void GameScene::setup()
 		center,
 		ivec2(cross_hair_size)
 	);
+	shadow_test_ = std::make_shared<GuiTexture> (
+		engine->renderer->getShadowMapTexture(),
+		vec2(0),
+		vec2(0.5)
+	);
+
+	//guis_.insert(shadow_test_);
+	guis_.insert(cross_hair_);
+	guis_.insert(compass_);
 
 	// text
 	auto font = std::make_shared<FontType> ("maiandra");
@@ -143,9 +154,6 @@ void GameScene::setup()
 		"", 1.5f, font, glm::vec2(0.94f, 0.025), 1.f, false);
 	frame_rate_->setColor(vec3(1));
 	text_master_.addText(frame_rate_);
-
-	guis_.insert(cross_hair_);
-	guis_.insert(compass_);
 
 	// Terrains
 	auto texture_pack = Helper::makeTexturePack (

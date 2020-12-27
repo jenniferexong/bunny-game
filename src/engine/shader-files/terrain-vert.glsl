@@ -6,6 +6,9 @@ uniform mat4 uProjectionMatrix;
 uniform mat4 uViewMatrix;
 uniform mat4 uInverseViewMatrix;
 
+// transforms world space to shadow map space
+uniform mat4 uLightSpaceMatrix;
+
 uniform vec4 uClippingPlane;
 
 uniform int uLightCount;
@@ -21,6 +24,7 @@ out VertexData {
     vec3 eyeSpacePosition;
     mat3 toTangentSpace;
     float visibility;
+	vec4 lightSpaceCoords;
 } v_out; 
 
 const float density = 0.005;
@@ -57,6 +61,8 @@ void main()
 
     v_out.toTangentSpace = toTangentSpace;
     v_out.eyeSpacePosition = positionRelativeToCamera.xyz;
+
+	v_out.lightSpaceCoords = uLightSpaceMatrix * worldPosition;
 
     v_out.textureCoords = aTextureCoords;
 

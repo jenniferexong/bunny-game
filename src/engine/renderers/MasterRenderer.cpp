@@ -69,6 +69,11 @@ void MasterRenderer::renderWater(const Environment& environment)
 	water_renderer_.render(environment);
 }
 
+void MasterRenderer::renderShadowMap(const Environment& environment) 
+{
+	shadow_renderer_.render(environment);
+}
+
 void MasterRenderer::renderEntities(
 	const Environment& environment,
 	glm::vec4 clipping_plane)

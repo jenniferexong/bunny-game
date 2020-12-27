@@ -6,4 +6,5 @@ renderers = files(
     'TerrainRenderer.cpp',
     'TextRenderer.cpp',
     'WaterRenderer.cpp',
+    'ShadowRenderer.cpp',
 )

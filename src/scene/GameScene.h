@@ -17,6 +17,7 @@ private:
 
 	shared_ptr<GuiTexture> compass_ = nullptr;
 	shared_ptr<GuiTexture> cross_hair_ = nullptr;
+	shared_ptr<GuiTexture> shadow_test_ = nullptr;
 
 	shared_ptr<GuiText> frame_rate_ = nullptr;
 
@@ -25,7 +26,7 @@ private:
 
 	Terrain terrain_1_;
 	shared_ptr<Light> sun_ = std::make_shared<Light>(
-	vec3(300.f, 1000, -700), vec3(1.f));
+	vec3(3000.f, 8000, -7000), vec3(1.f));
 	shared_ptr<Camera> camera_;
 	shared_ptr<Skybox> skybox_;
 	vector<shared_ptr<Light>> lights_;

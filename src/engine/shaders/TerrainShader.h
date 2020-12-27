@@ -17,7 +17,8 @@ private:
 		LightPosition, LightColor, LightCount, MaxLights, Attenuation,
 		Reflectivity, ShineDamper, FogColor, SunStrength,
 		BaseTexture, RedTexture, GreenTexture, BlueTexture, 
-		BlendMap, NormalMap, ClippingPlane
+		BlendMap, NormalMap, ClippingPlane,
+		LightSpaceMatrix, ShadowMap
 	};
 
 	static constexpr char vertex_file[] = "terrain-vert";

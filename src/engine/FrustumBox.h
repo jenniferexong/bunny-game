@@ -2,19 +2,18 @@
 
 #include <glm/glm.hpp>
 
+#include "Frustum.h"
+
 class Camera;
 
 class FrustumBox {
 private:
 	friend class Camera;
 
-	static glm::vec4 forward;
-	static glm::vec4 up;
-	static float far_plane;
-	static float near_plane;
+	static const float far_plane;
+	static const float near_plane;
 
-	float far_width_, near_width_;
-	float far_height_, near_height_;
+	Frustum frustum_;
 
 	glm::vec4 right_plane_, left_plane_,
 			  top_plane_, bottom_plane_,

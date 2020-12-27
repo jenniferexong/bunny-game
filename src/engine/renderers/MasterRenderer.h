@@ -6,6 +6,7 @@
 #include "SkyboxRenderer.h"
 #include "TextRenderer.h"
 #include "WaterRenderer.h"
+#include "ShadowRenderer.h"
 #include "../post-processing/PostProcessor.h"
 
 class Scene;
@@ -22,6 +23,7 @@ private:
 	TerrainRenderer terrain_renderer_;
 	SkyboxRenderer skybox_renderer_;
 	WaterRenderer water_renderer_;
+	ShadowRenderer shadow_renderer_;
 
 	TextRenderer text_renderer_;
 	GuiRenderer gui_renderer_;
@@ -37,6 +39,7 @@ public:
 	void prepare(glm::mat4 proj_matrix);
 	~MasterRenderer() = default;
 
+	void renderShadowMap(const Environment& environment);
 	void renderEntities(
 		const Environment& environment,
 		glm::vec4 clipping_plane
@@ -60,6 +63,10 @@ public:
 	void renderGui(const unordered_set<weak_ptr<GuiTexture>>& guis);
 	void renderText(const TextMaster& text_master);
 
+	int getShadowMapTexture() const
+	{
+		return shadow_renderer_.getShadowMapTexture();
+	}
 
 	static void enableCulling();
 	static void disableCulling();

@@ -32,7 +32,10 @@ namespace WaterTextureLocation {
 }
 
 namespace TextureLocation {
-	enum Location { Base = 0, Red = 1, Green = 2, Blue = 3, BlendMap = 4, NormalMap = 5 };
+	enum Location { 
+		Base = 0, Red = 1, Green = 2, Blue = 3, BlendMap = 4, 
+		NormalMap = 5, ShadowMap = 6 
+	};
 }
 
 namespace CubeMapLocation {

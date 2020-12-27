@@ -44,6 +44,8 @@ void TerrainShader::getAllUniformLocations()
 	INSERT_LOC(BlendMap, "uBlendMap");
 	INSERT_LOC(NormalMap, "uNormalMap");
 	INSERT_LOC(ClippingPlane, "uClippingPlane");
+	INSERT_LOC(LightSpaceMatrix, "uLightSpaceMatrix");
+	INSERT_LOC(ShadowMap, "uShadowMap");
 	Error::gl_check("TerrainShader getAllUniformLocations");
 }
 
@@ -137,6 +139,8 @@ void TerrainShader::connectTextureUnits() const
 		locations_.at(UniformVariable::BlendMap), TextureLocation::BlendMap);
 	loadInt(
 		locations_.at(UniformVariable::NormalMap), TextureLocation::NormalMap);
+	loadInt(
+		locations_.at(UniformVariable::ShadowMap), TextureLocation::ShadowMap);
 
 	Error::gl_check("TerrainShader connectTextureUnits");
 }

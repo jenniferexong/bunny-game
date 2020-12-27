@@ -7,6 +7,8 @@ uniform sampler2D uGreenTexture;
 uniform sampler2D uBlueTexture;
 uniform sampler2D uBlendMap;
 
+uniform sampler2D uShadowMap;
+
 // normal map for path texture
 uniform sampler2D uNormalMap; 
 
@@ -27,10 +29,30 @@ in VertexData {
     vec3 eyeSpacePosition;
     mat3 toTangentSpace;
     float visibility;
+	vec4 lightSpaceCoords;
 } f_in; 
 
 layout (location = 0) out vec4 outColor;
 layout (location = 1) out vec4 outGlow;
+
+float shadowCalculation(vec3 normal) {
+    // coordinates in range [-1, 1]
+    vec3 shadowMapCoords = f_in.lightSpaceCoords.xyz / f_in.lightSpaceCoords.w;
+    // convert to range [0, 1]
+    shadowMapCoords = (shadowMapCoords + 1.0) / 2.0;
+    float closestDepth = texture(uShadowMap, shadowMapCoords.xy).r;
+    float currentDepth = shadowMapCoords.z;
+
+    vec3 lightToPoint = f_in.toTangentSpace * (f_in.eyeSpacePosition - uLightPosition[0]);
+    vec3 incidentLight = normalize(lightToPoint);
+
+    float bias = 0.0000; // 0.0001
+    //float bias = max(0.0035 * (1.0 - dot(normal, incidentLight)), 0.003);  
+    float shadow = currentDepth - bias > closestDepth ? 1.0 : 0.0;  
+    if(currentDepth > 1.0)
+        shadow = 0.0;
+    return shadow;
+}
 
 void main() 
 {
@@ -73,7 +95,7 @@ void main()
     // Light calculation
     float ambientStrength = 0.7;
 	vec3 ambient = ambientStrength * uSunStrength;
-	ambient = vec3(0.0);
+	ambient = vec3(0.05);
 
     vec3 diffuse = vec3(0);
     vec3 specular = vec3(0);
@@ -99,7 +121,10 @@ void main()
     }
 	diffuse = max(diffuse, 0.2);
 
-    vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * totalColor);
+	float shadow = shadowCalculation(norm);
+	vec3 lighting = (1.0 - shadow) * (diffuse + specular);
+	//vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * totalColor);
+    vec3 result = vec3(vec4(ambient + lighting, 1) * totalColor);
     outColor = vec4(result, 1.0);
 	outGlow = vec4(0.0);
 }
