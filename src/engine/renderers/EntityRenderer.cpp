@@ -43,6 +43,12 @@ void EntityRenderer::renderInstanced(const Environment& environment)
 	vector<float> model_matrix_data;
 	vector<float> model_brightness_data;
 
+	glActiveTexture(GL_TEXTURE0 + EntityTextureLocation::EnvironmentMap);
+	glBindTexture(
+		GL_TEXTURE_CUBE_MAP,
+		environment.getSkybox().lock()->getDayTexture()
+	);
+
 	for (const auto& element : environment.getEntitiesInView()) {
 		const auto& model = element.first;
 		prepareTexturedModel(model);
@@ -162,6 +168,7 @@ void EntityRenderer::prepareTexturedModel(const TexturedModel& model)
 		glActiveTexture(GL_TEXTURE0 + EntityTextureLocation::GlowMap);
 		glBindTexture(GL_TEXTURE_2D, texture.getMaterial().glow_map_);
 	}
+
 	Error::gl_check("EntityRenderer prepareTexturedModel");
 }
 

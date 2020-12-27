@@ -3,6 +3,7 @@
 // Uniform data
 uniform sampler2D uDiffuseMap;
 uniform sampler2D uGlowMap;
+uniform samplerCube uEnvironmentMap;
 
 uniform vec3 uLightColor[100];
 uniform vec3 uLightPosition[100];
@@ -23,6 +24,8 @@ in VertexData {
     vec3 cameraPosition;
     float modelBrightness;
     float visibility;
+	vec3 reflectedVector;
+	vec3 refractedVector;
 } f_in; 
 
 layout (location = 0) out vec4 outColor;
@@ -76,4 +79,11 @@ void main()
     //vec3 fogColor = uSunStrength * uFogColor;
     vec3 result = vec3(vec4(ambient + diffuse + specular, 1) * modelColor);
     outColor = vec4(result, 1.0);
+
+	// Reflection, refraction...
+	//vec4 reflectedColor = texture(uEnvironmentMap, f_in.reflectedVector);
+	//vec4 refractedColor = texture(uEnvironmentMap, f_in.refractedVector);
+	//vec4 environmentColor = mix(reflectedColor, refractedColor, 1.0);
+
+	//outColor = mix(outColor, environmentColor, 0.7);
 }

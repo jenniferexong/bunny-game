@@ -14,7 +14,7 @@ private:
 		TransformationMatrix, ProjectionMatrix, ViewMatrix, InverseViewMatrix,
 		LightPosition, LightColor, LightCount, MaxLights, Attenuation,
 		Reflectivity, ShineDamper, FakeLighting, FogColor, SunStrength,
-		ClippingPlane, DiffuseMap, GlowMap
+		ClippingPlane, DiffuseMap, GlowMap, EnvironmentMap
 	};
 
 	static constexpr char name[] = "EntityShader";

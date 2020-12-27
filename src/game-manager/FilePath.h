@@ -3,7 +3,7 @@
 #include <string>
 
 namespace FilePath {
-	const std::string path = "../../work/";
+	const std::string path = "../../";
 	const std::string texture_path = path + "res/textures/";
 	const std::string model_path = path + "res/objects/";
 	const std::string shader_path = path + "src/engine/shader-files/";

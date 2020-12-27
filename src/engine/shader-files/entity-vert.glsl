@@ -21,6 +21,8 @@ out VertexData {
     vec3 cameraPosition;
     float modelBrightness;
     float visibility;
+	vec3 reflectedVector;
+	vec3 refractedVector;
 } v_out; 
 
 const float density = 0.005;
@@ -48,6 +50,15 @@ void main()
 
     v_out.textureCoords = aTextureCoords;
     v_out.modelBrightness = aModelBrightness;
+
+	// reflection, refraction
+	vec3 viewVector = normalize(vec3(worldPosition) - v_out.cameraPosition);
+	v_out.reflectedVector = reflect(viewVector, normalize(v_out.normal));
+	v_out.refractedVector = refract(
+		viewVector,
+		normalize(v_out.normal),
+		1.0/1.33
+	);
 
     // fog calculations 
     // float distance = length(positionRelativeToCamera.xyz); 

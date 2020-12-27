@@ -9,7 +9,7 @@ namespace AttributeLocation {
 
 namespace EntityTextureLocation {
 	enum Location {
-		DiffuseMap = 0, GlowMap = 1
+		DiffuseMap = 0, GlowMap = 1, EnvironmentMap = 2
 	};
 }
 

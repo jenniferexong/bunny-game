@@ -19,6 +19,7 @@ $ sudo apt-get install python3 python3-pip python3-setuptools \
 **Installation using Python**
 ```
 $ pip3 install meson
+$ pip3 install ninja
 ```
 
 **Installation using Homebrew**
@@ -28,7 +29,7 @@ $ brew install ninja
 ```
 
 ---
-### Libraries
+### Required dependencies
 - GLFW
 - GLEW
 - GLM
@@ -41,11 +42,11 @@ $ brew install glm
 ```
 ---
 ## Build
-##### Create build directory - specify clang compiler
+##### Create build directory - specify clang as compiler
 ```
 $ cd game/work
-$ CC=clang CXX=clang++ meson ../build
-$ cd ../build
+$ CC=clang CXX=clang++ meson build
+$ cd build
 ```
 
 ## Compile

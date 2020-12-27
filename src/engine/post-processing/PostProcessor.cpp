@@ -2,8 +2,6 @@
 
 #include "PostProcessor.h"
 
-#include <memory>
-
 #include "ImageProcessor.h"
 #include "../Application.h"
 #include "../Utility.h"

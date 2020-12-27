@@ -21,6 +21,10 @@ void EntityShader::connectTextureUnits()
 		locations_.at(UniformVariable::GlowMap),
 		EntityTextureLocation::GlowMap
 	);
+	loadInt(
+		locations_.at(UniformVariable::EnvironmentMap),
+		EntityTextureLocation::EnvironmentMap
+	);
 	Error::gl_check("EntityShader connectTextureUnits");
 }
 
@@ -53,6 +57,7 @@ void EntityShader::getAllUniformLocations()
 	INSERT_LOC(ClippingPlane, "uClippingPlane");
 	INSERT_LOC(DiffuseMap, "uDiffuseMap");
 	INSERT_LOC(GlowMap, "uGlowMap");
+	INSERT_LOC(EnvironmentMap, "uEnvironmentMap");
 	Error::gl_check("EntityShader getAllUniformLocations");
 }
 

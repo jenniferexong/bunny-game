@@ -296,6 +296,7 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 	case GLFW_KEY_ESCAPE:
 		engine->closeWindow();
 	case GLFW_KEY_L: 
+		break;
 		if (action == GLFW_RELEASE) {
 			string file_name = "teapot";
 
