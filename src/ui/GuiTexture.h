@@ -5,53 +5,61 @@
 #include <memory>
 #include <functional>
 
+#include "GuiBound.h"
+
 class GuiTexture {
 private:
+	GuiBound bound_;
+
+	glm::vec4 color_ = glm::vec4(1);
 	int texture_;
-	glm::vec2 position_;
-	float rotation_ = 0;
-	glm::vec2 scale_; // size of quad in relation to size of the screen
+	bool has_texture_ = false;
 
 	bool flip_vertically_ = false;
 	bool has_transparency_ = true;
 	
 public:
-	GuiTexture(): texture_(-1), position_(glm::vec2(0)), scale_(1) {}
+	GuiTexture(): texture_(-1) {}
 
-	/**
-	 * In opengl screen coordinates.
-	 * position of (0, 0) is the center of the screen,
-	 * scale of (1, 1) is the entire screen
-	 */
-	GuiTexture(int texture, glm::vec2 position, glm::vec2 scale)
-		: texture_(texture), position_(position), scale_(scale) {}
+	GuiTexture(int texture, GuiBound bound): 
+		bound_(bound),
+		texture_(texture),
+		has_texture_(true)
+	{}
 
-	/**
-	 * Pixel coordinates (+x is right, +y is up)
-	 */
-	GuiTexture(int texture, glm::ivec2 position, glm::ivec2 size);
+	GuiTexture(glm::vec4 color, GuiBound bound):
+		bound_(bound),
+		color_(color),
+		texture_(-1)
+	{}
 
 	~GuiTexture() = default;
 
 	int getTexture() const { return texture_; }
-	glm::vec2 getPosition() const { return position_; }
-	float getRotation() const { return rotation_; }
-	glm::vec2 getScale() const { return scale_; }
+	const GuiBound& getBounds() const { return bound_; }
+	glm::vec2 getPosition() const { return bound_.getPosition(); }
+	float getRotation() const { return bound_.getRotation(); }
+	glm::vec2 getScale() const { return bound_.getScale(); }
+	glm::vec4 getColor() const { return color_; }
+
 	bool flipVertically() const { return flip_vertically_; }
 	bool hasTransparency() const { return has_transparency_; }
+	bool hasTexture() const { return has_texture_; }
 
 	void setTexture(int texture) { texture_ = texture; }
-	void setPosition(glm::vec2 position) { position_ = position; }
-	void setRotation(float rotation) { rotation_ = rotation; }
-	void setScale(glm::vec2 scale) { scale_ = scale; }
+	void setPosition(glm::vec2 position) { bound_.setPosition(position); }
+	void setRotation(float rotation) { bound_.setRotation(rotation); }
+	void setScale(glm::vec2 scale) { bound_.setScale(scale); }
 
 	void setFlipVertically() { flip_vertically_ = true; }
 
-	void setTransparency(bool transparency) {
+	void setTransparency(bool transparency) 
+	{
 		has_transparency_ = transparency; 
 	}
 
-	bool operator==(const GuiTexture& other) const {
+	bool operator==(const GuiTexture& other) const 
+	{
 		return texture_ == other.texture_;
 	}
 };

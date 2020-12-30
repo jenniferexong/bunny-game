@@ -111,7 +111,7 @@ void MasterRenderer::renderText(const TextMaster& text_master)
 	text_renderer_.render(text_master);
 }
 
-void MasterRenderer::renderGui(const unordered_set<weak_ptr<GuiTexture>>& guis)
+void MasterRenderer::renderGui(const std::vector<weak_ptr<GuiTexture>>& guis)
 {
 	gui_renderer_.render(guis);
 }

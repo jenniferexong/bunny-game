@@ -4,7 +4,6 @@ engine = files(
     'stb_image.cpp',
     'Frustum.cpp',
     'ShadowBox.cpp',
-    'ShadowFrameBuffer.cpp',
 )
 
 engine_directories = [

@@ -140,6 +140,13 @@ void Log::vector(message message, glm::vec3 vector)
 	Log::vector(vector);
 }
 
+void Log::vector(glm::vec2 vector)
+{
+	if (!Log::print)
+		return;
+	printf("%.2f, %.2f\n", vector.x, vector.y);
+}
+
 void Log::vector(glm::vec3 vector)
 {
 	if (!Log::print)

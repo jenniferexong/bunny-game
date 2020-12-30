@@ -3,4 +3,6 @@ ui = files(
     'GuiTexture.cpp',
     'MousePicker.cpp',
     'TextMaster.cpp',
+    'GuiBound.cpp',
+    'GuiComponent.cpp',
 )

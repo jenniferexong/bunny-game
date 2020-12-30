@@ -29,5 +29,7 @@ namespace Maths {
 	 * @param fraction amount of c2 in the final color
 	 */
 	glm::vec3 interpolateColor(vec3 c1, vec3 c2, float fraction);
+
+	glm::vec2 pixelToScreenCoords(glm::vec2 pixel_coords);
 };
 

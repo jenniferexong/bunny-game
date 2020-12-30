@@ -1,6 +1,6 @@
-
 #include "Maths.h"
 #include "../scene/Camera.h"
+#include "../game-manager/Application.h"
 
 using namespace glm;
 
@@ -122,4 +122,12 @@ mat4 Maths::createSkyViewMatrix(const Camera& camera)
 vec3 Maths::interpolateColor(vec3 c1, vec3 c2, float fraction) 
 {
 	return (1.f - fraction) * c1 + (fraction * c2);
+}
+
+vec2 Maths::pixelToScreenCoords(vec2 pixel_coords)
+{
+	pixel_coords.y = engine->screen_height - pixel_coords.y;
+	float x = (2.f * pixel_coords.x / (float)engine->screen_width) - 1.f;
+	float y = (2.f * pixel_coords.y / (float)engine->screen_height) - 1.f;
+	return {x, y};
 }

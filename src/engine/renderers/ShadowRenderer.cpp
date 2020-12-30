@@ -101,6 +101,7 @@ void ShadowRenderer::finish()
 
 void ShadowRenderer::renderEntities(const Environment& environment)
 {
+	/*
 	const auto& entities = environment.getEntities();
 	for (const auto& e: entities) {
 		const auto& model = e->getModel();
@@ -111,7 +112,7 @@ void ShadowRenderer::renderEntities(const Environment& environment)
 		glDisableVertexAttribArray(AttributeLocation::Position);
 		glBindVertexArray(0);
 	}
-	/*
+	*/
 	const auto& entities = environment.getEntitiesInView();
 	for (const auto& element : entities) {
 		const auto& model = element.first;
@@ -124,7 +125,6 @@ void ShadowRenderer::renderEntities(const Environment& environment)
 		glDisableVertexAttribArray(AttributeLocation::Position);
 		glBindVertexArray(0);
 	}
-	*/
 }
 
 void ShadowRenderer::renderTerrain(const Environment& environment)

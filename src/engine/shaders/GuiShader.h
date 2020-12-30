@@ -9,7 +9,8 @@ class GuiTexture;
 class GuiShader final : public Shader {
 private:
 	enum class UniformVariable {
-		TransformationMatrix, FlipVertically
+		TransformationMatrix, FlipVertically,
+		HasTexture, Color
 	};
 
 	static constexpr char name[] = "GuiShader";

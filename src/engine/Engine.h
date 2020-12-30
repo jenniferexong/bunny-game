@@ -23,6 +23,8 @@ public:
 	GLFWwindow* window = nullptr;
 	int window_width = 1280;
 	int window_height = 720;
+	int screen_width = 1280;
+	int screen_height = 720;
 	float aspect_ratio = 1280.f / 720.f;
 
 	Engine() = default;
@@ -46,7 +48,13 @@ public:
 		Log::init("Engine", true);
 	}
 
-	void resize(int width, int height)
+	void resizeWindow(int width, int height)
+	{
+		screen_width = width;
+		screen_height = height;
+	}
+
+	void resizeFramebuffer(int width, int height)
 	{
 		window_width = width;
 		window_height = height;
@@ -68,6 +76,6 @@ public:
 		else
     		glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED); 
 
-		glfwSetCursorPos(window, window_width/2.0, window_height/2.0);
+		glfwSetCursorPos(window, screen_width/2.0, screen_height/2.0);
 	}
 };

@@ -92,7 +92,7 @@ void GameScene::gameLogic()
 	Water::updateRipples();
 
 	player_->updatePosition(environment_, move_keys_);
-	compass_->setRotation(-player_->getRotation().x);
+	compass_.lock()->setRotation(-player_->getRotation().x);
 	camera_->updateView(terrain_1_, environment_.getWater());
 
 	// must update after camera is moved
@@ -112,41 +112,41 @@ void GameScene::setup()
 {
 	//TODO: Make files that you can read material properties from, 
 	// and position, scale, rotation...
-	int width = engine->window_width;
-	int height = engine->window_height;
+	int width = engine->screen_width;
+	int height = engine->screen_height;
 
 	// GUI
 	int padding = 100;
 	int size = 150;
 	int cross_hair_size = 60;
 
-	if (MAC_OS) {
-		padding *= 2;
-		size *= 2;
-		cross_hair_size *= 2;
-	}
-
-	compass_ = std::make_shared<GuiTexture>(
+	compass_ = gui_.addComponent(
 		engine->loader->loadTexture("compass"),
-		ivec2(padding, height - padding),
-		ivec2(size)
+		GuiBound(
+			ivec2(padding, padding),
+			ivec2(size)
+		)
 	);
 
 	const ivec2 center = ivec2(width / 2, height / 2);
-	cross_hair_ = std::make_shared<GuiTexture> (
+	cross_hair_ = gui_.addComponent(
 		engine->loader->loadTexture("cross-hair"),
-		center,
-		ivec2(cross_hair_size)
+		GuiBound(
+			center,
+			ivec2(cross_hair_size)
+		)
 	);
+
 	shadow_test_ = std::make_shared<GuiTexture> (
 		engine->renderer->getShadowMapTexture(),
-		vec2(0),
-		vec2(0.5)
+		GuiBound(
+			vec2(0),
+			vec2(0.5)
+		)
 	);
 
 	//guis_.insert(shadow_test_);
-	guis_.insert(cross_hair_);
-	guis_.insert(compass_);
+	gui_.addToGuis(guis_);
 
 	// text
 	auto font = std::make_shared<FontType> ("maiandra");

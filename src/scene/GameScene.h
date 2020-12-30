@@ -15,9 +15,9 @@ private:
 	Environment environment_;
 	MousePicker mouse_picker_;
 
-	shared_ptr<GuiTexture> compass_ = nullptr;
-	shared_ptr<GuiTexture> cross_hair_ = nullptr;
-	shared_ptr<GuiTexture> shadow_test_ = nullptr;
+	weak_ptr<GuiTexture> compass_;
+	weak_ptr<GuiTexture> cross_hair_;
+	shared_ptr<GuiTexture> shadow_test_;
 
 	shared_ptr<GuiText> frame_rate_ = nullptr;
 

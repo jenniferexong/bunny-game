@@ -45,4 +45,5 @@ namespace Callbacks{
 	void scroll(GLFWwindow* window, double x_offset, double y_offset);
 	void key(GLFWwindow* window, int key, int scan_code, int action, int mods);
 	void framebufferResize(GLFWwindow* window, int width, int height);
+	void windowResize(GLFWwindow* window, int width, int height);
 }

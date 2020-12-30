@@ -60,7 +60,7 @@ public:
 		void(GameScene::*render_scene)(glm::vec4)
 	);
 
-	void renderGui(const unordered_set<weak_ptr<GuiTexture>>& guis);
+	void renderGui(const std::vector<weak_ptr<GuiTexture>>& guis);
 	void renderText(const TextMaster& text_master);
 
 	int getShadowMapTexture() const

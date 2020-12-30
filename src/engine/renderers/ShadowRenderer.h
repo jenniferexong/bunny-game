@@ -3,9 +3,7 @@
 #include <memory>
 
 #include "../ShadowBox.h"
-
 #include "../post-processing/Fbo.h"
-#include "../ShadowFrameBuffer.h"
 #include "../shaders/ShadowShader.h"
 
 class Mesh;
@@ -22,13 +20,6 @@ private:
 
 	ShadowShader shader_;
 	ShadowBox shadow_box_;
-	// TODO:
-	/*
-	ShadowFrameBuffer fbo_ = ShadowFrameBuffer(
-		shadow_map_size,
-		shadow_map_size
-	);
-	*/
 	Fbo fbo_ = Fbo(
 		shadow_map_size,
 		shadow_map_size,

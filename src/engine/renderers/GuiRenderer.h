@@ -20,6 +20,6 @@ public:
 	GuiRenderer();
 	~GuiRenderer() = default;
 	void render(
-		const std::unordered_set<std::weak_ptr<GuiTexture>>& gui_textures
+		const std::vector<std::weak_ptr<GuiTexture>>& gui_textures
 	);
 };

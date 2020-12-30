@@ -1,6 +1,9 @@
 #version 330 core
 
-uniform sampler2D textureSampler;
+uniform int uHasTexture;
+uniform sampler2D uTexture;
+
+uniform vec4 uColor;
 
 in VertexData {
     vec2 textureCoords;
@@ -10,5 +13,9 @@ out vec4 outColor;
 
 void main(void)
 {
-	outColor = texture(textureSampler, f_in.textureCoords);
+	if (uHasTexture == 1)
+		outColor = texture(uTexture, f_in.textureCoords);
+
+	else
+		outColor = uColor;
 }

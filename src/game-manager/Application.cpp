@@ -44,8 +44,7 @@ int Application::run()
     engine = make_unique<Engine>();
 
     GLFWwindow* window = glfwCreateWindow(
-		engine->window_width, engine->window_height, "", NULL, NULL
-	);
+		engine->window_width, engine->window_height, "", NULL, NULL);
     if (!window) {
 		Error::exit("GLFW window failure");
         glfwTerminate();
@@ -70,6 +69,7 @@ int Application::run()
     glfwSetMouseButtonCallback(window, Callbacks::mouseButton);
     glfwSetScrollCallback(window, Callbacks::scroll);
     glfwSetKeyCallback(window, Callbacks::key);
+    glfwSetWindowSizeCallback(window, Callbacks::windowResize);
     glfwSetFramebufferSizeCallback(window, Callbacks::framebufferResize);
 
     while (!glfwWindowShouldClose(window)) {
@@ -128,8 +128,14 @@ void Application::appKeyCallback(int key, int scan_code, int action, int mods)
 
 void Callbacks::framebufferResize(GLFWwindow* window, int width, int height)
 {
+	Log::s("RESIZING FRAMEBUFFER");
+    engine->resizeFramebuffer(width, height);
+}
+
+void Callbacks::windowResize(GLFWwindow* window, int width, int height)
+{
 	Log::s("RESIZING WINDOW");
-    engine->resize(width, height);
+    engine->resizeWindow(width, height);
 }
 
 void Callbacks::cursorPos(GLFWwindow* window, double x, double y)

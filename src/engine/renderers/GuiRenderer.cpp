@@ -15,7 +15,7 @@ GuiRenderer::GuiRenderer()
 	Log::init("GuiRenderer", false);
 
 	std::vector<float> positions = {
-		-1, 1, -1, -1, 1, 1, 1, -1
+		-1, 1, -1, -1, 1, 1, 1, -1 
 	};
 
 	quad_mesh_ = Mesh(engine->loader->loadToVao(positions, 2));
@@ -25,7 +25,7 @@ GuiRenderer::GuiRenderer()
 }
 
 void GuiRenderer::render(
-	const std::unordered_set<std::weak_ptr<GuiTexture>>& gui_textures)
+	const std::vector<std::weak_ptr<GuiTexture>>& gui_textures)
 {
 	shader_.start();
 	glBindVertexArray(quad_mesh_.getId());
@@ -39,8 +39,10 @@ void GuiRenderer::render(
 		if (!gui.lock()->hasTransparency())
 			MasterRenderer::disableAlphaBlending();
 
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, gui.lock()->getTexture());
+		if (gui.lock()->hasTexture()) {
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, gui.lock()->getTexture());
+		}
 		shader_.loadUniforms(*gui.lock());
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, quad_mesh_.getVertexCount());
 

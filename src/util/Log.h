@@ -25,6 +25,7 @@ namespace Log {
 	void matrix(message message, glm::mat4 matrix);
 	void vector(message message, glm::vec3 vector);
 	void vector(message message, glm::vec4 vector);
+	void vector(glm::vec2 vector);
 	void vector(glm::vec3 vector);
 	void vector(glm::vec4 vector);
 	void val(message message, float value);
