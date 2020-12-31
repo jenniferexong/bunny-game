@@ -1,19 +1,44 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include <iostream>
+#include <memory>
+
+class Scene;
+class GuiTexture;
 
 class GuiEvent {
 public:
+	GuiEvent() = default;
 	virtual ~GuiEvent() = default;
+
 	virtual void excecute() {}
 };
 
-class ExitEvent: public GuiEvent {
+class Quit: public GuiEvent {
+public:
 	void excecute() override { exit(EXIT_SUCCESS); }
 };
 
-class UnpauseEvent: public GuiEvent {
+class ChangeScene: public GuiEvent {
+private:
+	std::weak_ptr<Scene> scene_;
+
+public:
 	void excecute() override;
+	ChangeScene(std::weak_ptr<Scene> scene): scene_(scene) {}
 };
 
+class ChangeColor: public GuiEvent {
+private:
+	glm::vec4 color_;
+	std::weak_ptr<GuiTexture> gui_;
+
+public:
+	void excecute() override;
+	ChangeColor(glm::vec4 color, std::weak_ptr<GuiTexture> gui):
+		color_(color), gui_(gui)
+	{}
+};
 

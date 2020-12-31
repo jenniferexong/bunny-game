@@ -5,4 +5,5 @@ ui = files(
     'TextMaster.cpp',
     'GuiBound.cpp',
     'GuiComponent.cpp',
+    'GuiEvent.cpp',
 )

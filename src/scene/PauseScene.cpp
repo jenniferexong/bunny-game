@@ -3,6 +3,8 @@
 #include <GLFW/glfw3.h>
 
 #include "../game-manager/Application.h"
+#include "../ui/GuiEvent.h"
+#include "../ui/GuiComponent.h"
 #include "../util/Maths.h"
 
 using glm::vec3;
@@ -27,18 +29,42 @@ void PauseScene::setUp()
 	auto font = std::make_shared<FontType>("maiandra");
 	pause_menu_ = std::make_shared<GuiText>(
 		"Resume\n\n\nQuit", 5.f, font, glm::vec2(0.f, 0.3), 1.f, true);
-	pause_menu_->setColor(vec3(0));
-	pause_menu_->setGlow(vec3(0.901f, 0.886, 0.517));
+	pause_menu_->setColor(vec3(0.7));
 
 	text_master_.addText(pause_menu_);
 
-	background_ = std::make_shared<GuiTexture>(
+	background_ = gui_.addComponent(
 		engine->post_processor->getBlurTexture(), 
 		GuiBound(vec2(0), vec2(1))
 	);
-	background_->setFlipVertically();
-	background_->setTransparency(false);
-	guis_.push_back(background_);
+	background_->getGui().lock()->setFlipVertically();
+	background_->getGui().lock()->setTransparency(false);
+
+	// buttons
+	const vec4 col = vec4(0.2, 0.2, 0.2, 0.3);
+	const vec4 hover_col = vec4(0.2, 0.2, 0.2, 0.5);
+	const vec2 size = vec2(0.25, 0.15);
+	auto pause = gui_.addComponent(
+		col,
+		GuiBound(
+			vec2(0, 0.3),
+			size
+		)
+	);
+	auto quit = gui_.addComponent(
+		col,
+		GuiBound(
+			vec2(0, -0.3),
+			size
+		)
+	);
+	// TODO GuiComponent::addButton()
+	pause->setHoverColor(hover_col);
+	quit->setHoverColor(hover_col);
+	pause->setClickEvent(new ChangeScene(app->game_scene));
+	quit->setClickEvent(new Quit());
+
+	gui_.addToGuis(guis_);
 }
 
 bool PauseScene::update()
@@ -65,8 +91,8 @@ void PauseScene::unpause()
 
 void PauseScene::cursorPosCallback(double x, double y)
 {
-	//Log::vector(vec2(x, y));
-	//Log::vector(Maths::pixelToScreenCoords(vec2(x, y)));
+	update_ = true;
+	gui_.onHover(vec2(x, y));
 }
 
 void PauseScene::keyCallback(int key, int scan_code, int action, int mods)
@@ -91,5 +117,11 @@ void PauseScene::scrollCallBack(double x_offset, double y_offset)
 
 void PauseScene::mouseButtonCallback(int button, int action, int mods)
 {
-	
+	if (button == GLFW_MOUSE_BUTTON_LEFT) {
+		if (action == GLFW_PRESS) {
+			double x, y;
+			glfwGetCursorPos(engine->window, &x, &y);
+			gui_.onClick(vec2(x, y));
+		}
+	}
 }

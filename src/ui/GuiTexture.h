@@ -46,7 +46,8 @@ public:
 	bool hasTransparency() const { return has_transparency_; }
 	bool hasTexture() const { return has_texture_; }
 
-	void setTexture(int texture) { texture_ = texture; }
+	void setColor(glm::vec4 color);
+	void setTexture(int texture);
 	void setPosition(glm::vec2 position) { bound_.setPosition(position); }
 	void setRotation(float rotation) { bound_.setRotation(rotation); }
 	void setScale(glm::vec2 scale) { bound_.setScale(scale); }

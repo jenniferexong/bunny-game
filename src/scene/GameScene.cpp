@@ -92,7 +92,7 @@ void GameScene::gameLogic()
 	Water::updateRipples();
 
 	player_->updatePosition(environment_, move_keys_);
-	compass_.lock()->setRotation(-player_->getRotation().x);
+	compass_->getGui().lock()->setRotation(-player_->getRotation().x);
 	camera_->updateView(terrain_1_, environment_.getWater());
 
 	// must update after camera is moved
@@ -252,6 +252,8 @@ void GameScene::makeTest()
 void GameScene::pause()
 {
 	render(true);
+	for (auto& element: move_keys_)
+		element.second = false;
 	app->changeScene(app->pause_scene);
 }
 

@@ -1,7 +1,14 @@
 #include "GuiEvent.h"
+
+#include "GuiTexture.h"
 #include "../game-manager/Application.h"
 
-void UnpauseEvent::excecute() 
+void ChangeScene::excecute() 
 {
-	app->changeScene(app->game_scene);
+	app->changeScene(scene_);
+}
+
+void ChangeColor::excecute()
+{
+	gui_.lock()->setColor(color_);
 }

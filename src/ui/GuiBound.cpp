@@ -40,10 +40,10 @@ GuiBound::GuiBound(ivec2 position, ivec2 size)
 
 void GuiBound::setBounds()
 {
-	x_min_ = position_.x - scale_.x / 2.f;
-	x_max_ = position_.x + scale_.x / 2.f;
-	y_min_ = position_.y - scale_.y / 2.f;
-	y_max_ = position_.y + scale_.y / 2.f;
+	x_min_ = position_.x - scale_.x;
+	x_max_ = position_.x + scale_.x;
+	y_min_ = position_.y - scale_.y;
+	y_max_ = position_.y + scale_.y;
 }
 
 /**
