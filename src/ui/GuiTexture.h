@@ -36,7 +36,7 @@ public:
 	~GuiTexture() = default;
 
 	int getTexture() const { return texture_; }
-	const GuiBound& getBounds() const { return bound_; }
+	const GuiBound& getBound() const { return bound_; }
 	glm::vec2 getPosition() const { return bound_.getPosition(); }
 	float getRotation() const { return bound_.getRotation(); }
 	glm::vec2 getScale() const { return bound_.getScale(); }

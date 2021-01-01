@@ -1,0 +1,43 @@
+{
+	"background": {
+		"construct": {
+			"position": [ 0.5, 0.5 ],
+			"scale": [ 1, 1 ]
+		},
+		"unpause": {
+			"construct": {
+				"color": [ 0.2, 0.2, 0.2, 0.3 ],
+				"position": [ 0.5, 0.35 ],
+				"scale": [ 0.2, 0.15 ]
+			},
+			"text": {
+				"construct": {
+					"content": "Resume",
+					"size": 5,
+					"position": [ 0, 0 ],
+					"width": 1,
+					"centered": true
+				},
+				"color": [ 1, 1, 1 ]
+			}
+		},
+
+		"quit": {
+			"construct": {
+				"position": [ 0.5, 0.35 ],
+				"scale": [ 0.2, 0.15 ],
+				"color": [ 0.2, 0.2, 0.2, 0.3 ]
+			},
+			"text": {
+				"construct": {
+					"content": "Quit",
+					"size": 5,
+					"position": [ 0, 0 ],
+					"width": 1,
+					"centered": true
+				},
+				"color": [ 1, 1, 1 ]
+			}
+		}
+	}
+}

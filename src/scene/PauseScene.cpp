@@ -26,45 +26,41 @@ void PauseScene::init()
 
 void PauseScene::setUp()
 {
-	auto font = std::make_shared<FontType>("maiandra");
-	pause_menu_ = std::make_shared<GuiText>(
-		"Resume\n\n\nQuit", 5.f, font, glm::vec2(0.f, 0.3), 1.f, true);
-	pause_menu_->setColor(vec3(0.7));
-
-	text_master_.addText(pause_menu_);
-
 	background_ = gui_.addComponent(
 		engine->post_processor->getBlurTexture(), 
-		GuiBound(vec2(0), vec2(1))
+		GuiBound(vec2(0.5), vec2(1))
 	);
 	background_->getGui().lock()->setFlipVertically();
 	background_->getGui().lock()->setTransparency(false);
 
 	// buttons
 	const vec4 col = vec4(0.2, 0.2, 0.2, 0.3);
-	const vec4 hover_col = vec4(0.2, 0.2, 0.2, 0.5);
-	const vec2 size = vec2(0.25, 0.15);
-	auto pause = gui_.addComponent(
+	const vec4 hover_col = vec4(0.2, 0.2, 0.2, 0.5); 
+	const vec2 size = vec2(0.2, 0.15);
+	auto resume = gui_.addComponent(
 		col,
-		GuiBound(
-			vec2(0, 0.3),
-			size
-		)
+		GuiBound(vec2(0.5, 0.35), size)
 	);
 	auto quit = gui_.addComponent(
 		col,
-		GuiBound(
-			vec2(0, -0.3),
-			size
-		)
+		GuiBound(vec2(0.5, 0.65), size)
 	);
+	// text
+	const vec2 text_pos = vec2(0, 0.1);
+	auto quit_text = quit->addText(
+		"Quit", 5.f, "maiandra", text_pos, 1.f, true);
+	auto pause_text = resume->addText(
+		"Resume", 5.f, "maiandra", text_pos, 1.f, true);
+	quit_text.lock()->setColor(vec3(1));
+	pause_text.lock()->setColor(vec3(1));
+
 	// TODO GuiComponent::addButton()
-	pause->setHoverColor(hover_col);
+	resume->setHoverColor(hover_col);
 	quit->setHoverColor(hover_col);
-	pause->setClickEvent(new ChangeScene(app->game_scene));
+	resume->setClickEvent(new ChangeScene(app->game_scene));
 	quit->setClickEvent(new Quit());
 
-	gui_.addToGuis(guis_);
+	gui_.addToBatch(guis_, text_master_);
 }
 
 bool PauseScene::update()
@@ -98,13 +94,40 @@ void PauseScene::cursorPosCallback(double x, double y)
 void PauseScene::keyCallback(int key, int scan_code, int action, int mods)
 {
 	switch(key) {
-	case GLFW_KEY_TAB:
-		if (action == GLFW_RELEASE) {
-			unpause();
-		}
-		break;
 	case GLFW_KEY_ESCAPE:
-		engine->closeWindow();
+		if (action == GLFW_PRESS)
+			unpause();
+		break;
+	case GLFW_KEY_W: 
+		if (action == GLFW_PRESS)
+			move_keys_[Key::W] = true;
+		else if(action == GLFW_RELEASE)
+			move_keys_[Key::W] = false;
+		break;
+	case GLFW_KEY_A: 
+		if (action == GLFW_PRESS)
+			move_keys_[Key::A] = true;
+		else if(action == GLFW_RELEASE)
+			move_keys_[Key::A] = false;
+		break;
+	case GLFW_KEY_S: 
+		if (action == GLFW_PRESS)
+			move_keys_[Key::S] = true;
+		else if(action == GLFW_RELEASE)
+			move_keys_[Key::S] = false;
+		break;
+	case GLFW_KEY_D: 
+		if (action == GLFW_PRESS)
+			move_keys_[Key::D] = true;
+		else if(action == GLFW_RELEASE)
+			move_keys_[Key::D] = false;
+		break;
+	case GLFW_KEY_SPACE: 
+		if (action == GLFW_PRESS)
+			move_keys_[Key::Space] = true;
+		else if(action == GLFW_RELEASE)
+			move_keys_[Key::Space] = false;
+		break;
 	default:
 		break;
 	}

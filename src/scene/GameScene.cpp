@@ -103,7 +103,7 @@ void GameScene::gameLogic()
 	if (!selected_.expired())
 		selected_.lock()->highlight();
 
-	frame_rate_->updateText("FPS: " + std::to_string((int)app->timer->fps));
+	frame_rate_.lock()->updateText("FPS: " + std::to_string((int)app->timer->fps));
 }
 
 using glm::vec2;
@@ -122,38 +122,27 @@ void GameScene::setup()
 
 	compass_ = gui_.addComponent(
 		engine->loader->loadTexture("compass"),
-		GuiBound(
-			ivec2(padding, padding),
-			ivec2(size)
-		)
+		GuiBound(ivec2(padding, padding), ivec2(size))
 	);
 
 	const ivec2 center = ivec2(width / 2, height / 2);
+
 	cross_hair_ = gui_.addComponent(
 		engine->loader->loadTexture("cross-hair"),
-		GuiBound(
-			center,
-			ivec2(cross_hair_size)
-		)
+		GuiBound(center, ivec2(cross_hair_size))
 	);
 
 	shadow_test_ = std::make_shared<GuiTexture> (
 		engine->renderer->getShadowMapTexture(),
-		GuiBound(
-			vec2(0),
-			vec2(0.5)
-		)
+		GuiBound(vec2(0.5), vec2(0.5))
 	);
 
-	//guis_.insert(shadow_test_);
-	gui_.addToGuis(guis_);
+	frame_rate_ = gui_.addText(
+		"", 1.5f, "maiandra", glm::vec2(0.94f, 0.025), 1.f, false);
+	frame_rate_.lock()->setColor(vec3(1));
 
-	// text
-	auto font = std::make_shared<FontType> ("maiandra");
-	frame_rate_ = std::make_shared<GuiText> (
-		"", 1.5f, font, glm::vec2(0.94f, 0.025), 1.f, false);
-	frame_rate_->setColor(vec3(1));
-	text_master_.addText(frame_rate_);
+	//guis_.push_back(shadow_test_);
+	gui_.addToBatch(guis_, text_master_);
 
 	// Terrains
 	auto texture_pack = Helper::makeTexturePack (
@@ -252,8 +241,8 @@ void GameScene::makeTest()
 void GameScene::pause()
 {
 	render(true);
-	for (auto& element: move_keys_)
-		element.second = false;
+	//for (auto& element: move_keys)
+		//element.second = false;
 	app->changeScene(app->pause_scene);
 }
 
@@ -269,8 +258,8 @@ glm::mat4 GameScene::getProjectionMatrix() // TODO: why is this in game scene
 void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 {
 	switch (key) {
-	case GLFW_KEY_TAB:
-		if (action == GLFW_RELEASE)
+	case GLFW_KEY_ESCAPE:
+		if (action == GLFW_PRESS)
 			pause();
 		break;
 	case GLFW_KEY_W: 
@@ -303,8 +292,6 @@ void GameScene::keyCallback(int key, int scan_code, int action, int mods)
 		else if(action == GLFW_RELEASE)
 			move_keys_[Key::Space] = false;
 		break;
-	case GLFW_KEY_ESCAPE:
-		engine->closeWindow();
 	case GLFW_KEY_L: 
 		break;
 		if (action == GLFW_RELEASE) {

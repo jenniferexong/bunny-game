@@ -3,27 +3,61 @@
 #include "TextMaster.h"
 #include "../game-manager/Application.h"
 #include "../engine/text/TextLoader.h"
+#include "GuiBound.h"
 
 int GuiText::next_id_ = 0;
 TextLoader GuiText::loader_ = TextLoader();
 
+/**
+ * Creates text, loads its mesh into a VAO, adds text to the screen.
+ * Positions and widths in screen size, where the range is [0, 1]
+ *	- top left (0, 0)
+ *	- bottom right (1, 1)
+ */
 GuiText::GuiText(
-	const std::string& text, 
-	float font_size, 
-	std::shared_ptr<FontType> font,
-	glm::vec2 position,
-	float max_line_width,
-	bool centered)
+	const std::string& text, float font_size,
+	const std::string& font, glm::vec2 position,
+	float max_line_width, bool centered)
 {
 	// assign id
 	id_ = next_id_++;
 	text_ = text;
 	font_size_ = font_size;
-	font_ = std::move(font);
+	font_ = engine->getFont(font);
 	position_ = position;
 	max_line_width_ = max_line_width;
 	centered_ = centered;
 
+	init();
+}
+
+/**
+ * Creates a text and positions it relative to bound
+ */
+GuiText::GuiText(
+	const std::string& text, float font_size,
+	const std::string& font, glm::vec2 position,
+	float max_line_width, bool centered, const GuiBound& bound)
+{
+	// assign id
+	id_ = next_id_++;
+	text_ = text;
+	font_size_ = font_size;
+	font_ = engine->getFont(font);
+	centered_ = centered;
+
+	// calculate position and size
+	max_line_width_ = max_line_width * bound.getScale().x;
+	vec2 bound_position = bound.getTopLeft();
+	bound_position.x = (bound_position.x + 1.f) / 2.f;
+	bound_position.y = (bound_position.y - 1.f) / -2.f;
+
+	position_ = bound_position + (position * bound.getScale().x);
+	init();
+}
+
+void GuiText::init() 
+{
 	character_width_ = 
 		(1.f / 50.f) * glm::log(font_size_ + 0.1f) + 0.47f;
 	edge_transition_ = 

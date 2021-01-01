@@ -4,16 +4,21 @@
 
 #include <vector>
 #include <memory>
+#include <string>
 
 class GuiEvent;
 class GuiTexture;
 class GuiBound;
+class GuiText;
+class TextMaster;
 
 class GuiComponent {
 private:
 	GuiComponent* parent_ = nullptr;
 
-	std::shared_ptr<GuiTexture> gui_;
+	std::string id_ = "";
+	std::shared_ptr<GuiTexture> gui_ = nullptr;
+	std::shared_ptr<GuiText> text_ = nullptr;
 
 	GuiEvent* off_hover_event_;
 	GuiEvent* hover_event_;
@@ -23,15 +28,25 @@ private:
 
 public:
 	GuiComponent();
+
 	GuiComponent(GuiComponent* parent, std::shared_ptr<GuiTexture> gui);
 	~GuiComponent();
 
 	GuiComponent* addComponent(int texture, GuiBound bound);
 	GuiComponent* addComponent(glm::vec4 color, GuiBound bound);
+	GuiComponent* getComponent(const std::string& id);
+
+	std::weak_ptr<GuiText> addText(
+		const std::string& text, float font_size,
+		const std::string& font, glm::vec2 position,
+		float max_line_width, bool centered
+	);
 
 	void setOffHoverEvent(GuiEvent* event);
 	void setHoverEvent(GuiEvent* event);
 	void setClickEvent(GuiEvent* event);
+
+	void setId(const std::string& id) { id_ = id; }
 
 	void setHoverColor(glm::vec4 color);
 
@@ -40,5 +55,11 @@ public:
 	void onHover(glm::vec2 mouse_pos);
 	void onClick(glm::vec2 mouse_pos);
 
-	void addToGuis(std::vector<std::weak_ptr<GuiTexture>>& guis);
+	/**
+	 * Adds GuiTexture and GuiText to rendering batch
+	 */
+	void addToBatch(
+		std::vector<std::weak_ptr<GuiTexture>>& guis,
+		TextMaster& text_master
+	);
 };

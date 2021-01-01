@@ -19,13 +19,24 @@ GuiBound::GuiBound(float left, float top, float width, float height)
 }
 
 /**
- * Parameters in screen coordinates
+ * Parameters in screen coordinates, range [0, 1]
  * @param position centre of the gui component
  */
 GuiBound::GuiBound(vec2 position, vec2 scale): 
-	position_(position),
 	scale_(scale)
 {
+	position_.x = (2.f * position.x) - 1.f;
+	position_.y = (-2.f * position.y) + 1.f;
+	setBounds();
+}
+
+GuiBound::GuiBound(const GuiBound& child, const GuiBound& parent)
+{
+	vec2 pos = child.getPosition();
+	vec2 scale = child.getScale();
+
+	position_ = parent.getPosition() + (parent.getScale() * pos);
+	scale_ = scale * parent.getScale();
 	setBounds();
 }
 

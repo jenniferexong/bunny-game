@@ -26,6 +26,7 @@ public:
 	 * scale of (1, 1) is the entire screen
 	 */
 	GuiBound(glm::vec2 position, glm::vec2 scale);
+	GuiBound(const GuiBound& child, const GuiBound& parent);
 
 	/**
 	 * Pixel-screen coordinates (+x is right, +y is down)
@@ -40,6 +41,7 @@ public:
 	bool containsPoint(glm::vec2 point) const;
 
 	glm::vec2 getPosition() const { return position_; }
+	glm::vec2 getTopLeft() const { return { x_min_, y_max_ }; }
 	glm::vec2 getScale() const { return scale_; }
 	float getRotation() const { return rotation_; }
 };

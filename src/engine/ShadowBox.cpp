@@ -30,7 +30,7 @@ void ShadowBox::update(const Camera& camera, glm::mat4 light_view)
 	light_view_matrix_ = light_view;
 	frustum_.update(camera);
 	std::vector<vec4> points = frustum_.getCorners();
-	for (int i = 0; i < points.size(); i++)
+	for (unsigned int i = 0; i < points.size(); i++)
 		points[i] = light_view_matrix_ * points[i];
 
 	x_bounds.x = std::numeric_limits<float>::max();

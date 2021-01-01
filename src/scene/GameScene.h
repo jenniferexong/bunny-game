@@ -19,7 +19,7 @@ private:
 	GuiComponent* cross_hair_;
 	shared_ptr<GuiTexture> shadow_test_;
 
-	shared_ptr<GuiText> frame_rate_ = nullptr;
+	weak_ptr<GuiText> frame_rate_;
 
 	shared_ptr<Player> player_ = nullptr;
 	weak_ptr<Entity> selected_;
@@ -31,14 +31,6 @@ private:
 	shared_ptr<Skybox> skybox_;
 	vector<shared_ptr<Light>> lights_;
 	vector<weak_ptr<Light>> close_lights_;
-
-	std::map<Key, bool> move_keys_ = {
-		{Key::W, false}, 
-		{Key::A, false}, 
-		{Key::S, false}, 
-		{Key::D, false}, 
-		{Key::Space, false}
-	};
 
 	std::map<MouseButton, bool> mouse_buttons_ = {
 		{MouseButton::Left, false},
@@ -55,6 +47,7 @@ private:
 	void pause();
 	
 public:
+
 	GameScene();
 	~GameScene() = default;
 

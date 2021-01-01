@@ -76,7 +76,7 @@ void WavefrontData::loadData(const std::string& file_name)
 		temp_indices = indices;
 		indices.clear();
 
-		for (int i = 0; i < (temp_indices.size() / 4); i++) {
+		for (unsigned int i = 0; i < (temp_indices.size() / 4); i++) {
 			int v1 = temp_indices.at(i * 4 + 0);
 			int v2 = temp_indices.at(i * 4 + 1);
 			int v3 = temp_indices.at(i * 4 + 2);

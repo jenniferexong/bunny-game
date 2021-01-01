@@ -18,7 +18,7 @@ public:
 
 class Quit: public GuiEvent {
 public:
-	void excecute() override { exit(EXIT_SUCCESS); }
+	void excecute() override;
 };
 
 class ChangeScene: public GuiEvent {
@@ -26,8 +26,9 @@ private:
 	std::weak_ptr<Scene> scene_;
 
 public:
-	void excecute() override;
 	ChangeScene(std::weak_ptr<Scene> scene): scene_(scene) {}
+
+	void excecute() override;
 };
 
 class ChangeColor: public GuiEvent {
@@ -36,9 +37,10 @@ private:
 	std::weak_ptr<GuiTexture> gui_;
 
 public:
-	void excecute() override;
 	ChangeColor(glm::vec4 color, std::weak_ptr<GuiTexture> gui):
 		color_(color), gui_(gui)
 	{}
+
+	void excecute() override;
 };
 

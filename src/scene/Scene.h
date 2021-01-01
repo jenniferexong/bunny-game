@@ -8,6 +8,7 @@
 #include "../ui/GuiComponent.h"
 #include "../ui/GuiTexture.h"
 #include "../ui/TextMaster.h"
+#include "../game-manager/UserInput.h"
 
 using std::string;
 using std::weak_ptr;
@@ -17,6 +18,8 @@ class MasterRenderer;
 
 class Scene {
 protected:
+	static std::map<Key, bool> move_keys_;
+
 	GuiComponent gui_;
 	vector<weak_ptr<GuiTexture>> guis_;
 	TextMaster text_master_;
