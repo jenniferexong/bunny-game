@@ -6,6 +6,7 @@
 #include "../ui/GuiEvent.h"
 #include "../ui/GuiComponent.h"
 #include "../util/Maths.h"
+#include "../util/JsonParser.h"
 
 using glm::vec3;
 using glm::vec2;
@@ -20,6 +21,7 @@ PauseScene::PauseScene()
 void PauseScene::init()
 {
 	Log::s("changed to pausescene");
+	//JsonParser::parse("test");
 	engine->enableCursor(true);
 	update_ = true;
 }

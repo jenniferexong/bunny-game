@@ -6,11 +6,11 @@
 #include "../Application.h"
 #include "../renderers/MasterRenderer.h"
 
-Fbo::Fbo(int width, int height, Type type) : width_(width), height_(height)
+Fbo::Fbo(int width, int height, ValueType type) : width_(width), height_(height)
 {
 	type_ = DepthBufferAttachment::DepthBuffer;
 	multi_sample_ = true;
-	if (type == Type::MultiTarget)
+	if (type == ValueType::MultiTarget)
 		multi_target_ = true;
 	initialise();
 }

@@ -4,7 +4,7 @@ enum class DepthBufferAttachment {
 	Uninitialised, None, DepthTexture, DepthBuffer
 };
 
-enum class Type {
+enum class ValueType {
 	MultiSample, MultiTarget
 };
 
@@ -61,7 +61,7 @@ public:
 	/**
 	 * Fbos with multisampling and/or mutitarget - always render buffer
 	 */
-	Fbo(int width, int height, Type type);
+	Fbo(int width, int height, ValueType type);
 
 	Fbo(int width, int height, DepthBufferAttachment type);
 	Fbo(int width, int height, DepthBufferAttachment type, bool clamp_to_edge);

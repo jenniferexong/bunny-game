@@ -21,7 +21,7 @@ PostProcessor::PostProcessor()
 	int width = engine->window_width;
 	int height = engine->window_height;
 
-	multisample_fbo_ = make_shared<Fbo>(width, height, Type::MultiTarget);
+	multisample_fbo_ = make_shared<Fbo>(width, height, ValueType::MultiTarget);
 	antialias_fbo_ = make_shared<Fbo>(
 		width, height, DepthBufferAttachment::DepthTexture);
 	glow_output_ = make_shared<Fbo>(
