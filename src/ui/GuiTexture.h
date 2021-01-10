@@ -3,13 +3,18 @@
 #include <glm/glm.hpp>
 
 #include <memory>
+#include <unordered_map>
 #include <functional>
+#include <string>
 
 #include "GuiBound.h"
+#include "../util/Log.h"
 
 class GuiTexture {
 private:
-	GuiBound bound_;
+	static std::unordered_map<std::string, int> textures;
+
+    std::weak_ptr<GuiBound> bound_;
 
 	glm::vec4 color_ = glm::vec4(1);
 	int texture_;
@@ -19,15 +24,27 @@ private:
 	bool has_transparency_ = true;
 	
 public:
+    static void loadTextures();
+    static int getTexture(const std::string& name)
+    {
+        if (textures.find(name) == textures.end())
+            Error::exit("GuiTexture::textures doesn't contain: " + name);
+
+        return textures[name];
+    }
+
 	GuiTexture(): texture_(-1) {}
 
-	GuiTexture(int texture, GuiBound bound): 
+	GuiTexture(int texture): texture_(texture), has_texture_(true) {}
+	GuiTexture(glm::vec4 color): color_(color), texture_(-1) {}
+
+	GuiTexture(int texture, std::weak_ptr<GuiBound> bound): 
 		bound_(bound),
 		texture_(texture),
 		has_texture_(true)
 	{}
 
-	GuiTexture(glm::vec4 color, GuiBound bound):
+    GuiTexture(glm::vec4 color, std::weak_ptr<GuiBound> bound):
 		bound_(bound),
 		color_(color),
 		texture_(-1)
@@ -36,10 +53,10 @@ public:
 	~GuiTexture() = default;
 
 	int getTexture() const { return texture_; }
-	const GuiBound& getBound() const { return bound_; }
-	glm::vec2 getPosition() const { return bound_.getPosition(); }
-	float getRotation() const { return bound_.getRotation(); }
-	glm::vec2 getScale() const { return bound_.getScale(); }
+	const GuiBound& getBound() const { return *bound_.lock(); }
+	glm::vec2 getPosition() const { return getBound().getPosition(); }
+	float getRotation() const { return getBound().getRotation(); }
+	glm::vec2 getScale() const { return getBound().getScale(); }
 	glm::vec4 getColor() const { return color_; }
 
 	bool flipVertically() const { return flip_vertically_; }
@@ -48,9 +65,10 @@ public:
 
 	void setColor(glm::vec4 color);
 	void setTexture(int texture);
-	void setPosition(glm::vec2 position) { bound_.setPosition(position); }
-	void setRotation(float rotation) { bound_.setRotation(rotation); }
-	void setScale(glm::vec2 scale) { bound_.setScale(scale); }
+    void setBounds(std::weak_ptr<GuiBound> bound) { bound_ = bound; }
+	void setPosition(glm::vec2 position) { bound_.lock()->setPosition(position); }
+	void setRotation(float rotation) { bound_.lock()->setRotation(rotation); }
+	void setScale(glm::vec2 scale) { bound_.lock()->setScale(scale); }
 
 	void setFlipVertically() { flip_vertically_ = true; }
 

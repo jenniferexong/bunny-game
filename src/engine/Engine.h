@@ -27,7 +27,6 @@ public:
 	std::unique_ptr<MasterRenderer> renderer = nullptr;
 	std::unique_ptr<PostProcessor> post_processor = nullptr;
 
-
 	GLFWwindow* window = nullptr;
 	int window_width = 1280;
 	int window_height = 720;

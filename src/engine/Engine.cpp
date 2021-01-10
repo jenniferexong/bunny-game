@@ -1,5 +1,6 @@
 #include "Engine.h"
 #include "text/FontType.h"
+#include "../ui/GuiTexture.h"
 
 void Engine::init(GLFWwindow* w)
 {
@@ -18,6 +19,7 @@ void Engine::init(GLFWwindow* w)
 	post_processor = std::make_unique<PostProcessor>();
 
 	loadFonts();
+    GuiTexture::loadTextures();
 
 	Log::init("Engine", true);
 }

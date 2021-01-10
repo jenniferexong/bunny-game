@@ -3,4 +3,5 @@ util = files(
     'Maths.cpp',
     'JsonParser.cpp',
     'JsonTokens.cpp',
+    'JsonValue.cpp',
 )

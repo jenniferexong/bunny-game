@@ -80,7 +80,7 @@ public:
 	float getMaxLineWidth() const { return max_line_width_; }
 
 	void setMeshDataInfo(int vao, int vertex_count);
-	void setColor(glm::vec3 color) { color_ = color; }
+	void setColor(glm::vec3 color){ color_ = color; }
 	void setLineCount(int count) { line_count_ = count; }
 
 	void setOutline(glm::vec3 color);

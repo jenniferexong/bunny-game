@@ -20,12 +20,13 @@ class Scene {
 protected:
 	static std::map<Key, bool> move_keys_;
 
-	GuiComponent gui_;
+    std::unique_ptr<GuiComponent> gui_;
 	vector<weak_ptr<GuiTexture>> guis_;
 	TextMaster text_master_;
 
 public:
 	virtual ~Scene() = default;
+
 	virtual const TextMaster& getText() { return text_master_; }
 	virtual const vector<weak_ptr<GuiTexture>>& getGuis() const { return guis_; }
 

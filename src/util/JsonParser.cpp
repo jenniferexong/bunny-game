@@ -4,6 +4,7 @@
 
 #include "JsonTokens.h"
 #include "Log.h"
+#include "JsonValue.h"
 
 using namespace std;
 

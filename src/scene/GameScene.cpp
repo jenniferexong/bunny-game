@@ -92,7 +92,7 @@ void GameScene::gameLogic()
 	Water::updateRipples();
 
 	player_->updatePosition(environment_, move_keys_);
-	compass_->getGui().lock()->setRotation(-player_->getRotation().x);
+    compass_.lock()->setRotation(-player_->getRotation().x);
 	camera_->updateView(terrain_1_, environment_.getWater());
 
 	// must update after camera is moved
@@ -112,37 +112,15 @@ void GameScene::setup()
 {
 	//TODO: Make files that you can read material properties from, 
 	// and position, scale, rotation...
-	int width = engine->screen_width;
-	int height = engine->screen_height;
 
-	// GUI
-	int padding = 100;
-	int size = 150;
-	int cross_hair_size = 60;
+    gui_ = make_unique<GuiComponent>("gamescene");
+    compass_ = gui_->getComponent("compass")->getGui();
+    cross_hair_ = gui_->getComponent("cross-hair")->getGui();
+    frame_rate_ = gui_->getComponent("frame-rate")->getText();
 
-	compass_ = gui_.addComponent(
-		engine->loader->loadTexture("compass"),
-		GuiBound(ivec2(padding, padding), ivec2(size))
-	);
-
-	const ivec2 center = ivec2(width / 2, height / 2);
-
-	cross_hair_ = gui_.addComponent(
-		engine->loader->loadTexture("cross-hair"),
-		GuiBound(center, ivec2(cross_hair_size))
-	);
-
-	shadow_test_ = std::make_shared<GuiTexture> (
-		engine->renderer->getShadowMapTexture(),
-		GuiBound(vec2(0.5), vec2(0.5))
-	);
-
-	frame_rate_ = gui_.addText(
-		"", 1.5f, "maiandra", glm::vec2(0.94f, 0.025), 1.f, false);
-	frame_rate_.lock()->setColor(vec3(1));
+    gui_->addToBatch(guis_, text_master_);
 
 	//guis_.push_back(shadow_test_);
-	gui_.addToBatch(guis_, text_master_);
 
 	// Terrains
 	auto texture_pack = Helper::makeTexturePack (
@@ -241,8 +219,6 @@ void GameScene::makeTest()
 void GameScene::pause()
 {
 	render(true);
-	//for (auto& element: move_keys)
-		//element.second = false;
 	app->changeScene(app->pause_scene);
 }
 

@@ -21,48 +21,18 @@ PauseScene::PauseScene()
 void PauseScene::init()
 {
 	Log::s("changed to pausescene");
-	//JsonParser::parse("test");
 	engine->enableCursor(true);
 	update_ = true;
 }
 
 void PauseScene::setUp()
 {
-	background_ = gui_.addComponent(
-		engine->post_processor->getBlurTexture(), 
-		GuiBound(vec2(0.5), vec2(1))
-	);
-	background_->getGui().lock()->setFlipVertically();
-	background_->getGui().lock()->setTransparency(false);
+    gui_ = std::make_unique<GuiComponent>("pause");
+	gui_->getComponent("resume")->setClickEvent(
+        new ChangeScene(app->game_scene));
+	gui_->getComponent("quit")->setClickEvent(new Quit());
 
-	// buttons
-	const vec4 col = vec4(0.2, 0.2, 0.2, 0.3);
-	const vec4 hover_col = vec4(0.2, 0.2, 0.2, 0.5); 
-	const vec2 size = vec2(0.2, 0.15);
-	auto resume = gui_.addComponent(
-		col,
-		GuiBound(vec2(0.5, 0.35), size)
-	);
-	auto quit = gui_.addComponent(
-		col,
-		GuiBound(vec2(0.5, 0.65), size)
-	);
-	// text
-	const vec2 text_pos = vec2(0, 0.1);
-	auto quit_text = quit->addText(
-		"Quit", 5.f, "maiandra", text_pos, 1.f, true);
-	auto pause_text = resume->addText(
-		"Resume", 5.f, "maiandra", text_pos, 1.f, true);
-	quit_text.lock()->setColor(vec3(1));
-	pause_text.lock()->setColor(vec3(1));
-
-	// TODO GuiComponent::addButton()
-	resume->setHoverColor(hover_col);
-	quit->setHoverColor(hover_col);
-	resume->setClickEvent(new ChangeScene(app->game_scene));
-	quit->setClickEvent(new Quit());
-
-	gui_.addToBatch(guis_, text_master_);
+    gui_->addToBatch(guis_, text_master_);
 }
 
 bool PauseScene::update()
@@ -90,7 +60,7 @@ void PauseScene::unpause()
 void PauseScene::cursorPosCallback(double x, double y)
 {
 	update_ = true;
-	gui_.onHover(vec2(x, y));
+	gui_->onHover(vec2(x, y));
 }
 
 void PauseScene::keyCallback(int key, int scan_code, int action, int mods)
@@ -146,7 +116,7 @@ void PauseScene::mouseButtonCallback(int button, int action, int mods)
 		if (action == GLFW_PRESS) {
 			double x, y;
 			glfwGetCursorPos(engine->window, &x, &y);
-			gui_.onClick(vec2(x, y));
+			gui_->onClick(vec2(x, y));
 		}
 	}
 }

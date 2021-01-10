@@ -15,11 +15,10 @@ private:
 	Environment environment_;
 	MousePicker mouse_picker_;
 
-	GuiComponent* compass_;
-	GuiComponent* cross_hair_;
-	shared_ptr<GuiTexture> shadow_test_;
-
+	weak_ptr<GuiTexture> compass_;
+	weak_ptr<GuiTexture> cross_hair_;
 	weak_ptr<GuiText> frame_rate_;
+	shared_ptr<GuiTexture> shadow_test_;
 
 	shared_ptr<Player> player_ = nullptr;
 	weak_ptr<Entity> selected_;
