@@ -6,9 +6,6 @@ class PauseScene: public Scene {
 private:
 	void setUp();
 
-	//std::shared_ptr<GuiText> pause_menu_;
-	//GuiComponent* background_;
-
 	bool update_ = true;
 
 	void unpause();

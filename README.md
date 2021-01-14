@@ -43,8 +43,8 @@ $ brew install glm
 ---
 ## Build
 ##### Create build directory - specify clang as compiler
+**In project root directory**
 ```
-$ cd game/work
 $ CC=clang CXX=clang++ meson build
 $ cd build
 ```
