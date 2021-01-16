@@ -114,7 +114,7 @@ GuiBound GuiComponent::makeBound(const Object& bound_obj)
         ivec2 pixel_position = ivec2(nums[0], nums[1]);
         nums = getNumbers(bound_obj, s);
         ivec2 size = ivec2(nums[0], nums[1]);
-        return { pixel_position, size };
+        return { pixel_position, size, *bound_};
     }
     else {
         Error::exit(

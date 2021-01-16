@@ -28,9 +28,9 @@ void PauseScene::init()
 void PauseScene::setUp()
 {
     gui_ = std::make_unique<GuiComponent>("pause");
-	gui_->getComponent("resume")->setClickEvent(
+    gui_->getComponent("resume")->setClickEvent(
         new ChangeScene(app->game_scene));
-	gui_->getComponent("quit")->setClickEvent(new Quit());
+    gui_->getComponent("quit")->setClickEvent(new Quit());
 
     gui_->addToBatch(guis_, text_master_);
 }

@@ -31,7 +31,7 @@ public:
 	/**
 	 * Pixel-screen coordinates (+x is right, +y is down)
 	 */
-	GuiBound(glm::ivec2 position, glm::ivec2 size);
+	GuiBound(glm::ivec2 position, glm::ivec2 size, const GuiBound& parent);
 
 	void setBounds();
 	void setPosition(glm::vec2 position) { position_ = position; }

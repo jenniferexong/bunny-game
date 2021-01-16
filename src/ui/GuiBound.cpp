@@ -40,12 +40,15 @@ GuiBound::GuiBound(const GuiBound& child, const GuiBound& parent)
 	setBounds();
 }
 
-GuiBound::GuiBound(ivec2 position, ivec2 size)
+GuiBound::GuiBound(ivec2 position, ivec2 size, const GuiBound& parent)
 {
-	float width = engine->screen_width;
-	float height = engine->screen_height;
-	position_ = Maths::pixelToScreenCoords(position);
-	scale_ = vec2((float)size.x / width, (float)size.y / height);
+    vec2 parent_pixel_size = 
+        parent.scale_ * vec2(engine->screen_width, engine->screen_height);
+    vec2 pos = vec2(position) / parent_pixel_size;
+	position_.x = (2.f * pos.x) - 1.f;
+	position_.y = (-2.f * pos.y) + 1.f;
+	scale_ = vec2(
+        (float)size.x / parent_pixel_size.x, (float)size.y / parent_pixel_size.y);
 	setBounds();
 }
 
