@@ -4,13 +4,28 @@
 #include <vector>
 #include <cctype>
 
-struct JsonTokens {
-	std::vector<std::string> tokens;
+enum class TokenKind {
+    Boolean, Number, String,
+    // punctuation
+    OpenBrace, CloseBrace, OpenSquare, CloseSquare, QuotationMark, Comma, Colon
+};
 
-	static constexpr char curly_brace_open = '{';
-	static constexpr char curly_brace_close = '}';
-	static constexpr char square_brace_open = '[';
-	static constexpr char square_brace_close = ']';
+struct Token {
+    TokenKind kind;
+    std::string str;
+
+    Token() = default;
+    Token(TokenKind k, const std::string& s): kind(k), str(s) {}
+};
+
+struct JsonTokens {
+
+	std::vector<Token> tokens;
+
+	static constexpr char open_brace = '{';
+	static constexpr char close_brace = '}';
+	static constexpr char open_square = '[';
+	static constexpr char close_square = ']';
 	static constexpr char quotation_mark = '"';
 	static constexpr char comma = ',';
 	static constexpr char colon = ':';
@@ -23,6 +38,7 @@ struct JsonTokens {
 	int getBool(int start_index, std::string& string);
 	int getNumber(int start_index, std::string& string);
 	int getString(int start_index, std::string& string);
+    int getPunctuation(int start_index, const char& c);
 
 	static bool isQuotation(const char& c) { return c == quotation_mark; }
 
@@ -40,10 +56,10 @@ struct JsonTokens {
 	{ 
 		return (
 			c == quotation_mark
-			|| c == curly_brace_open
-			|| c == curly_brace_close
-			|| c == square_brace_open
-			|| c == square_brace_close
+			|| c == open_brace
+			|| c == close_brace
+			|| c == open_square
+			|| c == close_square
 			|| c == comma
 			|| c == colon
 		);

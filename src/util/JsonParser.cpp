@@ -3,23 +3,13 @@
 #include <iostream>
 
 #include "JsonTokens.h"
-#include "Log.h"
 #include "JsonValue.h"
+#include "Log.h"
 
 using namespace std;
 
 int JsonParser::current = 0;
-vector<string> JsonParser::tokens;
-
-regex JsonParser::curly_brace_open = regex("\\{");
-regex JsonParser::curly_brace_close = regex("\\}");
-regex JsonParser::square_brace_open = regex("\\[");
-regex JsonParser::square_brace_close = regex("\\]");
-regex JsonParser::number = regex("[+-]?([0-9]*[.])?[0-9]+");
-regex JsonParser::quotation_mark = regex("\"");
-regex JsonParser::comma = regex(",");
-regex JsonParser::colon = regex(":");
-regex JsonParser::boolean = regex("true|false");
+vector<Token> JsonParser::tokens;
 
 JsonValue JsonParser::parse(const std::string& file_name)
 {
@@ -27,13 +17,10 @@ JsonValue JsonParser::parse(const std::string& file_name)
 
 	tokens = tokenizer.tokens;
 	current = 0;
-	//for (auto t: tokens)
-		//cout << t << ' ';
-	//cout << endl;
 
-	if (isMatch(curly_brace_open))
+	if (isMatch(TokenKind::OpenBrace))
 		return { parseObject() };
-	else if (isMatch(square_brace_open))
+	else if (isMatch(TokenKind::OpenSquare))
 		return { parseArray() };
 	else {
 		Log::s(getCurrent());
@@ -44,45 +31,45 @@ JsonValue JsonParser::parse(const std::string& file_name)
 
 String JsonParser::parseKey()
 {
-	require(quotation_mark);
+	require(TokenKind::QuotationMark);
 	auto str = getCurrent();
-	require(quotation_mark);
-	require(colon);
+	require(TokenKind::QuotationMark);
+	require(TokenKind::Colon);
 	return str;
 }
 
 Object JsonParser::parseObject()
 {
-	require(curly_brace_open);
+	require(TokenKind::OpenBrace);
 	Object obj;
 	bool new_value = true;
 	while (new_value) {
 		String key = parseKey();
 		JsonValue value = parseValue();
 		obj.insert(key, value);
-		new_value = isMatch(comma);
+		new_value = isMatch(TokenKind::Comma);
 		if (new_value)
 			current++;
 	}
-	require(curly_brace_close);
+	require(TokenKind::CloseBrace);
 	return obj;
 }
 
 JsonValue JsonParser::parseValue() 
 {
-	if (isMatch(square_brace_open))
+	if (isMatch(TokenKind::OpenSquare))
 		return { parseArray() };
 
-	else if (isMatch(curly_brace_open))
+	else if (isMatch(TokenKind::OpenBrace))
 		return { parseObject() };
 
-	else if (isMatch(number))
+	else if (isMatch(TokenKind::Number))
 		return { parseNumber() };
 
-	else if (isMatch(boolean))
+	else if (isMatch(TokenKind::Boolean))
 		return { parseBoolean() };
 
-	else if (isMatch(quotation_mark))
+	else if (isMatch(TokenKind::QuotationMark))
 		return { parseString() };
 
 	else {
@@ -107,42 +94,41 @@ Number JsonParser::parseNumber()
 
 String JsonParser::parseString()
 {
-	require(quotation_mark);
+	require(TokenKind::QuotationMark);
 	std::string str = getCurrent();
-	require(quotation_mark);
+	require(TokenKind::QuotationMark);
 	return str;
 }
 
 Array JsonParser::parseArray()
 {
 	Array arr;
-	require(square_brace_open);
+	require(TokenKind::OpenSquare);
 	bool new_value = true;
 	while (new_value) {
 		arr.insert(parseValue());
-		new_value = isMatch(comma);
+		new_value = isMatch(TokenKind::Comma);
 		if (new_value)
 			current++;
 	}
-	require(square_brace_close);
+	require(TokenKind::CloseSquare);
 	return arr;
 }
 
 const std::string& JsonParser::getCurrent() 
 {
 	current++;
-	return tokens[current - 1];
+	return tokens[current - 1].str;
 }
 
-bool JsonParser::isMatch(std::regex pattern)
+bool JsonParser::isMatch(TokenKind kind)
 {
-	bool match = regex_match(tokens[current], pattern);
-	return match;
+	return kind == tokens[current].kind;
 }
 
-void JsonParser::require(std::regex pattern)
+void JsonParser::require(TokenKind kind)
 {
-	if (!isMatch(pattern))
-		Error::exit("match error: " + tokens[current]);
+	if (!isMatch(kind))
+		Error::exit("match error: " + tokens[current].str);
 	current++;
 }
