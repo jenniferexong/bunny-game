@@ -16,7 +16,6 @@ class TextMaster;
 
 class GuiComponent {
 private:
-
 	GuiComponent* parent_ = nullptr;
     std::shared_ptr<GuiBound> bound_ = nullptr;
 

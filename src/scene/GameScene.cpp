@@ -210,10 +210,10 @@ void GameScene::makeTest()
 		terrain_1_, environment_, flower_model, 
 		"test-flowers", vec3(0, -90.f, 0), 0.15f
 	);
-	Helper::loadPositionsFromFile(
-		terrain_1_, environment_, teapot_model, 
-		"teapot", vec3(0, 0.f, 0), 1.f
-	);
+	//Helper::loadPositionsFromFile(
+		//terrain_1_, environment_, teapot_model, 
+		//"teapot", vec3(0, 0.f, 0), 1.f
+	//);
 }
 
 void GameScene::pause()

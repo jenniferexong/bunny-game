@@ -1,3 +1,10 @@
+### Work in progress 3D game - C++ and OpenGL
+
+---
+**Roam the world as a rabbit**
+![scenery](images/scenery.jpg)
+
+---
 # Requirements
 - Meson to build
 - clang
@@ -20,12 +27,6 @@ $ sudo apt-get install python3 python3-pip python3-setuptools \
 ```
 $ pip3 install meson
 $ pip3 install ninja
-```
-
-**Installation using Homebrew**
-```
-$ brew install meson
-$ brew install ninja
 ```
 
 ---
