@@ -10,7 +10,7 @@
 #include "../post-processing/PostProcessor.h"
 
 class Scene;
-class GameScene;
+class WaterScene;
 
 using std::shared_ptr;
 
@@ -51,14 +51,8 @@ public:
 	void renderSkybox(const Environment& environment);
 
 	void renderWater(const Environment& environment);
-	void renderWaterReflection(
-		GameScene& scene,
-		void(GameScene::*render_scene)(glm::vec4)
-	);
-	void renderWaterRefraction(
-		GameScene& scene,
-		void(GameScene::*render_scene)(glm::vec4)
-	);
+	void renderWaterReflection(WaterScene& scene);
+	void renderWaterRefraction(WaterScene& scene);
 
 	void renderGui(const std::vector<weak_ptr<GuiTexture>>& guis);
 	void renderText(const TextMaster& text_master);

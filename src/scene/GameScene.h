@@ -10,7 +10,7 @@
 class GuiTexture;
 class GuiText;
 
-class GameScene: public Scene {
+class GameScene: public WaterScene {
 private:
 	Environment environment_;
 	MousePicker mouse_picker_;
@@ -57,7 +57,7 @@ public:
 	void gameLogic();
 
 	void render(bool pause);
-	void renderScene(glm::vec4 clipping_plane);
+	void renderScene(glm::vec4 clipping_plane) override;
 
 	const Environment& getEnvironment() { return environment_; }
 

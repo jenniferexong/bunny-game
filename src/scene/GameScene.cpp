@@ -44,8 +44,8 @@ bool GameScene::update()
 void GameScene::render(bool pause)
 {
 	engine->renderer->renderShadowMap(environment_);
-	engine->renderer->renderWaterReflection(*this, &GameScene::renderScene);
-	engine->renderer->renderWaterRefraction(*this, &GameScene::renderScene);
+	engine->renderer->renderWaterReflection(*this);
+	engine->renderer->renderWaterRefraction(*this);
 
 	engine->post_processor->startProcessing();
 	renderScene(glm::vec4(0));
@@ -334,6 +334,3 @@ void GameScene::scrollCallBack(double x_offset, double y_offset)
 {
 	camera_->zoom(float(y_offset), environment_.getWater());
 }
-
-
-

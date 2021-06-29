@@ -9,8 +9,9 @@
 
 #include "../shaders/EntityShader.h"
 #include "../shaders/TerrainShader.h"
-#include "../../scene/GameScene.h"
+#include "../../scene/Scene.h"
 #include "../Camera.h"
+#include "environment/Environment.h"
 
 glm::mat4 MasterRenderer::projection_matrix = glm::mat4(1);
 float MasterRenderer::fov = 70.f;
@@ -40,27 +41,23 @@ MasterRenderer::MasterRenderer()
 	Log::init("MasterRenderer", true);
 }
 
-void MasterRenderer::renderWaterReflection(
-	GameScene& scene,
-	void(GameScene::*render_scene)(glm::vec4))
+void MasterRenderer::renderWaterReflection(WaterScene& scene)
 {
 	scene.getEnvironment().getCamera().lock()->positionForReflection(
 		Water::height
 	);
 	water_renderer_.getReflectionFbo().bind();
-	(scene.*render_scene)(Water::getReflectionPlane());
+    scene.renderScene(Water::getReflectionPlane());
 	water_renderer_.getReflectionFbo().unbind();
 }
 
-void MasterRenderer::renderWaterRefraction(
-	GameScene& scene,
-	void(GameScene::*render_scene)(glm::vec4))
+void MasterRenderer::renderWaterRefraction(WaterScene& scene)
 {
 	scene.getEnvironment().getCamera().lock()->positionForRefraction(
 		Water::height
 	);
 	water_renderer_.getRefractionFbo().bind();
-	(scene.*render_scene)(Water::getRefractionPlane());
+    scene.renderScene(Water::getRefractionPlane());
 	water_renderer_.getRefractionFbo().unbind();
 }
 
