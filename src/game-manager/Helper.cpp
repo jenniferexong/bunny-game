@@ -111,10 +111,10 @@ shared_ptr<TerrainTexturePack> Helper::makeTexturePack(
 	const string &green,
 	const string& blue) 
 {
-	Texture base_texture = Texture(engine->loader->loadTexture(base));
-	Texture red_texture = Texture(engine->loader->loadTexture(red));
-	Texture green_texture = Texture(engine->loader->loadTexture(green));
-	Texture blue_texture = Texture(engine->loader->loadTexture(blue));
+	Texture base_texture = Texture(Engine::instance->loader->loadTexture(base));
+	Texture red_texture = Texture(Engine::instance->loader->loadTexture(red));
+	Texture green_texture = Texture(Engine::instance->loader->loadTexture(green));
+	Texture blue_texture = Texture(Engine::instance->loader->loadTexture(blue));
 
 	return make_shared<TerrainTexturePack> (
 		base_texture, red_texture, green_texture, blue_texture
@@ -126,7 +126,7 @@ TexturedModel Helper::makeModel(
 	const string& texture_name,
 	const Material& material)
 {
-	InstancedMesh mesh = engine->loader->loadToVaoInstanced(obj_name);
-	ModelTexture texture(engine->loader->loadTexture(texture_name), material);
+	InstancedMesh mesh = Engine::instance->loader->loadToVaoInstanced(obj_name);
+	ModelTexture texture(Engine::instance->loader->loadTexture(texture_name), material);
 	return TexturedModel(mesh, texture);
 }

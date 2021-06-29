@@ -2,7 +2,7 @@
 
 #include "ImageProcessor.h"
 
-#include "../Application.h"
+#include "../Engine.h"
 #include "PostProcessor.h"
 #include "shaders/ContrastShader.h"
 #include "shaders/HorizontalBlurShader.h"
@@ -59,7 +59,7 @@ void HorizontalBlur::renderToFbo(int texture, std::weak_ptr<Fbo> fbo)
 	// rendering to screen
 	else { 
 		target_width = (
-			(float)engine->window_width / PostProcessor::blur_strength);
+			(float)Engine::instance->window_width / PostProcessor::blur_strength);
 	}
 
 	shader_->loadUniforms(target_width);
@@ -86,7 +86,7 @@ void VerticalBlur::renderToFbo(int texture, std::weak_ptr<Fbo> fbo)
 	// rendering to screen
 	else { 
 		target_height = (
-			(float)engine->window_height / PostProcessor::blur_strength);
+			(float)Engine::instance->window_height / PostProcessor::blur_strength);
 	}
 
 	shader_->loadUniforms(target_height);
@@ -176,6 +176,3 @@ VerticalBlur::VerticalBlur()
 
 	Log::init("ImageProcessor: VerticalBlur", true);
 }
-
-
-

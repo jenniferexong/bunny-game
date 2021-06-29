@@ -8,9 +8,9 @@ std::unordered_map<std::string, int> GuiTexture::textures;
 
 void GuiTexture::loadTextures()
 {
-    textures.insert({"blur-bg", engine->post_processor->getBlurTexture()});
-    textures.insert({"compass", engine->loader->loadTexture("compass")});
-    textures.insert({"cross-hair", engine->loader->loadTexture("cross-hair")});
+    textures.insert({"blur-bg", Engine::instance->post_processor->getBlurTexture()});
+    textures.insert({"compass", Engine::instance->loader->loadTexture("compass")});
+    textures.insert({"cross-hair", Engine::instance->loader->loadTexture("cross-hair")});
 }
 
 void GuiTexture::setColor(vec4 color)

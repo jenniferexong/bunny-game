@@ -5,7 +5,7 @@
 
 void Quit::excecute()
 {
-	engine->closeWindow();
+    Engine::instance->closeWindow();
 }
 
 void ChangeScene::excecute() 

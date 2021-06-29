@@ -217,7 +217,7 @@ Mesh Terrain::generate(const string& height_map)
 	if (buffer)
 		stbi_image_free(buffer);
 
-	return engine->loader->loadToVao(
+	return Engine::instance->loader->loadToVao(
 		positions_, normals_, texture_coords_, tangents_, indices
 	);
 }

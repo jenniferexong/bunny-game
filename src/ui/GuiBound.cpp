@@ -9,8 +9,8 @@ using namespace glm;
  */
 GuiBound::GuiBound(float left, float top, float width, float height)
 {
-	float w = engine->screen_width;
-	float h = engine->screen_height;
+	float w = Engine::instance->screen_width;
+	float h = Engine::instance->screen_height;
 	vec2 position = vec2(left + width / 2, top + height / 2);
 	position_ = Maths::pixelToScreenCoords(position);
 	scale_ = vec2((float)width / w, (float)height / h);
@@ -43,7 +43,7 @@ GuiBound::GuiBound(const GuiBound& child, const GuiBound& parent)
 GuiBound::GuiBound(ivec2 position, ivec2 size, const GuiBound& parent)
 {
     vec2 parent_pixel_size = 
-        parent.scale_ * vec2(engine->screen_width, engine->screen_height);
+        parent.scale_ * vec2(Engine::instance->screen_width, Engine::instance->screen_height);
     vec2 pos = vec2(position) / parent_pixel_size;
 	position_.x = (2.f * pos.x) - 1.f;
 	position_.y = (-2.f * pos.y) + 1.f;

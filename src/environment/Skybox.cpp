@@ -34,9 +34,9 @@ Skybox::Skybox(
 	Log::init("Skybox", false);
 
 	// load the textures
-	day_texture_id_ = engine->loader->loadCubeMap(day_textures);
-	night_texture_id_ = engine->loader->loadCubeMap(night_textures);
-	dawn_texture_id_ = engine->loader->loadCubeMap(dawn_textures);
+	day_texture_id_ = Engine::instance->loader->loadCubeMap(day_textures);
+	night_texture_id_ = Engine::instance->loader->loadCubeMap(night_textures);
+	dawn_texture_id_ = Engine::instance->loader->loadCubeMap(dawn_textures);
 
 	Log::init("Skybox", true);
 }
@@ -82,5 +82,3 @@ void Skybox::update(std::weak_ptr<Light> sun)
 	}
 	sun.lock()->setColor(light_col);
 }
-
-

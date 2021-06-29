@@ -4,7 +4,6 @@
 #include "../Location.h"
 #include "../Utility.h"
 #include "../renderers/MasterRenderer.h"
-#include "../Application.h"
 
 void SkyboxShader::bindAttributes()
 {
@@ -51,7 +50,7 @@ void SkyboxShader::loadUniforms(const Camera& camera)
 
 	// View matrix
 	glm::mat4 v_matrix = Maths::createSkyViewMatrix(camera);
-	current_rotation_ += rotate_speed * app->timer->frame_delta;
+	//current_rotation_ += rotate_speed * app->timer->frame_delta;
 
 	loadMatrix(locations_.at(UniformVariable::ViewMatrix), v_matrix);
 }

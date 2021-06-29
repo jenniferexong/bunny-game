@@ -23,7 +23,7 @@ GuiText::GuiText(
 	id_ = next_id_++;
 	text_ = text;
 	font_size_ = font_size;
-	font_ = engine->getFont(font);
+	font_ = Engine::instance->getFont(font);
 	position_ = position;
 	max_line_width_ = max_line_width;
 	centered_ = centered;
@@ -43,7 +43,7 @@ GuiText::GuiText(
 	id_ = next_id_++;
 	text_ = text;
 	font_size_ = font_size;
-	font_ = engine->getFont(font);
+	font_ = Engine::instance->getFont(font);
 	centered_ = centered;
 
 	// calculate position and size
@@ -64,7 +64,7 @@ void GuiText::init()
 		(1.f / 13.f) * glm::pow(1.45f, -font_size_ + 2.8f) + 0.045f;	
 
 	TextMeshData mesh_data = loader_.createMesh(*this);
-	mesh_vao_ = engine->loader->loadToVao(
+	mesh_vao_ = Engine::instance->loader->loadToVao(
 		mesh_data.positions, 
 		mesh_data.texture_coords
 	);
@@ -76,9 +76,9 @@ void GuiText::updateText(const std::string& text)
 	text_ = text;
 
 	// delete old vao?
-	engine->loader->deleteVao(mesh_vao_);
+    Engine::instance->loader->deleteVao(mesh_vao_);
 	TextMeshData mesh_data = loader_.createMesh(*this);
-	mesh_vao_ = engine->loader->loadToVao(
+	mesh_vao_ = Engine::instance->loader->loadToVao(
 		mesh_data.positions,
 		mesh_data.texture_coords
 	);

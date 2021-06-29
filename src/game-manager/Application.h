@@ -37,7 +37,6 @@ public:
 };
 
 extern std::unique_ptr<Application> app;
-extern std::unique_ptr<Engine> engine;
 
 namespace Callbacks{
 	void cursorPos(GLFWwindow* window, double x, double y);

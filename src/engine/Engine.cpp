@@ -2,23 +2,28 @@
 #include "text/FontType.h"
 #include "../ui/GuiTexture.h"
 
+std::unique_ptr<Engine> Engine::instance = nullptr;
+
 void Engine::init(GLFWwindow* w)
 {
 	Log::init("Engine", false);
 
-	window = w;
+    // initialise the instance
+    instance = std::make_unique<Engine>();
+
+	instance->window = w;
 
 	// number of pixels is x2 on mac
 	if (MAC_OS) {
-		window_width *= 2;
-		window_height *= 2;
+		instance->window_width *= 2;
+		instance->window_height *= 2;
 	}
 
-	loader = std::make_unique<Loader>();
-	renderer = std::make_unique<MasterRenderer>();
-	post_processor = std::make_unique<PostProcessor>();
+	instance->loader = std::make_unique<Loader>();
+	instance->renderer = std::make_unique<MasterRenderer>();
+	instance->post_processor = std::make_unique<PostProcessor>();
 
-	loadFonts();
+	instance->loadFonts();
     GuiTexture::loadTextures();
 
 	Log::init("Engine", true);

@@ -59,7 +59,7 @@ public:
 	void render(bool pause);
 	void renderScene(glm::vec4 clipping_plane) override;
 
-	const Environment& getEnvironment() { return environment_; }
+	const Environment& getEnvironment() override { return environment_; }
 
 	void keyCallback(int key, int scan_code, int action, int mods) override;
 	void cursorPosCallback(double x, double y) override;

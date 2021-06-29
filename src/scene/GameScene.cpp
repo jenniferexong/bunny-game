@@ -30,7 +30,7 @@ GameScene::GameScene()
 void GameScene::init()
 {
 	Log::s("changed to gamescene");
-	engine->enableCursor(false);
+    Engine::instance->enableCursor(false);
 	first_mouse_movement_ = true;
 }
 
@@ -43,32 +43,32 @@ bool GameScene::update()
 
 void GameScene::render(bool pause)
 {
-	engine->renderer->renderShadowMap(environment_);
-	engine->renderer->renderWaterReflection(*this);
-	engine->renderer->renderWaterRefraction(*this);
+    Engine::instance->renderer->renderShadowMap(environment_);
+    Engine::instance->renderer->renderWaterReflection(*this);
+    Engine::instance->renderer->renderWaterRefraction(*this);
 
-	engine->post_processor->startProcessing();
+    Engine::instance->post_processor->startProcessing();
 	renderScene(glm::vec4(0));
-	engine->renderer->renderWater(environment_);
+    Engine::instance->renderer->renderWater(environment_);
 
 	if (pause) {
-		engine->post_processor->blurToFbo();
+        Engine::instance->post_processor->blurToFbo();
 		return;
 	}
 
-	//engine->post_processor->antiAliasToScreen();
-	engine->post_processor->bloomEffect();
+	//Engine::instance->post_processor->antiAliasToScreen();
+    Engine::instance->post_processor->bloomEffect();
 
-	engine->renderer->renderGui(guis_);
-	engine->renderer->renderText(text_master_);
+    Engine::instance->renderer->renderGui(guis_);
+    Engine::instance->renderer->renderText(text_master_);
 }
 
 void GameScene::renderScene(glm::vec4 clipping_plane)
 {
-	engine->renderer->prepare(getProjectionMatrix());
-	engine->renderer->renderEntities(environment_, clipping_plane);
-	engine->renderer->renderTerrain(environment_, clipping_plane);
-	engine->renderer->renderSkybox(environment_);
+    Engine::instance->renderer->prepare(getProjectionMatrix());
+    Engine::instance->renderer->renderEntities(environment_, clipping_plane);
+    Engine::instance->renderer->renderTerrain(environment_, clipping_plane);
+    Engine::instance->renderer->renderSkybox(environment_);
 }
 
 void GameScene::gameLogic()
@@ -125,8 +125,8 @@ void GameScene::setup()
 	// Terrains
 	auto texture_pack = Helper::makeTexturePack (
 		"green", "light-green", "brown", "rocks");
-	Texture blend_map = Texture(engine->loader->loadTexture("river-blendmap"));
-	Texture normal_map = Texture(engine->loader->loadTexture("rocks-normal"));
+	Texture blend_map = Texture(Engine::instance->loader->loadTexture("river-blendmap"));
+	Texture normal_map = Texture(Engine::instance->loader->loadTexture("rocks-normal"));
 	TerrainTexture ground_texture = TerrainTexture(
 		texture_pack, blend_map, normal_map);
 	terrain_1_ = Terrain(0, -1, ground_texture, "river-heightmap");
@@ -222,11 +222,11 @@ void GameScene::pause()
 	app->changeScene(app->pause_scene);
 }
 
-glm::mat4 GameScene::getProjectionMatrix() // TODO: why is this in game scene
+glm::mat4 GameScene::getProjectionMatrix()
 {
 	// Setting the projection matrix
 	return glm::perspective(
-		MasterRenderer::fov, engine->aspect_ratio, 
+		MasterRenderer::fov, Engine::instance->aspect_ratio, 
 		MasterRenderer::near_plane, MasterRenderer::far_plane
 	);
 }

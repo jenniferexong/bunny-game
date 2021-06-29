@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../Application.h"
+#include "../Engine.h"
 
 struct Material {
 	float reflectivity = 0;
@@ -34,7 +34,7 @@ struct Material {
 
 	void setGlowMap(const std::string& texture_name)
 	{
-		glow_map_ = engine->loader->loadTexture(texture_name);
+		glow_map_ = Engine::instance->loader->loadTexture(texture_name);
 	}
 
 	bool hasGlowMap()

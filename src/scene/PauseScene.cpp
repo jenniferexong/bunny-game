@@ -21,7 +21,7 @@ PauseScene::PauseScene()
 void PauseScene::init()
 {
 	Log::s("changed to pausescene");
-	engine->enableCursor(true);
+    Engine::instance->enableCursor(true);
 	update_ = true;
 }
 
@@ -47,9 +47,9 @@ bool PauseScene::update()
 
 void PauseScene::render()
 {
-	engine->renderer->prepare(getProjectionMatrix());
-	engine->renderer->renderGui(guis_);
-	engine->renderer->renderText(text_master_);
+    Engine::instance->renderer->prepare(getProjectionMatrix());
+    Engine::instance->renderer->renderGui(guis_);
+    Engine::instance->renderer->renderText(text_master_);
 }
 
 void PauseScene::unpause()
@@ -115,7 +115,7 @@ void PauseScene::mouseButtonCallback(int button, int action, int mods)
 	if (button == GLFW_MOUSE_BUTTON_LEFT) {
 		if (action == GLFW_PRESS) {
 			double x, y;
-			glfwGetCursorPos(engine->window, &x, &y);
+			glfwGetCursorPos(Engine::instance->window, &x, &y);
 			gui_->onClick(vec2(x, y));
 		}
 	}

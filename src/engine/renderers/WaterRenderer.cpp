@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include "../Application.h"
+#include "../Engine.h"
 #include "../Environment.h"
 #include "../Location.h"
 #include "../Utility.h"
@@ -17,7 +17,7 @@ WaterRenderer::WaterRenderer() {
         -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1
 	};
 
-    quad_ = engine->loader->loadToVao(positions, 2);
+    quad_ = Engine::instance->loader->loadToVao(positions, 2);
 
     reflection_fbo_ = std::make_unique<Fbo>(
         1280, 720, DepthBufferAttachment::DepthBuffer, false
@@ -27,8 +27,8 @@ WaterRenderer::WaterRenderer() {
 	);
 
     // load the dudv map
-    dudv_id_ = engine->loader->loadTexture("water-dudv");
-    normal_id_ = engine->loader->loadTexture("water-normal");
+    dudv_id_ = Engine::instance->loader->loadTexture("water-dudv");
+    normal_id_ = Engine::instance->loader->loadTexture("water-normal");
 
     shader_.start();
     shader_.connectTextureUnits();
@@ -77,4 +77,3 @@ void WaterRenderer::unbind() {
     glBindVertexArray(0);
     shader_.stop();
 }
-

@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "../Location.h"
-#include "../Application.h"
+#include "../Engine.h"
 #include "../Loader.h"
 #include "../../ui/GuiTexture.h"
 #include "../Utility.h"
@@ -18,7 +18,7 @@ GuiRenderer::GuiRenderer()
 		-1, 1, -1, -1, 1, 1, 1, -1 
 	};
 
-	quad_mesh_ = Mesh(engine->loader->loadToVao(positions, 2));
+	quad_mesh_ = Mesh(Engine::instance->loader->loadToVao(positions, 2));
 	shader_.setUp();
 
 	Log::init("GuiRenderer", true);

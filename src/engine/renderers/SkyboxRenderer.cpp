@@ -2,7 +2,7 @@
 
 #include "SkyboxRenderer.h"
 
-#include "../Application.h"
+#include "../Engine.h"
 #include "../Environment.h"
 #include "../Location.h"
 #include "../Utility.h"
@@ -13,7 +13,7 @@ SkyboxRenderer::SkyboxRenderer()
 {
 	Log::init("SkyboxRenderer", false);
 
-	cube_ = engine->loader->loadToVao(vertex_positions, 3);
+	cube_ = Engine::instance->loader->loadToVao(vertex_positions, 3);
 	shader_.setUp();
 
 	shader_.start();

@@ -23,6 +23,8 @@ class Engine {
 private:
 	std::unordered_map<std::string, std::shared_ptr<FontType>> fonts_;
 public:
+    static std::unique_ptr<Engine> instance;
+
 	std::unique_ptr<Loader> loader = nullptr;
 	std::unique_ptr<MasterRenderer> renderer = nullptr;
 	std::unique_ptr<PostProcessor> post_processor = nullptr;
@@ -36,7 +38,10 @@ public:
 
 	Engine() = default;
 
-	void init(GLFWwindow* w);
+    /**
+     * Initializes the engine, given a window
+     */
+	static void init(GLFWwindow* w);
 	void loadFonts();
 	std::weak_ptr<FontType> getFont(const std::string& name);
 

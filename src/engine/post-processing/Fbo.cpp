@@ -3,7 +3,7 @@
 #include "Fbo.h"
 
 #include "../Utility.h"
-#include "../Application.h"
+#include "../Engine.h"
 #include "../renderers/MasterRenderer.h"
 
 Fbo::Fbo(int width, int height, ValueType type) : width_(width), height_(height)
@@ -90,7 +90,7 @@ void Fbo::resolveToScreen()
 	glDrawBuffer(GL_BACK);
 	glBlitFramebuffer(
 		0, 0, width_, height_,
-		0, 0, engine->window_width, engine->window_height,
+		0, 0, Engine::instance->window_width, Engine::instance->window_height,
 		GL_COLOR_BUFFER_BIT, GL_NEAREST
 	);
 	unbind();
@@ -175,7 +175,7 @@ void Fbo::bindToRead() const
 void Fbo::unbind() const
 {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glViewport(0, 0, engine->window_width, engine->window_height);
+	glViewport(0, 0, Engine::instance->window_width, Engine::instance->window_height);
 }
 
 void Fbo::createFrameBuffer()
@@ -248,7 +248,7 @@ int Fbo::createColorBufferAttachment(int attachment)
 
 void Fbo::determineDrawBuffers() 
 {
-	vector<GLenum> buffers = { GL_COLOR_ATTACHMENT0 };
+    std::vector<GLenum> buffers = { GL_COLOR_ATTACHMENT0 };
 	if (multi_target_)
 		buffers.push_back(GL_COLOR_ATTACHMENT1);
 	glDrawBuffers(buffers.size(), buffers.data());

@@ -5,7 +5,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "../Application.h"
+#include "../Engine.h"
 #include "Text.h"
 #include "TextLoader.h"
 #include "../FilePath.h"
@@ -28,7 +28,7 @@ Character FontData::getCharacter(int ascii) const
  */
 FontData::FontData(const std::string& font_name)
 {
-	double aspect_ratio = (double)engine->aspect_ratio;
+	double aspect_ratio = (double)Engine::instance->aspect_ratio;
 	
 	string font_path = FilePath::font_path;
 	font_path.append(font_name).append(".fnt");

@@ -12,7 +12,6 @@
 using namespace std;
 
 unique_ptr<Application> app = nullptr;
-unique_ptr<Engine> engine = nullptr;
 
 void Application::changeScene(std::weak_ptr<Scene> scene)
 {
@@ -41,10 +40,7 @@ int Application::run()
 	int glfwMajor, glfwMinor, glfwRevision;
 	glfwGetVersion(&glfwMajor, &glfwMinor, &glfwRevision);
 
-    engine = make_unique<Engine>();
-
-    GLFWwindow* window = glfwCreateWindow(
-		engine->window_width, engine->window_height, "", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "", NULL, NULL);
     if (!window) {
 		Error::exit("GLFW window failure");
         glfwTerminate();
@@ -60,7 +56,8 @@ int Application::run()
 		Error::exit("GLEW failed init");
         abort();
 	}
-    engine->init(window);
+
+    Engine::init(window);
 
 	app = make_unique<Application>();
     app->init();
@@ -129,13 +126,13 @@ void Application::appKeyCallback(int key, int scan_code, int action, int mods)
 void Callbacks::framebufferResize(GLFWwindow* window, int width, int height)
 {
 	Log::s("RESIZING FRAMEBUFFER");
-    engine->resizeFramebuffer(width, height);
+    Engine::instance->resizeFramebuffer(width, height);
 }
 
 void Callbacks::windowResize(GLFWwindow* window, int width, int height)
 {
 	Log::s("RESIZING WINDOW");
-    engine->resizeWindow(width, height);
+    Engine::instance->resizeWindow(width, height);
 }
 
 void Callbacks::cursorPos(GLFWwindow* window, double x, double y)

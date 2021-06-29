@@ -3,7 +3,7 @@
 #include "PostProcessor.h"
 
 #include "ImageProcessor.h"
-#include "../Application.h"
+#include "../Engine.h"
 #include "../Utility.h"
 #include "../Location.h"
 
@@ -16,10 +16,10 @@ PostProcessor::PostProcessor()
 {
 	Log::init("PostProcessor", false);
 
-	quad = engine->loader->loadToVao(positions, 2);
+	quad = Engine::instance->loader->loadToVao(positions, 2);
 
-	int width = engine->window_width;
-	int height = engine->window_height;
+	int width = Engine::instance->window_width;
+	int height = Engine::instance->window_height;
 
 	multisample_fbo_ = make_shared<Fbo>(width, height, ValueType::MultiTarget);
 	antialias_fbo_ = make_shared<Fbo>(
@@ -138,5 +138,3 @@ void PostProcessor::finish()
 	glBindVertexArray(0);
 	Error::gl_check(name_);
 }
-
-

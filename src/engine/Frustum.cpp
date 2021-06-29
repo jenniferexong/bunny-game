@@ -2,7 +2,7 @@
 
 #include "renderers/MasterRenderer.h"
 #include "Camera.h"
-#include "Application.h"
+#include "Engine.h"
 #include "Utility.h"
 
 using namespace glm;
@@ -34,7 +34,7 @@ Frustum::Frustum(float false_near, float near_plane, float far_plane)
 
 void Frustum::update(const Camera& camera)
 {
-	float aspect_ratio = (float)engine->window_width / (float)engine->window_height;
+	float aspect_ratio = (float)Engine::instance->window_width / (float)Engine::instance->window_height;
 	far_height_=  far_width_ / aspect_ratio;
 	near_height_ = near_width_ / aspect_ratio;
 
