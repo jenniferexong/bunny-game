@@ -2,8 +2,9 @@
 #include "GuiShader.h"
 
 #include "../Location.h"
-#include "../Utility.h"
-#include "../../ui/GuiTexture.h"
+#include "../util/Log.h"
+#include "../util/Maths.h"
+#include "../ui/GuiTexture.h"
 
 void GuiShader::bindAttributes()
 {
@@ -16,14 +17,14 @@ void GuiShader::getAllUniformLocations()
 	INSERT_LOC(FlipVertically, "uFlipVertically");
 	INSERT_LOC(HasTexture, "uHasTexture");
 	INSERT_LOC(Color, "uColor");
-	Error::gl_check("GuiShader getAllUniformLocations");
+	Error::glCheck("GuiShader getAllUniformLocations");
 }
 
 void GuiShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
 
-	Error::gl_check("GuiShader setup");
+	Error::glCheck("GuiShader setup");
 }
 
 void GuiShader::loadUniforms(const GuiTexture& gui) const
@@ -38,5 +39,5 @@ void GuiShader::loadUniforms(const GuiTexture& gui) const
 		locations_.at(UniformVariable::HasTexture), gui.hasTexture());
 	loadVector(locations_.at(UniformVariable::Color), gui.getColor());
 
-	Error::gl_check("GuiShader loadUniforms");
+	Error::glCheck("GuiShader loadUniforms");
 }

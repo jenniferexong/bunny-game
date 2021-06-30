@@ -1,0 +1,3 @@
+scene = files(
+    'Scene.cpp',
+)

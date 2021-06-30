@@ -2,7 +2,7 @@
 
 #include "Fbo.h"
 
-#include "../Utility.h"
+#include "../util/Log.h"
 #include "../Engine.h"
 #include "../renderers/MasterRenderer.h"
 
@@ -62,7 +62,7 @@ void Fbo::initialise()
 	}
 	unbind();
 	Log::fbo(attachment, fbo_id_);
-	Error::gl_check(name);
+	Error::glCheck(name);
 }
 
 /**

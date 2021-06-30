@@ -2,14 +2,15 @@
 #include "TerrainShader.h"
 
 #include "../renderers/MasterRenderer.h"
-#include "../Utility.h"
+#include "../util/Log.h"
+#include "../util/Maths.h"
 #include "../Location.h"
-#include "../Environment.h"
+#include "../environment/Environment.h"
 
 void TerrainShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
-	Error::gl_check("TerrainShader setUp");
+	Error::glCheck("TerrainShader setUp");
 }
 
 void TerrainShader::bindAttributes()
@@ -19,7 +20,7 @@ void TerrainShader::bindAttributes()
 	bindAttribute(TerrainAttributeLocation::Texture, "aTextureCoords");
 	bindAttribute(TerrainAttributeLocation::Tangent, "aTangent");
 
-	Error::gl_check("TerrainShader bindAttributes");
+	Error::glCheck("TerrainShader bindAttributes");
 }
 
 void TerrainShader::getAllUniformLocations()
@@ -46,7 +47,7 @@ void TerrainShader::getAllUniformLocations()
 	INSERT_LOC(ClippingPlane, "uClippingPlane");
 	INSERT_LOC(LightSpaceMatrix, "uLightSpaceMatrix");
 	INSERT_LOC(ShadowMap, "uShadowMap");
-	Error::gl_check("TerrainShader getAllUniformLocations");
+	Error::glCheck("TerrainShader getAllUniformLocations");
 }
 
 void TerrainShader::loadUniformPerFrame(
@@ -99,7 +100,7 @@ void TerrainShader::loadUniformPerFrame(
 
 	// sky colour
 	//loadVector(locations_.at(UniformVariable::FogColor), Application::fog_color);
-	Error::gl_check("TerrainShader loadUniformPerFrame");
+	Error::glCheck("TerrainShader loadUniformPerFrame");
 }
 
 void TerrainShader::loadModelMatrix(const Terrain& terrain) const
@@ -111,7 +112,7 @@ void TerrainShader::loadModelMatrix(const Terrain& terrain) const
 	);
 
 	loadMatrix(locations_.at(UniformVariable::TransformationMatrix), t_matrix);
-	Error::gl_check("TerrainShader loadModelMatrix");
+	Error::glCheck("TerrainShader loadModelMatrix");
 }
 
 void TerrainShader::loadMaterial(const Material& material) const
@@ -122,7 +123,7 @@ void TerrainShader::loadMaterial(const Material& material) const
 	loadFloat(
 		locations_.at(UniformVariable::ShineDamper), material.shine_damper);
 
-	Error::gl_check("TerrainShader loadMaterial");
+	Error::glCheck("TerrainShader loadMaterial");
 }
 
 void TerrainShader::connectTextureUnits() const
@@ -142,5 +143,5 @@ void TerrainShader::connectTextureUnits() const
 	loadInt(
 		locations_.at(UniformVariable::ShadowMap), TextureLocation::ShadowMap);
 
-	Error::gl_check("TerrainShader connectTextureUnits");
+	Error::glCheck("TerrainShader connectTextureUnits");
 }

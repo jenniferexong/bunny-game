@@ -1,10 +1,11 @@
 ﻿#include "WaterShader.h"
 
 #include "../renderers/MasterRenderer.h"
-#include "../Utility.h"
+#include "../util/Log.h"
+#include "../util/Maths.h"
 #include "../Location.h"
+#include "../environment/Environment.h"
 #include "../Camera.h"
-#include "../Environment.h"
 
 void WaterShader::bindAttributes()
 {
@@ -27,13 +28,13 @@ void WaterShader::getAllUniformLocations()
 	INSERT_LOC(LightPosition, "uLightPosition");
 	INSERT_LOC(NearPlane, "uNearPlane");
 	INSERT_LOC(FarPlane, "uFarPlane");
-	Error::gl_check("WaterShader getAllUniformLocations");
+	Error::glCheck("WaterShader getAllUniformLocations");
 }
 
 void WaterShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
-	Error::gl_check("WaterShader setup");
+	Error::glCheck("WaterShader setup");
 }
 
 void WaterShader::connectTextureUnits()
@@ -58,7 +59,7 @@ void WaterShader::connectTextureUnits()
 		locations_.at(UniformVariable::DepthMap),
 		WaterTextureLocation::DepthMap
 	);
-	Error::gl_check("WaterShader connectTextureUnits");
+	Error::glCheck("WaterShader connectTextureUnits");
 }
 
 void WaterShader::loadUniformPerFrame(const Environment& environment)
@@ -96,7 +97,7 @@ void WaterShader::loadUniformPerFrame(const Environment& environment)
 		environment.getSun().lock()->getPosition()
 	);
 
-	Error::gl_check("WaterShader loadUniformPerFrame");
+	Error::glCheck("WaterShader loadUniformPerFrame");
 }
 
 void WaterShader::loadModelMatrix(const Water& water)
@@ -106,10 +107,5 @@ void WaterShader::loadModelMatrix(const Water& water)
 		position, vec3(0), Water::tile_size, glm::mat4(1.f)
 	);
 	loadMatrix(locations_.at(UniformVariable::TransformationMatrix), t_matrix);
-	Error::gl_check("WaterShader loadModelMatrix");
+	Error::glCheck("WaterShader loadModelMatrix");
 }
-
-
-
-
-

@@ -14,8 +14,8 @@ private:
 	};
 
 	static constexpr char name[] = "TextShader";
-	static constexpr char vertex_file[] = "text-vert";
-	static constexpr char fragment_file[] = "text-frag";
+	static constexpr char vertex_file[] = "text-vert.glsl";
+	static constexpr char fragment_file[] = "text-frag.glsl";
 
 	std::unordered_map<UniformVariable, int, EnumHash> locations_;
 

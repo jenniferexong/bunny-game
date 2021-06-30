@@ -1,54 +1,54 @@
 {
-    "id": "background",
-    "bound": {
-        "position": [ 0.5, 0.5 ],
-        "scale": [ 1, 1 ]
+  "id": "background",
+  "bound": {
+    "position": [0.5, 0.5],
+    "scale": [1, 1]
+  },
+  "gui": {
+    "texture": "blur-bg",
+    "transparency": false,
+    "flip": true
+  },
+  "components": [
+    {
+      "id": "resume",
+      "bound": {
+        "position": [0.5, 0.35],
+        "scale": [0.2, 0.15]
+      },
+      "gui": {
+        "color": [0.2, 0.2, 0.2, 0.3],
+        "hover-color": [0.2, 0.2, 0.2, 0.5]
+      },
+      "text": {
+        "content": "Resume",
+        "size": 5,
+        "font": "maiandra",
+        "position": [0, 0.1],
+        "width": 1,
+        "centered": true,
+        "color": [1, 1, 1]
+      }
     },
-    "gui": {
-        "texture": "blur-bg",
-        "transparency": false,
-        "flip": true
-    },
-    "components": [
-        {
-            "id": "resume",
-            "bound": {
-                "position": [ 0.5, 0.35 ],
-                "scale": [ 0.2, 0.15 ]
-            },
-            "gui": {
-                "color": [ 0.2, 0.2, 0.2, 0.3 ],
-                "hover-color": [ 0.2, 0.2, 0.2, 0.5 ]
-            },
-            "text": {
-                "content": "Resume",
-                "size": 5,
-                "font": "maiandra",
-                "position": [ 0, 0.1 ],
-                "width": 1,
-                "centered": true,
-                "color": [ 1, 1, 1 ]
-            }
-        },
-        {
-            "id": "quit",
-            "bound": {
-                "position": [ 0.5, 0.65 ],
-                "scale": [ 0.2, 0.15 ]
-            },
-            "gui": {
-                "color": [ 0.2, 0.2, 0.2, 0.3 ],
-                "hover-color": [ 0.2, 0.2, 0.2, 0.5 ]
-            },
-            "text": {
-                "content": "Quit",
-                "size": 5,
-                "font": "maiandra",
-                "position": [ 0, 0.1 ],
-                "width": 1,
-                "centered": true,
-                "color": [ 1, 1, 1 ]
-            }
-        }
-    ]
+    {
+      "id": "quit",
+      "bound": {
+        "position": [0.5, 0.65],
+        "scale": [0.2, 0.15]
+      },
+      "gui": {
+        "color": [0.2, 0.2, 0.2, 0.3],
+        "hover-color": [0.2, 0.2, 0.2, 0.5]
+      },
+      "text": {
+        "content": "Quit",
+        "size": 5,
+        "font": "maiandra",
+        "position": [0, 0.1],
+        "width": 1,
+        "centered": true,
+        "color": [1, 1, 1]
+      }
+    }
+  ]
 }

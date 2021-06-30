@@ -3,9 +3,9 @@
 #include "SkyboxRenderer.h"
 
 #include "../Engine.h"
-#include "../Environment.h"
+#include "../environment/Environment.h"
 #include "../Location.h"
-#include "../Utility.h"
+#include "../util/Log.h"
 
 const float SkyboxRenderer::cube_size = 500.f;
 
@@ -40,7 +40,7 @@ void SkyboxRenderer::render(const Environment& environment)
 	glBindVertexArray(0);
 
 	shader_.stop();
-	Error::gl_check(name_);
+	Error::glCheck(name_);
 }
 
 void SkyboxRenderer::bindTextures(const Skybox& skybox)

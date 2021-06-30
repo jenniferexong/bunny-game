@@ -11,8 +11,8 @@ class CombineShader final : public Shader {
 	};
 
 	static constexpr char name[] = "CombineShader";
-	static constexpr char vertex_file[] = "post-processing/default-vert";
-	static constexpr char fragment_file[] = "post-processing/combine-frag";
+	static constexpr char vertex_file[] = "post-processing/default-vert.glsl";
+	static constexpr char fragment_file[] = "post-processing/combine-frag.glsl";
 
 	std::unordered_map<UniformVariable, int, EnumHash> locations_;
 

@@ -4,8 +4,8 @@
 
 #include "MasterRenderer.h"
 #include "../Location.h"
-#include "../../ui/TextMaster.h"
-#include "../Utility.h"
+#include "../ui/TextMaster.h"
+#include "../util/Log.h"
 
 TextRenderer::TextRenderer()
 {

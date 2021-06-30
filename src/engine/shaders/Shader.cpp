@@ -10,8 +10,8 @@
 #include <fstream>
 #include <sstream>
 
-#include "../FilePath.h"
-#include "../Utility.h"
+#include "../util/Log.h"
+#include "../util/FilePath.h"
 
 using std::string;
 
@@ -32,15 +32,16 @@ void Shader::setUp(const string& vert_file, const string& frag_file)
 int Shader::loadShader(const string& file_name, int type)
 {
 	using namespace std;
-	std::string file_path = FilePath::shader_path;
-	file_path.append(file_name).append(FilePath::shader_suffix);
+	std::string file_path = FilePath::get(file_name, FileType::Shader);
 	ifstream shader_file(file_path);
 
 	ostringstream lines("");
-	// Read all the lines in the file
-	if (!shader_file.is_open())
-		Error::exit("could not read shader: " + file_path);
 
+    if (!shader_file.is_open()) {
+		Error::file(FileType::Shader, file_path);
+    }
+
+	// Read all the lines in the file
 	string line;
 	while (getline(shader_file, line)) {
 		lines << line << endl;
@@ -77,10 +78,10 @@ int Shader::loadShader(const string& file_name, int type)
 
 	std::stringstream message;
 	message << "loadShader: " << file_path;
-	Error::gl_check(message.str());
+	Error::glCheck(message.str());
 
 	message = stringstream("");
-	message << "loaded shader: " << program_id_ << ", " << file_path;
+	message << "loaded shader: " << program_id_ << ", " << file_name;
 	Log::s(message.str());
 	return shader_id;
 }
@@ -117,7 +118,7 @@ void Shader::loadVector(int location, glm::vec2 vector) const
 	glUniform2f(location, vector.x, vector.y);
 }
 
-void Shader::loadVector(int location, vec3 vector) const
+void Shader::loadVector(int location, glm::vec3 vector) const
 {
 	glUniform3f(location, vector.x, vector.y, vector.z);
 }
@@ -132,7 +133,7 @@ void Shader::loadMatrix(int location, glm::mat4 matrix) const
 	glUniformMatrix4fv(location, 1, GL_FALSE, value_ptr(matrix));
 }
 
-void Shader::loadVectors(int location, const std::vector<vec3>& vectors) const
+void Shader::loadVectors(int location, const std::vector<glm::vec3>& vectors) const
 {
 	glUniform3fv(location, vectors.size(), value_ptr(vectors[0]));
 }

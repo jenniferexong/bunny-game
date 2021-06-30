@@ -1,8 +1,9 @@
 ﻿#include "TextShader.h"
 
-#include "../../ui/GuiText.h"
 #include "../Location.h"
-#include "../Utility.h"
+#include "../ui/GuiText.h"
+#include "../util/Log.h"
+#include "../util/Maths.h"
 
 void TextShader::getAllUniformLocations()
 {
@@ -13,7 +14,7 @@ void TextShader::getAllUniformLocations()
 	INSERT_LOC(EdgeTransition, "uEdgeTransition");
 	INSERT_LOC(BorderWidth, "uBorderWidth");
 	INSERT_LOC(BorderEdgeTransition, "uBorderEdgeTransition");
-	Error::gl_check("TextShader getAllUniformLocations");
+	Error::glCheck("TextShader getAllUniformLocations");
 }
 
 void TextShader::bindAttributes()
@@ -25,7 +26,7 @@ void TextShader::bindAttributes()
 void TextShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
-	Error::gl_check(name);
+	Error::glCheck(name);
 }
 
 void TextShader::loadUniforms(const GuiText& text)
@@ -55,7 +56,7 @@ void TextShader::loadUniforms(const GuiText& text)
 		text.getBorderEdgeTransition()
 	);
 
-	Error::gl_check("TextShader loadUniforms");
+	Error::glCheck("TextShader loadUniforms");
 }
 
 

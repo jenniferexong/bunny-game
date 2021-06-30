@@ -5,7 +5,8 @@
 #include <iostream>
 #include <fstream>
 
-#include "../Utility.h"
+#include "../util/FilePath.h"
+#include "../util/Log.h"
 
 using namespace glm;
 using namespace std;
@@ -17,16 +18,19 @@ WavefrontData::WavefrontData(const std::string& file_name):
 	loadData(file_name);
 }
 
-void WavefrontData::loadData(const std::string& file_name)
+/**
+ * @param file_name the full file path
+ */
+void WavefrontData::loadData(const std::string& file_path)
 {
 	// temporary variables to store raw vertices and index data
 	vector<vec3> in_positions, in_normals;
 	vector<vec2> in_textures;
 
-	std::ifstream obj_file(file_name);
+	std::ifstream obj_file(file_path);
 
 	if (!obj_file.is_open())
-		Error::file("obj", file_name);
+		Error::file(FileType::Model, file_path);
 
 	std::string line, type;
 	// values 

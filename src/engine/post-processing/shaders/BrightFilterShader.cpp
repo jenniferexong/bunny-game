@@ -1,7 +1,7 @@
 #include "BrightFilterShader.h"
 
 #include "../../Location.h"
-#include "../../Utility.h"
+#include "../../util/Log.h"
 
 void BrightFilterShader::bindAttributes()
 {
@@ -11,5 +11,5 @@ void BrightFilterShader::bindAttributes()
 void BrightFilterShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
-	Error::gl_check("BrightFilterShader setup");
+	Error::glCheck("BrightFilterShader setup");
 }

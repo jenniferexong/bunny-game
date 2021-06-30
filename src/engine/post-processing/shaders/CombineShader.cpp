@@ -1,7 +1,7 @@
 #include "CombineShader.h"
 
 #include "../../Location.h"
-#include "../../Utility.h"
+#include "../../util/Log.h"
 
 void CombineShader::bindAttributes()
 {
@@ -12,14 +12,14 @@ void CombineShader::connectTextureUnits()
 {
 	loadInt(locations_.at(UniformVariable::ColorTexture), 0);
 	loadInt(locations_.at(UniformVariable::HighlightTexture), 1);
-	Error::gl_check("CombineShader connectTextureUnits");
+	Error::glCheck("CombineShader connectTextureUnits");
 }
 
 void CombineShader::getAllUniformLocations() 
 {
 	INSERT_LOC(ColorTexture, "uColorTexture");
 	INSERT_LOC(HighlightTexture, "uHighlightTexture");
-	Error::gl_check("CombineShader getAllUniformLocations");
+	Error::glCheck("CombineShader getAllUniformLocations");
 }
 
 void CombineShader::setUp()
@@ -28,5 +28,5 @@ void CombineShader::setUp()
 	start();
 	connectTextureUnits();
 	stop();
-	Error::gl_check("CombineShader setup");
+	Error::glCheck("CombineShader setup");
 }

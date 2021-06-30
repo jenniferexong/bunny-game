@@ -1,6 +1,6 @@
-test-right
-test-left
-test-top
-test-bottom
-test-back
-test-front
+test-right.png
+test-left.png
+test-top.png
+test-bottom.png
+test-back.png
+test-front.png

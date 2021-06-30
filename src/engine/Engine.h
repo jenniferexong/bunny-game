@@ -10,6 +10,7 @@
 #include <GLFW/glfw3.h>
 
 #include "Loader.h"
+#include "Timer.h"
 #include "renderers/MasterRenderer.h"
 
 #include <memory>
@@ -28,6 +29,8 @@ public:
 	std::unique_ptr<Loader> loader = nullptr;
 	std::unique_ptr<MasterRenderer> renderer = nullptr;
 	std::unique_ptr<PostProcessor> post_processor = nullptr;
+
+	std::unique_ptr<Timer> timer;
 
 	GLFWwindow* window = nullptr;
 	int window_width = 1280;

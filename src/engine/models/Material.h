@@ -1,5 +1,7 @@
 #pragma once
 #include <string>
+#include <filesystem>
+
 #include "../Engine.h"
 
 struct Material {
@@ -20,21 +22,21 @@ struct Material {
 		has_transparency(transparency),
 		uses_fake_lighting(fake_lighting) 
 	{
-		setGlowMap("black");
+		setGlowMap("black.png");
 	}
 
 	Material(float r, float s) : reflectivity(r), shine_damper(s) 
 	{
-		setGlowMap("black");
+		setGlowMap("black.png");
 	}
 
 	Material(bool transparency, bool fake_lighting): 
 		has_transparency(transparency),
 		uses_fake_lighting(fake_lighting) {}
 
-	void setGlowMap(const std::string& texture_name)
+	void setGlowMap(const std::filesystem::path& texture_file)
 	{
-		glow_map_ = Engine::instance->loader->loadTexture(texture_name);
+		glow_map_ = Engine::instance->loader->loadTexture(texture_file);
 	}
 
 	bool hasGlowMap()

@@ -5,8 +5,8 @@
 #include "../shaders/TerrainShader.h"
 #include "../models/Mesh.h"
 #include "../models/Texture.h"
-#include "../../environment/Terrain.h"
-#include "../Utility.h"
+#include "../environment/Terrain.h"
+#include "../util/Log.h"
 
 TerrainRenderer::TerrainRenderer(std::shared_ptr<TerrainShader> shader): 
 	shader_(std::move(shader))
@@ -29,7 +29,7 @@ void TerrainRenderer::render(const std::vector<Terrain>& terrains)
 		);
 		unbindTerrain();
 	}
-	Error::gl_check(name_);
+	Error::glCheck(name_);
 }
 
 void TerrainRenderer::prepareTerrain(const Terrain& terrain)

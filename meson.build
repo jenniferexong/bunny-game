@@ -1,9 +1,8 @@
 project(
     'nibbles',
      'cpp',
-     default_options : ['cpp_std=c++17'],
+     default_options : ['cpp_std=c++20'],
 )
-
 
 glew = dependency('glew')
 glfw = dependency('glfw3')

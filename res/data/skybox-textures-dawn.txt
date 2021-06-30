@@ -1,6 +1,6 @@
-dawn-side
-dawn-side
-dawn-top
-dawn-bottom
-dawn-side
-dawn-side
+dawn-side.png
+dawn-side.png
+dawn-top.png
+dawn-bottom.png
+dawn-side.png
+dawn-side.png

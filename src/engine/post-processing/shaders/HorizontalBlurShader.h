@@ -11,8 +11,8 @@ class HorizontalBlurShader final : public Shader {
 	};
 
 	static constexpr char name[] = "HorizontalBlurShader";
-	static constexpr char vertex_file[] = "post-processing/horizontal-blur-vert";
-	static constexpr char fragment_file[] = "post-processing/blur-frag";
+	static constexpr char vertex_file[] = "post-processing/horizontal-blur-vert.glsl";
+	static constexpr char fragment_file[] = "post-processing/blur-frag.glsl";
 
 	std::unordered_map<UniformVariable, int, EnumHash> locations_;
 

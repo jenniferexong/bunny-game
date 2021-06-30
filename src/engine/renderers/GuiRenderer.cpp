@@ -7,8 +7,7 @@
 #include "../Location.h"
 #include "../Engine.h"
 #include "../Loader.h"
-#include "../../ui/GuiTexture.h"
-#include "../Utility.h"
+#include "../ui/GuiTexture.h"
 
 GuiRenderer::GuiRenderer()
 {
@@ -58,5 +57,5 @@ void GuiRenderer::render(
 
 	shader_.stop();
 
-	Error::gl_check(name_);
+	Error::glCheck(name_);
 }

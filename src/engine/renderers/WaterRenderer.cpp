@@ -3,9 +3,9 @@
 #include <GL/glew.h>
 
 #include "../Engine.h"
-#include "../Environment.h"
 #include "../Location.h"
-#include "../Utility.h"
+#include "../util/Log.h"
+#include "../environment/Environment.h"
 
 WaterRenderer::WaterRenderer() {
     Log::init("WaterRenderer", false);
@@ -27,8 +27,8 @@ WaterRenderer::WaterRenderer() {
 	);
 
     // load the dudv map
-    dudv_id_ = Engine::instance->loader->loadTexture("water-dudv");
-    normal_id_ = Engine::instance->loader->loadTexture("water-normal");
+    dudv_id_ = Engine::instance->loader->loadTexture("water-dudv.png");
+    normal_id_ = Engine::instance->loader->loadTexture("water-normal.png");
 
     shader_.start();
     shader_.connectTextureUnits();
@@ -46,7 +46,7 @@ void WaterRenderer::render(const Environment& environment) {
         glDrawArrays(GL_TRIANGLES, 0, quad_.getVertexCount());
     }
     unbind();
-    Error::gl_check(name_);
+    Error::glCheck(name_);
 }
 
 void WaterRenderer::prepare(const Environment& environment) {

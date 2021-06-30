@@ -8,7 +8,7 @@
 #include "../Engine.h"
 #include "Text.h"
 #include "TextLoader.h"
-#include "../FilePath.h"
+#include "../util/FilePath.h"
 
 using std::stoi;
 using std::stod;
@@ -26,16 +26,15 @@ Character FontData::getCharacter(int ascii) const
 /**
  * Reads a font file, loading characters into map
  */
-FontData::FontData(const std::string& font_name)
+FontData::FontData(const std::string& font_file)
 {
 	double aspect_ratio = (double)Engine::instance->aspect_ratio;
 	
-	string font_path = FilePath::font_path;
-	font_path.append(font_name).append(".fnt");
+	string font_path = FilePath::get(font_file + ".fnt", FileType::Font);
 	std::ifstream file = std::ifstream(font_path);
 
 	if (!file.is_open())
-		Error::exit("could not read font file: " + font_path);
+		Error::file(FileType::Font, font_path);
 
 	// read padding information (top, left, bottom, right)
 	auto padding_data = stringstream(getToken(&file, "padding"));

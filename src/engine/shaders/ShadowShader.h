@@ -11,8 +11,8 @@ private:
 	};
 
 	static constexpr char name[] = "ShadowShader";
-	static constexpr char vertex_file[] = "shadow-vert";
-	static constexpr char fragment_file[] = "shadow-frag";
+	static constexpr char vertex_file[] = "shadow-vert.glsl";
+	static constexpr char fragment_file[] = "shadow-frag.glsl";
 
 	std::unordered_map<UniformVariable, int> locations_;
 

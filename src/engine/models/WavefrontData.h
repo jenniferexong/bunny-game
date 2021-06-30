@@ -34,7 +34,7 @@ private:
 	vec3 min_ = vec3(std::numeric_limits<float>::max());
 	vec3 max_ = vec3(std::numeric_limits<float>::min());
 
-	void loadData(const std::string& file_name);
+	void loadData(const std::string& file_path);
 	void setMinMax(vec3 position);
 	void processIndices(
 		const std::string& vertex,

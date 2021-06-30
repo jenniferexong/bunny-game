@@ -3,8 +3,7 @@
 #include <iostream>
 
 #include "renderers/MasterRenderer.h"
-#include "Application.h"
-#include "Utility.h"
+#include "util/Log.h"
 #include "Camera.h"
 
 const float ShadowBox::offset = 10.f;
@@ -67,4 +66,3 @@ vec3 ShadowBox::getCenter() const
 	vec3 answer = vec3(inverse_light_view * center);
 	return answer;
 }
-

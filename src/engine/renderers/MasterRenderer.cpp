@@ -5,13 +5,11 @@
 #include "GLFW/glfw3.h"
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../Application.h"
-
 #include "../shaders/EntityShader.h"
 #include "../shaders/TerrainShader.h"
-#include "../../scene/Scene.h"
+#include "../scene/Scene.h"
 #include "../Camera.h"
-#include "environment/Environment.h"
+#include "../environment/Environment.h"
 
 glm::mat4 MasterRenderer::projection_matrix = glm::mat4(1);
 float MasterRenderer::fov = 70.f;

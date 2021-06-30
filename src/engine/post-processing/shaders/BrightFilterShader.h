@@ -9,8 +9,8 @@ class BrightFilterShader final : public Shader {
 	enum class UniformVariable { };
 
 	static constexpr char name[] = "BrightFilterShader";
-	static constexpr char vertex_file[] = "post-processing/default-vert";
-	static constexpr char fragment_file[] = "post-processing/bright-filter-frag";
+	static constexpr char vertex_file[] = "post-processing/default-vert.glsl";
+	static constexpr char fragment_file[] = "post-processing/bright-filter-frag.glsl";
 
 	std::unordered_map<UniformVariable, int, EnumHash> locations_;
 

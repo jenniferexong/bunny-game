@@ -2,13 +2,14 @@
 
 #include "../renderers/MasterRenderer.h"
 #include "../Location.h"
-#include "../Utility.h"
-#include "../Environment.h"
+#include "../util/Log.h"
+#include "../util/Maths.h"
+#include "../environment/Environment.h"
 
 void EntityShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
-	Error::gl_check(name);
+	Error::glCheck(name);
 }
 
 void EntityShader::connectTextureUnits()
@@ -25,7 +26,7 @@ void EntityShader::connectTextureUnits()
 		locations_.at(UniformVariable::EnvironmentMap),
 		EntityTextureLocation::EnvironmentMap
 	);
-	Error::gl_check("EntityShader connectTextureUnits");
+	Error::glCheck("EntityShader connectTextureUnits");
 }
 
 void EntityShader::bindAttributes()
@@ -58,7 +59,7 @@ void EntityShader::getAllUniformLocations()
 	INSERT_LOC(DiffuseMap, "uDiffuseMap");
 	INSERT_LOC(GlowMap, "uGlowMap");
 	INSERT_LOC(EnvironmentMap, "uEnvironmentMap");
-	Error::gl_check("EntityShader getAllUniformLocations");
+	Error::glCheck("EntityShader getAllUniformLocations");
 }
 
 void EntityShader::loadUniformPerFrame(
@@ -112,7 +113,7 @@ void EntityShader::loadUniformPerFrame(
 	 
 	// Sky colour
 	//loadVector(locations_.at(UniformVariable::FogColor), Application::fog_color);
-	Error::gl_check("EntityShader loadUniformPerFrame");
+	Error::glCheck("EntityShader loadUniformPerFrame");
 }
 
 void EntityShader::loadModelMatrix(const Entity& entity) const
@@ -125,7 +126,7 @@ void EntityShader::loadModelMatrix(const Entity& entity) const
 		entity.getAlignmentRotation()
 	);
 	loadMatrix(locations_.at(UniformVariable::TransformationMatrix), t_matrix);
-	Error::gl_check("EntityShader loadModelMatrix");
+	Error::glCheck("EntityShader loadModelMatrix");
 }
 
 void EntityShader::loadMaterial(const Material& material) const
@@ -140,6 +141,6 @@ void EntityShader::loadMaterial(const Material& material) const
 	loadBoolean(
 		locations_.at(UniformVariable::FakeLighting), material.uses_fake_lighting
 	);
-	Error::gl_check("EntityShader loadMaterial");
+	Error::glCheck("EntityShader loadMaterial");
 }
 

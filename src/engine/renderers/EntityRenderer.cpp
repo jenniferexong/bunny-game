@@ -6,10 +6,10 @@
 #include <iostream>
 
 #include "MasterRenderer.h"
-#include "../Environment.h"
+#include "../environment/Environment.h"
 #include "../shaders/EntityShader.h"
 #include "../Location.h"
-#include "../Utility.h"
+#include "../util/Log.h"
 
 EntityRenderer::EntityRenderer(std::shared_ptr<EntityShader> shader): 
 	shader_(std::move(shader))
@@ -91,7 +91,7 @@ void EntityRenderer::renderInstanced(const Environment& environment)
 		);
 		unbindTexturedModel();
 	}
-	Error::gl_check("EntityRenderer renderInstanced");
+	Error::glCheck("EntityRenderer renderInstanced");
 }
 
 void EntityRenderer::loadColors(
@@ -169,7 +169,7 @@ void EntityRenderer::prepareTexturedModel(const TexturedModel& model)
 		glBindTexture(GL_TEXTURE_2D, texture.getMaterial().glow_map_);
 	}
 
-	Error::gl_check("EntityRenderer prepareTexturedModel");
+	Error::glCheck("EntityRenderer prepareTexturedModel");
 }
 
 void EntityRenderer::unbindTexturedModel()

@@ -15,7 +15,7 @@ private:
 	std::string getToken(std::ifstream* file, const std::string& token_name);
 	
 public:
-	FontData(const std::string& font_name);
+	FontData(const std::string& font_file);
 	FontData() = default;
 	~FontData() = default;
 

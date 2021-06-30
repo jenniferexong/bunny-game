@@ -1,6 +1,6 @@
 #include "Engine.h"
 #include "text/FontType.h"
-#include "../ui/GuiTexture.h"
+#include "ui/GuiTexture.h"
 
 std::unique_ptr<Engine> Engine::instance = nullptr;
 
@@ -22,6 +22,7 @@ void Engine::init(GLFWwindow* w)
 	instance->loader = std::make_unique<Loader>();
 	instance->renderer = std::make_unique<MasterRenderer>();
 	instance->post_processor = std::make_unique<PostProcessor>();
+	instance->timer = std::make_unique<Timer>();
 
 	instance->loadFonts();
     GuiTexture::loadTextures();

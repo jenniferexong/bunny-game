@@ -2,11 +2,12 @@
 
 #include <stb/stb_image.h>
 
+#include <filesystem>
 #include <vector>
 #include <string>
 
-#include "FilePath.h"
-#include "../util/Log.h"
+#include "util/FilePath.h"
+#include "util/Log.h"
 
 class Mesh;
 class InstancedMesh;
@@ -14,6 +15,7 @@ class InstancedMesh;
 using GLuint = unsigned int;
 
 using std::vector;
+namespace fs = std::filesystem;
 
 class Loader {
 private:
@@ -51,14 +53,14 @@ public:
 	// Test mesh (2d positions)
 	int loadToVao(const vector<float>& positions, const vector<float>& texture_coords);
 
-	int loadCubeMap(const std::string& textures_file);
+	int loadCubeMap(const fs::path& texture_file);
 
 	int createInstancedVbo(int start_location, int blocks, int num_elements, int offset);
 
-	Mesh loadToVao(const std::string& obj_name);
-	InstancedMesh loadToVaoInstanced(const std::string& obj_name);
-	int loadTexture(const std::string& texture_name);
-	int loadFontTexture(const std::string& texture_name);
+	Mesh loadToVao(const fs::path& obj_file);
+	InstancedMesh loadToVaoInstanced(const fs::path& obj_file);
+	int loadTexture(const fs::path& texture_file);
+	int loadFontTexture(const fs::path& texture_file);
 
 	void deleteVao(GLuint vao);
 };
@@ -68,17 +70,17 @@ struct SkyboxTextureData {
 	int height;
 	unsigned char* buffer;
 
-	SkyboxTextureData(const std::string& file_name)
+	SkyboxTextureData(const fs::path& textures_file)
 	{
-		std::string file_path = FilePath::texture_path;
-		file_path.append("skybox/").append(file_name).append(".png");
+        const std::string file_path = 
+            FilePath::get(textures_file, FileType::SkyboxTexture);
 
 		stbi_set_flip_vertically_on_load(0); // IF UPSIDE DOWN TEXTURE, CHANGE THIS
 		int bpp; // bits per pixel
 		buffer = stbi_load(file_path.c_str(), &width, &height, &bpp, 4);
 
 		if (!buffer)
-			Error::file("skybox texture", file_path);
+			Error::file(FileType::SkyboxTexture, file_path);
 	}
 
 	void unload()

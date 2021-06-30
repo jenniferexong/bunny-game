@@ -3,7 +3,7 @@
 #include "Text.h"
 #include "FontData.h"
 #include "FontType.h"
-#include "../../ui/GuiText.h"
+#include "../ui/GuiText.h"
 
 using std::string;
 

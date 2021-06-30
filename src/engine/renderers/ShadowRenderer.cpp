@@ -5,9 +5,10 @@
 
 #include "ShadowRenderer.h"
 #include "MasterRenderer.h"
-#include "../Utility.h"
+#include "../util/Log.h"
+#include "../util/Maths.h"
 #include "../Location.h"
-#include "../Environment.h"
+#include "../environment/Environment.h"
 
 const int ShadowRenderer::shadow_map_size = 4096;
 
@@ -25,7 +26,7 @@ void ShadowRenderer::render(const Environment& environment)
 	renderEntities(environment);
 	renderTerrain(environment);
 	finish();
-	Error::gl_check("ShadowRenderer");
+	Error::glCheck("ShadowRenderer");
 }
 
 void ShadowRenderer::prepare(vec3 light_direction, const Camera& camera)

@@ -1,6 +1,6 @@
-stars-right
-stars-left
-stars-top
-stars-bottom
-stars-back
-stars-front
+stars-right.png
+stars-left.png
+stars-top.png
+stars-bottom.png
+stars-back.png
+stars-front.png

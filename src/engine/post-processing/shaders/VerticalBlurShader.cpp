@@ -1,7 +1,7 @@
 #include "VerticalBlurShader.h"
 
 #include "../../Location.h"
-#include "../../Utility.h"
+#include "../../util/Log.h"
 
 void VerticalBlurShader::bindAttributes()
 {
@@ -11,17 +11,17 @@ void VerticalBlurShader::bindAttributes()
 void VerticalBlurShader::getAllUniformLocations()
 {
 	INSERT_LOC(TargetHeight, "uTargetHeight");
-	Error::gl_check("VerticalBlurShader getAllUniformLocations");
+	Error::glCheck("VerticalBlurShader getAllUniformLocations");
 }
 
 void VerticalBlurShader::loadUniforms(float target_height)
 {
 	loadFloat(locations_.at(UniformVariable::TargetHeight), target_height);
-	Error::gl_check("VerticalBlurShader loadUniforms");
+	Error::glCheck("VerticalBlurShader loadUniforms");
 }
 
 void VerticalBlurShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
-	Error::gl_check("VerticalBlurShader setup");
+	Error::glCheck("VerticalBlurShader setup");
 }

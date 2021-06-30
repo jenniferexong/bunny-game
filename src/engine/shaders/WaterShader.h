@@ -18,8 +18,8 @@ private:
 	std::unordered_map<UniformVariable, int, EnumHash> locations_;
 
 	static constexpr char name[] = "WaterShader";
-	static constexpr char vertex_file[] = "water-vert";
-	static constexpr char fragment_file[] = "water-frag";
+	static constexpr char vertex_file[] = "water-vert.glsl";
+	static constexpr char fragment_file[] = "water-frag.glsl";
 
 	void bindAttributes() override;
 	void getAllUniformLocations() override;

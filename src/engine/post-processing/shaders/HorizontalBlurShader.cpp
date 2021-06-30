@@ -1,7 +1,7 @@
 #include "HorizontalBlurShader.h"
 
 #include "../../Location.h"
-#include "../../Utility.h"
+#include "../../util/Log.h"
 
 void HorizontalBlurShader::bindAttributes()
 {
@@ -11,17 +11,17 @@ void HorizontalBlurShader::bindAttributes()
 void HorizontalBlurShader::getAllUniformLocations()
 {
 	INSERT_LOC(TargetWidth, "uTargetWidth");
-	Error::gl_check("HorizontalBlurShader getAllUniformLocations");
+	Error::glCheck("HorizontalBlurShader getAllUniformLocations");
 }
 
 void HorizontalBlurShader::loadUniforms(float target_width)
 {
 	loadFloat(locations_.at(UniformVariable::TargetWidth), target_width);
-	Error::gl_check("HorizontalBlurShader loadUniforms");
+	Error::glCheck("HorizontalBlurShader loadUniforms");
 }
 
 void HorizontalBlurShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
-	Error::gl_check("HorizontalBlurShader setup");
+	Error::glCheck("HorizontalBlurShader setup");
 }

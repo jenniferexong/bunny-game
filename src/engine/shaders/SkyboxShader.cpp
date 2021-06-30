@@ -2,8 +2,9 @@
 #include "SkyboxShader.h"
 
 #include "../Location.h"
-#include "../Utility.h"
 #include "../renderers/MasterRenderer.h"
+#include "../util/Log.h"
+#include "../util/Maths.h"
 
 void SkyboxShader::bindAttributes()
 {
@@ -22,7 +23,7 @@ void SkyboxShader::getAllUniformLocations()
 void SkyboxShader::setUp()
 {
 	Shader::setUp(vertex_file, fragment_file);
-	Error::gl_check(name);
+	Error::glCheck(name);
 }
 
 void SkyboxShader::loadBlendFactor(float blend)

@@ -18,8 +18,8 @@ private:
 	};
 
 	static constexpr char name[] = "EntityShader";
-	static constexpr char vertex_file[] = "entity-vert";
-	static constexpr char fragment_file[] = "entity-frag";
+	static constexpr char vertex_file[] = "entity-vert.glsl";
+	static constexpr char fragment_file[] = "entity-frag.glsl";
 
 	std::unordered_map<UniformVariable, int, EnumHash> locations_;
 

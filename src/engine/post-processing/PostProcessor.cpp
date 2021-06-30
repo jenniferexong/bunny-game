@@ -4,7 +4,7 @@
 
 #include "ImageProcessor.h"
 #include "../Engine.h"
-#include "../Utility.h"
+#include "../util/Log.h"
 #include "../Location.h"
 
 using namespace std;
@@ -136,5 +136,5 @@ void PostProcessor::finish()
 	MasterRenderer::enableDepthTest();
 	glDisableVertexAttribArray(AttributeLocation::Position);
 	glBindVertexArray(0);
-	Error::gl_check(name_);
+	Error::glCheck(name_);
 }

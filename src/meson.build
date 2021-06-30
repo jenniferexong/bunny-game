@@ -1,11 +1,6 @@
 directories = [
     'engine',
-    'environment',
-    'game-manager',
-    'pkg',
-    'scene',
-    'ui',
-    'util',
+    'game',
 ]
 
 # visit each directory
@@ -13,30 +8,28 @@ foreach dir : directories
     subdir(dir)
 endforeach
 
-src = ['Main.cpp']
-
 all_src = [
-    src,
     engine,
+        environment,
         models,
         post_processing,
 			post_processing_shaders,
         renderers,
+        scene,
         shaders,
         text,
-    environment,
-    game_manager,
-    pkg,
-    scene,
-    ui,
-    util,
+        ui,
+        util,
+    game,
+      game_manager,
+      game_scene,
 ]
 
 opengl = dependency('OpenGL')
 deps = [opengl, glm, glew, glfw]
 
 executable(
-    'game',
+    'run',
     all_src,
     include_directories : inc,
     dependencies : deps,

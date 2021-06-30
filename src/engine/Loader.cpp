@@ -1,4 +1,3 @@
-
 #include "Loader.h"
 
 #include <GL/glew.h>
@@ -7,9 +6,10 @@
 #include <fstream>
 #include <iostream>
 
-#include "FilePath.h"
+#include "util/FilePath.h"
 #include "Location.h"
-#include "Utility.h"
+#include "util/FilePath.h"
+#include "util/Log.h"
 #include "models/Mesh.h"
 #include "models/WavefrontData.h"
 
@@ -29,7 +29,7 @@ Mesh Loader::loadToVao(
 
     bindIbo(indices);
     unbindVao();
-    Error::gl_check("loadToVao 1");
+    Error::glCheck("loadToVao 1");
     return {vao_id, (int)indices.size(), 3};
 }
 
@@ -48,7 +48,7 @@ Mesh Loader::loadToVao(
 
     bindIbo(indices);
     unbindVao();
-    Error::gl_check("loadToVao 2");
+    Error::glCheck("loadToVao 2");
     return {vao_id, (int)indices.size(), 3};
 }
 
@@ -63,16 +63,17 @@ int Loader::loadToVao(
     storeInAttributeList(TextAttributeLocation::Position, 2, positions);
     storeInAttributeList(TextAttributeLocation::Texture, 2, texture_coords);
     unbindVao(); 
-    Error::gl_check("loadToVao 3");
+    Error::glCheck("loadToVao 3");
     return vao_id;
 }
 
 /**
  * Loads data from an obj file into a VAO 
  * */
-Mesh Loader::loadToVao(const string& obj_name) 
+Mesh Loader::loadToVao(const fs::path& obj_file) 
 {
-    const string file_path = FilePath::model_path + obj_name + ".obj";
+    const string file_path = FilePath::get(obj_file, FileType::Model);
+
     WavefrontData data = WavefrontData(file_path);
     int vao_id = createVao();
     storeInAttributeList(AttributeLocation::Position, 3, data.positions);
@@ -81,7 +82,7 @@ Mesh Loader::loadToVao(const string& obj_name)
 
     bindIbo(data.indices);
     unbindVao();
-    Error::gl_check("loadToVao 4");
+    Error::glCheck("loadToVao 4");
     return {vao_id, (int)data.indices.size(), data.face};
 }
 
@@ -91,15 +92,16 @@ Mesh Loader::loadToVao(const vector<float>& positions, int dimensions)
     storeInAttributeList(AttributeLocation::Position, dimensions, positions);
     unbindVao();
     return {vao_id, (int)positions.size() / dimensions, 3};
-    Error::gl_check("loadToVao 5");
+    Error::glCheck("loadToVao 5");
 }
 
 /**
  * Also sets the bounding sphere information for the mesh 
  */
-InstancedMesh Loader::loadToVaoInstanced(const string& obj_name) 
+InstancedMesh Loader::loadToVaoInstanced(const fs::path& obj_file) 
 {
-    const string file_path = FilePath::model_path + obj_name + ".obj";
+    const string file_path = FilePath::get(obj_file, FileType::Model);
+
     WavefrontData data = WavefrontData(file_path);
     int vao_id = createVao();
     storeInAttributeList(AttributeLocation::Position, 3, data.positions);
@@ -119,18 +121,19 @@ InstancedMesh Loader::loadToVaoInstanced(const string& obj_name)
     mesh.setVbos(model_matrix_vbo, brightness_vbo);
 
     unbindVao();
-    Error::gl_check("loadToVaoInstanced");
+    Error::glCheck("loadToVaoInstanced");
 
     return mesh;
 }
 
-int Loader::loadCubeMap(const std::string& textures_file) 
+int Loader::loadCubeMap(const fs::path& textures_file) 
 {
 	std::vector<std::string> texture_names;
-	std::string file_path = FilePath::data_path + textures_file + ".txt";
+	std::string file_path = FilePath::get(textures_file, FileType::Data);
+
 	std::ifstream file(file_path);
 	if (!file.is_open())
-		Error::file("texture files", file_path);
+		Error::file(FileType::Data, file_path);
 	std::string line;
 	while (getline(file, line)) 
 		texture_names.push_back(line);
@@ -160,13 +163,13 @@ int Loader::loadCubeMap(const std::string& textures_file)
     textures_.push_back(texture_id);
     Log::texture("cube map (" + texture_names.at(0) + ")", texture_id);
 
-    Error::gl_check("loadCubeMap");
+    Error::glCheck("loadCubeMap");
     return texture_id;
 }
 
-int Loader::loadTexture(const string& texture_name) 
+int Loader::loadTexture(const fs::path& texture_file) 
 {
-    const string file_path = FilePath::texture_path + texture_name + ".png";
+    const string file_path = FilePath::get(texture_file, FileType::Texture);
 
 	// IF UPSIDE DOWN TEXTURE, CHANGE THIS
     stbi_set_flip_vertically_on_load(1); 
@@ -174,7 +177,7 @@ int Loader::loadTexture(const string& texture_name)
     unsigned char* buffer =
 		stbi_load(file_path.c_str(), &width, &height, &bpp, 4);
 
-    if (!buffer) Error::file("texture", file_path);
+    if (!buffer) Error::file(FileType::Texture, file_path);
 
     GLuint texture_id;
     glGenTextures(1, &texture_id);
@@ -201,16 +204,16 @@ int Loader::loadTexture(const string& texture_name)
 
     stbi_image_free(buffer);
 
-    Log::texture(texture_name, texture_id);
+    Log::texture(texture_file, texture_id);
     textures_.push_back(texture_id);
 
-    Error::gl_check("loadTexture");
+    Error::glCheck("loadTexture");
     return texture_id;
 }
 
-int Loader::loadFontTexture(const string& texture_name) 
+int Loader::loadFontTexture(const fs::path& texture_file) 
 {
-    const string file_path = FilePath::font_path + texture_name + ".png";
+    const string file_path = FilePath::get(texture_file, FileType::FontTexture);
 
 	// IF UPSIDE DOWN TEXTURE, CHANGE THIS
     stbi_set_flip_vertically_on_load(1);
@@ -218,7 +221,7 @@ int Loader::loadFontTexture(const string& texture_name)
     unsigned char* buffer =
         stbi_load(file_path.c_str(), &width, &height, &bpp, 4);
 
-    if (!buffer) Error::file("font texture", file_path);
+    if (!buffer) Error::file(FileType::FontTexture, file_path);
 
     GLuint texture_id;
     glGenTextures(1, &texture_id);
@@ -243,8 +246,8 @@ int Loader::loadFontTexture(const string& texture_name)
 
     if (buffer) stbi_image_free(buffer);
 
-    Log::texture(texture_name, texture_id);
-    Error::gl_check("loadFontTexture");
+    Log::texture(texture_file, texture_id);
+    Error::glCheck("loadFontTexture");
     textures_.push_back(texture_id);
     return texture_id;
 }
@@ -350,4 +353,3 @@ Loader::~Loader()
     glDeleteBuffers(vbos_.size(), vbos_.data());
     glDeleteTextures(textures_.size(), textures_.data());
 }
-

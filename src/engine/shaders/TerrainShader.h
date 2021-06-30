@@ -21,8 +21,8 @@ private:
 		LightSpaceMatrix, ShadowMap
 	};
 
-	static constexpr char vertex_file[] = "terrain-vert";
-	static constexpr char fragment_file[] = "terrain-frag";
+	static constexpr char vertex_file[] = "terrain-vert.glsl";
+	static constexpr char fragment_file[] = "terrain-frag.glsl";
 
 	std::unordered_map<UniformVariable, int, EnumHash> locations_;
 

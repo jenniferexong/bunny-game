@@ -15,8 +15,8 @@ private:
 	};
 
 	static constexpr char name[] = "SkyboxShader";
-	static constexpr char vertex_file[] = "skybox-vert";
-	static constexpr char fragment_file[] = "skybox-frag";
+	static constexpr char vertex_file[] = "skybox-vert.glsl";
+	static constexpr char fragment_file[] = "skybox-frag.glsl";
 
 	static constexpr float rotate_speed = 0.1f;
 	float current_rotation_ = 0.f;

@@ -3,7 +3,8 @@
 #include "renderers/MasterRenderer.h"
 #include "Camera.h"
 #include "Engine.h"
-#include "Utility.h"
+#include "util/Maths.h"
+#include "util/Log.h"
 
 using namespace glm;
 
