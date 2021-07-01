@@ -12,7 +12,7 @@
 
 class GuiTexture {
 private:
-	static std::unordered_map<std::string, int> textures;
+	static std::unordered_map<std::string, int> textures_;
 
     std::weak_ptr<GuiBound> bound_;
 
@@ -24,13 +24,13 @@ private:
 	bool has_transparency_ = true;
 	
 public:
-    static void loadTextures();
+    static void loadTextures(std::unordered_map<std::string, int> textures);
     static int getTexture(const std::string& name)
     {
-        if (textures.find(name) == textures.end())
+        if (textures_.find(name) == textures_.end())
             Error::exit("GuiTexture::textures doesn't contain: " + name);
 
-        return textures[name];
+        return textures_[name];
     }
 
 	GuiTexture(): texture_(-1) {}
@@ -103,4 +103,4 @@ namespace std {
 			return a.lock() == b.lock();
 		}
 	};
-}
+};

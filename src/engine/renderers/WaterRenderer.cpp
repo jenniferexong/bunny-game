@@ -2,33 +2,31 @@
 
 #include <GL/glew.h>
 
-#include "../Engine.h"
+#include "../Application.h"
 #include "../Location.h"
 #include "../util/Log.h"
 #include "../environment/Environment.h"
 
-WaterRenderer::WaterRenderer() {
+WaterRenderer::WaterRenderer()
+{
     Log::init("WaterRenderer", false);
     shader_.setUp();
 
     // load the quad mesh
     std::vector<float> positions = {
         // Just x and z vertex positions here, y is set to 0 in v.shader
-        -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1
-	};
+        -1, -1, -1, 1, 1, -1, 1, -1, -1, 1, 1, 1};
 
-    quad_ = Engine::instance->loader->loadToVao(positions, 2);
+    quad_ = app->loader->loadToVao(positions, 2);
 
     reflection_fbo_ = std::make_unique<Fbo>(
-        1280, 720, DepthBufferAttachment::DepthBuffer, false
-	);
+        1280, 720, DepthBufferAttachment::DepthBuffer, false);
     refraction_fbo_ = std::make_unique<Fbo>(
-        1280, 720, DepthBufferAttachment::DepthTexture, false
-	);
+        1280, 720, DepthBufferAttachment::DepthTexture, false);
 
     // load the dudv map
-    dudv_id_ = Engine::instance->loader->loadTexture("water-dudv.png");
-    normal_id_ = Engine::instance->loader->loadTexture("water-normal.png");
+    dudv_id_ = app->loader->loadTexture("water-dudv.png");
+    normal_id_ = app->loader->loadTexture("water-normal.png");
 
     shader_.start();
     shader_.connectTextureUnits();
@@ -37,11 +35,14 @@ WaterRenderer::WaterRenderer() {
     Log::init("WaterRenderer", true);
 }
 
-void WaterRenderer::render(const Environment& environment) {
-    if (environment.getWater().empty()) return;
+void WaterRenderer::render(const Environment &environment)
+{
+    if (environment.getWater().empty())
+        return;
 
     prepare(environment);
-    for (const auto& water : environment.getWater()) {
+    for (const auto &water : environment.getWater())
+    {
         shader_.loadModelMatrix(water);
         glDrawArrays(GL_TRIANGLES, 0, quad_.getVertexCount());
     }
@@ -49,7 +50,8 @@ void WaterRenderer::render(const Environment& environment) {
     Error::glCheck(name_);
 }
 
-void WaterRenderer::prepare(const Environment& environment) {
+void WaterRenderer::prepare(const Environment &environment)
+{
     shader_.start();
 
     shader_.loadUniformPerFrame(environment);
@@ -71,7 +73,8 @@ void WaterRenderer::prepare(const Environment& environment) {
     MasterRenderer::enableAlphaBlending();
 }
 
-void WaterRenderer::unbind() {
+void WaterRenderer::unbind()
+{
     MasterRenderer::disableAlphaBlending();
     glDisableVertexAttribArray(AttributeLocation::Position);
     glBindVertexArray(0);

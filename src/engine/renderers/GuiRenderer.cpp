@@ -5,7 +5,7 @@
 #include <vector>
 
 #include "../Location.h"
-#include "../Engine.h"
+#include "../Application.h"
 #include "../Loader.h"
 #include "../ui/GuiTexture.h"
 
@@ -14,17 +14,16 @@ GuiRenderer::GuiRenderer()
 	Log::init("GuiRenderer", false);
 
 	std::vector<float> positions = {
-		-1, 1, -1, -1, 1, 1, 1, -1 
-	};
+		-1, 1, -1, -1, 1, 1, 1, -1};
 
-	quad_mesh_ = Mesh(Engine::instance->loader->loadToVao(positions, 2));
+	quad_mesh_ = Mesh(app->loader->loadToVao(positions, 2));
 	shader_.setUp();
 
 	Log::init("GuiRenderer", true);
 }
 
 void GuiRenderer::render(
-	const std::vector<std::weak_ptr<GuiTexture>>& gui_textures)
+	const std::vector<std::weak_ptr<GuiTexture>> &gui_textures)
 {
 	shader_.start();
 	glBindVertexArray(quad_mesh_.getId());
@@ -34,11 +33,13 @@ void GuiRenderer::render(
 	MasterRenderer::enableAlphaBlending();
 	MasterRenderer::disableDepthTest();
 
-	for (const auto& gui: gui_textures) { // render
+	for (const auto &gui : gui_textures)
+	{ // render
 		if (!gui.lock()->hasTransparency())
 			MasterRenderer::disableAlphaBlending();
 
-		if (gui.lock()->hasTexture()) {
+		if (gui.lock()->hasTexture())
+		{
 			glActiveTexture(GL_TEXTURE0);
 			glBindTexture(GL_TEXTURE_2D, gui.lock()->getTexture());
 		}

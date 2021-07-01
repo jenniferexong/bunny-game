@@ -23,10 +23,10 @@ public:
 
 class ChangeScene: public GuiEvent {
 private:
-	std::weak_ptr<Scene> scene_;
+	std::weak_ptr<Scene>* scene_;
 
 public:
-	ChangeScene(std::weak_ptr<Scene> scene): scene_(scene) {}
+	ChangeScene(std::weak_ptr<Scene>* scene): scene_(scene) {}
 
 	void excecute() override;
 };

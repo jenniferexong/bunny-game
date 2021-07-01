@@ -1,4 +1,4 @@
 game_manager = files(
-    'Application.cpp',
     'Helper.cpp',
+    'Game.cpp',
 )

@@ -3,23 +3,23 @@
 #include "PostProcessor.h"
 
 #include "ImageProcessor.h"
-#include "../Engine.h"
+#include "../Application.h"
 #include "../util/Log.h"
 #include "../Location.h"
 
 using namespace std;
 
-const vector<float> PostProcessor::positions = { -1, 1, -1, -1, 1, 1, 1, -1 };
+const vector<float> PostProcessor::positions = {-1, 1, -1, -1, 1, 1, 1, -1};
 Mesh PostProcessor::quad = Mesh();
 
 PostProcessor::PostProcessor()
 {
 	Log::init("PostProcessor", false);
 
-	quad = Engine::instance->loader->loadToVao(positions, 2);
+	quad = app->loader->loadToVao(positions, 2);
 
-	int width = Engine::instance->window_width;
-	int height = Engine::instance->window_height;
+	int width = app->window_width;
+	int height = app->window_height;
 
 	multisample_fbo_ = make_shared<Fbo>(width, height, ValueType::MultiTarget);
 	antialias_fbo_ = make_shared<Fbo>(
@@ -43,13 +43,12 @@ PostProcessor::PostProcessor()
 	//bright_ = make_shared<BrightFilter>();
 	combine_ = make_shared<CombineFilter>(
 		antialias_fbo_->getColorTexture(),
-		blur_fbo_v_->getColorTexture()
-	);
+		blur_fbo_v_->getColorTexture());
 
 	Log::init("PostProcessor", true);
 }
 
-void PostProcessor::bloomEffect() 
+void PostProcessor::bloomEffect()
 {
 	multisample_fbo_->unbind();
 	multisample_fbo_->resolveToFbo(0, *antialias_fbo_);
@@ -57,9 +56,8 @@ void PostProcessor::bloomEffect()
 
 	prepare();
 	process(
-		{ horizontal_blur_, vertical_blur_, combine_ },
-		{ glow_output_, blur_fbo_h_, blur_fbo_v_, empty_fbo_ }
-	);
+		{horizontal_blur_, vertical_blur_, combine_},
+		{glow_output_, blur_fbo_h_, blur_fbo_v_, empty_fbo_});
 	finish();
 }
 void PostProcessor::antiAliasToScreen()
@@ -69,14 +67,13 @@ void PostProcessor::antiAliasToScreen()
 }
 
 void PostProcessor::process(
-	const processor_pipeline& processors,
-	const fbo_pipeline& fbos)
+	const processor_pipeline &processors,
+	const fbo_pipeline &fbos)
 {
 	for (unsigned int i = 0; i < processors.size(); i++)
 		processors.at(i).lock()->renderToFbo(
 			fbos.at(i).lock()->getColorTexture(),
-			fbos.at(i + 1).lock()
-		);
+			fbos.at(i + 1).lock());
 }
 
 void PostProcessor::blur()
@@ -86,9 +83,8 @@ void PostProcessor::blur()
 
 	prepare();
 	process(
-		{ horizontal_blur_, vertical_blur_, contrast_ },
-		{ antialias_fbo_, blur_fbo_h_, blur_fbo_v_, empty_fbo_ }
-	);
+		{horizontal_blur_, vertical_blur_, contrast_},
+		{antialias_fbo_, blur_fbo_h_, blur_fbo_v_, empty_fbo_});
 	finish();
 }
 
@@ -100,16 +96,11 @@ void PostProcessor::blurToFbo()
 
 	prepare();
 	process(
-		{ 
-			horizontal_blur_, vertical_blur_, combine_, 
-			horizontal_blur_, vertical_blur_, contrast_ 
-		},
-		{ 
-			glow_output_, 
-			blur_fbo_h_, blur_fbo_v_, blur_output_, 
-			blur_fbo_h_, blur_fbo_v_, blur_output_ 
-		}
-	);
+		{horizontal_blur_, vertical_blur_, combine_,
+		 horizontal_blur_, vertical_blur_, contrast_},
+		{glow_output_,
+		 blur_fbo_h_, blur_fbo_v_, blur_output_,
+		 blur_fbo_h_, blur_fbo_v_, blur_output_});
 	finish();
 }
 

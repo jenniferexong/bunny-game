@@ -5,10 +5,10 @@ const std::string FilePath::get(const fs::path& file, FileType type) {
 
     // get absolute path of game project
     fs::path absolute = fs::current_path();
-    while (!absolute.generic_string().ends_with("/game")) {
+    while (!absolute.generic_string().ends_with("/build")) {
         absolute = absolute.parent_path();
     }
-
+    absolute = absolute.parent_path();
     absolute /= paths.at(type);
     absolute /= file;
 

@@ -5,7 +5,7 @@
 #include "Light.h"
 #include "../util/FilePath.h"
 #include "../util/Maths.h"
-#include "../Engine.h"
+#include "../Application.h"
 
 using glm::vec3;
 const vec3 Skybox::night_col = vec3(0.149, 0.266, 0.592);
@@ -34,47 +34,52 @@ Skybox::Skybox(
 	Log::init("Skybox", false);
 
 	// load the textures
-	day_texture_id_ = Engine::instance->loader->loadCubeMap(day_textures);
-	night_texture_id_ = Engine::instance->loader->loadCubeMap(night_textures);
-	dawn_texture_id_ = Engine::instance->loader->loadCubeMap(dawn_textures);
+	day_texture_id_ = app->loader->loadCubeMap(day_textures);
+	night_texture_id_ = app->loader->loadCubeMap(night_textures);
+	dawn_texture_id_ = app->loader->loadCubeMap(dawn_textures);
 
 	Log::init("Skybox", true);
 }
 
 void Skybox::update(std::weak_ptr<Light> sun)
 {
-	float time = Engine::instance->timer->time;
+	float time = app->timer->time;
 
 	vec3 light_col = vec3(0.8);
 	// Night
-	if (time >= night_start && time < night_end) {
+	if (time >= night_start && time < night_end)
+	{
 		texture_1_ = night_texture_id_;
 		texture_2_ = night_texture_id_;
 		blend_factor_ = (time - night_start) / (night_end - 0);
 		light_col = night_col;
 	}
 	// dawn starting
-	else if (time >= dawn_start && time < dawn_middle) {
+	else if (time >= dawn_start && time < dawn_middle)
+	{
 		texture_1_ = night_texture_id_;
 		texture_2_ = dawn_texture_id_;
 		blend_factor_ = (time - dawn_start) / (dawn_middle - dawn_start);
 		light_col = Maths::interpolateColor(night_col, dawn_col, blend_factor_);
 	}
 	// dawn ending
-	else if (time >= dawn_middle && time < dawn_end) {
+	else if (time >= dawn_middle && time < dawn_end)
+	{
 		texture_1_ = dawn_texture_id_;
 		texture_2_ = day_texture_id_;
 		blend_factor_ = (time - dawn_middle) / (dawn_end - dawn_middle);
 		light_col = Maths::interpolateColor(dawn_col, day_col, blend_factor_);
 	}
 	// day
-	else if (time >= day_start && time < day_end) {
+	else if (time >= day_start && time < day_end)
+	{
 		texture_1_ = day_texture_id_;
 		texture_2_ = day_texture_id_;
 		blend_factor_ = (time - day_start) / (day_end - day_start);
 	}
 	// sunset
-	else if (time >= dusk_start && time < dusk_end){
+	else if (time >= dusk_start && time < dusk_end)
+	{
 		texture_1_ = day_texture_id_;
 		texture_2_ = night_texture_id_;
 		blend_factor_ = (time - dusk_start) / (dusk_end - dusk_start);

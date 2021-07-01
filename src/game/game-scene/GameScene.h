@@ -6,6 +6,7 @@
 #include "../../engine/UserInput.h"
 #include "../../engine/environment/Environment.h"
 #include "../../engine/ui/MousePicker.h"
+#include "PauseScene.h"
 
 class GuiTexture;
 class GuiText;
@@ -48,6 +49,7 @@ private:
 	void pause();
 	
 public:
+    std::weak_ptr<Scene> pause_scene;
 
 	GameScene();
 	~GameScene() = default;

@@ -2,7 +2,7 @@
 #include <string>
 #include <filesystem>
 
-#include "../Engine.h"
+#include "../Application.h"
 
 struct Material {
 	float reflectivity = 0;
@@ -36,7 +36,7 @@ struct Material {
 
 	void setGlowMap(const std::filesystem::path& texture_file)
 	{
-		glow_map_ = Engine::instance->loader->loadTexture(texture_file);
+		glow_map_ = app->loader->loadTexture(texture_file);
 	}
 
 	bool hasGlowMap()

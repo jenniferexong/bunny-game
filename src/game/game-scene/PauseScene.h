@@ -1,9 +1,11 @@
 ﻿#pragma once
 
 #include "../../engine/scene/Scene.h"
+#include "GameScene.h"
 
 class PauseScene: public Scene {
 private:
+
 	void setUp();
 
 	bool update_ = true;
@@ -12,6 +14,8 @@ private:
 	void render();
 
 public:
+    std::weak_ptr<Scene> game_scene;
+
 	PauseScene();
 
 	void init() override;

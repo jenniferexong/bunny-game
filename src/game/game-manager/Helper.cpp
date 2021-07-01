@@ -6,7 +6,6 @@
 #include <iostream>
 #include <sstream>
 
-#include "Application.h"
 #include "../../engine/util/FilePath.h"
 #include "../../engine/environment/Environment.h"
 #include "../game-scene/Player.h"
@@ -111,10 +110,10 @@ shared_ptr<TerrainTexturePack> Helper::makeTexturePack(
 	const fs::path &green,
 	const fs::path& blue) 
 {
-	Texture base_texture = Texture(Engine::instance->loader->loadTexture(base));
-	Texture red_texture = Texture(Engine::instance->loader->loadTexture(red));
-	Texture green_texture = Texture(Engine::instance->loader->loadTexture(green));
-	Texture blue_texture = Texture(Engine::instance->loader->loadTexture(blue));
+	Texture base_texture = Texture(app->loader->loadTexture(base));
+	Texture red_texture = Texture(app->loader->loadTexture(red));
+	Texture green_texture = Texture(app->loader->loadTexture(green));
+	Texture blue_texture = Texture(app->loader->loadTexture(blue));
 
 	return make_shared<TerrainTexturePack> (
 		base_texture, red_texture, green_texture, blue_texture
@@ -126,7 +125,7 @@ TexturedModel Helper::makeModel(
 	const fs::path& texture_file,
 	const Material& material)
 {
-	InstancedMesh mesh = Engine::instance->loader->loadToVaoInstanced(obj_file);
-	ModelTexture texture(Engine::instance->loader->loadTexture(texture_file), material);
+	InstancedMesh mesh = app->loader->loadToVaoInstanced(obj_file);
+	ModelTexture texture(app->loader->loadTexture(texture_file), material);
 	return TexturedModel(mesh, texture);
 }

@@ -5,13 +5,13 @@
 #include <fstream>
 #include <sstream>
 
-#include "../Engine.h"
+#include "../Application.h"
 #include "Text.h"
 #include "TextLoader.h"
 #include "../util/FilePath.h"
 
-using std::stoi;
 using std::stod;
+using std::stoi;
 using std::string;
 using std::stringstream;
 
@@ -26,10 +26,10 @@ Character FontData::getCharacter(int ascii) const
 /**
  * Reads a font file, loading characters into map
  */
-FontData::FontData(const std::string& font_file)
+FontData::FontData(const std::string &font_file)
 {
-	double aspect_ratio = (double)Engine::instance->aspect_ratio;
-	
+	double aspect_ratio = (double)app->aspect_ratio;
+
 	string font_path = FilePath::get(font_file + ".fnt", FileType::Font);
 	std::ifstream file = std::ifstream(font_path);
 
@@ -48,19 +48,16 @@ FontData::FontData(const std::string& font_file)
 	int padding_height = stoi(padding_top) + stoi(padding_bottom);
 
 	// line height
-	int line_height_pixels = (
-		stoi(getToken(&file, "lineHeight")) - padding_height
-	);
-	double vertical_per_pixel_size = (
-		TextLoader::line_height / (double)line_height_pixels
-	);
+	int line_height_pixels = (stoi(getToken(&file, "lineHeight")) - padding_height);
+	double vertical_per_pixel_size = (TextLoader::line_height / (double)line_height_pixels);
 	double horizontal_per_pixel_size = vertical_per_pixel_size / aspect_ratio;
 
 	int image_size = stoi(getToken(&file, "scaleW"));
 	int char_count = stoi(getToken(&file, "count"));
 
 	// process character data
-	for (int i = 0; i < char_count; i++) {
+	for (int i = 0; i < char_count; i++)
+	{
 		// ASCII
 		int char_id = stoi(getToken(&file, "id"));
 
@@ -73,59 +70,48 @@ FontData::FontData(const std::string& font_file)
 		double x_adv = stod(getToken(&file, "xadvance"));
 
 		// space character
-		if (char_id == TextLoader::space_ascii) { 
+		if (char_id == TextLoader::space_ascii)
+		{
 			space_width_ = (x_adv - padding_width) * horizontal_per_pixel_size;
 			continue;
 		}
 
-		dvec2 texture_coords(0); 
-		dvec2 texture_size(0); 
+		dvec2 texture_coords(0);
+		dvec2 texture_size(0);
 		dvec2 offset(0);
 		dvec2 quad_size(0);
 		double x_advance;
 
 		// convert to screen space, and remove padding
-		texture_coords.x = (
-			(x + (stod(padding_left) - desired_padding)) / (double) image_size
-		);
-		texture_coords.y = (
-			1.0 - 
-			(y + (stod(padding_top) - desired_padding)) / (double)image_size
-		);
+		texture_coords.x = ((x + (stod(padding_left) - desired_padding)) / (double)image_size);
+		texture_coords.y = (1.0 -
+							(y + (stod(padding_top) - desired_padding)) / (double)image_size);
 		int width = w - (padding_width - (2 * desired_padding));
 		int height = h - (padding_height - (2 * desired_padding));
 		texture_size.x = (double)width / image_size;
 		texture_size.y = (double)height / image_size;
 		quad_size.x = width * horizontal_per_pixel_size;
 		quad_size.y = height * vertical_per_pixel_size;
-		offset.x = (
-			(x_offset + stod(padding_left) - desired_padding) 
-			* horizontal_per_pixel_size
-		);
-		offset.y = (
-			(y_offset + stod(padding_top) - desired_padding) 
-			* vertical_per_pixel_size
-		);
+		offset.x = ((x_offset + stod(padding_left) - desired_padding) * horizontal_per_pixel_size);
+		offset.y = ((y_offset + stod(padding_top) - desired_padding) * vertical_per_pixel_size);
 		x_advance = (x_adv - padding_width) * horizontal_per_pixel_size;
-		characters_.insert({ 
-			char_id, 
-			Character(
-				char_id, 
-				texture_coords,
-				texture_size,
-				offset,
-				quad_size,
-				x_advance) 
-		});
+		characters_.insert({char_id,
+							Character(
+								char_id,
+								texture_coords,
+								texture_size,
+								offset,
+								quad_size,
+								x_advance)});
 	}
 
 	file.close();
 }
 
-string FontData::getToken(std::ifstream* file, const string& token_name)
+string FontData::getToken(std::ifstream *file, const string &token_name)
 {
 	string str;
-	while(str.find(token_name) == string::npos)
+	while (str.find(token_name) == string::npos)
 		getline(*file, str, ' ');
 
 	stringstream str_stream = stringstream(str);
@@ -134,4 +120,3 @@ string FontData::getToken(std::ifstream* file, const string& token_name)
 
 	return str;
 }
-

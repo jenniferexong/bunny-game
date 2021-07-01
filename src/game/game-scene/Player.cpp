@@ -2,7 +2,6 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "../game-manager/Application.h"
 #include "../../engine/Timer.h"
 #include "../../engine/models/Model.h"
 #include "../../engine/environment/Environment.h"
@@ -51,8 +50,8 @@ void Player::updatePosition(
 		side_speed_ /= 3.f;
 	}
 
-	float forward_distance = forward_speed_ * Engine::instance->timer->frame_delta;
-	float side_distance = side_speed_ * Engine::instance->timer->frame_delta;
+	float forward_distance = forward_speed_ * app->timer->frame_delta;
+	float side_distance = side_speed_ * app->timer->frame_delta;
 
 	// calculating new position (forward movement)
 	float fx = forward_distance * glm::sin(glm::radians(rotation_.x));
@@ -62,7 +61,7 @@ void Player::updatePosition(
 	float sz = side_distance * glm::sin(glm::radians(-rotation_.x));
 
 	// calculating new y position
-	float y = up_velocity_ * Engine::instance->timer->frame_delta;
+	float y = up_velocity_ * app->timer->frame_delta;
 
 	vec3 offset = vec3(fx + sx, y, fz+ sz);
 	move(offset.x, offset.y, offset.z);
@@ -138,7 +137,7 @@ void Player::jump()
 
 void Player::fall()
 {
-	up_velocity_ += gravity * Engine::instance->timer->frame_delta;
+	up_velocity_ += gravity * app->timer->frame_delta;
 }
 
 void Player::changeDirection(float amount)

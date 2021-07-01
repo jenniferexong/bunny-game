@@ -2,7 +2,7 @@
 
 #include <GLFW/glfw3.h>
 
-#include "../game-manager/Application.h"
+#include "../../engine/Application.h"
 #include "../../engine/ui/GuiEvent.h"
 #include "../../engine/ui/GuiComponent.h"
 #include "../../engine/util/Maths.h"
@@ -21,7 +21,7 @@ PauseScene::PauseScene()
 void PauseScene::init()
 {
 	Log::s("changed to pausescene");
-    Engine::instance->enableCursor(true);
+    app->enableCursor(true);
 	update_ = true;
 }
 
@@ -29,7 +29,7 @@ void PauseScene::setUp()
 {
     gui_ = std::make_unique<GuiComponent>("pause.json");
     gui_->getComponent("resume")->setClickEvent(
-        new ChangeScene(app->game_scene));
+        new ChangeScene(&game_scene));
     gui_->getComponent("quit")->setClickEvent(new Quit());
 
     gui_->addToBatch(guis_, text_master_);
@@ -47,14 +47,14 @@ bool PauseScene::update()
 
 void PauseScene::render()
 {
-    Engine::instance->renderer->prepare(getProjectionMatrix());
-    Engine::instance->renderer->renderGui(guis_);
-    Engine::instance->renderer->renderText(text_master_);
+    app->renderer->prepare(getProjectionMatrix());
+    app->renderer->renderGui(guis_);
+    app->renderer->renderText(text_master_);
 }
 
 void PauseScene::unpause()
 {
-	app->changeScene(app->game_scene);
+	app->changeScene(game_scene);
 }
 
 void PauseScene::cursorPosCallback(double x, double y)
@@ -115,7 +115,7 @@ void PauseScene::mouseButtonCallback(int button, int action, int mods)
 	if (button == GLFW_MOUSE_BUTTON_LEFT) {
 		if (action == GLFW_PRESS) {
 			double x, y;
-			glfwGetCursorPos(Engine::instance->window, &x, &y);
+			glfwGetCursorPos(app->window, &x, &y);
 			gui_->onClick(vec2(x, y));
 		}
 	}

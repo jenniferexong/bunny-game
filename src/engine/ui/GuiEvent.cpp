@@ -1,21 +1,19 @@
 #include "GuiEvent.h"
 
 #include "GuiTexture.h"
-#include "../../game/game-manager/Application.h"
-#include "../Engine.h"
+#include "../Application.h"
 
 void Quit::excecute()
 {
-    Engine::instance->closeWindow();
+	app->closeWindow();
 }
 
-void ChangeScene::excecute() 
+void ChangeScene::excecute()
 {
-	app->changeScene(scene_);
+	app->changeScene(*scene_);
 }
 
 void ChangeColor::excecute()
 {
 	gui_.lock()->setColor(color_);
 }
-

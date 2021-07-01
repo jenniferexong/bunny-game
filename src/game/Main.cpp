@@ -1,8 +1,9 @@
-#include "game-manager/Application.h"
+#include "game-manager/Game.h"
 
 int main()
 {
-    return Application::run();
+    Game();
+    return 0;
 }
 
 

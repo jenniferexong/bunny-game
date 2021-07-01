@@ -1,10 +1,11 @@
 engine = files(
+    'Application.cpp',
+    'IOEvents.cpp',
     'FrustumBox.cpp',
     'Loader.cpp',
     'stb_image.cpp',
     'Frustum.cpp',
     'ShadowBox.cpp',
-    'Engine.cpp',
     'Timer.cpp',
     'Camera.cpp',
 )

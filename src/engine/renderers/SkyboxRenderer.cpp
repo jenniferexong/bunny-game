@@ -2,7 +2,7 @@
 
 #include "SkyboxRenderer.h"
 
-#include "../Engine.h"
+#include "../Application.h"
 #include "../environment/Environment.h"
 #include "../Location.h"
 #include "../util/Log.h"
@@ -13,7 +13,7 @@ SkyboxRenderer::SkyboxRenderer()
 {
 	Log::init("SkyboxRenderer", false);
 
-	cube_ = Engine::instance->loader->loadToVao(vertex_positions, 3);
+	cube_ = app->loader->loadToVao(vertex_positions, 3);
 	shader_.setUp();
 
 	shader_.start();
@@ -23,7 +23,7 @@ SkyboxRenderer::SkyboxRenderer()
 	Log::init("SkyboxRenderer", true);
 }
 
-void SkyboxRenderer::render(const Environment& environment)
+void SkyboxRenderer::render(const Environment &environment)
 {
 	shader_.start();
 
@@ -43,7 +43,7 @@ void SkyboxRenderer::render(const Environment& environment)
 	Error::glCheck(name_);
 }
 
-void SkyboxRenderer::bindTextures(const Skybox& skybox)
+void SkyboxRenderer::bindTextures(const Skybox &skybox)
 {
 	int texture_1 = skybox.getTextures().x;
 	int texture_2 = skybox.getTextures().y;
@@ -55,45 +55,44 @@ void SkyboxRenderer::bindTextures(const Skybox& skybox)
 }
 
 const std::vector<float> SkyboxRenderer::vertex_positions = {
-		-cube_size,  cube_size, -cube_size,
-		-cube_size, -cube_size, -cube_size,
-		 cube_size, -cube_size, -cube_size,
-		 cube_size, -cube_size, -cube_size,
-		 cube_size,  cube_size, -cube_size,
-		-cube_size,  cube_size, -cube_size,
+	-cube_size, cube_size, -cube_size,
+	-cube_size, -cube_size, -cube_size,
+	cube_size, -cube_size, -cube_size,
+	cube_size, -cube_size, -cube_size,
+	cube_size, cube_size, -cube_size,
+	-cube_size, cube_size, -cube_size,
 
-		-cube_size, -cube_size,  cube_size,
-		-cube_size, -cube_size, -cube_size,
-		-cube_size,  cube_size, -cube_size,
-		-cube_size,  cube_size, -cube_size,
-		-cube_size,  cube_size,  cube_size,
-		-cube_size, -cube_size,  cube_size,
+	-cube_size, -cube_size, cube_size,
+	-cube_size, -cube_size, -cube_size,
+	-cube_size, cube_size, -cube_size,
+	-cube_size, cube_size, -cube_size,
+	-cube_size, cube_size, cube_size,
+	-cube_size, -cube_size, cube_size,
 
-		 cube_size, -cube_size, -cube_size,
-		 cube_size, -cube_size,  cube_size,
-		 cube_size,  cube_size,  cube_size,
-		 cube_size,  cube_size,  cube_size,
-		 cube_size,  cube_size, -cube_size,
-		 cube_size, -cube_size, -cube_size,
+	cube_size, -cube_size, -cube_size,
+	cube_size, -cube_size, cube_size,
+	cube_size, cube_size, cube_size,
+	cube_size, cube_size, cube_size,
+	cube_size, cube_size, -cube_size,
+	cube_size, -cube_size, -cube_size,
 
-		-cube_size, -cube_size,  cube_size,
-		-cube_size,  cube_size,  cube_size,
-		 cube_size,  cube_size,  cube_size,
-		 cube_size,  cube_size,  cube_size,
-		 cube_size, -cube_size,  cube_size,
-		-cube_size, -cube_size,  cube_size,
+	-cube_size, -cube_size, cube_size,
+	-cube_size, cube_size, cube_size,
+	cube_size, cube_size, cube_size,
+	cube_size, cube_size, cube_size,
+	cube_size, -cube_size, cube_size,
+	-cube_size, -cube_size, cube_size,
 
-		-cube_size,  cube_size, -cube_size,
-		 cube_size,  cube_size, -cube_size,
-		 cube_size,  cube_size,  cube_size,
-		 cube_size,  cube_size,  cube_size,
-		-cube_size,  cube_size,  cube_size,
-		-cube_size,  cube_size, -cube_size,
+	-cube_size, cube_size, -cube_size,
+	cube_size, cube_size, -cube_size,
+	cube_size, cube_size, cube_size,
+	cube_size, cube_size, cube_size,
+	-cube_size, cube_size, cube_size,
+	-cube_size, cube_size, -cube_size,
 
-		-cube_size, -cube_size, -cube_size,
-		-cube_size, -cube_size,  cube_size,
-		 cube_size, -cube_size, -cube_size,
-		 cube_size, -cube_size, -cube_size,
-		-cube_size, -cube_size,  cube_size,
-		 cube_size, -cube_size,  cube_size
-};
+	-cube_size, -cube_size, -cube_size,
+	-cube_size, -cube_size, cube_size,
+	cube_size, -cube_size, -cube_size,
+	cube_size, -cube_size, -cube_size,
+	-cube_size, -cube_size, cube_size,
+	cube_size, -cube_size, cube_size};

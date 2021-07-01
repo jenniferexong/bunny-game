@@ -2,7 +2,7 @@
 
 #include "ImageProcessor.h"
 
-#include "../Engine.h"
+#include "../Application.h"
 #include "PostProcessor.h"
 #include "shaders/ContrastShader.h"
 #include "shaders/HorizontalBlurShader.h"
@@ -17,7 +17,7 @@ void ImageProcessor::renderToFbo(int texture, std::weak_ptr<Fbo> fbo)
 		fbo.lock()->bind();
 
 	glClear(GL_COLOR_BUFFER_BIT);
-	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4); 
+	glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
 	if (!fbo.expired())
 		fbo.lock()->unbind();
@@ -52,14 +52,15 @@ void HorizontalBlur::renderToFbo(int texture, std::weak_ptr<Fbo> fbo)
 
 	float target_width;
 	// rendering to fbo
-	if (!fbo.expired()) {
+	if (!fbo.expired())
+	{
 		fbo.lock()->bind();
 		target_width = (float)fbo.lock()->getWidth();
-	} 
+	}
 	// rendering to screen
-	else { 
-		target_width = (
-			(float)Engine::instance->window_width / PostProcessor::blur_strength);
+	else
+	{
+		target_width = ((float)app->window_width / PostProcessor::blur_strength);
 	}
 
 	shader_->loadUniforms(target_width);
@@ -79,14 +80,15 @@ void VerticalBlur::renderToFbo(int texture, std::weak_ptr<Fbo> fbo)
 
 	float target_height;
 	// rendering to fbo
-	if (!fbo.expired()) {
+	if (!fbo.expired())
+	{
 		fbo.lock()->bind();
 		target_height = (float)fbo.lock()->getHeight();
-	} 
+	}
 	// rendering to screen
-	else { 
-		target_height = (
-			(float)Engine::instance->window_height / PostProcessor::blur_strength);
+	else
+	{
+		target_height = ((float)app->window_height / PostProcessor::blur_strength);
 	}
 
 	shader_->loadUniforms(target_height);
@@ -116,13 +118,11 @@ CombineFilter::CombineFilter()
 {
 	Error::exit(
 		"CombineFilter: wrong contructor called, \
-		must init color_texture_ and highlight_texture_"
-	);
+		must init color_texture_ and highlight_texture_");
 }
 
-CombineFilter::CombineFilter(int color_texture, int highlight_texture):
-	color_texture_(color_texture), 
-	highlight_texture_(highlight_texture)
+CombineFilter::CombineFilter(int color_texture, int highlight_texture) : color_texture_(color_texture),
+																		 highlight_texture_(highlight_texture)
 {
 	Log::init("ImageProcessor: CombineFilter", false);
 
